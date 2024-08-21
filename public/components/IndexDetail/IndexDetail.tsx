@@ -6,12 +6,12 @@
 import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import {
   EuiSpacer,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
   EuiOverlayMask,
   EuiLoadingSpinner,
   EuiContextMenu,
-  EuiButton,
+  EuiSmallButton,
   EuiCallOut,
   EuiTitle,
 } from "@elastic/eui";
@@ -445,9 +445,9 @@ const IndexDetail = (
             data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
+              <EuiSmallButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
                 Import settings and mappings
-              </EuiButton>
+              </EuiSmallButton>
             }
           >
             <EuiContextMenu
@@ -561,7 +561,7 @@ const IndexDetail = (
         ? null
         : (() => {
             const content = (
-              <EuiFormRow fullWidth>
+              <EuiCompressedFormRow fullWidth>
                 <IndexMapping
                   isEdit={isEdit}
                   value={finalValue?.mappings}
@@ -571,7 +571,7 @@ const IndexDetail = (
                   readonly={readonly}
                   docVersion={docVersion}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             );
 
             if (mode && mode === IndicesUpdateMode.mappings) {
@@ -601,7 +601,7 @@ const IndexDetail = (
                         <OptionalLabel />
                       </div>
                     </EuiTitle>
-                    <EuiFormRow
+                    <EuiCompressedFormRow
                       fullWidth
                       helpText={
                         <>
@@ -616,7 +616,7 @@ const IndexDetail = (
                       }
                     >
                       <></>
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </>
                 }
                 titleSize="s"

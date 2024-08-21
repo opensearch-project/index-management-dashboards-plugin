@@ -4,8 +4,8 @@
  */
 import React, { useContext, useRef, useState, useEffect, useMemo } from "react";
 import {
-  EuiButton,
-  EuiButtonIcon,
+  EuiSmallButton,
+  EuiSmallButtonIcon,
   EuiDragDropContext,
   EuiDraggable,
   EuiDroppable,
@@ -153,7 +153,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                             </div>
                             <div>
                               {readonly ? null : (
-                                <EuiButtonIcon
+                                <EuiSmallButtonIcon
                                   onClick={() => {
                                     const newValue = [...(values.composed_of || [])];
                                     newValue.splice(index, 1);
@@ -164,7 +164,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                                   aria-label="delete"
                                 />
                               )}
-                              <EuiButtonIcon
+                              <EuiSmallButtonIcon
                                 onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`)}
                                 style={{ marginLeft: 12 }}
                                 iconType="inspect"
@@ -188,10 +188,10 @@ export default function ComposableTemplate(props: SubDetailProps) {
       <EuiSpacer />
       {readonly ? null : (
         <div>
-          <EuiButton onClick={() => setDialogVisible(true)}>Associate component templates</EuiButton>
-          <EuiButton style={{ marginLeft: 20 }} onClick={() => setCreateComponentVisible(true)}>
+          <EuiSmallButton onClick={() => setDialogVisible(true)}>Associate component templates</EuiSmallButton>
+          <EuiSmallButton style={{ marginLeft: 20 }} onClick={() => setCreateComponentVisible(true)}>
             Create component template
-          </EuiButton>
+          </EuiSmallButton>
         </div>
       )}
       <Modal.SimpleModal

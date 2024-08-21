@@ -35,7 +35,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
       class="euiForm"
     >
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-index"
         id="some_html_id-row"
       >
@@ -57,13 +57,13 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   placeholder="Specify a name for the new index."
                   type="text"
                   value=""
@@ -82,7 +82,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
         </div>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-name-templateMessage"
         id="some_html_id-row"
       >
@@ -91,7 +91,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
         />
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-aliases"
         id="some_html_id-row"
       >
@@ -124,17 +124,17 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             <div
               aria-expanded="false"
               aria-haspopup="listbox"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox--compressed"
               role="combobox"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >

@@ -9,7 +9,7 @@ exports[`<TemplatesActions /> spec delete templates by calling commonService 1`]
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -36,7 +36,7 @@ exports[`<TemplatesActions /> spec renders the component and all the actions sho
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span

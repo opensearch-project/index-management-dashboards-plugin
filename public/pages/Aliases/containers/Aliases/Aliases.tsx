@@ -21,9 +21,9 @@ import {
   EuiText,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
-  EuiButton,
+  EuiSmallButton,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -307,7 +307,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
     const description = [
       {
         renderComponent: (
-          <EuiFormRow
+          <EuiCompressedFormRow
             fullWidth
             helpText={
               <div style={{ width: "51%" }}>
@@ -320,12 +320,10 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             }
           >
             <></>
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         ),
       },
     ];
-
-    const Buttonsize = this.state.useUpdatedUX ? "s" : undefined;
 
     const commonRender = () => {
       return (
@@ -395,8 +393,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
-                      size={Buttonsize}
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.setState({
@@ -405,7 +402,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                       }}
                     >
                       Create alias
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               ) : (
@@ -416,8 +413,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
-                      size={Buttonsize}
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.setState(defaultFilter, () => {
@@ -426,7 +422,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                       }}
                     >
                       Reset filters
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               )
@@ -535,7 +531,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             <EuiTitle>
               <span>Aliases</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div style={{ width: "50%" }}>
@@ -548,7 +544,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >

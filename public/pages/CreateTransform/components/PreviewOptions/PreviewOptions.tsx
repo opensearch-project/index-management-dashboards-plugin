@@ -5,7 +5,7 @@
 
 import React from "react";
 import {
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiContextMenu,
   EuiContextMenuPanelDescriptor,
   EuiFlexGroup,
@@ -32,7 +32,7 @@ export default function PreviewOptions({ name, aggList, onEditTransformation, on
     setIsPopoverOpen(false);
   };
 
-  const button = <EuiButtonIcon color="primary" iconType="pencil" onClick={() => setIsPopoverOpen(!isPopoverOpen)} />;
+  const button = <EuiSmallButtonIcon color="primary" iconType="pencil" onClick={() => setIsPopoverOpen(!isPopoverOpen)} />;
 
   const panels: EuiContextMenuPanelDescriptor[] = [
     {

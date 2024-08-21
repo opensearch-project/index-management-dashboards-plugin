@@ -1,4 +1,4 @@
-import { EuiFilterButton, EuiFilterButtonProps, EuiFilterGroup, EuiFilterSelectItem, EuiPopover } from "@elastic/eui";
+import { EuiSmallFilterButton, EuiFilterButtonProps, EuiFilterGroup, EuiFilterSelectItem, EuiPopover } from "@elastic/eui";
 import React, { useState } from "react";
 
 export interface IFilterGroupProps {
@@ -24,14 +24,13 @@ export default function FilterGroup({ options, value, filterButtonProps, onChang
     <EuiFilterGroup>
       <EuiPopover
         button={
-          <EuiFilterButton
+          <EuiSmallFilterButton
             iconType="arrowDown"
             onClick={onButtonClick}
             isSelected={isPopoverOpen}
             numFilters={options?.length}
             hasActiveFilters={!!value?.length}
             numActiveFilters={value?.length}
-            size={useNewUX ? "s" : undefined}
             {...filterButtonProps}
           />
         }

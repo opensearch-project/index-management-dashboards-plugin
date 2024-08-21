@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFormRow, EuiCallOut, EuiButton, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCallOut, EuiSmallButton, EuiSpacer } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { DarkModeConsumer } from "../../components/DarkMode";
@@ -25,10 +25,10 @@ const LegacyNotification = ({ value, onChange, onSwitchToChannels }: LegacyNotif
           Using Channel ID will give you more control to manage notifications across OpenSearch dashboards. If you do decide to switch, you
           will lose your current error notification settings.
         </p>
-        <EuiButton onClick={onSwitchToChannels}>Switch to using Channel ID</EuiButton>
+        <EuiSmallButton onClick={onSwitchToChannels}>Switch to using Channel ID</EuiSmallButton>
       </EuiCallOut>
       <EuiSpacer size="m" />
-      <EuiFormRow fullWidth style={{ maxWidth: "100%" }}>
+      <EuiCompressedFormRow fullWidth style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <JSONEditor
@@ -42,7 +42,7 @@ const LegacyNotification = ({ value, onChange, onSwitchToChannels }: LegacyNotif
             />
           )}
         </DarkModeConsumer>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </>
   );
 };

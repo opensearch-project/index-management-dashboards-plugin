@@ -9,7 +9,7 @@ exports[`<AliasesActions /> spec cannot clear cache for aliases if some indexes 
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -36,7 +36,7 @@ exports[`<AliasesActions /> spec clear cache for aliases by calling commonServic
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -63,7 +63,7 @@ exports[`<AliasesActions /> spec delete alias by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -90,7 +90,7 @@ exports[`<AliasesActions /> spec filter aliases failed when clearing caches for 
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -124,7 +124,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
         class="euiPopover__anchor"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -242,7 +242,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               type="button"
             >
               <span
@@ -256,7 +256,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="refreshConfirmButton"
               type="button"
             >
@@ -301,7 +301,7 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
         class="euiPopover__anchor"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -392,7 +392,7 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               type="button"
             >
               <span
@@ -406,7 +406,7 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="refreshConfirmButton"
               type="button"
             >
@@ -449,7 +449,7 @@ HTMLCollection [
         class="euiPopover__anchor"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -562,7 +562,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -577,7 +577,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -615,7 +615,7 @@ exports[`<AliasesActions /> spec renders the component and all the actions shoul
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span

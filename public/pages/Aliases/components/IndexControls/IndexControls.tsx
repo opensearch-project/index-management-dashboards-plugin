@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiComboBox, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ALIAS_STATUS_OPTIONS, IndicesUpdateMode } from "../../../../utils/constants";
 import { getUISettings } from "../../../../services/Services";
 import AliasesActions from "../../containers/AliasActions";
@@ -44,8 +44,7 @@ export default function SearchControls(props: SearchControlsProps) {
   return useUpdatedUX ? (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch
-          compressed
+        <EuiCompressedFieldSearch
           fullWidth
           placeholder="Search"
           value={state.search}
@@ -75,10 +74,15 @@ export default function SearchControls(props: SearchControlsProps) {
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiCompressedFieldSearch
+          fullWidth
+          placeholder="Search..."
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiComboBox
+        <EuiCompressedComboBox
           style={{
             width: 300,
           }}

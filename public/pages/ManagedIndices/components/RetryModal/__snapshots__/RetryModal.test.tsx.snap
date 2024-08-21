@@ -45,7 +45,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
           >
             <div>
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   checked=""
@@ -65,7 +65,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
                 </label>
               </div>
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   class="euiRadio__input"
@@ -88,7 +88,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
               class="euiSpacer euiSpacer--s"
             />
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -105,7 +105,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
@@ -113,7 +113,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
                     <select
                       aria-describedby="some_html_id-help-0"
                       aria-label="Retry failed policy from"
-                      class="euiSelect"
+                      class="euiSelect euiSelect--compressed"
                       disabled=""
                       id="some_html_id"
                     >
@@ -153,7 +153,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
           class="euiModalFooter"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--primary"
+            class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
             data-test-subj="retryModalCloseButton"
             type="button"
           >
@@ -168,7 +168,7 @@ exports[`<RetryModal /> spec renders the component 1`] = `
             </span>
           </button>
           <button
-            class="euiButton euiButton--primary euiButton--fill"
+            class="euiButton euiButton--primary euiButton--small euiButton--fill"
             data-test-subj="retryModalRetryButton"
             type="button"
           >

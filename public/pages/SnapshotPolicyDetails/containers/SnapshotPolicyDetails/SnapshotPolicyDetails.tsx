@@ -10,7 +10,7 @@ import queryString from "query-string";
 import {
   EuiAccordion,
   EuiBasicTable,
-  EuiButton,
+  EuiSmallButton,
   EuiFlexGrid,
   EuiFlexGroup,
   EuiFlexItem,
@@ -432,12 +432,12 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
               <EuiFlexItem grow={false}>
                 <EuiFlexGroup alignItems="center" gutterSize="s">
                   <EuiFlexItem grow={false}>
-                    <EuiButton onClick={this.onEdit}>Edit</EuiButton>
+                    <EuiSmallButton onClick={this.onEdit}>Edit</EuiSmallButton>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
+                    <EuiSmallButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
                       Delete
-                    </EuiButton>
+                    </EuiSmallButton>
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>
@@ -539,9 +539,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
           title="Last creation/deletion"
           titleSize="s"
           actions={
-            <EuiButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
+            <EuiSmallButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
               Refresh
-            </EuiButton>
+            </EuiSmallButton>
           }
         >
           <EuiBasicTable items={latestActivities} itemId="name" columns={this.columns} />

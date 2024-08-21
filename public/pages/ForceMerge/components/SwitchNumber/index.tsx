@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState } from "react";
-import { EuiRadioGroup, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedRadioGroup, EuiSpacer } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 
@@ -16,7 +16,7 @@ export default function SwitchNumber(props: SwitchNumberProps) {
   const [id, setId] = useState(props.value && props.value > 0 ? "1" : "0");
   return (
     <>
-      <EuiRadioGroup
+      <EuiCompressedRadioGroup
         options={[
           {
             id: "0",

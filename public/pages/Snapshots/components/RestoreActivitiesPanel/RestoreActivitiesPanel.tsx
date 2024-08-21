@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiButtonIcon, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiSmallButton, EuiButtonIcon, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
@@ -191,14 +191,14 @@ export const RestoreActivitiesPanel = ({
 
   const actions = useMemo(
     () => [
-      <EuiButton
+      <EuiSmallButton
         iconType="refresh"
         onClick={getRestoreStatus}
         data-test-subj="refreshStatusButton"
         isDisabled={restoreStartRef ? false : true}
       >
         Refresh
-      </EuiButton>,
+      </EuiSmallButton>,
     ],
     []
   );

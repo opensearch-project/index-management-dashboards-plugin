@@ -7,14 +7,14 @@ import React, { ChangeEvent, useState } from "react";
 import {
   EuiForm,
   EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
+  EuiCompressedFormRow,
+  EuiCompressedSelect,
   EuiPopoverTitle,
   EuiSpacer,
   EuiFlexGroup,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCodeEditor,
-  EuiButton,
+  EuiSmallButton,
 } from "@elastic/eui";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 
@@ -52,8 +52,8 @@ export default function IndexFilterPopover({
       <div>
         <EuiFlexGroup>
           <EuiFlexItem grow={false}>
-            <EuiFormRow label="Field">
-              <EuiSelect
+            <EuiCompressedFormRow label="Field">
+              <EuiCompressedSelect
                 id="selectField"
                 options={fields.map((item) => {
                   return {
@@ -64,24 +64,24 @@ export default function IndexFilterPopover({
                 value={selectedField}
                 onChange={onChangeSelectedField}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiFormRow label="Operator">
-              <EuiSelect
+            <EuiCompressedFormRow label="Operator">
+              <EuiCompressedSelect
                 id="selectOperator"
                 options={[]}
                 // {getOperators(selectedField?.type)}
                 value={selectedOperator}
                 onChange={onChangeSelectedOperator}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiFlexItem>
-          <EuiFormRow label="Value">
-            <EuiSelect id="selectValue" options={[]} value={selectedValue} onChange={onChangeSelectedValue} />
-          </EuiFormRow>
+          <EuiCompressedFormRow label="Value">
+            <EuiCompressedSelect id="selectValue" options={[]} value={selectedValue} onChange={onChangeSelectedValue} />
+          </EuiCompressedFormRow>
         </EuiFlexItem>
       </div>
     );
@@ -89,14 +89,14 @@ export default function IndexFilterPopover({
 
   function customEditor() {
     return (
-      <EuiFormRow label="Custom query DSL">
+      <EuiCompressedFormRow label="Custom query DSL">
         <EuiCodeEditor
           style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
           value={queryDsl}
           onChange={(string) => setQueryDsl(string)}
           mode="json"
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
   }
 
@@ -114,7 +114,7 @@ export default function IndexFilterPopover({
         <EuiSpacer />
         <EuiFlexGroup direction="rowReverse" alignItems="center" responsive={false}>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={() => {
                 onChangeSourceIndexFilter(queryDsl);
@@ -123,12 +123,12 @@ export default function IndexFilterPopover({
               data-test-subj="saveFilter"
             >
               Save
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty flush="right" onClick={closePopover} data-test-subj="cancelSaveFilter">
+            <EuiSmallButtonEmpty flush="right" onClick={closePopover} data-test-subj="cancelSaveFilter">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem />
         </EuiFlexGroup>

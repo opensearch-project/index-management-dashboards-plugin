@@ -3,7 +3,7 @@
 exports[`SnapshotIndicesInput component renders without error 1`] = `
 <div>
   <div
-    class="euiFormRow"
+    class="euiFormRow euiFormRow--compressed"
     id="some_html_id-row"
   >
     <div
@@ -22,17 +22,17 @@ exports[`SnapshotIndicesInput component renders without error 1`] = `
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >

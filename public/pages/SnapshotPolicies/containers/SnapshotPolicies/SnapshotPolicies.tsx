@@ -12,7 +12,7 @@ import {
   Criteria,
   Direction,
   EuiBasicTable,
-  EuiButton,
+  EuiSmallButton,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiEmptyPrompt,
@@ -31,7 +31,6 @@ import {
   EuiFlexGroup,
   EuiButtonIcon,
   EuiCompressedFieldSearch,
-  EuiSmallButton,
 } from "@elastic/eui";
 import { BREADCRUMBS, PLUGIN_NAME, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
@@ -464,15 +463,15 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       </EuiSmallButton>
     );
     const actions = [
-      <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
+      <EuiSmallButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
         Refresh
-      </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={this.onClickStop}>
+      </EuiSmallButton>,
+      <EuiSmallButton disabled={!selectedItems.length} onClick={this.onClickStop}>
         Disable
-      </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={this.onClickStart}>
+      </EuiSmallButton>,
+      <EuiSmallButton disabled={!selectedItems.length} onClick={this.onClickStart}>
         Enable
-      </EuiButton>,
+      </EuiSmallButton>,
       <EuiPopover
         id="action"
         button={actionsButton}
@@ -484,9 +483,9 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       >
         <EuiContextMenuPanel items={popoverActionItems} size="s" />
       </EuiPopover>,
-      <EuiButton onClick={this.onClickCreate} fill={true}>
+      <EuiSmallButton onClick={this.onClickCreate} fill={true}>
         Create policy
-      </EuiButton>,
+      </EuiSmallButton>,
     ];
 
     const subTitleText = (
@@ -509,9 +508,9 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
           </EuiText>
         }
         actions={
-          <EuiButton onClick={this.onClickCreate} fill={true}>
+          <EuiSmallButton onClick={this.onClickCreate} fill={true}>
             Create policy
-          </EuiButton>
+          </EuiSmallButton>
         }
       />
     );

@@ -14,7 +14,7 @@ exports[`<Notifications /> spec View without permission 1`] = `
         Notification settings
       </h1>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -33,7 +33,7 @@ exports[`<Notifications /> spec View without permission 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <a
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton--small"
         href="notifications-dashboards#/channels"
         rel="noopener noreferrer"
         target="_blank"
@@ -102,7 +102,7 @@ exports[`<Notifications /> spec renders 1`] = `
         Notification settings
       </h1>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -121,7 +121,7 @@ exports[`<Notifications /> spec renders 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <a
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton--small"
         href="notifications-dashboards#/channels"
         rel="noopener noreferrer"
         target="_blank"
@@ -189,14 +189,14 @@ exports[`<Notifications /> spec renders 1`] = `
           class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--compressed"
                 id="some_html_id-row"
               >
                 <div
@@ -222,7 +222,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -249,7 +249,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -311,14 +311,14 @@ exports[`<Notifications /> spec renders 1`] = `
           class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--compressed"
                 id="some_html_id-row"
               >
                 <div
@@ -344,7 +344,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -371,7 +371,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -433,14 +433,14 @@ exports[`<Notifications /> spec renders 1`] = `
           class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--compressed"
                 id="some_html_id-row"
               >
                 <div
@@ -466,7 +466,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -493,7 +493,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -555,14 +555,14 @@ exports[`<Notifications /> spec renders 1`] = `
           class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--compressed"
                 id="some_html_id-row"
               >
                 <div
@@ -588,7 +588,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"
@@ -615,7 +615,7 @@ exports[`<Notifications /> spec renders 1`] = `
                         class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiCheckbox euiCheckbox--compressed"
                         >
                           <input
                             class="euiCheckbox__input"

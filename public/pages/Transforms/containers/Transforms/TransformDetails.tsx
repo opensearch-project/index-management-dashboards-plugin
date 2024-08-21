@@ -8,9 +8,9 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiOverlayMask,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModalFooter,
   EuiModal,
   EuiModalHeader,
@@ -238,9 +238,15 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       scheduleText = buildIntervalScheduleText(transformJson.transform.continuous, interval, intervalTimeUnit);
     }
     const actionButton = (
-      <EuiButton iconType="arrowDown" iconSide="right" disabled={false} onClick={this.onActionButtonClick} data-test-subj="actionButton">
+      <EuiSmallButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={false}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+      >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const actionItems = [
@@ -327,22 +333,21 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       },
       {
         renderComponent: (
-          <EuiButton size="s" onClick={() => (!this.state.enabled ? onClickEnable() : onClickDisable())}>
+          <EuiSmallButton onClick={() => (!this.state.enabled ? onClickEnable() : onClickDisable())}>
             {this.state.enabled ? "Disable" : "Enable"}
-          </EuiButton>
+          </EuiSmallButton>
         ),
       },
       {
         renderComponent: (
-          <EuiButton
-            size="s"
+          <EuiSmallButton
             onClick={() => {
               this.closePopover();
               this.showJsonModal();
             }}
           >
             View JSON
-          </EuiButton>
+          </EuiSmallButton>
         ),
       },
       {
@@ -450,7 +455,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
               </EuiModalBody>
 
               <EuiModalFooter>
-                <EuiButtonEmpty onClick={this.closeModal}>Close</EuiButtonEmpty>
+                <EuiSmallButtonEmpty onClick={this.closeModal}>Close</EuiSmallButtonEmpty>
               </EuiModalFooter>
             </EuiModal>
           </EuiOverlayMask>

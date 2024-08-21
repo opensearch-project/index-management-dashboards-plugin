@@ -10,7 +10,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
     Reindex
   </h1>
   <div
-    class="euiFormRow euiFormRow--fullWidth"
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     id="some_html_id-row"
   >
     <div
@@ -78,7 +78,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -105,18 +105,18 @@ exports[`<Reindex /> spec renders the component 1`] = `
             <div
               aria-expanded="false"
               aria-haspopup="listbox"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox--compressed"
               data-test-subj="sourceSelector"
               role="combobox"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -163,7 +163,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -173,14 +173,14 @@ exports[`<Reindex /> spec renders the component 1`] = `
             data-test-subj="subsetOption"
           >
             <legend
-              class="euiFormLegend"
+              class="euiFormLegend euiFormLegend--compressed"
             >
               <span>
                 Specify a reindex option
               </span>
             </legend>
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 checked=""
@@ -201,7 +201,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
               </label>
             </div>
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 class="euiRadio__input"
@@ -272,7 +272,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
           style="max-width: 400px;"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
@@ -293,18 +293,18 @@ exports[`<Reindex /> spec renders the component 1`] = `
                 <div
                   aria-expanded="false"
                   aria-haspopup="listbox"
-                  class="euiComboBox"
+                  class="euiComboBox euiComboBox--compressed"
                   data-test-subj="destinationSelector"
                   role="combobox"
                 >
                   <div
-                    class="euiFormControlLayout"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
                       class="euiFormControlLayout__childrenWrapper"
                     >
                       <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                         data-test-subj="comboBoxInput"
                         tabindex="-1"
                       >
@@ -352,7 +352,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             data-test-subj="createIndexButton"
             type="button"
           >
@@ -392,7 +392,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
           >
             <button
               aria-label="drop down icon"
-              class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall"
+              class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--small"
               data-test-subj="advanceOptionToggle"
               type="button"
             >
@@ -425,7 +425,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButtonEmpty euiButtonEmpty--primary"
+        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
         data-test-subj="reindexCancelButton"
         type="button"
       >
@@ -444,7 +444,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="reindexConfirmButton"
         type="button"
       >

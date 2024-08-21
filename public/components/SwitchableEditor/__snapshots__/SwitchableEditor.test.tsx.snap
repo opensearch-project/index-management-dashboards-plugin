@@ -7,7 +7,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSwitch euiSwitch--primary"
+      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
     >
       <button
         aria-checked="false"
@@ -25,10 +25,7 @@ HTMLCollection [
           />
           <span
             class="euiSwitch__track"
-          >
-            EuiIconMock
-            EuiIconMock
-          </span>
+          />
         </span>
       </button>
       <span
@@ -169,7 +166,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSwitch euiSwitch--primary"
+      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
     >
       <button
         aria-checked="true"
@@ -187,10 +184,7 @@ HTMLCollection [
           />
           <span
             class="euiSwitch__track"
-          >
-            EuiIconMock
-            EuiIconMock
-          </span>
+          />
         </span>
       </button>
       <span
@@ -218,7 +212,7 @@ HTMLCollection [
           style="flex-grow: 1;"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
@@ -247,7 +241,7 @@ HTMLCollection [
           style="flex-grow: 1;"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div

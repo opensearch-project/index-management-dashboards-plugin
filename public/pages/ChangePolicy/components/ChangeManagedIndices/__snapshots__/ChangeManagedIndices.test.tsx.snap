@@ -38,7 +38,7 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--m"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -114,7 +114,7 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div

@@ -7,7 +7,16 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { EuiButtonIcon, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiInMemoryTable, EuiLink, EuiTitle, EuiToolTip } from "@elastic/eui";
+import {
+  EuiSmallButtonIcon,
+  EuiFlyout,
+  EuiFlyoutBody,
+  EuiFlyoutHeader,
+  EuiInMemoryTable,
+  EuiLink,
+  EuiTitle,
+  EuiToolTip,
+} from "@elastic/eui";
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
 import { Modal } from "../../../../components/Modal";
@@ -62,7 +71,7 @@ export default function AssociatedComponentsModal(props: AssociatedComponentsMod
                   render: (value: string, record) => {
                     return (
                       <EuiToolTip content="Unlink">
-                        <EuiButtonIcon
+                        <EuiSmallButtonIcon
                           aria-label={`Unlink ${record.name}?`}
                           iconType="unlink"
                           onClick={() => {

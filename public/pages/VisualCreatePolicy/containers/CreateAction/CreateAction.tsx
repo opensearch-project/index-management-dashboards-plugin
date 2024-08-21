@@ -4,7 +4,7 @@
  */
 
 import React, { Component, ChangeEvent } from "react";
-import { EuiText, EuiLink, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
+import { EuiText, EuiLink, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiCompressedFormRow, EuiCompressedSelect, EuiSpacer } from "@elastic/eui";
 import { UIAction, Action } from "../../../../../models/interfaces";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
 import { actionRepoSingleton, getActionOptions } from "../../utils/helpers";
@@ -78,9 +78,8 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Action type" helpText="Select the action you want to add to this state." />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
-            <EuiSelect
-              compressed={useNewUx}
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
+            <EuiCompressedSelect
               fullWidth
               placeholder="Select action type"
               id="action-type"
@@ -92,7 +91,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
               onChange={this.onChangeSelectedAction}
               data-test-subj="create-state-action-type"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer />
 

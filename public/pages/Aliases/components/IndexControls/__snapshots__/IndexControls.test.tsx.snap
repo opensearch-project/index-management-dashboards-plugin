@@ -9,13 +9,13 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     class="euiFlexItem"
   >
     <div
-      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+      class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
     >
       <div
         class="euiFormControlLayout__childrenWrapper"
       >
         <input
-          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed euiFieldSearch-isClearable"
           placeholder="Search..."
           type="search"
           value="testing"
@@ -34,7 +34,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
         >
           <button
             aria-label="Clear input"
-            class="euiFormControlLayoutClearButton"
+            class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
             type="button"
           >
             EuiIconMock
@@ -49,18 +49,18 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     <div
       aria-expanded="false"
       aria-haspopup="listbox"
-      class="euiComboBox"
+      class="euiComboBox euiComboBox--compressed"
       role="combobox"
       style="width: 300px;"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
             data-test-subj="comboBoxInput"
             tabindex="-1"
           >
@@ -107,7 +107,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
           >
             <button
               aria-label="Clear input"
-              class="euiFormControlLayoutClearButton"
+              class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
               data-test-subj="comboBoxClearButton"
               type="button"
             >

@@ -13,7 +13,7 @@ import {
   EuiSpacer,
   EuiFlexItem,
   EuiSearchBar,
-  EuiSwitch,
+  EuiCompressedSwitch,
   EuiButtonEmpty,
 } from "@elastic/eui";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
@@ -106,8 +106,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
-            compressed
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
@@ -126,7 +125,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}

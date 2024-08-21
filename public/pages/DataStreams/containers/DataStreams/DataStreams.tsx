@@ -15,17 +15,16 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiHealth,
   EuiToolTip,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiSmallButton,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
@@ -471,7 +470,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               <EuiTitle size="s">
                 <span>Data streams</span>
               </EuiTitle>
-              <EuiFormRow
+              <EuiCompressedFormRow
                 fullWidth
                 helpText={
                   <div>
@@ -484,7 +483,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                 }
               >
                 <></>
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </>
           }
         >
@@ -578,14 +577,14 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                       }}
                     >
                       Create data stream
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               ) : (
@@ -596,7 +595,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.setState(defaultFilter, () => {
@@ -605,7 +604,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                       }}
                     >
                       Reset filters
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               )

@@ -41,7 +41,7 @@ HTMLCollection [
               class="euiSpacer euiSpacer--s"
             />
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div

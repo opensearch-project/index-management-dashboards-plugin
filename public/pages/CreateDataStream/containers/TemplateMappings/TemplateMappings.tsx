@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext, useRef } from "react";
-import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import { SubDetailProps } from "../../interface";
 import IndexMapping, { IIndexMappingsRef } from "../../../../components/IndexMapping";
@@ -16,7 +16,7 @@ export default function TemplateMappings(props: SubDetailProps) {
   return (
     <>
       <EuiTitle size="s">
-        <EuiFormRow
+        <EuiCompressedFormRow
           fullWidth
           label={
             <EuiTitle size="s">
@@ -37,10 +37,10 @@ export default function TemplateMappings(props: SubDetailProps) {
           }
         >
           <></>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiTitle>
       <EuiSpacer size="s" />
-      <EuiFormRow fullWidth>
+      <EuiCompressedFormRow fullWidth>
         <IndexMapping
           {...field.registerField({
             name: ["template", "mappings"],
@@ -50,7 +50,7 @@ export default function TemplateMappings(props: SubDetailProps) {
           ref={mappingsRef}
           docVersion={coreServices.docLinks.DOC_LINK_VERSION}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </>
   );
 }

@@ -4,14 +4,14 @@
  */
 
 import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiButtonIcon,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiSmallButtonIcon,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
   EuiLink,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiSpacer,
   EuiSwitchEvent,
   EuiText,
@@ -515,7 +515,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
     const advanceTitle = (
       <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiButtonIcon
+          <EuiSmallButtonIcon
             iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
             color="text"
             data-test-subj="advanceOptionToggle"
@@ -583,7 +583,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
           <EuiSpacer />
           <CustomFormRow>
-            <EuiRadioGroup
+            <EuiCompressedRadioGroup
               options={[
                 {
                   id: "all",
@@ -654,9 +654,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
               </CustomFormRow>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
+              <EuiSmallButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
                 Create index
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </ContentPanel>
@@ -689,14 +689,14 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="reindexCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="reindexCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
+            <EuiSmallButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
               Reindex
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
 

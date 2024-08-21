@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
-import { EuiFormRow } from "@elastic/eui";
+import { EuiCompressedFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
@@ -135,13 +135,13 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         />
       </div>
       {confirmModalVisible && (
-        <EuiFormRow
+        <EuiCompressedFormRow
           fullWidth
           isInvalid={confirmModalVisible}
           error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
           <></>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       )}
     </>
   );
