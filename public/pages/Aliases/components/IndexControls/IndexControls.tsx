@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiCompressedComboBox, EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem, EuiSpacer } from "@elastic/eui";
 import { ALIAS_STATUS_OPTIONS, IndicesUpdateMode } from "../../../../utils/constants";
 import { getUISettings } from "../../../../services/Services";
 import AliasesActions from "../../containers/AliasActions";
@@ -42,35 +42,38 @@ export default function SearchControls(props: SearchControlsProps) {
   const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
   return useUpdatedUX ? (
-    <EuiFlexGroup style={{ paddingBottom: "16px" }} alignItems="center" gutterSize="s">
-      <EuiFlexItem>
-        <EuiCompressedFieldSearch
-          fullWidth
-          placeholder="Search"
-          value={state.search}
-          onChange={(e) => onChange("search", e.target.value)}
-        />
-      </EuiFlexItem>
-      <EuiFlexItem style={{ flexBasis: "100px" }} grow={false}>
-        <FilterGroup
-          filterButtonProps={{
-            children: "Status",
-          }}
-          onChange={(val) => onChange("status", (val || []).map((item) => item).join(","))}
-          value={state.status ? state.status.split(",").map((label) => label) : []}
-          options={ALIAS_STATUS_OPTIONS}
-          useNewUX={useUpdatedUX}
-        />
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <AliasesActions
-          onUpdateAlias={props.onUpdateAlias}
-          selectedItems={props.value.selectedItems}
-          onDelete={props.onDelete}
-          history={props.history}
-        />
-      </EuiFlexItem>
-    </EuiFlexGroup>
+    <>
+      <EuiFlexGroup alignItems="center" gutterSize="s">
+        <EuiFlexItem>
+          <EuiCompressedFieldSearch
+            fullWidth
+            placeholder="Search"
+            value={state.search}
+            onChange={(e) => onChange("search", e.target.value)}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem style={{ flexBasis: "100px" }} grow={false}>
+          <FilterGroup
+            filterButtonProps={{
+              children: "Status",
+            }}
+            onChange={(val) => onChange("status", (val || []).map((item) => item).join(","))}
+            value={state.status ? state.status.split(",").map((label) => label) : []}
+            options={ALIAS_STATUS_OPTIONS}
+            useNewUX={useUpdatedUX}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <AliasesActions
+            onUpdateAlias={props.onUpdateAlias}
+            selectedItems={props.value.selectedItems}
+            onDelete={props.onDelete}
+            history={props.history}
+          />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiSpacer size="m" />
+    </>
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>

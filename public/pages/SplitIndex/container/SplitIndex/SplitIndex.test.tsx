@@ -17,22 +17,10 @@ import { IAlias } from "../../../Aliases/interface";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { CoreStart } from "opensearch-dashboards/public";
-import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { setupCoreStart } from "../../../../../test/helper";
 
-jest.mock("../../../../services/Services", () => ({
-  ...jest.requireActual("../../../../services/Services"),
-  getUISettings: jest.fn(),
-  getApplication: jest.fn(),
-  getNavigationUI: jest.fn(),
-}));
-
-beforeEach(() => {
-  (getUISettings as jest.Mock).mockReturnValue({
-    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
-  });
-  (getApplication as jest.Mock).mockReturnValue({});
-
-  (getNavigationUI as jest.Mock).mockReturnValue({});
+beforeAll(() => {
+  setupCoreStart();
 });
 
 function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {

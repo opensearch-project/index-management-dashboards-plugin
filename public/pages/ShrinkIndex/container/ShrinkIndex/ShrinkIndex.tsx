@@ -52,6 +52,7 @@ import { openIndices } from "../../../Indices/utils/helpers";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",

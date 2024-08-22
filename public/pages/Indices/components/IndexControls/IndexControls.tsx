@@ -84,38 +84,41 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return useUpdatedUX ? (
-      <EuiFlexGroup style={{ paddingBottom: "16px" }} alignItems="center" gutterSize="s">
-        <EuiFlexItem>
-          <EuiSearchBar
-            compressed
-            query={search}
-            box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
-            onChange={onSearchChange}
-            filters={filters}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <IndicesActions
-            history={this.props.history}
-            onDelete={onRefresh}
-            onClose={onRefresh}
-            onShrink={onRefresh}
-            selectedItems={selectedItems}
-            getIndices={onRefresh}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiCompressedSwitch
-            label="Show data stream indexes"
-            checked={showDataStreams}
-            onChange={toggleShowDataStreams}
-            data-test-subj="toggleShowDataStreams"
-          />
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      <>
+        <EuiFlexGroup alignItems="center" gutterSize="s">
+          <EuiFlexItem>
+            <EuiSearchBar
+              compressed
+              query={search}
+              box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
+              onChange={onSearchChange}
+              filters={filters}
+            />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <IndicesActions
+              history={this.props.history}
+              onDelete={onRefresh}
+              onClose={onRefresh}
+              onShrink={onRefresh}
+              selectedItems={selectedItems}
+              getIndices={onRefresh}
+            />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiCompressedSwitch
+              label="Show data stream indexes"
+              checked={showDataStreams}
+              onChange={toggleShowDataStreams}
+              data-test-subj="toggleShowDataStreams"
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiSpacer size="m" />
+      </>
     ) : (
       <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>

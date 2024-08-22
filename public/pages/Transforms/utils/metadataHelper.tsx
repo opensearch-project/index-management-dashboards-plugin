@@ -94,7 +94,7 @@ export const selectInterval = (
   useUpdatedUX?: boolean
 ) => (
   <React.Fragment>
-    <EuiFlexGroup style={{ maxWidth: 400 }} alignItems={useUpdatedUX ? "center" : undefined}>
+    <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
         <EuiCompressedFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
           <EuiCompressedFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />

@@ -602,85 +602,85 @@ class Reindex extends Component<ReindexProps, ReindexState> {
               />
             </CustomFormRow>
 
-          <EuiSpacer />
-          <CustomFormRow>
-            <EuiCompressedRadioGroup
-              options={[
-                {
-                  id: "all",
-                  label: "Reindex all documents",
-                },
-                {
-                  id: "subset",
-                  label: "Reindex a subset of documents (Advanced)",
-                },
-              ]}
-              idSelected={subset ? "subset" : "all"}
-              onChange={(id) => {
-                this.setState({ subset: id === "subset" });
-              }}
-              name="subsetOption"
-              data-test-subj="subsetOption"
-              legend={{
-                children: <span>Specify a reindex option</span>,
-              }}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          {subset ? (
-            <CustomFormRow
-              fullWidth={true}
-              label="Query expression"
-              isInvalid={!!sourceQueryErr}
-              error={sourceQueryErr}
-              labelAppend={
-                <EuiText size="xs">
-                  <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
-                    Learn more about query DSL
-                  </EuiLink>
-                </EuiText>
-              }
-            >
-              <JSONEditor
-                mode="json"
-                width="100%"
-                value={sourceQuery}
-                onChange={this.onSourceQueryChange}
-                aria-label="Query DSL Editor"
-                height="200px"
-                data-test-subj="queryJsonEditor"
+            <EuiSpacer />
+            <CustomFormRow>
+              <EuiCompressedRadioGroup
+                options={[
+                  {
+                    id: "all",
+                    label: "Reindex all documents",
+                  },
+                  {
+                    id: "subset",
+                    label: "Reindex a subset of documents (Advanced)",
+                  },
+                ]}
+                idSelected={subset ? "subset" : "all"}
+                onChange={(id) => {
+                  this.setState({ subset: id === "subset" });
+                }}
+                name="subsetOption"
+                data-test-subj="subsetOption"
+                legend={{
+                  children: <span>Specify a reindex option</span>,
+                }}
               />
             </CustomFormRow>
-          ) : null}
-        </ContentPanel>
-
-          <EuiSpacer />
-
-        <ContentPanel title="Configure destination index" titleSize="s">
-          <EuiSpacer />
-          <EuiFlexGroup alignItems="flexEnd">
-            <EuiFlexItem style={{ maxWidth: "400px" }}>
-              <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
-                <IndexSelect
-                  data-test-subj="destinationSelector"
-                  placeholder="Select an index or data stream"
-                  getIndexOptions={this.getIndexOptions}
-                  onSelectedOptions={this.onDestinationSelection}
-                  singleSelect={true}
-                  selectedOption={destination}
-                  excludeDataStreamIndex={true}
-                  excludeList={sources}
-                  excludeSystemIndex={true}
+            <EuiSpacer />
+            {subset ? (
+              <CustomFormRow
+                fullWidth={true}
+                label="Query expression"
+                isInvalid={!!sourceQueryErr}
+                error={sourceQueryErr}
+                labelAppend={
+                  <EuiText size="xs">
+                    <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
+                      Learn more about query DSL
+                    </EuiLink>
+                  </EuiText>
+                }
+              >
+                <JSONEditor
+                  mode="json"
+                  width="100%"
+                  value={sourceQuery}
+                  onChange={this.onSourceQueryChange}
+                  aria-label="Query DSL Editor"
+                  height="200px"
+                  data-test-subj="queryJsonEditor"
                 />
               </CustomFormRow>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiSmallButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
-                Create index
-              </EuiSmallButton>
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </ContentPanel>
+            ) : null}
+          </ContentPanel>
+
+          <EuiSpacer />
+
+          <ContentPanel title="Configure destination index" titleSize="s">
+            <EuiSpacer />
+            <EuiFlexGroup alignItems="flexEnd">
+              <EuiFlexItem style={{ maxWidth: "400px" }}>
+                <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
+                  <IndexSelect
+                    data-test-subj="destinationSelector"
+                    placeholder="Select an index or data stream"
+                    getIndexOptions={this.getIndexOptions}
+                    onSelectedOptions={this.onDestinationSelection}
+                    singleSelect={true}
+                    selectedOption={destination}
+                    excludeDataStreamIndex={true}
+                    excludeList={sources}
+                    excludeSystemIndex={true}
+                  />
+                </CustomFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiSmallButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
+                  Create index
+                </EuiSmallButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </ContentPanel>
 
           <EuiSpacer />
 
@@ -708,18 +708,18 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
           <EuiSpacer />
 
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="reindexCancelButton">
-              Cancel
-            </EuiSmallButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiSmallButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
-              Reindex
-            </EuiSmallButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="reindexCancelButton">
+                Cancel
+              </EuiSmallButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiSmallButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
+                Reindex
+              </EuiSmallButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
 
           {showCreateIndexFlyout ? (
             <CreateIndexFlyout
@@ -736,7 +736,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
     const { setAppDescriptionControls } = getApplication();
 
     return this.props.useUpdatedUX ? (
-      <div style={{ padding: "0px" }}>
+      <div>
         <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
         {Common()}
       </div>

@@ -38,19 +38,22 @@ export default function SearchControls(props: SearchControlsProps) {
   const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
   return useUpdatedUX ? (
-    <EuiFlexGroup style={{ paddingBottom: "16px" }} alignItems="center" gutterSize="s">
-      <EuiFlexItem>
-        <EuiCompressedFieldSearch
-          fullWidth
-          placeholder="Search"
-          value={state.search}
-          onChange={(e) => onChange("search", e.target.value)}
-        />
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <TemplatesActions selectedItems={props.selectedItems} onDelete={props.getTemplates} history={props.history} />
-      </EuiFlexItem>
-    </EuiFlexGroup>
+    <>
+      <EuiFlexGroup alignItems="center" gutterSize="s">
+        <EuiFlexItem>
+          <EuiCompressedFieldSearch
+            fullWidth
+            placeholder="Search"
+            value={state.search}
+            onChange={(e) => onChange("search", e.target.value)}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <TemplatesActions selectedItems={props.selectedItems} onDelete={props.getTemplates} history={props.history} />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiSpacer size="m" />
+    </>
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
