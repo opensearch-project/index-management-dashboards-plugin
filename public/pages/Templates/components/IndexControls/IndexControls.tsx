@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem, EuiSpacer } from "@elastic/eui";
 import { getUISettings } from "../../../../services/Services";
 import TemplatesActions from "../../containers/TemplatesActions";
 import { ITemplate } from "../../interface";
