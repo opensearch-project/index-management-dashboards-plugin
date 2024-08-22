@@ -272,6 +272,10 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
 
     const { history } = this.props;
 
+    const onClickCreate = () => {
+      this.props.history.push(ROUTES.CREATE_INDEX);
+    };
+
     return this.state.useUpdatedUX ? (
       <>
         <HeaderControl
@@ -291,7 +295,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               label: "Create Index",
               fill: true,
               iconType: "plus",
-              href: `${PLUGIN_NAME}#/create-index`,
+              run: onClickCreate,
               testId: "createIndexButton",
               controlType: "button",
               color: "primary",
@@ -308,6 +312,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               getDataStreams={this.getDataStreams}
               toggleShowDataStreams={this.toggleShowDataStreams}
               selectedItems={this.state.selectedItems}
+              history={this.props.history}
             />
 
             <EuiBasicTable
@@ -358,9 +363,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
                 text: "Create Index",
                 buttonProps: {
                   fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_INDEX);
-                  },
+                  onClick: onClickCreate,
                 },
               },
             ]}

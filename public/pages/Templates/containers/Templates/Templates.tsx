@@ -399,6 +399,10 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
       },
     ];
 
+    const onClickCreate = () => {
+      this.props.history.push(ROUTES.CREATE_TEMPLATE);
+    };
+
     return this.state.useUpdatedUX ? (
       <div style={{ padding: "0px" }}>
         <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
@@ -410,7 +414,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
               label: "Create Index Template",
               fill: true,
               iconType: "plus",
-              href: `${PLUGIN_NAME}#/create-template`,
+              run: onClickCreate,
               testId: "createTemplateButton",
               controlType: "button",
               color: "primary",
@@ -446,9 +450,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                 text: "Create template",
                 buttonProps: {
                   fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_TEMPLATE);
-                  },
+                  onClick: onClickCreate,
                 },
               },
             ]}

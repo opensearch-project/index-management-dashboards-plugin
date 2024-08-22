@@ -80,17 +80,17 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >

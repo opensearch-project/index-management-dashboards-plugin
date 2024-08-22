@@ -13,7 +13,6 @@ export interface SearchControlsProps {
     search: string;
     selectedTypes: string[];
   };
-  useNewUX?: boolean;
   onSearchChange: (args: SearchControlsProps["value"]) => void;
 }
 
@@ -47,7 +46,6 @@ export default function SearchControls(props: SearchControlsProps) {
           }}
           onChange={(val) => onChange("selectedTypes", val || [])}
           value={state.selectedTypes}
-          useNewUx={props.useNewUX}
           options={[
             {
               label: IndicesUpdateMode.alias,

@@ -17,6 +17,11 @@ import { IAlias } from "../../../Aliases/interface";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { CoreStart } from "opensearch-dashboards/public";
+import { setupCoreStart } from "../../../../../test/helper";
+
+beforeAll(() => {
+  setupCoreStart();
+});
 
 function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {
   return {

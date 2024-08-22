@@ -17,6 +17,7 @@ import {
   EuiContextMenuPanel,
   EuiButtonIcon,
   EuiButtonEmpty,
+  EuiSpacer,
 } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { ManagedIndices } from "../../containers/ManagedIndices/ManagedIndices";
@@ -88,28 +89,32 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return useUpdatedUX ? (
-      <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
-        <EuiFlexItem>
-          <EuiSearchBar
-            query={search}
-            box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
-            onChange={onSearchChange}
-            filters={filters}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>{Actions}</EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiCompressedSwitch
-            label="Show data stream indexes"
-            checked={showDataStreams}
-            onChange={toggleShowDataStreams}
-            data-test-subj="toggleShowDataStreams"
-          />
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      <>
+        <EuiFlexGroup alignItems="center" gutterSize="s">
+          <EuiFlexItem>
+            <EuiSearchBar
+              query={search}
+              box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
+              compressed
+              onChange={onSearchChange}
+              filters={filters}
+            />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>{Actions}</EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiCompressedSwitch
+              label="Show data stream indexes"
+              checked={showDataStreams}
+              onChange={toggleShowDataStreams}
+              data-test-subj="toggleShowDataStreams"
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiSpacer size="m" />
+      </>
     ) : (
       <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>
