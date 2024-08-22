@@ -17,6 +17,11 @@ import { CoreServicesConsumer, CoreServicesContext } from "../../../../component
 import ShrinkIndex from "./ShrinkIndex";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { BrowserServices } from "../../../../models/interfaces";
+import { setupCoreStart } from "../../../../../test/helper";
+
+beforeAll(() => {
+  setupCoreStart();
+});
 
 function renderWithRouter(initialEntries = [ROUTES.SHRINK_INDEX] as string[]) {
   return {

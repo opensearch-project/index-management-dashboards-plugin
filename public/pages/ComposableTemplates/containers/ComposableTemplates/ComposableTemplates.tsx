@@ -436,7 +436,6 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               search: this.state.search,
               selectedTypes: this.state.selectedTypes,
             }}
-            useNewUX={useNewUX}
             onSearchChange={this.onSearchChange}
           />
           <EuiHorizontalRule margin="xs" />
@@ -515,7 +514,6 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               search: this.state.search,
               selectedTypes: this.state.selectedTypes,
             }}
-            useNewUX={useNewUX}
             onSearchChange={this.onSearchChange}
           />
           <EuiHorizontalRule margin="xs" />

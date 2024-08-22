@@ -435,7 +435,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       showEditModal,
       isPopoverOpen,
     } = this.state;
-
     const filterIsApplied = !!search;
     const page = Math.floor(from / size);
 
@@ -509,26 +508,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       },
     ];
 
-    const RetryPolicyModal = () => {
-      return (
-        showRetryModal && (
-          <RetryModal
-            services={this.context.managedIndexService}
-            retryItems={_.cloneDeep(selectedItems)}
-            onClose={this.onCloseRetryModal}
-          />
-        )
-      );
-    };
-
-    const EditRolloverAliasModal = () => {
-      return (
-        showEditModal && (
-          <RolloverAliasModal index={selectedItems[0].index} services={this.context.managedIndexService} onClose={this.onCloseEditModal} />
-        )
-      );
-    };
-
     const RemovePolicyModal = () => {
       return (
         showRemoveModal && (
@@ -560,18 +539,24 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     );
 
     const popoverActionItems = [
-      <EuiContextMenuItem
-        key="Edit"
-        toolTipPosition="left"
-        disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
-        data-test-subj="editOption"
-        onClick={() => {
-          this.closePopover();
-          this.onShowEditModal();
-        }}
-      >
-        Edit rollover alias
-      </EuiContextMenuItem>,
+      <ModalConsumer>
+        {({ onShow, onClose }) => (
+          <EuiContextMenuItem
+            key="Edit"
+            toolTipPosition="left"
+            disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
+            data-test-subj="editOption"
+            onClick={() =>
+              onShow(RolloverAliasModal, {
+                index: selectedItems[0].index,
+                core: this.context,
+              })
+            }
+          >
+            Edit rollover alias
+          </EuiContextMenuItem>
+        )}
+      </ModalConsumer>,
       <EuiContextMenuItem
         key="Remove"
         toolTipPosition="left"
@@ -584,18 +569,23 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       >
         Remove Policy
       </EuiContextMenuItem>,
-      <EuiContextMenuItem
-        key="Retry"
-        toolTipPosition="left"
-        disabled={isRetryDisabled}
-        data-test-subj="RetryOption"
-        onClick={() => {
-          this.closePopover();
-          this.onShowRetryModal();
-        }}
-      >
-        Retry Policy
-      </EuiContextMenuItem>,
+      <ModalConsumer>
+        {({ onShow, onClose }) => (
+          <EuiContextMenuItem
+            key="Retry"
+            toolTipPosition="left"
+            disabled={isRetryDisabled}
+            data-test-subj="RetryOption"
+            onClick={() =>
+              onShow(RetryModal, {
+                retryItems: _.cloneDeep(selectedItems),
+              })
+            }
+          >
+            Retry Policy
+          </EuiContextMenuItem>
+        )}
+      </ModalConsumer>,
     ];
 
     const Action = () => {
@@ -641,6 +631,10 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       );
     };
 
+    const onClickChange = () => {
+      this.props.history.push(ROUTES.CHANGE_POLICY);
+    };
+
     return this.state.useUpdatedUX ? (
       <>
         <HeaderControl
@@ -650,7 +644,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               id: "Change policy",
               label: "Change Policy",
               fill: true,
-              href: `${PLUGIN_NAME}#/change-policy`,
+              run: onClickChange,
               testId: "changePolicyButton",
               controlType: "button",
               color: "primary",
@@ -671,9 +665,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             />
             {CommonTable()}
           </ContentPanel>
-          {RetryPolicyModal()}
           {RemovePolicyModal()}
-          {EditRolloverAliasModal()}
         </div>
       </>
     ) : (
