@@ -30,6 +30,7 @@ import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler"
 import { ServerResponse } from "../../../../../server/models/types";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public/top_nav_menu/top_nav_control_data";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -228,28 +229,17 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const { HeaderControl } = getNavigationUI();
     const { setAppDescriptionControls } = getApplication();
 
-    const description = [
+    const descriptionData = [
       {
-        renderComponent: (
-          <EuiCompressedFormRow
-            fullWidth
-            helpText={
-              <div style={{ width: "100%" }}>
-                Split an existing read-only index into a new index with more primary shards.&nbsp;
-                <EuiLink
-                  href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn more
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </EuiCompressedFormRow>
-        ),
-      },
+        description: "Shrink an existing index into a new index with fewer primary shards.",
+        links: {
+          label: "Learn more",
+          href: "https://opensearch.org/docs/latest/api-reference/index-apis/split/",
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     const Common = () => {
@@ -278,7 +268,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
     return this.props.useUpdatedUX ? (
       <div style={{ padding: "0px" }}>
-        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+        <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} />
         {Common()}
       </div>
     ) : (

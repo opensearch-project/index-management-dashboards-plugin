@@ -649,24 +649,17 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       </EuiCompressedFormRow>
     );
 
-    const description = [
+    const descriptionData = [
       {
-        renderComponent: (
-          <EuiCompressedFormRow
-            fullWidth
-            helpText={
-              <div>
-                Shrink an existing index into a new index with fewer primary shards.&nbsp;
-                <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                  Learn more
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </EuiCompressedFormRow>
-        ),
-      },
+        description: "Shrink an existing index into a new index with fewer primary shards.",
+        links: {
+          label: "Learn more",
+          href: SHRINK_DOCUMENTATION_URL,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     const Common = () => {
@@ -714,7 +707,7 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
 
     return this.props.useUpdatedUX ? (
       <div style={{ padding: "0px 0px" }}>
-        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+        <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} />
 
         {Common()}
       </div>

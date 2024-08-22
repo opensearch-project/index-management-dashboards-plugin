@@ -43,6 +43,7 @@ import NotificationConfig, { NotificationConfigRef } from "../../../../container
 import { ActionType } from "../../../Notifications/constant";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public/top_nav_menu/top_nav_control_data";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -555,25 +556,17 @@ class Reindex extends Component<ReindexProps, ReindexState> {
       </CustomFormRow>
     );
 
-    const description = [
+    const descriptionData = [
       {
-        renderComponent: (
-          <CustomFormRow
-            fullWidth
-            label=""
-            helpText={
-              <div>
-                Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
-                <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
-                  Learn more
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </CustomFormRow>
-        ),
-      },
+        description: "Shrink an existing index into a new index with fewer primary shards.",
+        links: {
+          label: "Learn more",
+          href: this.context.docLinks.links.opensearch.reindexData.base,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     // expand data streams and aliases
@@ -737,7 +730,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
     return this.props.useUpdatedUX ? (
       <div>
-        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+        <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} />
         {Common()}
       </div>
     ) : (
