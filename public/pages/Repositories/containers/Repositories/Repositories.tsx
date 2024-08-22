@@ -268,7 +268,7 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
 
     const renderToolsLeft = () => {
       return [
-        <EuiButton
+        <EuiSmallButton
           iconType="trash"
           iconSide="left"
           iconSize="s"
@@ -277,11 +277,10 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
           data-test-subj="deleteButton"
           aria-label="delete"
           color="danger"
-          size="s"
           minWidth={75}
         >
           Delete
-        </EuiButton>,
+        </EuiSmallButton>,
       ];
     };
 
