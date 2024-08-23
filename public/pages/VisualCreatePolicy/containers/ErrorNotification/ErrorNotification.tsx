@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiLink, EuiIcon, EuiFlexGroup, EuiFlexItem, EuiText } from "@elastic/eui";
+import { EuiLink, EuiIcon, EuiFlexGroup, EuiFlexItem, EuiText, EuiPanel, EuiSpacer, EuiHorizontalRule } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -101,7 +101,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       );
     }
     const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
-    return (
+    return !useNewUx ? (
       <ContentPanel
         bodyStyles={{ padding: "initial" }}
         title={
@@ -132,6 +132,32 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       >
         <div style={{ padding: "10px 0px 0px 10px" }}>{content}</div>
       </ContentPanel>
+    ) : (
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiFlexItem grow={false}>
+            <EuiText size="s">
+              <h2>Error notification</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiText color="subdued">
+              <i> – optional</i>
+            </EuiText>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+
+        <EuiText color="subdued" size="xs" style={paddingStyle}>
+          <p style={{ fontWeight: 350 }}>
+            You can set up an error notification for when a policy execution fails.{" "}
+            <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              Learn more
+            </EuiLink>
+          </p>
+        </EuiText>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>{content}</div>
+      </EuiPanel>
     );
   }
 }

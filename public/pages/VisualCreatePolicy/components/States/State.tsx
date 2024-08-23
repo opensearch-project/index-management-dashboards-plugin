@@ -32,7 +32,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
     buttonContent={
       <EuiFlexGroup justifyContent="center" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiText>
+          <EuiText size="m">
             <strong>{state.name}</strong>
           </EuiText>
         </EuiFlexItem>
@@ -105,17 +105,19 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
     <EuiFlexGroup direction="column" gutterSize="l">
       <EuiFlexItem grow={false}>
         <EuiText>
-          <h4>Actions</h4>
+          <h5>Actions</h5>
         </EuiText>
       </EuiFlexItem>
       <EuiFlexItem>
         {!state.actions?.length ? (
-          <EuiText>No actions. Edit state to add actions.</EuiText>
+          <EuiText size="s">No actions. Edit state to add actions.</EuiText>
         ) : (
           <EuiFlexGroup wrap>
             {state.actions.map((action, index) => (
               <EuiFlexItem grow={false} key={`${makeId()}-${index}`}>
-                <EuiPanel>{actionRepoSingleton.getUIActionFromData(action).content()}</EuiPanel>
+                <EuiPanel paddingSize="s">
+                  <EuiText size="s">{actionRepoSingleton.getUIActionFromData(action).content()}</EuiText>
+                </EuiPanel>
               </EuiFlexItem>
             ))}
           </EuiFlexGroup>
@@ -123,17 +125,17 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiText>
-          <h4>Transitions</h4>
+          <h5>Transitions</h5>
         </EuiText>
       </EuiFlexItem>
       <EuiFlexItem>
         {!state.transitions?.length ? (
-          <EuiText>No transitions. Edit state to add transitions.</EuiText>
+          <EuiText size="s">No transitions. Edit state to add transitions.</EuiText>
         ) : (
           <EuiFlexGroup wrap>
             {state.transitions.map((transition, index) => (
               <EuiFlexItem grow={false} key={`${makeId()}-${index}`}>
-                <EuiPanel>
+                <EuiPanel paddingSize="s">
                   <TransitionContent transition={transition} />
                 </EuiPanel>
               </EuiFlexItem>

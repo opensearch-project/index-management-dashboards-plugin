@@ -438,7 +438,6 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
             }}
             onSearchChange={this.onSearchChange}
           />
-          <EuiHorizontalRule margin="xs" />
 
           <EuiBasicTable
             className="ISM-component-templates-table"

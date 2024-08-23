@@ -334,6 +334,7 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           description={policy.description}
           onChangePolicyId={this.onChangePolicyId}
           onChangeDescription={this.onChangePolicyDescription}
+          useNewUX={useNewUX}
         />
         <EuiSpacer size="m" />
         <ErrorNotification

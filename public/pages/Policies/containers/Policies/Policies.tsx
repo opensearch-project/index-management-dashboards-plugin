@@ -542,7 +542,7 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
                 isOpen={isPopoverOpen}
                 closePopover={this.closePopover}
                 anchorPosition="downRight"
-                panelPaddingSize="none"
+                panelPaddingSize="s"
               >
                 <EuiContextMenu initialPanelId={0} panels={popoverItems} size="s" />
               </EuiPopover>

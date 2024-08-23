@@ -16,6 +16,7 @@ import {
   EuiEmptyPrompt,
   EuiCompressedFormRow,
   EuiSelect,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
@@ -44,7 +45,7 @@ const States = ({
   useNewUx,
 }: StatesProps) => {
   const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
-  return (
+  return !useNewUx ? (
     <ContentPanel
       bodyStyles={{ padding: "initial" }}
       title={`States (${policy.states.length})`}
@@ -117,6 +118,81 @@ const States = ({
           ))}
       </div>
     </ContentPanel>
+  ) : (
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="xs" alignItems="center">
+        <EuiText size="s">
+          <h2>{`States (${policy.states.length})`}</h2>
+        </EuiText>
+      </EuiFlexGroup>
+
+      <EuiText color="subdued" size="xs" style={paddingStyle}>
+        <p style={{ fontWeight: 350 }}>
+          You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+          <br />
+          "Transitions" define when to move from one state to another.{" "}
+          <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+            Learn more
+          </EuiLink>
+        </p>
+      </EuiText>
+      <EuiHorizontalRule margin={"xs"} />
+      <EuiSpacer size="s" />
+      <div>
+        {!isReadOnly && (
+          <>
+            <EuiCompressedFormRow style={{ maxWidth: "300px" }} isInvalid={false} error={null}>
+              <EuiSelect
+                compressed
+                prepend="Initial state"
+                options={policy.states.map((state) => ({ text: state.name, value: state.name }))}
+                value={policy.default_state}
+                onChange={onChangeDefaultState}
+              />
+            </EuiCompressedFormRow>
+            <EuiSpacer size="s" />
+            <EuiHorizontalRule margin={"xs"} />
+          </>
+        )}
+
+        <EuiFlexGroup gutterSize="none" direction="column">
+          {policy.states.map((state, idx) => (
+            <EuiFlexItem key={state.name}>
+              <State
+                idx={idx}
+                state={state}
+                isInitialState={state.name === policy.default_state}
+                onClickEditState={onClickEditState}
+                onClickDeleteState={onClickDeleteState}
+                isReadOnly={isReadOnly}
+              />
+              <EuiHorizontalRule margin="none" />
+            </EuiFlexItem>
+          ))}
+        </EuiFlexGroup>
+
+        {!isReadOnly &&
+          (!!policy.states.length ? (
+            <>
+              <EuiSpacer />
+              <EuiSmallButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+                Add state
+              </EuiSmallButton>
+            </>
+          ) : (
+            <EuiEmptyPrompt
+              title={<h3>No states</h3>}
+              titleSize="s"
+              body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
+              actions={
+                <EuiSmallButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+                  Add state
+                </EuiSmallButton>
+              }
+            />
+          ))}
+      </div>
+    </EuiPanel>
   );
 };
 

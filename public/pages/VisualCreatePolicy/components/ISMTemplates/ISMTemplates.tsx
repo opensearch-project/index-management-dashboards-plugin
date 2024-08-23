@@ -4,7 +4,17 @@
  */
 
 import React from "react";
-import { EuiSmallButton, EuiSpacer, EuiFlexGroup, EuiEmptyPrompt, EuiFlexItem, EuiText, EuiLink, EuiIcon } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiEmptyPrompt,
+  EuiFlexItem,
+  EuiText,
+  EuiLink,
+  EuiPanel,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -34,7 +44,7 @@ const ISMTemplates = ({ policy, onChangePolicy, useNewUx }: ISMTemplatesProps) =
     </EuiSmallButton>
   );
   const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
-  return (
+  return !useNewUx ? (
     <ContentPanel
       bodyStyles={{ padding: "initial" }}
       title={
@@ -124,6 +134,91 @@ const ISMTemplates = ({ policy, onChangePolicy, useNewUx }: ISMTemplatesProps) =
         )}
       </div>
     </ContentPanel>
+  ) : (
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="xs" alignItems="center">
+        <EuiFlexItem grow={false}>
+          <EuiText size="s">
+            <h2>ISM templates</h2>
+          </EuiText>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiText color="subdued">
+            <i> – optional</i>
+          </EuiText>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiText color="subdued" size="xs" style={paddingStyle}>
+        <p style={{ fontWeight: 350 }}>
+          Specify ISM template patterns that match the index to apply the policy.{" "}
+          <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+            Learn more
+          </EuiLink>
+        </p>
+      </EuiText>
+      <EuiHorizontalRule margin={"xs"} />
+      <div style={{ padding: "10px 0px 0px 10px" }}>
+        {!!templates.length && (
+          <EuiFlexGroup gutterSize="l" alignItems="center">
+            <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
+              <EuiText>
+                <h5>Index patterns</h5>
+              </EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiText>
+                <h5>Priority</h5>
+              </EuiText>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        )}
+
+        {templates.map((template, idx) => (
+          <ISMTemplate
+            key={makeId()}
+            isFirst={!idx}
+            template={template}
+            onUpdateTemplate={(template: ISMTemplateData) => {
+              onChangePolicy({
+                ...policy,
+                ism_template: templates
+                  .slice(0, idx)
+                  .concat(template)
+                  .concat(templates.slice(idx + 1)),
+              });
+            }}
+            onRemoveTemplate={() => {
+              onChangePolicy({
+                ...policy,
+                ism_template: templates.slice(0, idx).concat(templates.slice(idx + 1)),
+              });
+            }}
+            useNewUx={useNewUx}
+          />
+        ))}
+
+        {!templates.length ? (
+          <EuiEmptyPrompt
+            title={<h2>No ISM templates</h2>}
+            style={{ maxWidth: "37em" }}
+            titleSize="s"
+            body={
+              <p>
+                Your policy currently has no ISM templates defined. Add ISM templates to automatically apply the policy to indices created
+                in the future.
+              </p>
+            }
+            actions={addTemplateButton}
+          />
+        ) : (
+          <>
+            <EuiSpacer />
+            {addTemplateButton}
+          </>
+        )}
+      </div>
+    </EuiPanel>
   );
 };
 
