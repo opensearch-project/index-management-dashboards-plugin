@@ -90,7 +90,8 @@ export const selectInterval = (
   intervalTimeunit: string,
   intervalError: string,
   onChangeInterval: (e: ChangeEvent<HTMLInputElement>) => void,
-  onChangeTimeunit: (value: ChangeEvent<HTMLSelectElement>) => void
+  onChangeTimeunit: (value: ChangeEvent<HTMLSelectElement>) => void,
+  useUpdatedUX?: boolean
 ) => (
   <React.Fragment>
     <EuiFlexGroup style={{ maxWidth: 400 }}>

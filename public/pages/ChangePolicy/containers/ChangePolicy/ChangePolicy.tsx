@@ -171,7 +171,6 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
             onChangeManagedIndices={this.onChangeManagedIndices}
             onChangeStateFilters={this.onChangeStateFilters}
             managedIndicesError={hasSubmitted ? managedIndicesError : ""}
-            useUpdatedUX={useUpdatedUX}
           />
 
           <EuiSpacer />
@@ -187,7 +186,6 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
             onChangeStateRadio={this.onChangeStateRadio}
             onStateSelectChange={this.onStateSelectChange}
             selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
-            useUpdatedUX={useUpdatedUX}
           />
 
           <EuiSpacer />

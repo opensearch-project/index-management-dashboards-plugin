@@ -26,6 +26,7 @@ import {
   Pagination,
   EuiTableSelectionType,
   EuiTableSortingType,
+  EuiSpacer,
 } from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
@@ -263,7 +264,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
               label: "Create transform job",
               fill: true,
               iconType: "plus",
-              href: `${PLUGIN_NAME}#/create-transform`,
+              run: this.onClickCreate,
               testId: "createTransformButton",
               controlType: "button",
               color: "primary",
@@ -272,9 +273,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         />
         <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px" }}>
           <div style={{ padding: "initial" }}>
-            <EuiFlexGroup style={{ padding: "0px 0px 16px 0px" }}>
+            <EuiFlexGroup gutterSize="s">
               <EuiFlexItem>
-                <EuiFieldSearch compressed fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
+                <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
               </EuiFlexItem>
               {pageCount > 1 && (
                 <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
@@ -300,6 +301,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>
+            <EuiSpacer size="m" />
 
             <EuiBasicTable
               columns={columns}

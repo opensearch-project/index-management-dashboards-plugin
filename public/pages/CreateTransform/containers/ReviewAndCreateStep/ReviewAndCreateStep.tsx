@@ -14,7 +14,6 @@ import JobNameAndIndices from "../../components/JobNameAndIndices";
 import ReviewDefinition from "../../components/ReviewDefinition";
 import ReviewSchedule from "../../components/ReviewSchedule";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getUISettings } from "../../../../services/Services";
 
 interface ReviewAndCreateStepProps extends RouteComponentProps {
   transformService: TransformService;
