@@ -94,7 +94,7 @@ const SnapshotIndicesRepoInput = ({
 
         {showFlyout != null && (
           <EuiFlexItem grow={false}>
-            <EuiSmallButton onClick={openFlyout}>Create repository</EuiSmallButton>
+            <EuiSmallButton onClick={openFlyout} iconType="plus">Create repository</EuiSmallButton>
           </EuiFlexItem>
         )}
       </EuiFlexGroup>
