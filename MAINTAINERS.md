@@ -4,26 +4,26 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 
 ## Current Maintainers
 
-| Maintainer            | GitHub ID                                             | Affiliation |
-|-----------------------| ----------------------------------------------------- | ----------- |
-| Bowen Lan             | [bowenlan-amzn](https://github.com/bowenlan-amzn)     | Amazon      |
-| Saurabh Singh         | [getsaurabh02](https://github.com/getsaurabh02)       | Amazon      |
-| Praveen Sameneni      | [praveensameneni](https://github.com/praveensameneni) | Amazon      |
-| Xuesong Luo           | [xluo-aws](https://github.com/xluo-aws)               | Amazon      |
-| Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)           | Amazon      |
-| Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)           | Amazon      |
-| Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)           | Amazon      |
-| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan)               | Amazon      |
-| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt)           | Amazon      |
-| Ashish Agrawal        | [lezzago](https://github.com/lezzago)                 | Amazon      |
-| Subhobrata DEY        | [sbcd90](https://github.com/sbcd90)                   | Amazon      |
-| Surya Sashank Nistala | [eirsep](https://github.com/eirsep)                   | Amazon      |
-| Rohit Ashiwal         | [r1walz](https://github.com/r1walz)                   | Amazon      |
-| Vikas Bansal          | [vikasvb90](https://github.com/vikasvb90)             | Amazon      |
-| Ramakrishna Chilaka   | [RamakrishnaChilaka](https://github.com/RamakrishnaChilaka)             | Amazon      |
+| Maintainer            | GitHub ID                                                    | Affiliation |
+|-----------------------| ------------------------------------------------------------ | ----------- |
+| Bowen Lan             | [bowenlan-amzn](https://github.com/bowenlan-amzn)            | Amazon      |
+| Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)                  | Amazon      |
+| Ramakrishna Chilaka   | [RamakrishnaChilaka](https://github.com/RamakrishnaChilaka)  | Amazon      |
+| Vikas Bansal          | [vikasvb90](https://github.com/vikasvb90)                    | Amazon      |
+| Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)                  | Amazon      |
 
 ## Emeritus
 
-| Maintainer    | GitHub ID                                     | Affiliation |
-| ------------- | --------------------------------------------- | ----------- |
-| Angie Zhang   | [Angie-Zhang](https://github.com/Angie-Zhang) | Amazon      |
+| Maintainer            | GitHub ID                                             | Affiliation |
+| --------------------- | ----------------------------------------------------- | ----------- |
+| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan)               | Amazon      |
+| Angie Zhang           | [Angie-Zhang](https://github.com/Angie-Zhang)         | Amazon      |
+| Ashish Agrawal        | [lezzago](https://github.com/lezzago)                 | Amazon      |
+| Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)           | Amazon      |
+| Praveen Sameneni      | [praveensameneni](https://github.com/praveensameneni) | Amazon      |
+| Rohit Ashiwal         | [r1walz](https://github.com/r1walz)                   | Amazon      |
+| Saurabh Singh         | [getsaurabh02](https://github.com/getsaurabh02)       | Amazon      |
+| Subhobrata DEY        | [sbcd90](https://github.com/sbcd90)                   | Amazon      |
+| Surya Sashank Nistala | [eirsep](https://github.com/eirsep)                   | Amazon      |
+| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt)           | Amazon      |
+| Xuesong Luo           | [xluo-aws](https://github.com/xluo-aws)               | Amazon      |
