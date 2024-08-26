@@ -18,13 +18,14 @@ interface PolicySettingsProps {
   description: string;
   sequenceNumber: number;
   ismTemplates: ISMTemplate[] | ISMTemplate | null;
+  useNewUX?: boolean;
 }
 
 interface PolicySettingsState {}
 
 export default class PolicySettings extends Component<PolicySettingsProps, PolicySettingsState> {
   render() {
-    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber } = this.props;
+    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber, useNewUX } = this.props;
 
     const updatedDate = lastUpdated ? new Date(lastUpdated).toLocaleString() : "-";
 

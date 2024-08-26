@@ -327,6 +327,7 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
           description={policy.policy.description}
           sequenceNumber={policy.seqNo}
           ismTemplates={policy.policy.ism_template || []}
+          useNewUX={useNewUX}
         />
         <EuiSpacer />
         <EuiPanel>
@@ -346,6 +347,7 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
           policy={policy.policy}
           onClickDeleteState={() => {}}
           isReadOnly={true}
+          useNewUx={useNewUX}
         />
         {jsonModal()}
         {deleteModal()}
