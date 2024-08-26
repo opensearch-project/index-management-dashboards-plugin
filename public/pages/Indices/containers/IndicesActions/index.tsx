@@ -143,6 +143,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
               initialPanelId={0}
               // The EuiContextMenu has bug when testing in jest
               // the props change won't make it rerender
+              size="s"
               key={renderKey}
               panels={[
                 {
