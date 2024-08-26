@@ -32,93 +32,10 @@ interface StatesProps {
   onClickDeleteState: (idx: number) => void;
   onChangeDefaultState: (event: ChangeEvent<HTMLSelectElement>) => void;
   isReadOnly: boolean;
-  useNewUx?: boolean;
 }
 
-const States = ({
-  onOpenFlyout,
-  policy,
-  onClickEditState,
-  onClickDeleteState,
-  onChangeDefaultState,
-  isReadOnly = false,
-  useNewUx,
-}: StatesProps) => {
-  const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
-  return !useNewUx ? (
-    <ContentPanel
-      bodyStyles={{ padding: "initial" }}
-      title={`States (${policy.states.length})`}
-      titleSize="s"
-      subTitleText={
-        <EuiText color="subdued" size="s" style={paddingStyle}>
-          <p style={{ fontWeight: 200 }}>
-            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
-            <br />
-            "Transitions" define when to move from one state to another.{" "}
-            <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more
-            </EuiLink>
-          </p>
-        </EuiText>
-      }
-    >
-      <div style={{ padding: "0px 10px" }}>
-        {!isReadOnly && (
-          <>
-            <EuiCompressedFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
-              <EuiSelect
-                compressed
-                prepend="Initial state"
-                options={policy.states.map((state) => ({ text: state.name, value: state.name }))}
-                value={policy.default_state}
-                onChange={onChangeDefaultState}
-              />
-            </EuiCompressedFormRow>
-            <EuiSpacer size="s" />
-            <EuiHorizontalRule margin="none" />
-          </>
-        )}
-
-        <EuiFlexGroup gutterSize="none" direction="column">
-          {policy.states.map((state, idx) => (
-            <EuiFlexItem key={state.name}>
-              <State
-                idx={idx}
-                state={state}
-                isInitialState={state.name === policy.default_state}
-                onClickEditState={onClickEditState}
-                onClickDeleteState={onClickDeleteState}
-                isReadOnly={isReadOnly}
-              />
-              <EuiHorizontalRule margin="none" />
-            </EuiFlexItem>
-          ))}
-        </EuiFlexGroup>
-
-        {!isReadOnly &&
-          (!!policy.states.length ? (
-            <>
-              <EuiSpacer />
-              <EuiSmallButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
-                Add state
-              </EuiSmallButton>
-            </>
-          ) : (
-            <EuiEmptyPrompt
-              title={<h2>No states</h2>}
-              titleSize="s"
-              body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
-              actions={
-                <EuiSmallButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
-                  Add state
-                </EuiSmallButton>
-              }
-            />
-          ))}
-      </div>
-    </ContentPanel>
-  ) : (
+const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState, isReadOnly = false }: StatesProps) => {
+  return (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
         <EuiText size="s">
@@ -126,7 +43,7 @@ const States = ({
         </EuiText>
       </EuiFlexGroup>
 
-      <EuiText color="subdued" size="xs" style={paddingStyle}>
+      <EuiText color="subdued" size="xs">
         <p style={{ fontWeight: 350 }}>
           You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
           <br />
@@ -137,7 +54,7 @@ const States = ({
         </p>
       </EuiText>
       <EuiHorizontalRule margin={"xs"} />
-      <EuiSpacer size="s" />
+
       <div>
         {!isReadOnly && (
           <>

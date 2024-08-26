@@ -105,7 +105,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
     style="padding: initial;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
       style="padding: 0px 5px;"
     >
       <div
@@ -182,6 +182,9 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiBasicTable euiBasicTable-loading ISM-component-templates-table"

@@ -164,9 +164,9 @@ exports[`<State /> spec renders the component 1`] = `
             <div
               class="euiText euiText--medium"
             >
-              <h4>
+              <h5>
                 Actions
-              </h4>
+              </h5>
             </div>
           </div>
           <div
@@ -179,27 +179,39 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+                  class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  Close
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    Close
+                  </div>
                 </div>
               </div>
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+                  class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  Open
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    Open
+                  </div>
                 </div>
               </div>
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+                  class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  Delete
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    Delete
+                  </div>
                 </div>
               </div>
             </div>
@@ -210,9 +222,9 @@ exports[`<State /> spec renders the component 1`] = `
             <div
               class="euiText euiText--medium"
             >
-              <h4>
+              <h5>
                 Transitions
-              </h4>
+              </h5>
             </div>
           </div>
           <div
@@ -225,10 +237,10 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+                  class="euiPanel euiPanel--paddingSmall euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
                   <div
-                    class="euiText euiText--medium"
+                    class="euiText euiText--small"
                   >
                     <dl>
                       <dt>

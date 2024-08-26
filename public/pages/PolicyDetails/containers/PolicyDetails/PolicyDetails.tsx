@@ -17,6 +17,9 @@ import {
   Criteria,
   // @ts-ignore
   Pagination,
+  EuiPanel,
+  EuiText,
+  EuiHorizontalRule,
 } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -322,11 +325,24 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
           description={policy.policy.description}
           sequenceNumber={policy.seqNo}
           ismTemplates={policy.policy.ism_template || []}
+          useNewUX={useNewUX}
         />
         <EuiSpacer />
-        <ContentPanel bodyStyles={{ padding: "10px" }} title={`ISM Templates (${convertedISMTemplates.length})`} titleSize="s">
-          <EuiBasicTable items={convertedISMTemplates} columns={columns} pagination={pagination} onChange={this.onTableChange} />
-        </ContentPanel>
+        {!useNewUX ? (
+          <ContentPanel bodyStyles={{ padding: "10px" }} title={`ISM Templates (${convertedISMTemplates.length})`} titleSize="s">
+            <EuiBasicTable items={convertedISMTemplates} columns={columns} pagination={pagination} onChange={this.onTableChange} />
+          </ContentPanel>
+        ) : (
+          <EuiPanel>
+            <EuiFlexGroup gutterSize="xs" alignItems="center">
+              <EuiText size="s">
+                <h2>{`ISM Templates (${convertedISMTemplates.length})`}</h2>
+              </EuiText>
+            </EuiFlexGroup>
+            <EuiHorizontalRule margin={"xs"} />
+            <EuiBasicTable items={convertedISMTemplates} columns={columns} pagination={pagination} onChange={this.onTableChange} />
+          </EuiPanel>
+        )}
         <EuiSpacer />
         <States
           onOpenFlyout={() => {}}
@@ -335,6 +351,7 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
           policy={policy.policy}
           onClickDeleteState={() => {}}
           isReadOnly={true}
+          useNewUx={useNewUX}
         />
         {jsonModal()}
         {deleteModal()}

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -24,7 +24,9 @@ export default function IndexAlias(props: SubDetailProps) {
             fullWidth
             label={
               <EuiText size="s">
-                <div>Index alias</div>
+                <EuiTitle>
+                  <h2>Index alias</h2>
+                </EuiTitle>
               </EuiText>
             }
             helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
@@ -48,13 +50,21 @@ export default function IndexAlias(props: SubDetailProps) {
     >
       {values.includes?.[IndicesUpdateMode.alias] ? (
         <>
-          <EuiSpacer />
+          <EuiSpacer size="s" />
           <CustomFormRow
             fullWidth
             {...getCommonFormRowProps(["template", "aliases"], field)}
             direction={isEdit ? "hoz" : "ver"}
-            label="Index alias"
-            helpText="Select existing aliases or specify a new alias."
+            label={
+              <EuiText size="s">
+                <h3>Index alias</h3>
+              </EuiText>
+            }
+            helpText={
+              <EuiText size="s">
+                <p>Select existing aliases or specify a new alias.</p>
+              </EuiText>
+            }
           >
             <AliasSelect
               {...field.registerField({

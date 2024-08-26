@@ -141,7 +141,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     isEdit,
     field,
     noPanel,
-    useNewUX,
+    useNewUx: useNewUX,
   };
 
   const diffedNumber = isEdit
@@ -307,7 +307,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       <EuiSpacer />
       <IndexSettings {...subCompontentProps} />
       <EuiSpacer />
-      <TemplateMappings useNewUx={useNewUX} {...subCompontentProps} />
+      <TemplateMappings {...subCompontentProps} />
       <EuiSpacer />
       {isEdit || hideButton ? null : (
         <>

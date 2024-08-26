@@ -46,14 +46,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
       style="padding: 0px 16px;"
     >
       <div
-        class="euiFlexItem"
+        class="euiText euiText--small"
       >
         <div
           class="euiText euiText--small"
@@ -77,122 +76,123 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 16px;"
     >
       <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-name"
-        id="some_html_id-row"
+        class="euiFormRow__labelWrapper"
       >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Name
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
+            class="euiText euiText--small"
           >
-            <div>
-              Name cannot be changed after the component template is created.
-            </div>
+            <h3>
+              Name
+            </h3>
           </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          <div>
+            Name cannot be changed after the component template is created.
+          </div>
+        </div>
+        <span
+          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
+              class="euiFormControlLayout__childrenWrapper"
             >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldText euiFieldText--compressed"
-                  type="text"
-                  value=""
-                />
-              </div>
+              <input
+                class="euiFieldText euiFieldText--compressed"
+                type="text"
+                value=""
+              />
             </div>
-          </span>
-        </div>
+          </div>
+        </span>
       </div>
+    </div>
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
+    >
       <div
-        class="euiFormRow euiFormRow--compressed"
-        id="some_html_id-row"
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiFormRow__fieldWrapper"
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            <div>
-              Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
-            </div>
+          <div>
+            Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      data-test-subj="form-row-_meta.description"
+      id="some_html_id-row"
+    >
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-_meta.description"
-        id="some_html_id-row"
+        class="euiFormRow__labelWrapper"
       >
-        <div
-          class="euiFormRow__labelWrapper"
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
+          <div
+            class="euiText euiText--small"
           >
-            <div>
+            <h3>
               Description - 
               <i>
                 optional
               </i>
-            </div>
-          </label>
-        </div>
+            </h3>
+          </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
         <div
-          class="euiFormRow__fieldWrapper"
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          Describe the purpose or contents to help you identify this component.
+        </div>
+        <span
+          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Describe the purpose or contents to help you identify this component.
-          </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
+              class="euiFormControlLayout__childrenWrapper"
             >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldText euiFieldText--compressed"
-                  type="text"
-                  value=""
-                />
-              </div>
+              <input
+                class="euiFieldText euiFieldText--compressed"
+                type="text"
+                value=""
+              />
             </div>
-          </span>
-        </div>
+          </div>
+        </span>
       </div>
     </div>
   </div>
@@ -393,9 +393,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiFlexItem"
       >
         <div
-          class="euiTitle euiTitle--small"
+          class="euiText euiText--small"
         >
-          Index mapping
+          <h2
+            class="euiTitle euiTitle--medium"
+          >
+            Index mapping
+          </h2>
         </div>
         <div
           class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"

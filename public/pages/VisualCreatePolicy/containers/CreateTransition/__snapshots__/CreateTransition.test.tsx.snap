@@ -40,25 +40,32 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Destination state
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            If entering a state that does not exist yet then you must create it before creating the policy.
+            Destination state
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              If entering a state that does not exist yet then you must create it before creating the policy.
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -126,25 +133,32 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Condition
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            Specify the condition needed to be met to transition to the destination state.
+            Condition
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              Specify the condition needed to be met to transition to the destination state.
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -212,25 +226,32 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Minimum index age
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            The minimum age required to transition to the next state.
+            Minimum index age
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              The minimum age required to transition to the next state.
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"

@@ -28,6 +28,8 @@ import {
   EuiContextMenuPanel,
   EuiContextMenu,
   EuiIcon,
+  EuiPanel,
+  EuiSpacer,
 } from "@elastic/eui";
 import _ from "lodash";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
@@ -523,8 +525,8 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
             } as TopNavControlButtonData,
           ]}
         />
-        <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center" style={{ padding: "0px 0px 16px 0px" }}>
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem grow={true}>
               <EuiCompressedFieldSearch
                 autoFocus
@@ -548,8 +550,9 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
               </EuiPopover>
             </EuiFlexItem>
           </EuiFlexGroup>
+          <EuiSpacer size="s" />
           {CommonTable()}
-        </ContentPanel>
+        </EuiPanel>
         {CreateModal()}
         {DeleteModal()}
         {EditModal()}

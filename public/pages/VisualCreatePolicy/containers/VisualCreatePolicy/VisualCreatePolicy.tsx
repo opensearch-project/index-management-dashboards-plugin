@@ -23,6 +23,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { Data } from "vega";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 interface VisualCreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
@@ -292,16 +293,19 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
 
     const descriptionData = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Policies let you automatically perform administrative operations on indices.{" "}
-            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more
-            </EuiLink>
-          </EuiText>
-        ),
-      },
+        description: "Policies let you automatically perform administrative operations on indices.",
+        links: {
+          label: "Learn more",
+          href: POLICY_DOCUMENTATION_URL,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
+
     const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "25px 50px" };
     return (
       <div style={padding_style}>
@@ -334,7 +338,6 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           description={policy.description}
           onChangePolicyId={this.onChangePolicyId}
           onChangeDescription={this.onChangePolicyDescription}
-          useNewUX={useNewUX}
         />
         <EuiSpacer size="m" />
         <ErrorNotification
@@ -346,10 +349,9 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           onChangeErrorNotificationJsonString={this.onChangeErrorNotificationJsonString}
           onSwitchToChannels={this.onSwitchToChannels}
           notificationService={notificationService}
-          useNewUx={useNewUX}
         />
         <EuiSpacer size="m" />
-        <ISMTemplates policy={policy} onChangePolicy={this.onChangePolicy} useNewUx={useNewUX} />
+        <ISMTemplates policy={policy} onChangePolicy={this.onChangePolicy} />
         <EuiSpacer size="m" />
         <States
           policy={policy}
@@ -357,18 +359,11 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           onClickEditState={this.onClickEditState}
           onClickDeleteState={this.onClickDeleteState}
           onChangeDefaultState={this.onChangeDefaultState}
-          useNewUx={useNewUX}
         />
         <EuiSpacer size="m" />
 
         {showFlyout && (
-          <CreateState
-            state={editingState}
-            policy={policy}
-            onSaveState={this.onSaveState}
-            onCloseFlyout={this.onCloseFlyout}
-            useNewUx={useNewUX}
-          />
+          <CreateState state={editingState} policy={policy} onSaveState={this.onSaveState} onCloseFlyout={this.onCloseFlyout} />
         )}
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">

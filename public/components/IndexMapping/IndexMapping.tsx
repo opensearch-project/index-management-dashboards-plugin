@@ -31,7 +31,7 @@ export * from "./helper";
 export * from "./interfaces";
 
 const IndexMapping = (
-  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion, useNewUx }: IndexMappingProps,
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
 ) => {
   const value = propsValue?.properties || [];

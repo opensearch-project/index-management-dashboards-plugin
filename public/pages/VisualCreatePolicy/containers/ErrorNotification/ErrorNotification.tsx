@@ -25,7 +25,6 @@ export interface ErrorNotificationProps {
   onChangeErrorNotificationJsonString: (str: string) => void;
   onSwitchToChannels: () => void;
   notificationService: NotificationService;
-  useNewUx?: boolean;
 }
 
 interface ErrorNotificationState {
@@ -72,7 +71,6 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       onChangeMessage,
       onChangeErrorNotificationJsonString,
       onSwitchToChannels,
-      useNewUx,
     } = this.props;
     const { channels, loadingChannels } = this.state;
     const hasDestination = !!errorNotification?.destination;
@@ -86,7 +84,6 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         onChangeChannelId={onChangeChannelId}
         onChangeMessage={onChangeMessage}
         getChannels={this.getChannels}
-        useNewUx={useNewUx}
       />
     );
 
@@ -100,39 +97,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         />
       );
     }
-    const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
-    return !useNewUx ? (
-      <ContentPanel
-        bodyStyles={{ padding: "initial" }}
-        title={
-          <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiFlexItem grow={false}>
-              <EuiText>
-                <h3>Error notification</h3>
-              </EuiText>
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiText color="subdued">
-                <i> – optional</i>
-              </EuiText>
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        }
-        titleSize="s"
-        subTitleText={
-          <EuiText color="subdued" size="s" style={paddingStyle}>
-            <p style={{ fontWeight: 200 }}>
-              You can set up an error notification for when a policy execution fails.{" "}
-              <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more
-              </EuiLink>
-            </p>
-          </EuiText>
-        }
-      >
-        <div style={{ padding: "10px 0px 0px 10px" }}>{content}</div>
-      </ContentPanel>
-    ) : (
+    return (
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
           <EuiFlexItem grow={false}>
@@ -147,7 +112,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
           </EuiFlexItem>
         </EuiFlexGroup>
 
-        <EuiText color="subdued" size="xs" style={paddingStyle}>
+        <EuiText color="subdued" size="xs">
           <p style={{ fontWeight: 350 }}>
             You can set up an error notification for when a policy execution fails.{" "}
             <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">

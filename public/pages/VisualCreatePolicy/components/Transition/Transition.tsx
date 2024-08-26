@@ -32,10 +32,9 @@ const conditionTypeOptions = [
 interface TransitionProps {
   uiTransition: UITransition;
   onChangeTransition: (transition: UITransition) => void;
-  useNewUx?: boolean;
 }
 
-const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionProps) => {
+const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
   // We currently only support one transition condition
   const conditionType = Object.keys(uiTransition.transition.conditions || []).pop() || "none";
   const conditions = uiTransition.transition.conditions;

@@ -4,7 +4,16 @@
  */
 
 import React, { Component, ChangeEvent } from "react";
-import { EuiText, EuiLink, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiCompressedFormRow, EuiCompressedSelect, EuiSpacer } from "@elastic/eui";
+import {
+  EuiText,
+  EuiLink,
+  EuiFlyoutBody,
+  EuiFlyoutFooter,
+  EuiTitle,
+  EuiCompressedFormRow,
+  EuiCompressedSelect,
+  EuiSpacer,
+} from "@elastic/eui";
 import { UIAction, Action } from "../../../../../models/interfaces";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
 import { actionRepoSingleton, getActionOptions } from "../../utils/helpers";
@@ -18,7 +27,6 @@ interface CreateActionProps {
   editAction: UIAction<Action> | null;
   onClickCancelAction: () => void;
   onClickSaveAction: (action: UIAction<Action>) => void;
-  useNewUx?: boolean;
 }
 
 interface CreateActionState {
@@ -54,7 +62,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
 
   render() {
     const { action } = this.state;
-    const { editAction, useNewUx } = this.props;
+    const { editAction } = this.props;
 
     const actionOptions = getActionOptions(actionRepoSingleton);
 
@@ -105,7 +113,6 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <FlyoutFooter
-            useNewUx={useNewUx}
             edit={!!editAction}
             action="action"
             disabledAction={!action || !action.isValid()}

@@ -18,7 +18,6 @@ interface ChannelNotificationProps {
   onChangeChannelId: (value: ChangeEvent<HTMLSelectElement>) => void;
   onChangeMessage?: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   getChannels: () => void;
-  useNewUx?: boolean;
   actionNotification?: boolean; // to tell if this is rendering in actions or in error notification as they both show up on page together
 }
 
@@ -30,7 +29,6 @@ const ChannelNotification = ({
   onChangeChannelId,
   onChangeMessage,
   getChannels,
-  useNewUx,
   actionNotification = false,
 }: ChannelNotificationProps) => {
   return (

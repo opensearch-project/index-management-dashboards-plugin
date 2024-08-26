@@ -22,10 +22,9 @@ interface ISMTemplateProps {
   onUpdateTemplate: (template: ISMTemplateData) => void;
   onRemoveTemplate: () => void;
   isFirst: boolean;
-  useNewUx?: boolean;
 }
 
-const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst, useNewUx }: ISMTemplateProps) => {
+const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: ISMTemplateProps) => {
   // TODO: Move this top top of form submition
   const [isInvalid, setInvalid] = useState(false);
   return (
