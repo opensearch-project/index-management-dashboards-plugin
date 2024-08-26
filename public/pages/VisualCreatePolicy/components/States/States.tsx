@@ -97,7 +97,11 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
             <EuiEmptyPrompt
               title={<h2>No states</h2>}
               titleSize="s"
-              body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
+              body={
+                <EuiText size="s">
+                  <p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>
+                </EuiText>
+              }
               actions={
                 <EuiButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                   Add state

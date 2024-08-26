@@ -106,10 +106,12 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
             style={{ maxWidth: "37em" }}
             titleSize="s"
             body={
-              <p>
-                Your policy currently has no ISM templates defined. Add ISM templates to automatically apply the policy to indices created
-                in the future.
-              </p>
+              <EuiText size="s">
+                <p>
+                  Your policy currently has no ISM templates defined. Add ISM templates to automatically apply the policy to indices created
+                  in the future.
+                </p>
+              </EuiText>
             }
             actions={addTemplateButton}
           />
