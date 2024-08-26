@@ -44,7 +44,11 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Close indexes</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Close indexes</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
@@ -55,12 +59,14 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
           <EuiSpacer />
         </>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following index will be closed. It is not possible to index documents or to search for documents in a closed index.</p>
-          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-            {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <EuiText size="s">
+            The following index will be closed. It is not possible to index documents or to search for documents in a closed index.
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {selectedItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </EuiText>
           <EuiSpacer />
           <EuiText color="subdued">
             To confirm your action, type <b style={{ color: "#000" }}>close</b>.

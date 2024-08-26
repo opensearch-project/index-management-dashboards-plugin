@@ -35,7 +35,11 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
       // @ts-ignore */}
       <EuiModal onCancel={onClose} onClose={onClose} maxWidth={600}>
         <EuiModalHeader>
-          <EuiModalHeaderTitle>Configuration method</EuiModalHeaderTitle>
+          <EuiModalHeaderTitle>
+            <EuiText size="s">
+              <h2>Configuration method</h2>
+            </EuiText>
+          </EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>

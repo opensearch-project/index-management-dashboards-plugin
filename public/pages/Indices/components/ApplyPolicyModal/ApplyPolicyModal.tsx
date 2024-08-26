@@ -283,11 +283,15 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
             // @ts-ignore */}
         <EuiModal onCancel={onClose} onClose={onClose}>
           <EuiModalHeader>
-            <EuiModalHeaderTitle>Apply policy</EuiModalHeaderTitle>
+            <EuiModalHeaderTitle>
+              <EuiText size="s">
+                <h2>Apply policy</h2>
+              </EuiText>
+            </EuiModalHeaderTitle>
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiText size="xs" grow={false}>
+            <EuiText size="s" grow={false}>
               <p>
                 Choose the policy you want to use for the selected indices. A copy of the policy will be created and applied to the indices.
               </p>

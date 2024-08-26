@@ -72,7 +72,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
                       onShow(ConfirmationModal, {
                         title: "Delete state",
                         bodyMessage: (
-                          <EuiText>
+                          <EuiText size="s">
                             <span>
                               Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all
                               transitions.

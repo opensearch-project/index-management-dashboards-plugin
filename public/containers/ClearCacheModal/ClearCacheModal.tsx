@@ -21,6 +21,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 
 export interface ClearCacheModalProps {
@@ -209,10 +210,16 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Clear cache for {type}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Clear cache for {type}</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
-      <EuiModalBody>{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiModalBody>
+      <EuiModalBody>
+        <EuiText size="s">{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiText>
+      </EuiModalBody>
 
       <EuiModalFooter>
         <EuiButtonEmpty data-test-subj="ClearCacheCancelButton" onClick={onClose}>
