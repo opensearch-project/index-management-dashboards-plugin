@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment, useContext } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiCallOut, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiCallOut, EuiLink, EuiIcon, EuiText } from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 import { DEFAULT_POLICY } from "../../utils/constants";
@@ -235,9 +235,9 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
 
     return (
       <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
+        </EuiText>
         <EuiSpacer />
         {this.renderEditCallOut()}
         <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} />

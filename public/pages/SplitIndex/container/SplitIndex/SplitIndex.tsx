@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component, useContext } from "react";
-import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiFormRow } from "@elastic/eui";
+import { EuiCallOut, EuiSpacer, EuiText, EuiButton, EuiLink, EuiFormRow } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -221,9 +221,9 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const { sourceIndex, splitIndexFlyoutVisible, reasons, shardsSelectOptions } = this.state;
     return (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle>
+        <EuiText size="s">
           <h1>Split index</h1>
-        </EuiTitle>
+        </EuiText>
 
         <EuiFormRow
           fullWidth

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, useContext } from "react";
-import { EuiText, EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiText, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiLink, EuiIcon } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import { EMPTY_DEFAULT_POLICY } from "../../utils/constants";
@@ -281,9 +281,9 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
     const { policyId, policyIdError, policy, showFlyout, editingState, errorNotificationJsonString } = this.state;
     return (
       <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
+        </EuiText>
         <EuiSpacer size="s" />
         <EuiText size="s">
           <p>
