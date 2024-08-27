@@ -285,6 +285,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       <EuiSpacer />
       <EuiTabbedContent
         selectedTab={selectedTab}
+        size="s"
         onTabClick={(tab) => {
           if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
             Modal.show({
