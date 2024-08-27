@@ -167,20 +167,18 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <EuiText size="s">
-            {/* we will not display this part if not flushAll and there is no flushable items */}
-            {flushAll && <p>{flushAllMessage}</p>}
-            {!!unBlockedItems.length && (
-              <>
-                {`The following ${flushTarget} will be flushed:`}
-                <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-                  {unBlockedItems.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </EuiText>
+          {/* we will not display this part if not flushAll and there is no flushable items */}
+          {flushAll && <EuiText size="s">{flushAllMessage}</EuiText>}
+          {!!unBlockedItems.length && (
+            <EuiText size="s">
+              {`The following ${flushTarget} will be flushed:`}
+              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                {unBlockedItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </EuiText>
+          )}
           <EuiSpacer />
           <EuiCallOut data-test-subj="flushBlockedCallout" color="warning" size="s" hidden={!blockedItems.length}>
             <p>{blockedItemsMessageTemplate(flushTarget)}</p>

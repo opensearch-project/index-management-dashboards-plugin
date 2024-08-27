@@ -177,12 +177,14 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
       <div style={{ lineHeight: 1.5 }}>
         {unBlockedItems.length > 0 && (
           <>
-            <p>{hint}</p>
-            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-              {unBlockedItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <EuiText size="s">
+              {hint}
+              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                {unBlockedItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </EuiText>
             <EuiSpacer />
           </>
         )}
@@ -201,7 +203,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   const noSpecificIndexesChildren: React.ReactChild = (
     <>
       <div style={{ lineHeight: 1.5 }}>
-        <p>Cache will be cleared for all open indexes.</p>
+        <EuiText size="s">Cache will be cleared for all open indexes.</EuiText>
         <EuiSpacer />
       </div>
     </>
@@ -217,9 +219,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
         </EuiModalHeaderTitle>
       </EuiModalHeader>
 
-      <EuiModalBody>
-        <EuiText size="s">{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiText>
-      </EuiModalBody>
+      <EuiModalBody>{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiModalBody>
 
       <EuiModalFooter>
         <EuiButtonEmpty data-test-subj="ClearCacheCancelButton" onClick={onClose}>
