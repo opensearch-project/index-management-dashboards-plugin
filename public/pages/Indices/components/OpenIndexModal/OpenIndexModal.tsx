@@ -40,17 +40,17 @@ export default function OpenIndexModal(props: OpenIndexModalProps) {
       </EuiModalHeader>
 
       <EuiModalBody>
-        <EuiText size="s">
-          <div style={{ lineHeight: 1.5 }}>
+        <div style={{ lineHeight: 1.5 }}>
+          <EuiText size="s">
             The following index will be opened.
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
               {selectedItems.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <EuiSpacer />
-          </div>
-        </EuiText>
+          </EuiText>
+          <EuiSpacer />
+        </div>
       </EuiModalBody>
 
       <EuiModalFooter>
