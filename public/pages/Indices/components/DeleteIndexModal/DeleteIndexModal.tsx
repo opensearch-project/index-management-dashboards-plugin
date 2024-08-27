@@ -44,7 +44,11 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Delete indexes</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Delete indexes</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
@@ -57,14 +61,16 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
           </>
         ) : null}
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following index will be permanently deleted. This action cannot be undone.</p>
-          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-            {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <EuiText size="s">
+            The following index will be permanently deleted. This action cannot be undone.
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {selectedItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </EuiText>
           <EuiSpacer />
-          <EuiText color="subdued">
+          <EuiText color="subdued" size="s">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
           <EuiFieldText placeholder="delete" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
