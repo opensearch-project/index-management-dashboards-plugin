@@ -283,7 +283,13 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
             // @ts-ignore */}
         <EuiModal onCancel={onClose} onClose={onClose}>
           <EuiModalHeader>
-            <EuiModalHeaderTitle>Apply policy</EuiModalHeaderTitle>
+            <EuiModalHeaderTitle>
+              {" "}
+              <EuiText size="s">
+                {" "}
+                <h2>Apply policy</h2>{" "}
+              </EuiText>{" "}
+            </EuiModalHeaderTitle>
           </EuiModalHeader>
 
           <EuiModalBody>
@@ -293,7 +299,16 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
               </p>
             </EuiText>
             <EuiSpacer size="m" />
-            <EuiCompressedFormRow label="Policy ID" isInvalid={hasSubmitted && !!selectedPolicyError} error={selectedPolicyError} fullWidth>
+            <EuiCompressedFormRow
+              label={
+                <EuiText size="s">
+                  <h4>Policy ID</h4>
+                </EuiText>
+              }
+              isInvalid={hasSubmitted && !!selectedPolicyError}
+              error={selectedPolicyError}
+              fullWidth
+            >
               <EuiCompressedComboBox
                 placeholder="Search policies"
                 async

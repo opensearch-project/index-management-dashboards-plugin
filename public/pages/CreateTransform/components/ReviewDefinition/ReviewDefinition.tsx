@@ -99,15 +99,26 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
             )}
           </ModalConsumer>
         }
-        panelStyles={{ padding: "20px 20px" }}
+        panelStyles={{ padding: "16px 16px" }}
         bodyStyles={{ padding: "10px" }}
-        title="Define transforms"
+        title={
+          <EuiText size="s">
+            <h2>Define transforms</h2>
+          </EuiText>
+        }
         titleSize="m"
       >
         <div>
           <EuiFlexGrid columns={4}>{aggListItems()}</EuiFlexGrid>
           <EuiSpacer />
-          <EuiAccordion id="" buttonContent="Sample source index and transform result">
+          <EuiAccordion
+            id=""
+            buttonContent={
+              <EuiText size="s">
+                <h3>Sample source index and transform result</h3>
+              </EuiText>
+            }
+          >
             <div style={{ padding: "10px" }}>
               <EuiSpacer size="m" />
               <DefineTransforms

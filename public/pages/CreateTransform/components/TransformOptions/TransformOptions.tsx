@@ -395,6 +395,7 @@ export default function TransformOptions({
             anchorPosition="rightCenter"
           >
             <EuiContextMenu
+              size="s"
               initialPanelId={0}
               panels={isNumeric ? numberPanels : isText ? textPanels : isDate ? datePanels : defaultPanels}
             />

@@ -231,7 +231,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
     const descriptionData = [
       {
-        description: "Shrink an existing index into a new index with fewer primary shards.",
+        description: "Split an existing read-only index into a new index with more primary shards.",
         links: {
           label: "Learn more",
           href: "https://opensearch.org/docs/latest/api-reference/index-apis/split/",

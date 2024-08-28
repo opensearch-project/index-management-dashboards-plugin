@@ -677,7 +677,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
           submitError={submitError}
           useUpdatedUX={useUpdatedUX}
         />
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={{ padding: "5px 50px" }}>
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={useUpdatedUX ? { padding: "0px" } : { padding: "5px 50px" }}>
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createTransformCancelButton">
               Cancel

@@ -14,8 +14,11 @@ import {
   EuiCompressedFormRow,
   EuiLink,
   EuiTabbedContentTab,
+  EuiText,
+  EuiHorizontalRule,
+  EuiPanel,
 } from "@elastic/eui";
-import { get } from "lodash";
+import { get, size } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndicesActions from "../../../Indices/containers/IndicesActions";
@@ -148,10 +151,14 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         content: (
           <>
             <EuiSpacer />
-            <ContentPanel title="Index settings" titleSize="s">
+            <EuiPanel>
+              <EuiText size="s">
+                <h2>Index settings</h2>
+              </EuiText>
+              <EuiHorizontalRule margin="xs" />
               <EuiSpacer size="s" />
               <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.settings} mode={IndicesUpdateMode.settings} />
-            </ContentPanel>
+            </EuiPanel>
           </>
         ),
       },
@@ -162,38 +169,34 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         content: (
           <>
             <EuiSpacer />
-            <ContentPanel
-              title={
-                <>
-                  <EuiTitle size="s">
-                    <span>Index mappings</span>
-                  </EuiTitle>
-                  <EuiCompressedFormRow
-                    fullWidth
-                    helpText={
-                      <>
-                        <div>
-                          Define how documents and their fields are stored and indexed.{" "}
-                          <EuiLink
-                            target="_blank"
-                            external
-                            href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                          >
-                            Learn more
-                          </EuiLink>
-                        </div>
-                        <div>Mappings and field types cannot be changed once they have been added.</div>
-                      </>
-                    }
-                  >
-                    <></>
-                  </EuiCompressedFormRow>
-                </>
-              }
-            >
+            <EuiPanel>
+              <EuiText size="s">
+                <h2>Index mappings</h2>
+              </EuiText>
+              <EuiCompressedFormRow
+                fullWidth
+                helpText={
+                  <>
+                    <div>
+                      Define how documents and their fields are stored and indexed.{" "}
+                      <EuiLink
+                        target="_blank"
+                        external
+                        href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                      >
+                        Learn more
+                      </EuiLink>
+                    </div>
+                    <div>Mappings and field types cannot be changed once they have been added.</div>
+                  </>
+                }
+              >
+                <></>
+              </EuiCompressedFormRow>
+              <EuiHorizontalRule margin="xs" />
               <EuiSpacer size="s" />
               <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.mappings} mode={IndicesUpdateMode.mappings} />
-            </ContentPanel>
+            </EuiPanel>
           </>
         ),
       },
@@ -204,10 +207,14 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         content: (
           <>
             <EuiSpacer />
-            <ContentPanel title="Index alias" titleSize="s">
+            <EuiPanel>
+              <EuiText size="s">
+                <h2>Index alias</h2>
+              </EuiText>
+              <EuiHorizontalRule margin="xs" />
               <EuiSpacer size="s" />
               <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.alias} mode={IndicesUpdateMode.alias} />
-            </ContentPanel>
+            </EuiPanel>
           </>
         ),
       },
@@ -257,8 +264,12 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   const Common = () => {
     return (
       <>
-        <ContentPanel title="Overview" titleSize="s">
-          <EuiDescriptionList>
+        <EuiPanel>
+          <EuiText size="s">
+            <h2>Overview</h2>
+          </EuiText>
+          <EuiHorizontalRule margin="xs" />
+          <EuiDescriptionList compressed>
             <EuiSpacer />
             <div>
               {OVERVIEW_DISPLAY_INFO.map((item) => {
@@ -284,9 +295,10 @@ export default function IndexDetail(props: IndexDetailModalProps) {
               })}
             </div>
           </EuiDescriptionList>
-        </ContentPanel>
+        </EuiPanel>
         <EuiSpacer />
         <EuiTabbedContent
+          size="s"
           selectedTab={selectedTab}
           onTabClick={(tab) => {
             if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {

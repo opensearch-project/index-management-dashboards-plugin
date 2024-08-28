@@ -271,8 +271,8 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
             } as TopNavControlButtonData,
           ]}
         />
-        <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-          <div style={{ padding: "initial" }}>
+        <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px", paddingTop: "10px" }}>
+          <div>
             <EuiFlexGroup gutterSize="s">
               <EuiFlexItem>
                 <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
@@ -297,7 +297,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -368,7 +368,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>

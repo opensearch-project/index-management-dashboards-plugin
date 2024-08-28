@@ -16,6 +16,8 @@ import {
   EuiSwitchEvent,
   EuiText,
   EuiTitle,
+  EuiPanel,
+  EuiHorizontalRule,
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
@@ -24,7 +26,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
@@ -532,9 +533,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiTitle size="s">
-            <h3>Advanced settings</h3>
-          </EuiTitle>
+          <EuiText size="s">
+            <h2>Advanced settings</h2>
+          </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>
     );
@@ -575,10 +576,18 @@ class Reindex extends Component<ReindexProps, ReindexState> {
     const Common = () => {
       return (
         <>
-          <ContentPanel title="Configure source index" titleSize="s">
-            <EuiSpacer />
+          <EuiPanel>
+            <EuiText size="s">
+              <h2>Configure source index</h2>
+            </EuiText>
+            <EuiHorizontalRule margin="xs" />
+            <EuiSpacer size="s" />
             <CustomFormRow
-              label="Specify source indexes or data streams"
+              label={
+                <EuiText size="s">
+                  <h3>Specify source indexes or data streams</h3>
+                </EuiText>
+              }
               isInvalid={sourceErr.length > 0}
               error={sourceErr}
               fullWidth
@@ -615,11 +624,15 @@ class Reindex extends Component<ReindexProps, ReindexState> {
                 name="subsetOption"
                 data-test-subj="subsetOption"
                 legend={{
-                  children: <span>Specify a reindex option</span>,
+                  children: (
+                    <EuiText size="s">
+                      <h3>Specify a reindex option</h3>
+                    </EuiText>
+                  ),
                 }}
               />
             </CustomFormRow>
-            <EuiSpacer />
+            <EuiSpacer size="s" />
             {subset ? (
               <CustomFormRow
                 fullWidth={true}
@@ -645,15 +658,27 @@ class Reindex extends Component<ReindexProps, ReindexState> {
                 />
               </CustomFormRow>
             ) : null}
-          </ContentPanel>
+          </EuiPanel>
 
           <EuiSpacer />
 
-          <ContentPanel title="Configure destination index" titleSize="s">
-            <EuiSpacer />
+          <EuiPanel>
+            <EuiText size="s">
+              <h2>Configure destination index</h2>
+            </EuiText>
+            <EuiHorizontalRule margin="xs" />
+            <EuiSpacer size="s" />
             <EuiFlexGroup alignItems="flexEnd">
               <EuiFlexItem style={{ maxWidth: "400px" }}>
-                <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
+                <CustomFormRow
+                  label={
+                    <EuiText size="s">
+                      <h3>Specify a destination index or data stream</h3>
+                    </EuiText>
+                  }
+                  isInvalid={!!destError}
+                  error={destError}
+                >
                   <IndexSelect
                     data-test-subj="destinationSelector"
                     placeholder="Select an index or data stream"
@@ -673,13 +698,15 @@ class Reindex extends Component<ReindexProps, ReindexState> {
                 </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
-          </ContentPanel>
+          </EuiPanel>
 
           <EuiSpacer />
 
-          <ContentPanel title={advanceTitle} noExtraPadding>
+          <EuiPanel>
+            {advanceTitle}
             {advancedSettingsOpen && (
               <>
+                <EuiHorizontalRule margin="xs" />
                 <EuiSpacer size="s" />
                 <ReindexAdvancedOptions
                   slices={slices}
@@ -697,7 +724,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
                 <EuiSpacer size="s" />
               </>
             )}
-          </ContentPanel>
+          </EuiPanel>
 
           <EuiSpacer />
 

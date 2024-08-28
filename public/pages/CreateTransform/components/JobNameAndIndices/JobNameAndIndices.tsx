@@ -44,9 +44,13 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
             )}
           </ModalConsumer>
         }
-        panelStyles={{ padding: "20px 20px" }}
+        panelStyles={{ padding: "16px 16px" }}
         bodyStyles={{ padding: "10px" }}
-        title="Set up indices"
+        title={
+          <EuiText size="s">
+            <h2>Set up indices</h2>
+          </EuiText>
+        }
         titleSize="m"
       >
         <div>

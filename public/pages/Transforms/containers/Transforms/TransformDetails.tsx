@@ -363,7 +363,6 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
                       buttonProps: {
                         onClick: () => this.onEdit(),
                         fill: true,
-                        style: { marginRight: 20 },
                       },
                     },
                   ]}
@@ -497,11 +496,15 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
           <EuiOverlayMask>
             <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
               <EuiModalHeader>
-                <EuiModalHeaderTitle>{"View JSON of " + id} </EuiModalHeaderTitle>
+                <EuiModalHeaderTitle>
+                  <EuiText size="s">
+                    <h2>{"View JSON of " + id}</h2>
+                  </EuiText>
+                </EuiModalHeaderTitle>
               </EuiModalHeader>
 
               <EuiModalBody>
-                <EuiCodeBlock language="json" fontSize="m" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
+                <EuiCodeBlock language="json" fontSize="s" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
                   {JSON.stringify(transformJson, null, 4)}
                 </EuiCodeBlock>
               </EuiModalBody>

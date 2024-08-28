@@ -48,9 +48,13 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
             )}
           </ModalConsumer>
         }
-        panelStyles={{ padding: "20px 20px" }}
+        panelStyles={{ padding: "16px 16px" }}
         bodyStyles={{ padding: "10px" }}
-        title="Specify schedule"
+        title={
+          <EuiText size="s">
+            <h2>Specify schedule</h2>
+          </EuiText>
+        }
         titleSize="m"
       >
         <div>

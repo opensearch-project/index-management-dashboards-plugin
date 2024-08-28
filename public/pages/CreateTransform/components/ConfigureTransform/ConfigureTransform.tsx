@@ -24,10 +24,23 @@ const ConfigureTransform = ({
   onChangeDescription,
   description,
 }: ConfigureTransformProps) => (
-  <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Job name and description" titleSize="m">
+  <ContentPanel
+    panelStyles={{ padding: "16px 16px" }}
+    bodyStyles={{ padding: "10px" }}
+    title={
+      <EuiText size="s">
+        <h2>Job name and description</h2>
+      </EuiText>
+    }
+    titleSize="m"
+  >
     <div>
       <EuiCompressedFormRow
-        label="Name"
+        label={
+          <EuiText size="s">
+            <h3>Name</h3>
+          </EuiText>
+        }
         helpText="Specify a unique, descriptive name."
         isInvalid={!!transformIdError}
         error={transformIdError}
@@ -43,13 +56,15 @@ const ConfigureTransform = ({
       <EuiSpacer />
       <EuiFlexGroup gutterSize="xs">
         <EuiFlexItem grow={false}>
-          <EuiText size="xs">
-            <h4>Description</h4>
+          <EuiText size="s">
+            <h3>Description</h3>
           </EuiText>
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiText size="xs" color="subdued">
-            <i> – optional</i>
+          <EuiText size="s" color="subdued">
+            <h3>
+              <i> – optional</i>
+            </h3>
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -4,15 +4,13 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import { TransformService } from "../../../../services";
 import { DimensionItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import PreviewTransforms from "../../../CreateTransform/components/PreviewTransform";
-import { getUISettings } from "../../../../services/Services";
 
 interface TransformSettingsProps {
   transformService: TransformService;
@@ -88,12 +86,14 @@ export default class TransformSettings extends Component<TransformSettingsProps,
         );
       });
     };
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform settings" titleSize={useUpdatedUX ? "s" : undefined}>
-        <div style={{ paddingLeft: "10px" }}>
+      <EuiPanel>
+        <EuiText size="s">
+          <h2>Transform Settings</h2>
+        </EuiText>
+        <EuiHorizontalRule margin="xs" />
+        <div>
           <EuiSpacer size="m" />
           <EuiFlexGrid columns={4}>
             {groupItems()}
@@ -102,7 +102,16 @@ export default class TransformSettings extends Component<TransformSettingsProps,
           <EuiSpacer size="m" />
         </div>
         <div style={{ padding: "10px" }}>
-          <EuiAccordion id={htmlIdGenerator()()} buttonContent="Sample source index and transform result" onClick={this.onClick}>
+          <EuiAccordion
+            id={htmlIdGenerator()()}
+            buttonContent={
+              <EuiText size="s">
+                {" "}
+                <h3>Sample source index and transform result</h3>{" "}
+              </EuiText>
+            }
+            onClick={this.onClick}
+          >
             <div style={{ padding: "10px" }}>
               <EuiSpacer size={"m"} />
 
@@ -120,7 +129,7 @@ export default class TransformSettings extends Component<TransformSettingsProps,
             </div>
           </EuiAccordion>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 

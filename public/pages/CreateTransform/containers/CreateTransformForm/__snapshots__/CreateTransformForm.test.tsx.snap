@@ -163,7 +163,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
           />
           <div
             class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-            style="padding: 20px 20px;"
+            style="padding: 16px 16px;"
           >
             <div
               class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -175,15 +175,9 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 <div
                   class="euiText euiText--small"
                 >
-                  <h1>
+                  <h2>
                     Job name and description
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
+                  </h2>
                 </div>
               </div>
             </div>
@@ -206,7 +200,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Name
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <h3>
+                          Name
+                        </h3>
+                      </div>
                     </label>
                   </div>
                   <div
@@ -246,25 +246,27 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
                     <div
-                      class="euiText euiText--extraSmall"
+                      class="euiText euiText--small"
                     >
-                      <h4>
+                      <h3>
                         Description
-                      </h4>
+                      </h3>
                     </div>
                   </div>
                   <div
                     class="euiFlexItem"
                   >
                     <div
-                      class="euiText euiText--extraSmall"
+                      class="euiText euiText--small"
                     >
                       <div
                         class="euiTextColor euiTextColor--subdued"
                       >
-                        <i>
-                           – optional
-                        </i>
+                        <h3>
+                          <i>
+                             – optional
+                          </i>
+                        </h3>
                       </div>
                     </div>
                   </div>
@@ -296,7 +298,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
           <div>
             <div
               class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-              style="padding: 20px 20px;"
+              style="padding: 16px 16px;"
             >
               <div
                 class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -308,15 +310,9 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                   <div
                     class="euiText euiText--small"
                   >
-                    <h1>
+                    <h2>
                       Indices
-                      <span
-                        class="panel-header-count"
-                      >
-                         
-                         
-                      </span>
-                    </h1>
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -339,7 +335,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                         class="euiFormLabel euiFormRow__label"
                         for="some_html_id"
                       >
-                        Source index
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <h3>
+                            Source index
+                          </h3>
+                        </div>
                       </label>
                     </div>
                     <div
@@ -422,25 +424,27 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       class="euiFlexItem euiFlexItem--flexGrowZero"
                     >
                       <div
-                        class="euiText euiText--extraSmall"
+                        class="euiText euiText--small"
                       >
-                        <h4>
+                        <h3>
                           Source index filter
-                        </h4>
+                        </h3>
                       </div>
                     </div>
                     <div
                       class="euiFlexItem"
                     >
                       <div
-                        class="euiText euiText--extraSmall"
+                        class="euiText euiText--small"
                       >
                         <div
                           class="euiTextColor euiTextColor--subdued"
                         >
-                          <i>
-                             – optional
-                          </i>
+                          <h3>
+                            <i>
+                               – optional
+                            </i>
+                          </h3>
                         </div>
                       </div>
                     </div>
@@ -546,7 +550,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                         class="euiFormLabel euiFormRow__label"
                         for="some_html_id"
                       >
-                        Target index
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <h3>
+                            Target index
+                          </h3>
+                        </div>
                       </label>
                     </div>
                     <div
