@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiLink, EuiPanel, EuiSpacer, EuiText, EuiHorizontalRule } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { ROUTES } from "../../../../utils/constants";
 import { TemplateConvert } from "../TemplateType";
@@ -18,6 +17,7 @@ export default function OverviewTemplate(props: SubDetailProps) {
     <>
       <EuiSpacer size="s" />
       <DescriptionListHoz
+        compressed
         columns={columns}
         listItems={[
           {
@@ -54,8 +54,12 @@ export default function OverviewTemplate(props: SubDetailProps) {
   return withoutPanel ? (
     content
   ) : (
-    <ContentPanel title="Overview" titleSize="s">
+    <EuiPanel>
+      <EuiText size="s">
+        <h2>Overview</h2>
+      </EuiText>
+      <EuiHorizontalRule margin="xs" />
       {content}
-    </ContentPanel>
+    </EuiPanel>
   );
 }

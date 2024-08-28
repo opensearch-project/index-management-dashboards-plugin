@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiCompressedComboBox, EuiCompressedFormRow } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedComboBox, EuiCompressedFormRow, EuiText, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ManagedIndexService } from "../../../../services";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
@@ -89,11 +89,18 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
     const stateOptions = options.concat([...uniqueStates].map((stateName: string) => ({ label: stateName })));
 
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Choose managed indices" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="m" />
+      <EuiPanel>
+        <EuiText size="s">
+          <h2>Choose managed indices</h2>
+        </EuiText>
+        <EuiHorizontalRule margin="xs" />
+        <div>
           <EuiCompressedFormRow
-            label="Managed indices"
+            label={
+              <EuiText size="s">
+                <h3>Managed indices</h3>
+              </EuiText>
+            }
             helpText="You can use * as wildcards to form index patterns."
             isInvalid={!!managedIndicesError}
             error={managedIndicesError}
@@ -111,7 +118,14 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
             />
           </EuiCompressedFormRow>
 
-          <EuiCompressedFormRow label="State filters" helpText="Apply new policy only on managed indices in these states.">
+          <EuiCompressedFormRow
+            label={
+              <EuiText size="s">
+                <h3>State filters</h3>
+              </EuiText>
+            }
+            helpText="Apply new policy only on managed indices in these states."
+          >
             <EuiCompressedComboBox
               isDisabled={!selectedManagedIndices.length}
               placeholder="Choose state filters"
@@ -123,7 +137,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
             />
           </EuiCompressedFormRow>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

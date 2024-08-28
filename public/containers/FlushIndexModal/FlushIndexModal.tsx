@@ -14,6 +14,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../components/core_services";
@@ -157,7 +158,13 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle data-test-subj="flushModalTitle">Flush {flushTarget}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle data-test-subj="flushModalTitle">
+          {" "}
+          <EuiText size="s">
+            {" "}
+            <h2>Flush {flushTarget}</h2>{" "}
+          </EuiText>{" "}
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
@@ -166,12 +173,16 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
           {flushAll && <p>{flushAllMessage}</p>}
           {!!unBlockedItems.length && (
             <>
-              <p>{`The following ${flushTarget} will be flushed:`}</p>
-              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-                {unBlockedItems.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+              <EuiText size="s">
+                <p>{`The following ${flushTarget} will be flushed:`}</p>
+              </EuiText>
+              <EuiText size="s">
+                <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                  {unBlockedItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </EuiText>
             </>
           )}
           <EuiSpacer />

@@ -12,6 +12,7 @@ import {
   EuiModalFooter,
   EuiSpacer,
   EuiModalHeaderTitle,
+  EuiText,
 } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
@@ -121,13 +122,15 @@ export default function CreateAlias(props: ICreateAliasProps) {
     <EuiModal onClose={props.onClose}>
       <EuiModalHeader>
         <EuiModalHeaderTitle>
-          <h1>{isEdit ? "Update" : "Create"} alias</h1>
+          <EuiText size="s">
+            <h2>{isEdit ? "Update" : "Create"} alias</h2>
+          </EuiText>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
       <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
           <>
-            <EuiCallOut color="warning">
+            <EuiCallOut color="warning" size="s">
               This alias may contain critical system data. Changing system aliases may break OpenSearch.
             </EuiCallOut>
             <EuiSpacer />
@@ -141,7 +144,11 @@ export default function CreateAlias(props: ICreateAliasProps) {
               name: "alias",
               type: "Input",
               rowProps: {
-                label: "Alias name",
+                label: (
+                  <EuiText size="s">
+                    <h3>Alias name</h3>
+                  </EuiText>
+                ),
                 position: "bottom",
                 helpText: INDEX_NAMING_MESSAGE,
               },
@@ -162,7 +169,11 @@ export default function CreateAlias(props: ICreateAliasProps) {
               name: "indexArray",
               component: IndexSelect,
               rowProps: {
-                label: "Indexes or index patterns",
+                label: (
+                  <EuiText size="s">
+                    <h3>Indexes or index patterns</h3>
+                  </EuiText>
+                ),
                 helpText: "Specify one or more indexes or index patterns to be part of the alias.",
               },
               options: {

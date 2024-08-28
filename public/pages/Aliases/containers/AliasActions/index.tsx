@@ -66,6 +66,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
           // The EuiContextMenu has bug when testing in jest
           // the props change won't make it rerender
           key={renderKey}
+          size="s"
           panels={[
             {
               id: 0,

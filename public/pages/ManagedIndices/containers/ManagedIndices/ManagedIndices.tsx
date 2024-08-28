@@ -542,6 +542,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       <ModalConsumer>
         {({ onShow, onClose }) => (
           <EuiContextMenuItem
+            size="s"
             key="Edit"
             toolTipPosition="left"
             disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
@@ -558,6 +559,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         )}
       </ModalConsumer>,
       <EuiContextMenuItem
+        size="s"
         key="Remove"
         toolTipPosition="left"
         disabled={!selectedItems.length}
@@ -572,6 +574,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       <ModalConsumer>
         {({ onShow, onClose }) => (
           <EuiContextMenuItem
+            size="s"
             key="Retry"
             toolTipPosition="left"
             disabled={isRetryDisabled}
@@ -599,7 +602,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             anchorPosition="downLeft"
             panelPaddingSize="none"
           >
-            <EuiContextMenuPanel items={popoverActionItems} />
+            <EuiContextMenuPanel items={popoverActionItems} size="s" />
           </EuiPopover>
         </EuiFlexItem>
       );

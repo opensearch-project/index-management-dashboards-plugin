@@ -42,8 +42,7 @@ import IndexPatternDisplay from "./IndexPatternDisplay";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlDescriptionData } from "src/plugins/navigation/public";
-import { description } from "joi";
+import { TopNavControlButtonData, TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 interface TemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -381,22 +380,17 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
 
     const description = [
       {
-        renderComponent: (
-          <EuiCompressedFormRow
-            fullWidth
-            helpText={
-              <div>
-                Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
-                <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
-                  Learn more
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </EuiCompressedFormRow>
-        ),
-      },
+        description: "Index templates let you initialize new indexes or data streams with predefined mappings and settings.",
+        links: {
+          label: "Learn more",
+          href: (this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     const onClickCreate = () => {

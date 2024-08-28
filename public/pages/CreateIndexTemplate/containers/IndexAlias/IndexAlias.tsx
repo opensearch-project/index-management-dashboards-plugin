@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext } from "react";
-import { EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -21,9 +21,9 @@ export default function IndexAlias(props: SubDetailProps) {
     <>
       <CustomFormRow
         label={
-          <EuiTitle size="s">
-            <div>Index alias</div>
-          </EuiTitle>
+          <EuiText size="s">
+            <h3>Index alias</h3>
+          </EuiText>
         }
         fullWidth
         helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
@@ -34,6 +34,7 @@ export default function IndexAlias(props: SubDetailProps) {
         <>
           <EuiSpacer size="s" />
           <DescriptionListHoz
+            compressed
             listItems={[
               {
                 title: "Alias names",
@@ -49,7 +50,11 @@ export default function IndexAlias(props: SubDetailProps) {
             fullWidth
             direction={isEdit ? "hoz" : "ver"}
             {...getCommonFormRowProps(["template", "aliases"], field)}
-            label="Index alias"
+            label={
+              <EuiText size="s">
+                <h4>Index alias</h4>
+              </EuiText>
+            }
             helpText="Select existing aliases or specify a new alias."
           >
             <AliasSelect
