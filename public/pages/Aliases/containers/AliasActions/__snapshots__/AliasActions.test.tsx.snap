@@ -174,8 +174,18 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
             <div
               class="euiModalHeader__title"
             >
-              Refresh 
-              aliases
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Refresh 
+                  aliases
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -187,19 +197,27 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following alias
-                   will be refreshed.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li
-                    data-test-subj="UnblockedItem-2"
+                  <p>
+                    The following alias
+                     will be refreshed.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
                   >
-                    2
-                  </li>
-                </ul>
+                    <li
+                      data-test-subj="UnblockedItem-2"
+                    >
+                      2
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -351,8 +369,18 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
             <div
               class="euiModalHeader__title"
             >
-              Refresh 
-              aliases
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Refresh 
+                  aliases
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -364,24 +392,32 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following aliases
-                   will be refreshed.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li
-                    data-test-subj="UnblockedItem-1"
+                  <p>
+                    The following aliases
+                     will be refreshed.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
                   >
-                    1
-                  </li>
-                  <li
-                    data-test-subj="UnblockedItem-2"
-                  >
-                    2
-                  </li>
-                </ul>
+                    <li
+                      data-test-subj="UnblockedItem-1"
+                    >
+                      1
+                    </li>
+                    <li
+                      data-test-subj="UnblockedItem-2"
+                    >
+                      2
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -500,8 +536,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              aliases
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  aliases
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -513,16 +559,24 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following aliases will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    alias2
-                  </li>
-                </ul>
+                  <p>
+                    The following aliases will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      alias2
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />

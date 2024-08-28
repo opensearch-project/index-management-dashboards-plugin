@@ -39,7 +39,13 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Delete Templates
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Delete Templates
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -51,9 +57,13 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following template will be permanently deleted. This action cannot be undone.
-                </p>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    The following template will be permanently deleted. This action cannot be undone.
+                  </p>
+                </div>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
                 />
@@ -66,13 +76,15 @@ HTMLCollection [
                   <div
                     class="euiTextColor euiTextColor--subdued"
                   >
-                    To confirm your action, type 
-                    <b
-                      style="color: rgb(0, 0, 0);"
-                    >
-                      delete
-                    </b>
-                    .
+                    <p>
+                      To confirm your action, type 
+                      <b
+                        style="color: rgb(0, 0, 0);"
+                      >
+                        delete
+                      </b>
+                      .
+                    </p>
                   </div>
                 </div>
                 <div

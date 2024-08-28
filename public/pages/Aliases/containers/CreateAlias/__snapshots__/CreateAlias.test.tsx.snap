@@ -39,10 +39,14 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              <h1>
-                Create
-                 alias
-              </h1>
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Create
+                   alias
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -67,7 +71,13 @@ HTMLCollection [
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Alias name
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <h3>
+                          Alias name
+                        </h3>
+                      </div>
                     </label>
                   </div>
                   <div
@@ -112,7 +122,13 @@ HTMLCollection [
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Indexes or index patterns
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <h3>
+                          Indexes or index patterns
+                        </h3>
+                      </div>
                     </label>
                   </div>
                   <div

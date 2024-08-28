@@ -40,8 +40,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              aliases
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  aliases
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -53,16 +63,24 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following aliases will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    alias2
-                  </li>
-                </ul>
+                  <p>
+                    The following aliases will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      alias2
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -186,8 +204,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              data streams
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  data streams
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -199,16 +227,24 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following data streams will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    ds2
-                  </li>
-                </ul>
+                  <p>
+                    The following data streams will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      ds2
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -332,8 +368,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -345,19 +391,27 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following indexes will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    test_index2
-                  </li>
-                  <li>
-                    test_index3
-                  </li>
-                </ul>
+                  <p>
+                    The following indexes will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      test_index2
+                    </li>
+                    <li>
+                      test_index3
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -481,8 +535,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -614,8 +678,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -627,19 +701,27 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following indexes will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    test_index2
-                  </li>
-                  <li>
-                    test_index3
-                  </li>
-                </ul>
+                  <p>
+                    The following indexes will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      test_index2
+                    </li>
+                    <li>
+                      test_index3
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
