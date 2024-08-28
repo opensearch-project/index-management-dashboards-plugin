@@ -385,7 +385,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
             ) ? (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>You have no data streams.</p>
                   </EuiText>
                 }
@@ -403,7 +403,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
             ) : (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
                   </EuiText>
                 }
