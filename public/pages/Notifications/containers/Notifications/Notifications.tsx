@@ -5,7 +5,17 @@
 
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { EuiSmallButton, EuiCallOut, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiCallOut,
+  EuiEmptyPrompt,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import { get } from "lodash";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
@@ -34,7 +44,7 @@ import { checkPermissionForSubmitLRONConfig } from "../../../../containers/Notif
 import "./index.scss";
 import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
+import { TopNavControlButtonData, TopNavControlDescriptionData } from "../../../../../../../src/plugins/navigation/public";
 
 export interface NotificationsProps {}
 
@@ -166,13 +176,9 @@ const Notifications = (props: NotificationsProps) => {
 
   const descriptionData = [
     {
-      renderComponent: (
-        <EuiText size="s" color="subdued">
-          Configure the default notification settings on index operation statuses, such as failed or completed. You can configure <br></br>
-          additional notification settings while performing an index operation.
-        </EuiText>
-      ),
-    },
+      description:
+        "Configure the default notification settings on index operation statuses, such as failed or completed. You can configure additional notification settings while performing an index operation.",
+    } as TopNavControlDescriptionData,
   ];
 
   const controlsData = [
@@ -287,7 +293,11 @@ const Notifications = (props: NotificationsProps) => {
             });
             return (
               <CustomFormRow
-                label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
+                label={
+                  <EuiText size="s">
+                    <h3 className="ISM-notifications-first-letter-uppercase">{record.title}</h3>
+                  </EuiText>
+                }
                 helpText={ActionTypeMapDescription[getKeyByValue(ActionTypeMapTitle, record.title) as ActionType]}
                 direction="hoz"
                 key={record.action_name}
