@@ -3,14 +3,12 @@
 exports[`<PolicySettings /> spec renders the component 1`] = `
 <div
   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-  style="padding-left: 0px; padding-right: 0px;"
 >
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-    style="padding: 0px 16px;"
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
     <div
-      class="euiFlexItem"
+      class="euiText euiText--small"
     >
       <div
         class="euiText euiText--small"
@@ -30,101 +28,92 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
   <hr
     class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
   />
-  <div
-    style="padding: 10px;"
-  >
+  <div>
     <div
-      style="padding-left: 10px;"
+      class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
     >
       <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+        class="euiFlexItem"
       >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Policy name
-            </dt>
-            <dd>
-              some_id
-            </dd>
-          </div>
+          <dt>
+            Policy name
+          </dt>
+          <dd>
+            some_id
+          </dd>
         </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Error notification
-            </dt>
-            <dd>
-              -
-            </dd>
-          </div>
+          <dt>
+            Error notification
+          </dt>
+          <dd>
+            -
+          </dd>
         </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Primary term
-            </dt>
-            <dd>
-              1
-            </dd>
-          </div>
+          <dt>
+            Primary term
+          </dt>
+          <dd>
+            1
+          </dd>
         </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Last updated
-            </dt>
-            <dd>
-              8/1/2021, 12:00:00 AM
-            </dd>
-          </div>
+          <dt>
+            Last updated
+          </dt>
+          <dd>
+            8/1/2021, 12:00:00 AM
+          </dd>
         </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Policy description
-            </dt>
-            <dd>
-              some description
-            </dd>
-          </div>
+          <dt>
+            Policy description
+          </dt>
+          <dd>
+            some description
+          </dd>
         </div>
+      </div>
+      <div
+        class="euiFlexItem"
+      >
         <div
-          class="euiFlexItem"
+          class="euiText euiText--small"
         >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Sequence number
-            </dt>
-            <dd>
-              2
-            </dd>
-          </div>
+          <dt>
+            Sequence number
+          </dt>
+          <dd>
+            2
+          </dd>
         </div>
       </div>
     </div>

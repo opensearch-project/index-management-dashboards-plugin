@@ -15,14 +15,12 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 16px;"
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
-        class="euiFlexItem"
+        class="euiText euiText--small"
       >
         <div
           class="euiText euiText--small"
@@ -43,62 +41,60 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: initial;"
+      class="euiText euiText--extraSmall"
+    >
+      <p>
+        Policies let you automatically perform administrative operations on indices.
+      </p>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
     >
       <div
-        style="padding-left: 10px;"
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Policy ID
+            </h3>
+          </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiText euiText--extraSmall"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
-          <p>
-            Policies let you automatically perform administrative operations on indices.
-          </p>
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              aria-describedby="some_html_id-help-0"
+              class="euiFieldText euiFieldText--compressed"
+              id="some_html_id"
+              placeholder="example_policy"
+              type="text"
+              value=""
+            />
+          </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--s"
-        />
-        <div
-          class="euiFormRow euiFormRow--compressed"
-          id="some_html_id-row"
+          class="euiFormHelpText euiFormRow__text"
+          id="some_html_id-help-0"
         >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Policy ID
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  aria-describedby="some_html_id-help-0"
-                  class="euiFieldText euiFieldText--compressed"
-                  id="some_html_id"
-                  placeholder="example_policy"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              Specify a unique ID that is easy to recognize and remember.
-            </div>
-          </div>
+          Specify a unique ID that is easy to recognize and remember.
         </div>
       </div>
     </div>
@@ -362,14 +358,12 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 16px;"
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
-        class="euiFlexItem"
+        class="euiText euiText--small"
       >
         <div
           class="euiText euiText--small"
@@ -390,63 +384,61 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: initial;"
+      class="euiText euiText--extraSmall"
+    >
+      <p>
+        Policies let you automatically perform administrative operations on indices.
+      </p>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
     >
       <div
-        style="padding-left: 10px;"
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Policy ID
+            </h3>
+          </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiText euiText--extraSmall"
+          class="euiFormControlLayout euiFormControlLayout--compressed euiFormControlLayout--readOnly"
         >
-          <p>
-            Policies let you automatically perform administrative operations on indices.
-          </p>
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              aria-describedby="some_html_id-help-0"
+              class="euiFieldText euiFieldText--compressed"
+              id="some_html_id"
+              placeholder="example_policy"
+              readonly=""
+              type="text"
+              value="some_policy"
+            />
+          </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--s"
-        />
-        <div
-          class="euiFormRow euiFormRow--compressed"
-          id="some_html_id-row"
+          class="euiFormHelpText euiFormRow__text"
+          id="some_html_id-help-0"
         >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              aria-invalid="false"
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Policy ID
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormControlLayout euiFormControlLayout--compressed euiFormControlLayout--readOnly"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  aria-describedby="some_html_id-help-0"
-                  class="euiFieldText euiFieldText--compressed"
-                  id="some_html_id"
-                  placeholder="example_policy"
-                  readonly=""
-                  type="text"
-                  value="some_policy"
-                />
-              </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              Specify a unique ID that is easy to recognize and remember.
-            </div>
-          </div>
+          Specify a unique ID that is easy to recognize and remember.
         </div>
       </div>
     </div>

@@ -101,9 +101,6 @@ exports[`<States /> spec renders the component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="euiSpacer euiSpacer--s"
-    />
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -142,7 +139,7 @@ exports[`<States /> spec renders the component 1`] = `
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
                     <div
-                      class="euiText euiText--medium"
+                      class="euiText euiText--small"
                     >
                       <strong>
                         hot
@@ -388,7 +385,7 @@ exports[`<States /> spec renders the component 1`] = `
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
                     <div
-                      class="euiText euiText--medium"
+                      class="euiText euiText--small"
                     >
                       <strong>
                         cold

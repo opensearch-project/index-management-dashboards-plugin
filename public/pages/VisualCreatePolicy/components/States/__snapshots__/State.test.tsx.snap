@@ -30,7 +30,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <div
-              class="euiText euiText--medium"
+              class="euiText euiText--small"
             >
               <strong>
                 some_name
