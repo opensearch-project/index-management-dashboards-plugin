@@ -174,7 +174,8 @@ exports[`<Shrink index /> spec renders the component 1`] = `
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     >
       <div
-        class="euiText euiText--small"
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 16px;"
       >
         <h2>
           Configure target index
@@ -184,10 +185,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        class="euiSpacer euiSpacer--m"
-      />
-      <div
-        class="euiForm"
+        style="padding: 0px 16px;"
       >
         <div
           class="euiFormRow euiFormRow--compressed"
@@ -743,7 +741,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiHorizontalRule euiHorizontalRule--full"
       />
       <div
-        style="padding: 0px 10px; display: none;"
+        style="padding: 0px 16px; display: none;"
       >
         <div
           class="euiSpacer euiSpacer--s"

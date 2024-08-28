@@ -11,7 +11,19 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiSmallButton, EuiSmallButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink, EuiText } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiTitle,
+  EuiLink,
+  EuiText,
+  EuiHorizontalRule,
+  EuiPanel,
+} from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -252,7 +264,13 @@ export default function Rollover(props: RolloverProps) {
           </CustomFormRow>
         </>
       )}
-      <ContentPanel title="Configure source" titleSize="s">
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiText size="s">
+            <h2>Configure source</h2>
+          </EuiText>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
         {sourceType === "alias" && filterByMinimatch(tempValue.source || "", SYSTEM_ALIAS) ? (
           <>
             <EuiCallOut color="warning">
@@ -268,7 +286,11 @@ export default function Rollover(props: RolloverProps) {
             {
               name: "source",
               rowProps: {
-                label: "Select an alias or data stream",
+                label: (
+                  <EuiText size="s">
+                    <h3>Select an alias or data stream</h3>
+                  </EuiText>
+                ),
                 helpText: "Select an alias or data stream to roll over.",
               },
               options: {
@@ -303,8 +325,16 @@ export default function Rollover(props: RolloverProps) {
             return (
               <>
                 <EuiSpacer />
-                <CustomFormRow label="Assigned write index">
-                  <span>{writingIndex}</span>
+                <CustomFormRow
+                  label={
+                    <EuiText size="s">
+                      <h3>Assigned write index</h3>
+                    </EuiText>
+                  }
+                >
+                  <EuiText size="s">
+                    <span>{writingIndex}</span>
+                  </EuiText>
                 </CustomFormRow>
               </>
             );
@@ -312,25 +342,30 @@ export default function Rollover(props: RolloverProps) {
 
           return null;
         })()}
-      </ContentPanel>
+      </EuiPanel>
       <EuiSpacer />
       {sourceType === "alias" && writingIndex ? (
         <>
-          <ContentPanel
-            title="Configure new rollover index"
-            titleSize="s"
-            actions={
-              <EuiSmallButton
-                onClick={() => {
-                  indexFormRef.current?.importSettings({
-                    index: writingIndex,
-                  });
-                }}
-              >
-                Import from old write index
-              </EuiSmallButton>
-            }
-          >
+          <EuiPanel>
+            <EuiFlexGroup gutterSize="xs" alignItems="center">
+              <EuiFlexItem>
+                <EuiText size="s">
+                  <h2>Configure new rollover index</h2>
+                </EuiText>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiSmallButton
+                  onClick={() => {
+                    indexFormRef.current?.importSettings({
+                      index: writingIndex,
+                    });
+                  }}
+                >
+                  Import from old write index
+                </EuiSmallButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiHorizontalRule margin={"xs"} />
             <IndexFormWrapper
               {...field.registerField({
                 name: "targetIndex",
@@ -350,7 +385,7 @@ export default function Rollover(props: RolloverProps) {
               ref={indexFormRef}
               withoutPanel
             />
-          </ContentPanel>
+          </EuiPanel>
           <EuiSpacer />
         </>
       ) : null}

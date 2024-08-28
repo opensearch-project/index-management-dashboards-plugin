@@ -13,6 +13,8 @@ import {
   EuiSpacer,
   EuiTitle,
   EuiText,
+  EuiHorizontalRule,
+  EuiPanel,
 } from "@elastic/eui";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -151,9 +153,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiTitle size="s">
-          <h3>Advanced settings</h3>
-        </EuiTitle>
+        <EuiText size="s">
+          <h2>Advanced settings</h2>
+        </EuiText>
       </EuiFlexItem>
     </EuiFlexGroup>
   );
@@ -211,10 +213,19 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         </>
       )}
 
-      <ContentPanel title="Configure source index" titleSize="s">
-        <EuiSpacer />
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiText size="s">
+            <h2>Configure source index</h2>
+          </EuiText>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
         <CustomFormRow
-          label="Select source indexes or data streams"
+          label={
+            <EuiText size="s">
+              <h3>Select source indexes or data streams</h3>
+            </EuiText>
+          }
           isInvalid={!!field.getError("indexes")}
           error={field.getError("indexes")}
           fullWidth
@@ -242,14 +253,16 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
           />
         </CustomFormRow>
 
-        <EuiSpacer />
         {notReadOnlyIndexes.length ? (
-          <EuiCallOut color="warning" title="We recommend force merge with read-only indexes">
-            {notReadOnlyIndexes.map((item) => item[0]).join(", ")} is not a read-only index. We recommend only performing force merge with
-            read-only indexes to pervent large segments being produced.
-          </EuiCallOut>
+          <>
+            <EuiSpacer />
+            <EuiCallOut color="warning" title="We recommend force merge with read-only indexes">
+              {notReadOnlyIndexes.map((item) => item[0]).join(", ")} is not a read-only index. We recommend only performing force merge with
+              read-only indexes to pervent large segments being produced.
+            </EuiCallOut>
+          </>
         ) : null}
-      </ContentPanel>
+      </EuiPanel>
 
       <EuiSpacer />
 

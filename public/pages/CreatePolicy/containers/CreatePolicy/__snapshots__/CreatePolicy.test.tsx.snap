@@ -19,7 +19,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="padding: 0px 16px;"
     >
       <div
         class="euiFlexItem"
@@ -112,7 +112,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="padding: 0px 16px;"
     >
       <div
         class="euiFlexItem"
@@ -366,7 +366,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="padding: 0px 16px;"
     >
       <div
         class="euiFlexItem"
@@ -460,7 +460,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="padding: 0px 16px;"
     >
       <div
         class="euiFlexItem"

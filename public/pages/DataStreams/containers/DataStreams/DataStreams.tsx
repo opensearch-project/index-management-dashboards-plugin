@@ -25,6 +25,8 @@ import {
   EuiToolTip,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiSpacer,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
@@ -40,7 +42,11 @@ import { DataStream } from "../../../../../server/models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
+import {
+  TopNavControlButtonData,
+  TopNavControlDescriptionData,
+  TopNavControlLinkData,
+} from "../../../../../../../src/plugins/navigation/public";
 import { ExternalLink } from "../../../utils/display-utils";
 
 interface DataStreamsProps extends RouteComponentProps, DataSourceMenuProperties {
@@ -271,6 +277,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
     const constrolsData = [
       {
         id: "Create data stream",
+        iconType: "plus",
         label: "Create data stream",
         testId: "createDataStreamButton",
         run: this.onClickDataStreamCreate,
@@ -279,26 +286,28 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
       } as TopNavControlButtonData,
     ];
 
-    const descriptionData = [
+    const description = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search{" "}
-            <br></br>
-            requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
-            <ExternalLink href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams} />
-          </EuiText>
-        ),
-      },
+        description:
+          "Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.",
+        links: {
+          label: "Learn more",
+          href: (this.context as CoreStart).docLinks.links.opensearch.dataStreams,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
-    const searchbar_padding = { padding: "0px 0px 16px 0px" };
 
     return useNewUX ? (
       <>
         <HeaderControl setMountPoint={setAppRightControls} controls={constrolsData} />
-        <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
-        <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center" style={searchbar_padding}>
+        <HeaderControl setMountPoint={setAppDescriptionControls} controls={description} />
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem grow={true}>
               <IndexControls
                 value={{
@@ -317,6 +326,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               />
             </EuiFlexItem>
           </EuiFlexGroup>
+          <EuiSpacer size="m" />
           {/* <EuiHorizontalRule margin="xs" /> */}
 
           <EuiBasicTable
@@ -434,7 +444,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               )
             }
           />
-        </ContentPanel>
+        </EuiPanel>
       </>
     ) : (
       <>

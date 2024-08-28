@@ -4,7 +4,19 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiSmallButton, EuiSmallButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiLink,
+  EuiSpacer,
+  EuiTitle,
+  EuiText,
+  EuiPanel,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -27,7 +39,11 @@ import BackingIndices from "../BackingIndices";
 import DataStreamsActions from "../../../DataStreams/containers/DataStreamsActions";
 import { ExternalLink } from "../../../utils/display-utils";
 import { getApplication, getNavigationUI } from "../../../../services/Services";
-import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
+import {
+  TopNavControlButtonData,
+  TopNavControlLinkData,
+  TopNavControlDescriptionData,
+} from "../../../../../../../src/plugins/navigation/public";
 
 export interface DataStreamDetailProps {
   dataStream?: string;
@@ -111,16 +127,20 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     field,
   };
 
-  const descriptionData = [
+  const description = [
     {
-      renderComponent: (
-        <EuiText size="s" color="subdued">
-          A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing
-          requests <br></br>
-          are routed to the latest write index. <ExternalLink href={coreServices.docLinks.links.opensearch.dataStreams} />
-        </EuiText>
-      ),
-    },
+      description:
+        "A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing requests are routed to the latest write index.",
+      links: {
+        label: "Learn more",
+        href: coreServices.docLinks.links.opensearch.dataStreams,
+        iconType: "popout",
+        iconSide: "right",
+        controlType: "link",
+        target: "_blank",
+        flush: "both",
+      } as TopNavControlLinkData,
+    } as TopNavControlDescriptionData,
   ];
 
   const controlsData = [
@@ -151,12 +171,35 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     } as TopNavControlButtonData,
   ];
 
+  const callOut = (
+    <EuiCallOut
+      title={
+        <span>
+          No data stream templates created. To create a data stream, you must first define its mappings and settings by creating a data
+          stream template.{" "}
+          {
+            <EuiLink
+              style={{ textDecoration: "underline" }}
+              onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}
+              color={"warning"}
+            >
+              Create template
+            </EuiLink>
+          }
+        </span>
+      }
+      iconType="alert"
+      size="s"
+      color={"warning"}
+    />
+  );
+
   const { HeaderControl } = getNavigationUI();
-  const { setAppRightControls, setAppDescriptionControls } = getApplication();
+  const { setAppRightControls, setAppDescriptionControls, setAppBottomControls } = getApplication();
 
   return (
     <>
-      {!isEdit && props.useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
+      {!isEdit && props.useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={description} />}
       {isEdit && props.useNewUX && <HeaderControl setMountPoint={setAppRightControls} controls={controlsData} />}
       {!props.useNewUX && (
         <>
@@ -208,31 +251,44 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
         </>
       )}
       {!isLoading && !templates.length && !isEdit ? (
-        <>
-          <EuiCallOut title="No data stream templates created" color="warning">
-            To create a data stream, you must first define its mappings and settings by creating a data stream template.
-            <EuiSpacer size="s" />
-            <div>
-              <EuiSmallButton onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}>
-                Create template
-              </EuiSmallButton>
-            </div>
-          </EuiCallOut>
-          <EuiSpacer />
-        </>
+        !props.useNewUX ? (
+          <>
+            <EuiCallOut title="No data stream templates created" color="warning">
+              To create a data stream, you must first define its mappings and settings by creating a data stream template.
+              <EuiSpacer size="s" />
+              <div>
+                <EuiSmallButton
+                  onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}
+                >
+                  Create template
+                </EuiSmallButton>
+              </div>
+            </EuiCallOut>
+            <EuiSpacer />
+          </>
+        ) : (
+          <HeaderControl setMountPoint={setAppBottomControls} controls={[{ renderComponent: callOut }]} />
+        )
       ) : null}
       <DefineDataStream {...subCompontentProps} allDataStreamTemplates={templates} />
       {values.matchedTemplate ? (
         <>
           <EuiSpacer />
-          <ContentPanel title="Inherited settings from template" titleSize="s">
-            <EuiSpacer size="s" />
-            <IndexAlias {...subCompontentProps} />
-            <EuiSpacer />
-            <IndexSettings {...subCompontentProps} />
-            <EuiSpacer />
-            <TemplateMappings {...subCompontentProps} />
-          </ContentPanel>
+          <EuiPanel>
+            <EuiFlexGroup gutterSize="xs" alignItems="center">
+              <EuiText size="s">
+                <h2>Inherited settings from template</h2>
+              </EuiText>
+            </EuiFlexGroup>
+            <EuiHorizontalRule margin={"xs"} />
+            <div>
+              <IndexAlias {...subCompontentProps} />
+              <EuiSpacer />
+              <IndexSettings {...subCompontentProps} />
+              <EuiSpacer />
+              <TemplateMappings {...subCompontentProps} />
+            </div>
+          </EuiPanel>
         </>
       ) : null}
       {isEdit ? (

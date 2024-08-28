@@ -88,14 +88,12 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
-        class="euiFlexItem"
+        class="euiText euiText--small"
       >
         <div
           class="euiText euiText--small"
@@ -115,12 +113,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
-    <div
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiSpacer euiSpacer--s"
-      />
+    <div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-name"
@@ -134,7 +127,13 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Data stream name
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Data stream name
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -234,13 +233,25 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Matching template
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Matching template
+              </h3>
+            </div>
           </label>
         </div>
         <div
           class="euiFormRow__fieldWrapper"
         >
-          No index template matched
+          <div
+            class="euiText euiText--small"
+          >
+            <p>
+              No index template matched
+            </p>
+          </div>
         </div>
       </div>
     </div>

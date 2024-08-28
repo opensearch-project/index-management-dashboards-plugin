@@ -7,7 +7,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
 >
   <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-    style="padding: 0px 10px;"
+    style="padding: 0px 16px;"
   >
     <div
       class="euiFlexItem"
@@ -113,8 +113,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
     style="padding: initial;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 5px;"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
         class="euiFlexItem"
