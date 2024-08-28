@@ -67,7 +67,6 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
                 onChange={onChangeDefaultState}
               />
             </EuiCompressedFormRow>
-            <EuiSpacer size="s" />
             <EuiHorizontalRule margin={"xs"} />
           </>
         )}

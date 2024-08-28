@@ -32,7 +32,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
     buttonContent={
       <EuiFlexGroup justifyContent="center" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiText size="m">
+          <EuiText size="s">
             <strong>{state.name}</strong>
           </EuiText>
         </EuiFlexItem>

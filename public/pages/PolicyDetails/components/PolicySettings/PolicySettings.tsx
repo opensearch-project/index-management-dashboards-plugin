@@ -18,14 +18,13 @@ interface PolicySettingsProps {
   description: string;
   sequenceNumber: number;
   ismTemplates: ISMTemplate[] | ISMTemplate | null;
-  useNewUX?: boolean;
 }
 
 interface PolicySettingsState {}
 
 export default class PolicySettings extends Component<PolicySettingsProps, PolicySettingsState> {
   render() {
-    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber, useNewUX } = this.props;
+    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber } = this.props;
 
     const updatedDate = lastUpdated ? new Date(lastUpdated).toLocaleString() : "-";
 
@@ -50,23 +49,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
       { term: "Sequence number", value: sequenceNumber },
     ];
 
-    return !useNewUX ? (
-      <ContentPanel bodyStyles={{ padding: "10px" }} title="Policy settings" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="s" />
-          <EuiFlexGrid columns={4}>
-            {infoItems.map((item) => (
-              <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="xs">
-                  <dt>{item.term}</dt>
-                  <dd>{item.value}</dd>
-                </EuiText>
-              </EuiFlexItem>
-            ))}
-          </EuiFlexGrid>
-        </div>
-      </ContentPanel>
-    ) : (
+    return (
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
           <EuiText size="s">

@@ -311,10 +311,12 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
       <div style={padding_style}>
         {!useNewUX ? (
           <>
-            <EuiTitle size="l">
-              <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            <EuiText size="s">
+              <EuiTitle size="l">
+                <h1>{isEdit ? "Edit" : "Create"} policy</h1>
+              </EuiTitle>
+            </EuiText>
+            <EuiSpacer size="s" />
             <EuiText size="s">
               <p>
                 Policies let you automatically perform administrative operations on indices.{" "}

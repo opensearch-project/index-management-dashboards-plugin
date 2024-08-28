@@ -38,7 +38,12 @@ import { formatTemplate } from "../../hooks";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { useCallback } from "react";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlIconData } from "src/plugins/navigation/public";
+import {
+  TopNavControlButtonData,
+  TopNavControlDescriptionData,
+  TopNavControlIconData,
+  TopNavControlLinkData,
+} from "src/plugins/navigation/public";
 import DeleteIndexModal from "../../../ComposableTemplates/containers/DeleteComposableTemplatesModal";
 
 export interface TemplateDetailProps {
@@ -215,16 +220,18 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
 
   const descriptionData = [
     {
-      renderComponent: (
-        <EuiText size="s" color="subdued">
-          Component templates are reusable building blocks for composing index or data stream templates.
-          <br /> You can define component templates with common index configurations and associate them to an index template.{" "}
-          <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
-            Learn more
-          </EuiLink>
-        </EuiText>
-      ),
-    },
+      description:
+        "Component templates are reusable building blocks for composing index or data stream templates. You can define component templates with common index configurations and associate them to an index template.",
+      links: {
+        label: "Learn more",
+        href: coreServices.docLinks.links.opensearch.indexTemplates.composable,
+        iconType: "popout",
+        iconSide: "right",
+        controlType: "link",
+        target: "_blank",
+        flush: "both",
+      } as TopNavControlLinkData,
+    } as TopNavControlDescriptionData,
   ];
 
   return (
@@ -236,7 +243,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
               {useNewUX ? (
                 <></>
               ) : (
-                <EuiText size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiText>
+                <EuiText size="s">
+                  <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiTitle>
+                </EuiText>
               )}
               {isEdit ? null : useNewUX ? (
                 <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />

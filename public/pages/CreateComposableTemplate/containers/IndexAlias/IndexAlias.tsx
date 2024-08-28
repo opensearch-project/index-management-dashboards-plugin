@@ -60,11 +60,7 @@ export default function IndexAlias(props: SubDetailProps) {
                 <h3>Index alias</h3>
               </EuiText>
             }
-            helpText={
-              <EuiText size="s">
-                <p>Select existing aliases or specify a new alias.</p>
-              </EuiText>
-            }
+            helpText={<div>Select existing aliases or specify a new alias.</div>}
           >
             <AliasSelect
               {...field.registerField({
@@ -84,7 +80,7 @@ export default function IndexAlias(props: SubDetailProps) {
               }
             />
           </CustomFormRow>
-          <EuiSpacer />
+          <EuiSpacer size="s" />
         </>
       ) : null}
     </ContentPanel>
