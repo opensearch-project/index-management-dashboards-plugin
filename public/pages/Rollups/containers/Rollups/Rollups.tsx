@@ -524,8 +524,8 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
         </EuiPanel>
       </>
     ) : (
-      <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-        <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
+      <EuiPanel>
+        <EuiFlexGroup style={{ padding: "0px 10px" }} gutterSize="s" justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>
             <EuiTitle size="m">
               <h3>{"Rollup jobs (" + `${rollups.length}` + ")"}</h3>

@@ -161,15 +161,14 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
           />
           <div
             class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-            style="padding-left: 0px; padding-right: 0px;"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-              style="padding: 0px 16px;"
+              class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
             >
               <div
-                class="euiFlexItem"
+                class="euiText euiText--small"
               >
+<<<<<<< HEAD
                 <div
                   class="euiText euiText--small"
                 >
@@ -183,113 +182,116 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                     </span>
                   </h1>
                 </div>
+=======
+                <h2>
+                  Job name and description
+                </h2>
+>>>>>>> fba0e6e0 (Makde changes for Rollup page)
               </div>
             </div>
             <hr
               class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
             />
             <div
-              style="padding: initial;"
+              class="euiSpacer euiSpacer--s"
+            />
+            <div
+              class="euiFormRow euiFormRow--compressed"
+              id="some_html_id-row"
             >
               <div
-                style="padding-left: 10px;"
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="some_html_id"
+                >
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h3>
+                      Name
+                    </h3>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiSpacer euiSpacer--s"
-                />
-                <div
-                  class="euiFormRow euiFormRow--compressed"
-                  id="some_html_id-row"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
-                    class="euiFormRow__labelWrapper"
+                    class="euiFormControlLayout__childrenWrapper"
                   >
-                    <label
-                      aria-invalid="false"
-                      class="euiFormLabel euiFormRow__label"
-                      for="some_html_id"
-                    >
-                      Name
-                    </label>
-                  </div>
-                  <div
-                    class="euiFormRow__fieldWrapper"
-                  >
-                    <div
-                      class="euiFormControlLayout euiFormControlLayout--compressed"
-                    >
-                      <div
-                        class="euiFormControlLayout__childrenWrapper"
-                      >
-                        <input
-                          aria-describedby="some_html_id-help-0"
-                          class="euiFieldText euiFieldText--compressed"
-                          id="some_html_id"
-                          placeholder="my-rollupjob1"
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help-0"
-                    >
-                      Specify a unique, descriptive name.
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--l"
-                />
-                <div
-                  class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-                >
-                  <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
-                  >
-                    <div
-                      class="euiText euiText--extraSmall"
-                    >
-                      <h4>
-                        Description
-                      </h4>
-                    </div>
-                  </div>
-                  <div
-                    class="euiFlexItem"
-                  >
-                    <div
-                      class="euiText euiText--extraSmall"
-                    >
-                      <div
-                        class="euiTextColor euiTextColor--subdued"
-                      >
-                        <i>
-                           – optional
-                        </i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--xs"
-                />
-                <div
-                  class="euiFormRow euiFormRow--compressed"
-                  id="some_html_id-row"
-                >
-                  <div
-                    class="euiFormRow__fieldWrapper"
-                  >
-                    <textarea
-                      class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
-                      data-test-subj="description"
+                    <input
+                      aria-describedby="some_html_id-help-0"
+                      class="euiFieldText euiFieldText--compressed"
                       id="some_html_id"
-                      rows="3"
+                      placeholder="my-rollupjob1"
+                      type="text"
+                      value=""
                     />
                   </div>
                 </div>
+                <div
+                  class="euiFormHelpText euiFormRow__text"
+                  id="some_html_id-help-0"
+                >
+                  Specify a unique, descriptive name.
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiSpacer euiSpacer--l"
+            />
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h3>
+                    Description
+                  </h3>
+                </div>
+              </div>
+              <div
+                class="euiFlexItem"
+              >
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <div
+                    class="euiTextColor euiTextColor--subdued"
+                  >
+                    <i>
+                       – optional
+                    </i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiSpacer euiSpacer--xs"
+            />
+            <div
+              class="euiFormRow euiFormRow--compressed"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <textarea
+                  class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
+                  data-test-subj="description"
+                  id="some_html_id"
+                  rows="3"
+                />
               </div>
             </div>
           </div>
@@ -298,15 +300,14 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
           />
           <div
             class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-            style="padding-left: 0px; padding-right: 0px;"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-              style="padding: 0px 16px;"
+              class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
             >
               <div
-                class="euiFlexItem"
+                class="euiText euiText--small"
               >
+<<<<<<< HEAD
                 <div
                   class="euiText euiText--small"
                 >
@@ -320,224 +321,233 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                     </span>
                   </h1>
                 </div>
+=======
+                <h2>
+                  Indices
+                </h2>
+>>>>>>> fba0e6e0 (Makde changes for Rollup page)
               </div>
             </div>
             <hr
               class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
             />
             <div
-              style="padding: initial;"
+              class="euiSpacer euiSpacer--s"
+            />
+            <div
+              class="euiCallOut euiCallOut--warning"
             >
               <div
-                style="padding-left: 10px;"
+                class="euiText euiText--small"
               >
                 <div
-                  class="euiSpacer euiSpacer--s"
-                />
-                <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiTextColor euiTextColor--default"
+                >
+                  <p>
+                    You can't change indices after creating a job. Double-check the source and target index names before proceeding.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiSpacer euiSpacer--m"
+            />
+            <div
+              class="euiFormRow euiFormRow--compressed"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="some_html_id"
                 >
                   <div
                     class="euiText euiText--small"
                   >
-                    <div
-                      class="euiTextColor euiTextColor--default"
-                    >
-                      <p>
-                        You can't change indices after creating a job. Double-check the source and target index names before proceeding.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--m"
-                />
-                <div
-                  class="euiFormRow euiFormRow--compressed"
-                  id="some_html_id-row"
-                >
-                  <div
-                    class="euiFormRow__labelWrapper"
-                  >
-                    <label
-                      aria-invalid="false"
-                      class="euiFormLabel euiFormRow__label"
-                      for="some_html_id"
-                    >
+                    <h3>
                       Source index
-                    </label>
+                    </h3>
                   </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-describedby="some_html_id-help-0"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox euiComboBox--compressed"
+                  data-test-subj="sourceIndexCombobox"
+                  role="combobox"
+                >
                   <div
-                    class="euiFormRow__fieldWrapper"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
-                      aria-describedby="some_html_id-help-0"
-                      aria-expanded="false"
-                      aria-haspopup="listbox"
-                      class="euiComboBox euiComboBox--compressed"
-                      data-test-subj="sourceIndexCombobox"
-                      role="combobox"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
                       <div
-                        class="euiFormControlLayout euiFormControlLayout--compressed"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
                       >
-                        <div
-                          class="euiFormControlLayout__childrenWrapper"
+                        <p
+                          class="euiComboBoxPlaceholder"
                         >
+                          Select source index
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="some_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
                           <div
-                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                            data-test-subj="comboBoxInput"
-                            tabindex="-1"
-                          >
-                            <p
-                              class="euiComboBoxPlaceholder"
-                            >
-                              Select source index
-                            </p>
-                            <div
-                              class="euiComboBox__input"
-                              style="font-size: 14px; display: inline-block;"
-                            >
-                              <input
-                                aria-controls=""
-                                data-test-subj="comboBoxSearchInput"
-                                id="some_html_id"
-                                role="textbox"
-                                style="box-sizing: content-box; width: 2px;"
-                                value=""
-                              />
-                              <div
-                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                              />
-                            </div>
-                          </div>
-                          <div
-                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                          >
-                            <span
-                              class="euiLoadingSpinner euiLoadingSpinner--medium"
-                            />
-                            <button
-                              aria-label="Open list of options"
-                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                              data-test-subj="comboBoxToggleListButton"
-                              type="button"
-                            >
-                              EuiIconMock
-                            </button>
-                          </div>
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help-0"
-                    >
-                      The index pattern on which to performed the rollup job. You can use * as a wildcard.
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <span
+                          class="euiLoadingSpinner euiLoadingSpinner--medium"
+                        />
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          EuiIconMock
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="euiFormRow euiFormRow--compressed"
-                  id="some_html_id-row"
+                  class="euiFormHelpText euiFormRow__text"
+                  id="some_html_id-help-0"
+                >
+                  The index pattern on which to performed the rollup job. You can use * as a wildcard.
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFormRow euiFormRow--compressed"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="some_html_id"
                 >
                   <div
-                    class="euiFormRow__labelWrapper"
+                    class="euiText euiText--small"
                   >
-                    <label
-                      aria-invalid="false"
-                      class="euiFormLabel euiFormRow__label"
-                      for="some_html_id"
-                    >
+                    <h3>
                       Target index
-                    </label>
+                    </h3>
                   </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  aria-describedby="some_html_id-help-0"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox euiComboBox--compressed"
+                  data-test-subj="targetIndexCombobox"
+                  role="combobox"
+                >
                   <div
-                    class="euiFormRow__fieldWrapper"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
-                      aria-describedby="some_html_id-help-0"
-                      aria-expanded="false"
-                      aria-haspopup="listbox"
-                      class="euiComboBox euiComboBox--compressed"
-                      data-test-subj="targetIndexCombobox"
-                      role="combobox"
+                      class="euiFormControlLayout__childrenWrapper"
                     >
                       <div
-                        class="euiFormControlLayout euiFormControlLayout--compressed"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
                       >
-                        <div
-                          class="euiFormControlLayout__childrenWrapper"
+                        <p
+                          class="euiComboBoxPlaceholder"
                         >
+                          Select or create target index
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            id="some_html_id"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
                           <div
-                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                            data-test-subj="comboBoxInput"
-                            tabindex="-1"
-                          >
-                            <p
-                              class="euiComboBoxPlaceholder"
-                            >
-                              Select or create target index
-                            </p>
-                            <div
-                              class="euiComboBox__input"
-                              style="font-size: 14px; display: inline-block;"
-                            >
-                              <input
-                                aria-controls=""
-                                data-test-subj="comboBoxSearchInput"
-                                id="some_html_id"
-                                role="textbox"
-                                style="box-sizing: content-box; width: 2px;"
-                                value=""
-                              />
-                              <div
-                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                              />
-                            </div>
-                          </div>
-                          <div
-                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                          >
-                            <span
-                              class="euiLoadingSpinner euiLoadingSpinner--medium"
-                            />
-                            <button
-                              aria-label="Open list of options"
-                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                              data-test-subj="comboBoxToggleListButton"
-                              type="button"
-                            >
-                              EuiIconMock
-                            </button>
-                          </div>
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help-0"
-                    >
                       <div
-                        class="euiText euiText--extraSmall"
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                       >
-                        The target index stores rollup results. You can select an existing index or type in a new index name with embedded variables 
-                        <a
-                          class="euiLink euiLink--primary"
-                          href="https://opensearch.org/docs/latest/im-plugin/index-rollups/index/#step-1-set-up-indices"
-                          rel="noopener noreferrer"
-                          target="_blank"
+                        <span
+                          class="euiLoadingSpinner euiLoadingSpinner--medium"
+                        />
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
                         >
-                          Learn more
                           EuiIconMock
-                          <span
-                            class="euiScreenReaderOnly"
-                          >
-                            (opens in a new tab or window)
-                          </span>
-                        </a>
+                        </button>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFormHelpText euiFormRow__text"
+                  id="some_html_id-help-0"
+                >
+                  <div
+                    class="euiText euiText--extraSmall"
+                  >
+                    The target index stores rollup results. You can select an existing index or type in a new index name with embedded variables 
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opensearch.org/docs/latest/im-plugin/index-rollups/index/#step-1-set-up-indices"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      EuiIconMock
+                      <span
+                        class="euiScreenReaderOnly"
+                      >
+                        (opens in a new tab or window)
+                      </span>
+                    </a>
                   </div>
                 </div>
               </div>

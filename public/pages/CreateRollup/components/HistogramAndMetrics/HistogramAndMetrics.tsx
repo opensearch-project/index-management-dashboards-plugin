@@ -18,6 +18,8 @@ import {
   Pagination,
   EuiIcon,
   EuiTableSortingType,
+  EuiPanel,
+  EuiHorizontalRule,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
@@ -182,28 +184,32 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
     };
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onChangeStep(2),
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>{AGGREGATION_AND_METRIC_SETTINGS}</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onChangeStep(2),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        bodyStyles={{ padding: "initial" }}
-        title={AGGREGATION_AND_METRIC_SETTINGS}
-        titleSize="s"
-      >
-        <div style={{ padding: "15px" }}>
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiSpacer size="xs" />
           <EuiText size="s">
             <h3>Time aggregation</h3>
@@ -255,7 +261,7 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
 
           <EuiSpacer size="s" />
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }
