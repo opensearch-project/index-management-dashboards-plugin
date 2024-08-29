@@ -379,6 +379,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
                 buttonProps: {
                   fill: true,
                   onClick: onClickCreate,
+                  iconType: "plus",
                 },
               },
             ]}

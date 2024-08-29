@@ -406,7 +406,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>

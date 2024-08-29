@@ -129,6 +129,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
               <span
                 class="euiButtonContent euiButton__content"
               >
+                EuiIconMock
                 <span
                   class="euiButton__text"
                 >
@@ -140,6 +141,9 @@ exports[`<Transforms /> spec renders the component 1`] = `
         </div>
       </div>
     </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginSmall"
+    />
     <div
       style="padding: initial;"
     >

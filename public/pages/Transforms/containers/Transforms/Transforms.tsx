@@ -372,14 +372,14 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
+                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton" iconType="plus">
                   Create transform job
                 </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
-
+        <EuiHorizontalRule margin="s" />
         <div style={{ padding: "initial" }}>
           <EuiFlexGroup style={{ padding: "0px 5px" }}>
             <EuiFlexItem>
