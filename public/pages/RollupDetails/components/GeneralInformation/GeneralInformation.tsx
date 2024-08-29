@@ -60,7 +60,6 @@ export default class GeneralInformation extends Component<GeneralInformationProp
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         <div>
-          <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>
             {infoItems.map((item) => (
               <EuiFlexItem key={`${item.term}#${item.value}`}>

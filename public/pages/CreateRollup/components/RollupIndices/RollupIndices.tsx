@@ -130,7 +130,9 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
         <EuiHorizontalRule margin={"xs"} />
         <EuiSpacer size="s" />
         <EuiCallOut color="warning">
-          <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+          <EuiText size="s">
+            <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+          </EuiText>
         </EuiCallOut>
         {hasAggregation && (
           <Fragment>

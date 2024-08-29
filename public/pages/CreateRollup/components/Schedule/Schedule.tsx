@@ -162,7 +162,6 @@ export default class Schedule extends Component<ScheduleProps> {
             data-test-subj="jobEnabledByDefault"
           />
         )}
-        <EuiSpacer size="s" />
         {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
         <EuiCompressedFormRow

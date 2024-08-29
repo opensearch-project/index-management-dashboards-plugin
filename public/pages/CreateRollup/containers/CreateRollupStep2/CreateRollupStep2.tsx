@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiCallOut, EuiComboBoxOptionOption } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiCallOut, EuiComboBoxOptionOption, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -88,7 +88,9 @@ export default class CreateRollupStep2 extends Component<CreateRollupStep2Props>
             <MetricsCalculation {...this.props} fieldsOption={fields} />
             <EuiSpacer />
             <EuiCallOut color="warning">
-              <p>You can't change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
+              <EuiText size="s">
+                <p>You can't change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
+              </EuiText>
             </EuiCallOut>
           </EuiFlexItem>
         </EuiFlexGroup>

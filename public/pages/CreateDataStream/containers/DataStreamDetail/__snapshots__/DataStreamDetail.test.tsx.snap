@@ -297,7 +297,6 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         <span
           class="euiButtonContent euiButton__content"
         >
-          EuiIconMock
           <span
             class="euiButton__text"
           >

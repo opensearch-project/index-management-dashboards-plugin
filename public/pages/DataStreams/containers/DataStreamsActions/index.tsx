@@ -50,6 +50,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
     <>
       <SimplePopover
         data-test-subj="moreAction"
+        panelPaddingSize="s"
         button={
           <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions

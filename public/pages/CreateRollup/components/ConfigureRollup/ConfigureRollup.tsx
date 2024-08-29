@@ -33,7 +33,6 @@ const ConfigureRollup = ({ isEdit, rollupId, rollupIdError, onChangeName, onChan
       </EuiText>
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />
-    <EuiSpacer size="s" />
     <EuiCompressedFormRow
       label={
         <EuiText size="s">

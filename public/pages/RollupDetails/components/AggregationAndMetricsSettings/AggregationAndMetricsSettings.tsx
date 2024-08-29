@@ -143,7 +143,6 @@ export default class AggregationAndMetricsSettings extends Component<
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         <div>
-          <EuiSpacer size="s" />
           <EuiText size="s">
             <h3>Additional metrics</h3>
           </EuiText>

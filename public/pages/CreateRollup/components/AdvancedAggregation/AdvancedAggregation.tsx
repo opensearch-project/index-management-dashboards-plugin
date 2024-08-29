@@ -381,11 +381,13 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
                 <Fragment>
                   <EuiFlexItem>
                     <EuiCallOut>
-                      <p>
-                        The order of fields impacts rollup performance. Aggregating by smaller buckets and then by larger buckets is faster
-                        than the opposite. For example, if you are rolling up flight data for five airlines with 100 destinations,
-                        aggregating by airline and then by destination is faster than aggregating by destination first.
-                      </p>
+                      <EuiText size="s">
+                        <p>
+                          The order of fields impacts rollup performance. Aggregating by smaller buckets and then by larger buckets is
+                          faster than the opposite. For example, if you are rolling up flight data for five airlines with 100 destinations,
+                          aggregating by airline and then by destination is faster than aggregating by destination first.
+                        </p>
+                      </EuiText>
                     </EuiCallOut>
                     <EuiSpacer size="s" />
                   </EuiFlexItem>

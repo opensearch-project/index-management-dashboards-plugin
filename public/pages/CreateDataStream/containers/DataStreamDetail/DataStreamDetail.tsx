@@ -315,13 +315,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiSmallButton
-                fill
-                onClick={onSubmit}
-                isLoading={isLoading}
-                iconType={isEdit ? undefined : "plus"}
-                data-test-subj="CreateDataStreamCreateButton"
-              >
+              <EuiSmallButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">
                 {isEdit ? "Save changes" : "Create data stream"}
               </EuiSmallButton>
             </EuiFlexItem>

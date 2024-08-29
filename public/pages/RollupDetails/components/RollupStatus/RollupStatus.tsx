@@ -25,7 +25,6 @@ const RollupStatus = ({ metadata }: RollupStatusProps) => (
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />
     <div>
-      <EuiSpacer size="s" />
       <EuiFlexGrid columns={4}>
         <EuiFlexItem>
           <EuiText size="s">

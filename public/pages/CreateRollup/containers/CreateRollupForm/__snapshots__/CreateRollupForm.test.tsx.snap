@@ -193,9 +193,6 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
               class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
             />
             <div
-              class="euiSpacer euiSpacer--s"
-            />
-            <div
               class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
@@ -343,9 +340,13 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                 <div
                   class="euiTextColor euiTextColor--default"
                 >
-                  <p>
-                    You can't change indices after creating a job. Double-check the source and target index names before proceeding.
-                  </p>
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <p>
+                      You can't change indices after creating a job. Double-check the source and target index names before proceeding.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -46,9 +46,6 @@ exports[`<EditRollup /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiSpacer euiSpacer--s"
-    />
-    <div
       class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
@@ -168,9 +165,6 @@ exports[`<EditRollup /> spec renders the component 1`] = `
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiFormRow euiFormRow--compressed"
