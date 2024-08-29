@@ -39,7 +39,13 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Delete 
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Delete 
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -51,9 +57,13 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following component template will be permanently deleted. This action cannot be undone.
-                </p>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    The following component template will be permanently deleted. This action cannot be undone.
+                  </p>
+                </div>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
                 />

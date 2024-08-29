@@ -448,7 +448,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
             onSearchChange={this.onSearchChange}
             useNewUx={useNewUX}
           />
-          <EuiSpacer size="s" />
+          <EuiSpacer size="m" />
           <EuiBasicTable
             className="ISM-component-templates-table"
             data-test-subj="templatesTable"

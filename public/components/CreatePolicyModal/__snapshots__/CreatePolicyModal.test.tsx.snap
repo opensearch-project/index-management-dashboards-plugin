@@ -35,7 +35,13 @@ exports[`<CreatePolicyModal /> spec renders the component 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            Configuration method
+            <div
+              class="euiText euiText--small"
+            >
+              <h2>
+                Configuration method
+              </h2>
+            </div>
           </div>
         </div>
         <div
@@ -55,9 +61,11 @@ exports[`<CreatePolicyModal /> spec renders the component 1`] = `
                   class="euiText euiText--small"
                   style="margin-top: 0px;"
                 >
-                  Choose how you would like to 
-                  define
-                   your policy, either using a visual editor or writing JSON.
+                  <p>
+                    Choose how you would like to 
+                    define
+                     your policy, either using a visual editor or writing JSON.
+                  </p>
                 </div>
               </div>
               <div
@@ -254,7 +262,13 @@ exports[`<CreatePolicyModal /> spec renders the component w/ edit 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            Configuration method
+            <div
+              class="euiText euiText--small"
+            >
+              <h2>
+                Configuration method
+              </h2>
+            </div>
           </div>
         </div>
         <div
@@ -274,9 +288,11 @@ exports[`<CreatePolicyModal /> spec renders the component w/ edit 1`] = `
                   class="euiText euiText--small"
                   style="margin-top: 0px;"
                 >
-                  Choose how you would like to 
-                  modify
-                   your policy, either using a visual editor or writing JSON.
+                  <p>
+                    Choose how you would like to 
+                    modify
+                     your policy, either using a visual editor or writing JSON.
+                  </p>
                 </div>
               </div>
               <div
