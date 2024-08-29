@@ -23,6 +23,7 @@ import {
   EuiText,
   EuiToolTip,
   EuiSmallButtonIcon,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -343,6 +344,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_TEMPLATE);
                     }}
+                    iconType="plus"
                   >
                     Create template
                   </EuiSmallButton>,
@@ -351,7 +353,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             ) : (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
                   </EuiText>
                 }
@@ -415,7 +417,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             } as TopNavControlButtonData,
           ]}
         />
-        <ContentPanel>
+        <EuiPanel>
           <IndexControls
             value={{
               search: this.state.search,
@@ -427,7 +429,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
           />
 
           {commonTable()}
-        </ContentPanel>
+        </EuiPanel>
       </div>
     ) : (
       <ContentPanel

@@ -28,15 +28,27 @@ export default function IndexSettings(props: SubDetailProps) {
           columns={columns}
           listItems={[
             {
-              title: "Number of primary shards",
+              title: (
+                <EuiText size="s">
+                  <h4>Number of primary shards</h4>
+                </EuiText>
+              ),
               description: values.template?.settings?.["index.number_of_shards"] || "-",
             },
             {
-              title: "Number of replicas",
+              title: (
+                <EuiText size="s">
+                  <h4>Number of replicas</h4>
+                </EuiText>
+              ),
               description: values.template?.settings?.["index.number_of_replicas"] || "-",
             },
             {
-              title: "Refresh interval",
+              title: (
+                <EuiText size="s">
+                  <h4>Refresh interval</h4>
+                </EuiText>
+              ),
               description: values.template?.settings?.["index.refresh_interval"] || "-",
             },
           ]}

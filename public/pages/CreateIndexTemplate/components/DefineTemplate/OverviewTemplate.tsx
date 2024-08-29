@@ -21,21 +21,37 @@ export default function OverviewTemplate(props: SubDetailProps) {
         columns={columns}
         listItems={[
           {
-            title: "Template type",
+            title: (
+              <EuiText size="s">
+                <h4>Template type</h4>
+              </EuiText>
+            ),
             description: TemplateConvert({
               value: values.data_stream,
             }),
           },
           {
-            title: "Index patterns",
+            title: (
+              <EuiText size="s">
+                <h4>Index patterns</h4>
+              </EuiText>
+            ),
             description: values.index_patterns?.join(", "),
           },
           {
-            title: "Priority",
+            title: (
+              <EuiText size="s">
+                <h4>Priority</h4>
+              </EuiText>
+            ),
             description: values.priority,
           },
           {
-            title: "Associated component templates",
+            title: (
+              <EuiText size="s">
+                <h4>Associated component templates</h4>
+              </EuiText>
+            ),
             description: (values.composed_of || []).length
               ? (values.composed_of || []).map((item) => (
                   <div key={item}>

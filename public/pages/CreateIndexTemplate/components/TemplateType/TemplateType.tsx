@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { EuiCompressedRadio, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedRadio, EuiSpacer, EuiText } from "@elastic/eui";
 import { TEMPLATE_TYPE } from "../../../../utils/constants";
 import React from "react";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -43,7 +43,13 @@ export default function TemplateType(props: ITemplateTypeProps) {
       {value !== undefined ? (
         <>
           <EuiSpacer />
-          <CustomFormRow label="Time field">
+          <CustomFormRow
+            label={
+              <EuiText size="s">
+                <h4>Time field</h4>
+              </EuiText>
+            }
+          >
             <AllBuiltInComponents.Input
               value={value?.timestamp_field?.name}
               onChange={(val) => {

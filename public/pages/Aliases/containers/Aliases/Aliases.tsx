@@ -24,6 +24,7 @@ import {
   EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiSmallButton,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -471,7 +472,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             } as TopNavControlButtonData,
           ]}
         />
-        <ContentPanel>
+        <EuiPanel>
           <IndexControls
             value={{
               search: this.state.search,
@@ -486,7 +487,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             history={this.props.history}
           />
           {commonRender()}
-        </ContentPanel>
+        </EuiPanel>
       </div>
     ) : (
       <ContentPanel

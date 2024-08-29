@@ -37,7 +37,11 @@ export default function IndexAlias(props: SubDetailProps) {
             compressed
             listItems={[
               {
-                title: "Alias names",
+                title: (
+                  <EuiText size="s">
+                    <h4>Alias names</h4>
+                  </EuiText>
+                ),
                 description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
               },
             ]}

@@ -28,6 +28,7 @@ import {
   EuiContextMenuItem,
   EuiPopover,
   EuiContextMenuPanel,
+  EuiPanel,
 } from "@elastic/eui";
 import queryString from "query-string";
 import _ from "lodash";
@@ -656,7 +657,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         />
 
         <div style={{ padding: "0px" }}>
-          <ContentPanel>
+          <EuiPanel>
             <ManagedIndexControls
               search={search}
               onSearchChange={this.onSearchChange}
@@ -667,7 +668,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               Actions={Action()}
             />
             {CommonTable()}
-          </ContentPanel>
+          </EuiPanel>
           {RemovePolicyModal()}
         </div>
       </>
