@@ -583,13 +583,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
           actions={actions} 
           subTitleText={subTitleText}
         >
-          <EuiSearchBar
-            box={{
-              placeholder: "Search snapshot policies",
-              incremental: false,
-            }}
-            onChange={this.onSearchChange}
-          />
+          <EuiCompressedFieldSearch placeholder="Search snapshot policies" incremental={false} fullWidth onChange={this.onSearchChange} />
           {CommonTable()}
         </ContentPanel>
         {CommonModal()}
