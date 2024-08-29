@@ -333,7 +333,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             ) ? (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>You have no templates.</p>
                   </EuiText>
                 }

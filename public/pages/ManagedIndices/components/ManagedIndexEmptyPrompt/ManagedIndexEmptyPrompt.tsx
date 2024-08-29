@@ -59,7 +59,7 @@ const ManagedIndexEmptyPrompt: React.SFC<ManagedIndexEmptyPromptProps> = (props)
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={
-      <EuiText>
+      <EuiText size="s">
         <p>{getMessagePrompt(props)}</p>
       </EuiText>
     }

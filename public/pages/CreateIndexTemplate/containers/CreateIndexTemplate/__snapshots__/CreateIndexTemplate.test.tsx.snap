@@ -153,7 +153,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiTabs"
+      class="euiTabs euiTabs--small"
       role="tablist"
     >
       <button
@@ -197,17 +197,13 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Preview template
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h2>
+              Preview template
+            </h2>
+          </div>
         </div>
       </div>
       <hr
