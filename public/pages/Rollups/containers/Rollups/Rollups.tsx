@@ -35,6 +35,7 @@ import {
   EuiTableFieldDataColumnType,
   EuiButtonIcon,
   EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
@@ -527,9 +528,11 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       <EuiPanel>
         <EuiFlexGroup style={{ padding: "0px 10px" }} gutterSize="s" justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>
-            <EuiTitle size="m">
-              <h3>{"Rollup jobs (" + `${rollups.length}` + ")"}</h3>
-            </EuiTitle>
+            <EuiText size="s">
+              <EuiTitle size="m">
+                <h1>{"Rollup jobs (" + `${rollups.length}` + ")"}</h1>
+              </EuiTitle>
+            </EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">

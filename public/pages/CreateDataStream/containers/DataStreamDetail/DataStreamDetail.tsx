@@ -44,6 +44,7 @@ import {
   TopNavControlLinkData,
   TopNavControlDescriptionData,
 } from "../../../../../../../src/plugins/navigation/public";
+import { None } from "vega";
 
 export interface DataStreamDetailProps {
   dataStream?: string;
@@ -161,7 +162,11 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       run: () => {
         Modal.show({
           "data-test-subj": "dataStreamJSONDetailModal",
-          title: values.name,
+          title: (
+            <EuiText size="s">
+              <h2>{values.name}</h2>
+            </EuiText>
+          ),
           content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
         });
       },
@@ -205,7 +210,9 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
         <>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiTitle size="l">{isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>Create data stream</h1>}</EuiTitle>
+              <EuiTitle size="l">
+                {<EuiText size="s">{isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>Create data stream</h1>}</EuiText>}
+              </EuiTitle>
               {isEdit ? null : (
                 <CustomFormRow
                   fullWidth
@@ -308,7 +315,13 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiSmallButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">
+              <EuiSmallButton
+                fill
+                onClick={onSubmit}
+                isLoading={isLoading}
+                iconType={isEdit ? undefined : "plus"}
+                data-test-subj="CreateDataStreamCreateButton"
+              >
                 {isEdit ? "Save changes" : "Create data stream"}
               </EuiSmallButton>
             </EuiFlexItem>

@@ -8,11 +8,13 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small euiTitle euiTitle--large"
       >
-        Create data stream
-      </h1>
+        <h1>
+          Create data stream
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -295,6 +297,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         <span
           class="euiButtonContent euiButton__content"
         >
+          EuiIconMock
           <span
             class="euiButton__text"
           >

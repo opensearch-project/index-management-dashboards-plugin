@@ -12,11 +12,17 @@ exports[`<DataStreams /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <span
-        class="euiTitle euiTitle--small"
+      <div
+        class="euiText euiText--medium"
       >
-        Data streams
-      </span>
+        <h1
+          class="euiTitle euiTitle--small"
+        >
+          <span>
+            Data streams
+          </span>
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -93,6 +99,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                 <span
                   class="euiButtonContent euiButton__content"
                 >
+                  EuiIconMock
                   <span
                     class="euiButton__text"
                   >
@@ -400,7 +407,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                           class="euiText euiText--medium"
                         >
                           <div
-                            class="euiText euiText--medium"
+                            class="euiText euiText--small"
                           >
                             <p>
                               You have no data streams.
@@ -424,6 +431,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                             <span
                               class="euiButtonContent euiButton__content"
                             >
+                              EuiIconMock
                               <span
                                 class="euiButton__text"
                               >

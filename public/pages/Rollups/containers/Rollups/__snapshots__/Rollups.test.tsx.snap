@@ -14,11 +14,15 @@ exports[`<Rollups /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
-          class="euiTitle euiTitle--medium"
+        <div
+          class="euiText euiText--small"
         >
-          Rollup jobs (0)
-        </h3>
+          <h1
+            class="euiTitle euiTitle--medium"
+          >
+            Rollup jobs (0)
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -465,7 +469,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                             class="euiText euiText--medium"
                           >
                             <div
-                              class="euiText euiText--medium"
+                              class="euiText euiText--small"
                             >
                               <p>
                                 Loading rollup jobs...

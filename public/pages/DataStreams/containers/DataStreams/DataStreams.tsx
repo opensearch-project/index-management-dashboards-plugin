@@ -416,6 +416,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                       onClick={() => {
                         this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                       }}
+                      iconType="plus"
                     >
                       Create data stream
                     </EuiSmallButton>,
@@ -424,7 +425,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               ) : (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
                     </EuiText>
                   }
@@ -436,6 +437,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                           this.getDataStreams();
                         });
                       }}
+                      iconType="plus"
                     >
                       Reset filters
                     </EuiSmallButton>,
@@ -465,6 +467,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                 {
                   text: "Create data stream",
                   buttonProps: {
+                    iconType: "plus",
                     fill: true,
                     onClick: () => {
                       this.props.history.push(ROUTES.CREATE_DATA_STREAM);
@@ -477,9 +480,13 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
           bodyStyles={{ padding: "initial" }}
           title={
             <>
-              <EuiTitle size="s">
-                <span>Data streams</span>
-              </EuiTitle>
+              <EuiText>
+                <EuiTitle size="s">
+                  <h1>
+                    <span>Data streams</span>
+                  </h1>
+                </EuiTitle>
+              </EuiText>
               <EuiCompressedFormRow
                 fullWidth
                 helpText={
@@ -582,7 +589,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               ) ? (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>You have no data streams.</p>
                     </EuiText>
                   }
@@ -592,6 +599,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                       onClick={() => {
                         this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                       }}
+                      iconType="plus"
                     >
                       Create data stream
                     </EuiSmallButton>,
@@ -600,7 +608,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               ) : (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
                     </EuiText>
                   }
@@ -612,6 +620,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                           this.getDataStreams();
                         });
                       }}
+                      iconType="plus"
                     >
                       Reset filters
                     </EuiSmallButton>,
