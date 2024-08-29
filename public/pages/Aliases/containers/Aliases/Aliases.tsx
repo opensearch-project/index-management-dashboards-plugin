@@ -511,6 +511,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                 text: "Create alias",
                 buttonProps: {
                   fill: true,
+                  iconType: "plus",
                   onClick: () => {
                     this.setState({
                       aliasCreateFlyoutVisible: true,

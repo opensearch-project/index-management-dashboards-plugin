@@ -447,6 +447,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                 buttonProps: {
                   fill: true,
                   onClick: onClickCreate,
+                  iconType: "plus",
                 },
               },
             ]}
