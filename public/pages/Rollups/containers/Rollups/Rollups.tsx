@@ -563,7 +563,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                   button={actionButton}
                   isOpen={isPopoverOpen}
                   closePopover={this.closePopover}
-                  panelPaddingSize="none"
+                  panelPaddingSize="s"
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >

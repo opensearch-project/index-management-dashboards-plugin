@@ -174,18 +174,14 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
             <div
               class="euiModalHeader__title"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Refresh 
                   aliases
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -205,19 +201,19 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
                      will be refreshed.
                   </p>
                 </div>
-                <div
-                  class="euiText euiText--small"
+                <ul
+                  style="list-style-type: disc; list-style-position: inside;"
                 >
-                  <ul
-                    style="list-style-type: disc; list-style-position: inside;"
+                  <div
+                    class="euiText euiText--small"
                   >
                     <li
                       data-test-subj="UnblockedItem-2"
                     >
                       2
                     </li>
-                  </ul>
-                </div>
+                  </div>
+                </ul>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -369,18 +365,14 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
             <div
               class="euiModalHeader__title"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Refresh 
                   aliases
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -400,24 +392,28 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
                      will be refreshed.
                   </p>
                 </div>
-                <div
-                  class="euiText euiText--small"
+                <ul
+                  style="list-style-type: disc; list-style-position: inside;"
                 >
-                  <ul
-                    style="list-style-type: disc; list-style-position: inside;"
+                  <div
+                    class="euiText euiText--small"
                   >
                     <li
                       data-test-subj="UnblockedItem-1"
                     >
                       1
                     </li>
+                  </div>
+                  <div
+                    class="euiText euiText--small"
+                  >
                     <li
                       data-test-subj="UnblockedItem-2"
                     >
                       2
                     </li>
-                  </ul>
-                </div>
+                  </div>
+                </ul>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -536,18 +532,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   aliases
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -566,17 +558,17 @@ HTMLCollection [
                     The following aliases will be flushed:
                   </p>
                 </div>
-                <div
-                  class="euiText euiText--small"
+                <ul
+                  style="list-style-type: disc; list-style-position: inside;"
                 >
-                  <ul
-                    style="list-style-type: disc; list-style-position: inside;"
+                  <div
+                    class="euiText euiText--small"
                   >
                     <li>
                       alias2
                     </li>
-                  </ul>
-                </div>
+                  </div>
+                </ul>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -590,18 +582,30 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following aliases will not be flushed because one or more indexes are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following aliases will not be flushed because one or more indexes are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
-                        <li>
-                          alias1
-                        </li>
-                        <li>
-                          alias3
-                        </li>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            alias1
+                          </li>
+                        </div>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            alias3
+                          </li>
+                        </div>
                       </ul>
                     </div>
                   </div>
