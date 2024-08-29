@@ -3,11 +3,23 @@
 exports[`SnapshotRestoreOption component renders without error 1`] = `
 <div>
   <div>
-    <h5>
-      Specify restore option
-    </h5>
     <div
-      class="euiSpacer euiSpacer--m"
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h3>
+            Specify restore option
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiRadio euiRadio--compressed"

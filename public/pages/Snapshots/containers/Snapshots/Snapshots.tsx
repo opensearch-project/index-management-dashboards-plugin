@@ -22,6 +22,7 @@ import {
   EuiContextMenuItem,
   EuiButtonIcon,
   EuiButton,
+  EuiPanel,
 } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -45,6 +46,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData } from "src/plugins/navigation/public";
 
 interface SnapshotsProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -271,12 +273,11 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
         this.context.notifications.toasts.addSuccess(`Created snapshot ${snapshotId} in repository ${repository}.`);
         await this.getSnapshots();
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason;
-        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        const message = response.error;
 
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem creating the snapshot.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`,
+          toastMessage: `${message} Open browser console & click below for details.`,
         });
       }
     } catch (err) {
@@ -495,7 +496,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       box: {
         placeholder: "Search snapshot",
         incremental: true,
-        compressed: useNewUX ? true : false,
+        compressed: true,
       },
       compressed: true,
       filters: [
@@ -562,15 +563,52 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
 
     const descriptionData = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Index snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository.{" "}
-            <br></br>
-            You can restore indices by selecting a snapshot.
-          </EuiText>
-        ),
-      },
+        description:
+          "Index snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. You can restore indices by selecting a snapshot.",
+      } as TopNavControlDescriptionData,
     ];
+
+    const snapshotTable = () => {
+      return !useNewUX ? (
+        <ContentPanel title={showTitle} actions={useActions} subTitleText={useSubTitle}>
+          <EuiInMemoryTable
+            items={snapshots}
+            itemId={(item) => `${item.repository}:${item.id}`}
+            columns={this.columns}
+            pagination={true}
+            sorting={{
+              sort: {
+                field: "end_epoch",
+                direction: "desc",
+              },
+            }}
+            isSelectable={true}
+            selection={{ onSelectionChange: this.onSelectionChange }}
+            search={search}
+            loading={loadingSnapshots}
+          />
+        </ContentPanel>
+      ) : (
+        <EuiPanel>
+          <EuiInMemoryTable
+            items={snapshots}
+            itemId={(item) => `${item.repository}:${item.id}`}
+            columns={this.columns}
+            pagination={true}
+            sorting={{
+              sort: {
+                field: "end_epoch",
+                direction: "desc",
+              },
+            }}
+            isSelectable={true}
+            selection={{ onSelectionChange: this.onSelectionChange }}
+            search={search}
+            loading={loadingSnapshots}
+          />
+        </EuiPanel>
+      );
+    };
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls, setAppDescriptionControls } = getApplication();
@@ -614,26 +652,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
           />
         )}
 
-        {snapshotPanel && (
-          <ContentPanel title={showTitle} actions={useActions} subTitleText={useSubTitle}>
-            <EuiInMemoryTable
-              items={snapshots}
-              itemId={(item) => `${item.repository}:${item.id}`}
-              columns={this.columns}
-              pagination={true}
-              sorting={{
-                sort: {
-                  field: "end_epoch",
-                  direction: "desc",
-                },
-              }}
-              isSelectable={true}
-              selection={{ onSelectionChange: this.onSelectionChange }}
-              search={search}
-              loading={loadingSnapshots}
-            />
-          </ContentPanel>
-        )}
+        {snapshotPanel && snapshotTable()}
 
         {showFlyout && (
           <SnapshotFlyout
