@@ -212,7 +212,6 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 <h2>Index alias</h2>
               </EuiText>
               <EuiHorizontalRule margin="xs" />
-              <EuiSpacer size="s" />
               <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.alias} mode={IndicesUpdateMode.alias} />
             </EuiPanel>
           </>
@@ -270,7 +269,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
           </EuiText>
           <EuiHorizontalRule margin="xs" />
           <EuiDescriptionList compressed>
-            <EuiSpacer />
+            <EuiSpacer size="s" />
             <div>
               {OVERVIEW_DISPLAY_INFO.map((item) => {
                 let valueContent = null;
@@ -282,11 +281,16 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 }
                 return (
                   <div
-                    style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
+                    style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px" }}
                     key={item.label}
                     data-test-subj={`indexDetailOverviewItem-${item.label}`}
                   >
-                    <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
+                    <EuiDescriptionListTitle>
+                      <EuiText size="s">
+                        {" "}
+                        <h4>{item.label}</h4>{" "}
+                      </EuiText>
+                    </EuiDescriptionListTitle>
                     <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
                       {valueContent}
                     </EuiDescriptionListDescription>

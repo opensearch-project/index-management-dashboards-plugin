@@ -271,7 +271,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
             } as TopNavControlButtonData,
           ]}
         />
-        <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px", paddingTop: "10px" }}>
+        <EuiPanel>
           <div>
             <EuiFlexGroup gutterSize="s">
               <EuiFlexItem>

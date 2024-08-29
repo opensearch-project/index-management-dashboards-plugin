@@ -101,7 +101,7 @@ export default class TransformSettings extends Component<TransformSettingsProps,
           </EuiFlexGrid>
           <EuiSpacer size="m" />
         </div>
-        <div style={{ padding: "10px" }}>
+        <div>
           <EuiAccordion
             id={htmlIdGenerator()()}
             buttonContent={
@@ -119,7 +119,6 @@ export default class TransformSettings extends Component<TransformSettingsProps,
               <EuiText>
                 <h5>Preview result based on sample data</h5>
               </EuiText>
-              <EuiSpacer size={"s"} />
               <PreviewTransforms
                 onRemoveTransformation={() => {}}
                 previewTransform={this.state.previewTransform}

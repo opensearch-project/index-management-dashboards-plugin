@@ -20,7 +20,7 @@ import {
   ArgsWithError,
   ArgsWithQuery,
   Query,
-  EuiTitle,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
@@ -41,8 +41,7 @@ import "./index.scss";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlIconData, TopNavControlTextData } from "src/plugins/navigation/public";
-import { EuiSpacer } from "@opensearch-project/oui";
+import { TopNavControlButtonData } from "src/plugins/navigation/public";
 import NotificationModal from "../../components/NotificationModal";
 
 interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
@@ -316,7 +315,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
           ]}
         />
         <div id="test" style={{ padding: "0px" }}>
-          <ContentPanel>
+          <EuiPanel>
             <IndexControls
               search={search}
               onSearchChange={this.onSearchChange}
@@ -344,7 +343,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               selection={selection}
               sorting={sorting}
             />
-          </ContentPanel>
+          </EuiPanel>
         </div>
         {this.state.isNotificationModalVisible && (
           <NotificationModal onClose={this.onCloseNotification} visible={this.state.isNotificationModalVisible} />

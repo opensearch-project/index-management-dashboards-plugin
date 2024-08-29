@@ -13,6 +13,7 @@ import {
   EuiPanel,
   EuiEmptyPrompt,
   EuiSmallButton,
+  EuiText,
 } from "@elastic/eui";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -182,7 +183,12 @@ const Notifications = ({ onClose, visible }: NotificationsProps) => {
   return (
     <EuiModal onClose={onClose} maxWidth={false}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Notification settings</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            {" "}
+            <h2>Notification settings</h2>{" "}
+          </EuiText>
+        </EuiModalHeaderTitle>
         <EuiFlexItem grow={false}>
           <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
             Manage channels
@@ -196,8 +202,18 @@ const Notifications = ({ onClose, visible }: NotificationsProps) => {
               <EuiEmptyPrompt
                 iconType="alert"
                 iconColor="danger"
-                title={<h2>Error loading Notification settings</h2>}
-                body={<p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>}
+                title={
+                  <EuiText size="s">
+                    {" "}
+                    <h2>Error loading Notification settings</h2>{" "}
+                  </EuiText>
+                }
+                body={
+                  <EuiText size="s">
+                    {" "}
+                    <p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>
+                  </EuiText>
+                }
               />
             </EuiPanel>
           ) : (
@@ -253,7 +269,14 @@ const Notifications = ({ onClose, visible }: NotificationsProps) => {
                 });
                 return (
                   <CustomFormRow
-                    label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
+                    label={
+                      <div className="ISM-notifications-first-letter-uppercase">
+                        <EuiText size="s">
+                          {" "}
+                          <h3>{record.title}</h3>{" "}
+                        </EuiText>
+                      </div>
+                    }
                     helpText={ActionTypeMapDescription[getKeyByValue(ActionTypeMapTitle, record.title) as ActionType]}
                     direction="hoz"
                     key={record.action_name}
