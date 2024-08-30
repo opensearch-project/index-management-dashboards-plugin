@@ -259,13 +259,12 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
 
     return (
       <Fragment>
-        <EuiText size="xs" grow={false}>
-          <p>
-            <strong>Preview</strong>
-          </p>
+        <EuiSpacer />
+        <EuiText size="s" grow={false}>
+          <h4>Preview</h4>
         </EuiText>
         <EuiSpacer size="s" />
-        <EuiCodeBlock language="json" fontSize="m" style={{ height: "200px" }}>
+        <EuiCodeBlock language="json" fontSize="s" style={{ height: "200px" }}>
           {policyString}
         </EuiCodeBlock>
         <EuiSpacer size="m" />
@@ -293,7 +292,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiText size="xs" grow={false}>
+            <EuiText size="s" grow={false}>
               <p>
                 Choose the policy you want to use for the selected indices. A copy of the policy will be created and applied to the indices.
               </p>

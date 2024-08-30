@@ -4,8 +4,8 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiAccordion } from "@elastic/eui";
-import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiAccordion, EuiFlexGroup, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { TransformGroupItem, FieldItem, TransformAggItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import DefineTransforms from "../DefineTransforms";
@@ -82,32 +82,31 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
     };
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onChangeStep(2),
+      <EuiPanel>
+        <EuiFlexGroup>
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>Define transforms</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onChangeStep(2),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        panelStyles={{ padding: "16px 16px" }}
-        bodyStyles={{ padding: "10px" }}
-        title={
-          <EuiText size="s">
-            <h2>Define transforms</h2>
-          </EuiText>
-        }
-        titleSize="m"
-      >
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin="xs" />
         <div>
           <EuiFlexGrid columns={4}>{aggListItems()}</EuiFlexGrid>
           <EuiSpacer />
@@ -136,7 +135,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
             </div>
           </EuiAccordion>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

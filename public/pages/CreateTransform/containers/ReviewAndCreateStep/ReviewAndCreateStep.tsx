@@ -87,7 +87,7 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
             <EuiSpacer />
             <ReviewSchedule {...this.props} />
             <EuiSpacer />
-            <EuiCallOut color="warning">
+            <EuiCallOut color="warning" size="s">
               <p>You can only change the description and schedule after creating a job. Double-check your choices before proceeding.</p>
             </EuiCallOut>
           </EuiFlexItem>

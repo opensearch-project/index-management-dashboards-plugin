@@ -4,8 +4,17 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
+import {
+  EuiSpacer,
+  EuiCompressedFormRow,
+  EuiCompressedFieldText,
+  EuiTextArea,
+  EuiText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPanel,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 
 interface ConfigureTransformProps {
   isEdit: boolean;
@@ -24,16 +33,11 @@ const ConfigureTransform = ({
   onChangeDescription,
   description,
 }: ConfigureTransformProps) => (
-  <ContentPanel
-    panelStyles={{ padding: "16px 16px" }}
-    bodyStyles={{ padding: "10px" }}
-    title={
-      <EuiText size="s">
-        <h2>Job name and description</h2>
-      </EuiText>
-    }
-    titleSize="m"
-  >
+  <EuiPanel>
+    <EuiText size="s">
+      <h2>Job name and description</h2>
+    </EuiText>
+    <EuiHorizontalRule margin="xs" />
     <div>
       <EuiCompressedFormRow
         label={
@@ -73,6 +77,6 @@ const ConfigureTransform = ({
         <EuiTextArea compressed={true} value={description} onChange={onChangeDescription} data-test-subj="description" />
       </EuiCompressedFormRow>
     </div>
-  </ContentPanel>
+  </EuiPanel>
 );
 export default ConfigureTransform;

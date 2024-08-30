@@ -14,6 +14,7 @@ import {
   EuiHorizontalRule,
   EuiText,
   EuiTitle,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
@@ -87,16 +88,11 @@ export default class Schedule extends Component<ScheduleProps> {
       onChangePage,
     } = this.props;
     return (
-      <ContentPanel
-        panelStyles={{ padding: "16px 16px" }}
-        bodyStyles={{ padding: "10px" }}
-        title={
-          <EuiText size="s">
-            <h2>Schedule</h2>
-          </EuiText>
-        }
-        titleSize="m"
-      >
+      <EuiPanel>
+        <EuiText size="s">
+          <h2>Schedule</h2>
+        </EuiText>
+        <EuiHorizontalRule margin="xs" />
         <div>
           {!isEdit && (
             <EuiCompressedCheckbox
@@ -132,7 +128,7 @@ export default class Schedule extends Component<ScheduleProps> {
             </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

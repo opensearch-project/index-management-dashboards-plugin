@@ -4,8 +4,8 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiFlexItem, EuiText } from "@elastic/eui";
-import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
+import { EuiFlexGrid, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule } from "@elastic/eui";
+import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
 
@@ -31,32 +31,31 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
     const schedule = buildIntervalScheduleText(continuousJob === "yes", interval, intervalTimeunit);
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onChangeStep(3),
+      <EuiPanel>
+        <EuiFlexGroup>
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>Specify schedule</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onChangeStep(3),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        panelStyles={{ padding: "16px 16px" }}
-        bodyStyles={{ padding: "10px" }}
-        title={
-          <EuiText size="s">
-            <h2>Specify schedule</h2>
-          </EuiText>
-        }
-        titleSize="m"
-      >
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin="xs" />
         <div>
           <EuiFlexGrid columns={4}>
             <EuiFlexItem>
@@ -79,7 +78,7 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
             </EuiFlexItem>
           </EuiFlexGrid>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

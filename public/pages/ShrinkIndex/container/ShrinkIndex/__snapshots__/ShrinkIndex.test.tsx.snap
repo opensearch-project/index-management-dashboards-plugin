@@ -58,7 +58,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--s"
       />
       <div
         class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
@@ -72,7 +72,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Index name
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Index name
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -90,7 +96,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Primary shards
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Primary shards
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -108,7 +120,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Replica shards
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Replica shards
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -126,7 +144,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Total index size
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Total index size
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"

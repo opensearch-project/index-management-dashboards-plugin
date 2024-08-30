@@ -54,7 +54,7 @@ exports[`<ApplyPolicyModal /> spec renders the component 1`] = `
             class="euiModalBody__overflow"
           >
             <div
-              class="euiText euiText--extraSmall euiText--constrainedWidth"
+              class="euiText euiText--small euiText--constrainedWidth"
             >
               <p>
                 Choose the policy you want to use for the selected indices. A copy of the policy will be created and applied to the indices.

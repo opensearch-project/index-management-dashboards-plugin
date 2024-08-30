@@ -385,7 +385,6 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
           <>
             <EuiCallOut title="The source index must block write operations before shrinking." color="danger" iconType="alert">
               <p>In order to shrink an existing index, you must first set the index to block write operations.</p>
-              <EuiSpacer />
               <EuiSmallButton
                 onClick={() => {
                   const indexWriteBlockSettings = {
