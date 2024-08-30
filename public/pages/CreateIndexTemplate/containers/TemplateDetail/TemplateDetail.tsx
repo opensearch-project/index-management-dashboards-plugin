@@ -17,6 +17,10 @@ import {
   EuiTabs,
   EuiText,
   EuiTitle,
+  EuiPanel,
+  EuiTextColor,
+  EuiAccordion,
+  htmlIdGenerator,
 } from "@elastic/eui";
 import queryString from "query-string";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
@@ -398,6 +402,33 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           <EuiSpacer />
         </>
       ) : null}
+      {/* <EuiPanel>
+        {
+          isEdit && selectedTabId === TABS_ENUM.SUMMARY ? (
+            <EuiText size="s">
+              <h2>Preview template</h2>
+            </EuiText>
+          ) : values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
+            <EuiText size="s">
+              <h2>Override template definition</h2>
+            </EuiText>
+          ) : (
+            <EuiText size="s">
+              <h2>Template definition</h2>
+            </EuiText>
+          )
+        }
+        {
+          (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? <EuiText size="xs">
+                <EuiTextColor color="subdued">Provide additional configurations such as index aliases, settings, and mappings. Configurations defined in this section will take precedent if they overlap with the associated component templates.</EuiTextColor>
+              </EuiText>
+            : undefined
+        }
+        {(!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+          ? <EuiAccordion id={htmlIdGenerator()()} forceState={isAccordionOpen} onToggle={toggleAccordion} buttonContent={titleContent}></EuiAccordion> : undefined
+        }
+      </EuiPanel> */}
       <ContentPanel
         title={
           isEdit && selectedTabId === TABS_ENUM.SUMMARY ? (
@@ -472,6 +503,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   }}
                   isLoading={isSubmitting}
                   data-test-subj="CreateIndexTemplateCreateButton"
+                  iconType={"plus"}
                 >
                   Create template
                 </EuiSmallButton>

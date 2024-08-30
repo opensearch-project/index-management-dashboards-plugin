@@ -40,7 +40,7 @@ const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIs
   return (
     <ModalConsumer>
       {({ onShow }) => (
-        <EuiSmallButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })}>
+        <EuiSmallButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })} iconType={"plus"}>
           Create policy
         </EuiSmallButton>
       )}

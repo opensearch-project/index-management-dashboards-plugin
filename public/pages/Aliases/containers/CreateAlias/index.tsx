@@ -206,6 +206,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
             fill
             color="primary"
             data-test-subj="createAliasButton"
+            iconType={isEdit ? undefined : "plus"}
             onClick={async () => {
               const { errors, values } = (await formGenerateRef.current?.validatePromise()) || {};
               if (errors) {

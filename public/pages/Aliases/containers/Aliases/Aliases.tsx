@@ -384,13 +384,14 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
               ) ? (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>You have no aliases.</p>
                     </EuiText>
                   }
                   actions={[
                     <EuiSmallButton
                       fill
+                      iconType="plus"
                       onClick={() => {
                         this.setState({
                           aliasCreateFlyoutVisible: true,
@@ -404,7 +405,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
               ) : (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>There are no aliases matching your applied filters. Reset your filters to view your aliases.</p>
                     </EuiText>
                   }
