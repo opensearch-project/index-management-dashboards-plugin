@@ -30,7 +30,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
 
   const patternLabel = (
     <>
-      <EuiText size="xs">
+      <EuiText size="s">
         <h4>Rename Pattern</h4>
       </EuiText>
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px", fontWeight: "200" }}>
@@ -44,7 +44,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
 
   const renameLabel = (
     <>
-      <EuiText size="xs">
+      <EuiText size="s">
         <h4>Rename Replacement</h4>
       </EuiText>
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px", fontWeight: "200" }}>

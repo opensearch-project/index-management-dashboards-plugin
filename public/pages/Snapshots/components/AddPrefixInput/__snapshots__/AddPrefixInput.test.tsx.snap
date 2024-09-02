@@ -6,17 +6,17 @@ exports[`AddPrefixInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <div
-        class="euiText euiText--extraSmall"
+        class="euiText euiText--small"
       >
-        <h4>
+        <h3>
           Specify prefix for restored index names
-        </h4>
+        </h3>
       </div>
     </div>
   </div>

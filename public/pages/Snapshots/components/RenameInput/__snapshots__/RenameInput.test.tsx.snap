@@ -17,7 +17,7 @@ exports[`RenameInput component renders without error 1`] = `
         for="rename_pattern"
       >
         <div
-          class="euiText euiText--extraSmall"
+          class="euiText euiText--small"
         >
           <h4>
             Rename Pattern
@@ -84,7 +84,7 @@ exports[`RenameInput component renders without error 1`] = `
         for="rename_replacement"
       >
         <div
-          class="euiText euiText--extraSmall"
+          class="euiText euiText--small"
         >
           <h4>
             Rename Replacement

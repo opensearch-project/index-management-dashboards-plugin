@@ -31,6 +31,8 @@ import {
   EuiFlexGroup,
   EuiButtonIcon,
   EuiCompressedFieldSearch,
+  EuiPanel,
+  EuiSpacer,
 } from "@elastic/eui";
 import { BREADCRUMBS, PLUGIN_NAME, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
@@ -48,6 +50,7 @@ import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { ExternalLink } from "../../../utils/display-utils";
+import { TopNavControlData, TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 interface SnapshotPoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -520,13 +523,17 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     const descriptionData = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
-            <ExternalLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} />
-          </EuiText>
-        ),
-      },
+        description: "Define an automated snapshot schedule and retention period with a snapshot policy.",
+        links: {
+          label: "Learn more",
+          href: SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     const controlControlsData = [
@@ -538,10 +545,8 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
         href: `${PLUGIN_NAME}#${ROUTES.CREATE_SNAPSHOT_POLICY}`,
         testId: "createButton",
         controlType: "button",
-      },
+      } as TopNavControlData,
     ];
-
-    const searchbar_padding = { padding: "0px 0px 16px 0px" };
 
     const CommonTable = () => {
       return (
@@ -569,22 +574,16 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     return !this.state.useNewUx ? (
       <>
-        <ContentPanel 
+        <ContentPanel
           title={
             <EuiText size="s">
               <h1>Snapshot policies</h1>
             </EuiText>
-          }  
-          actions={actions} 
+          }
+          actions={actions}
           subTitleText={subTitleText}
         >
-          <EuiSearchBar
-            box={{
-              placeholder: "Search snapshot policies",
-              incremental: false,
-            }}
-            onChange={this.onSearchChange}
-          />
+          <EuiCompressedFieldSearch placeholder="Search snapshot policies" incremental={false} fullWidth onChange={this.onSearchChange} />
           {CommonTable()}
         </ContentPanel>
         {CommonModal()}
@@ -593,8 +592,8 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       <>
         <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
         <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
-        <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center" style={searchbar_padding}>
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem grow={true}>
               <EuiCompressedFieldSearch
                 autoFocus
@@ -621,8 +620,9 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
               </EuiPopover>
             </EuiFlexItem>
           </EuiFlexGroup>
+          <EuiSpacer size="m" />
           {CommonTable()}
-        </ContentPanel>
+        </EuiPanel>
         {CommonModal()}
       </>
     );
