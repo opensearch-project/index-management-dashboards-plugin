@@ -17,7 +17,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Reindex only unique documents
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Reindex only unique documents
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -71,7 +77,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Version conflicts
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Version conflicts
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -125,7 +137,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Slice reindexing operation
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Slice reindexing operation
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -222,7 +240,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Number of subtasks
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Number of subtasks
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -266,10 +290,16 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Transform with ingest pipeline
-              <i>
-                 – optional
-              </i>
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Transform with ingest pipeline 
+                  <i>
+                     – optional
+                  </i>
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -369,7 +399,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Reindex only unique documents
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Reindex only unique documents
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -423,7 +459,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Version conflicts
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Version conflicts
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -477,7 +519,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Slice reindexing operation
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Slice reindexing operation
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -574,7 +622,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Number of subtasks
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Number of subtasks
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -618,10 +672,16 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Transform with ingest pipeline
-            <i>
-               – optional
-            </i>
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Transform with ingest pipeline 
+                <i>
+                   – optional
+                </i>
+              </h3>
+            </div>
           </label>
         </div>
         <div

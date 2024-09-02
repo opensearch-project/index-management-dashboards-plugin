@@ -34,7 +34,17 @@ exports[`<ApplyPolicyModal /> spec renders the component 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            Apply policy
+             
+            <div
+              class="euiText euiText--small"
+            >
+               
+              <h2>
+                Apply policy
+              </h2>
+               
+            </div>
+             
           </div>
         </div>
         <div
@@ -44,7 +54,7 @@ exports[`<ApplyPolicyModal /> spec renders the component 1`] = `
             class="euiModalBody__overflow"
           >
             <div
-              class="euiText euiText--extraSmall euiText--constrainedWidth"
+              class="euiText euiText--small euiText--constrainedWidth"
             >
               <p>
                 Choose the policy you want to use for the selected indices. A copy of the policy will be created and applied to the indices.
@@ -65,7 +75,13 @@ exports[`<ApplyPolicyModal /> spec renders the component 1`] = `
                   class="euiFormLabel euiFormRow__label"
                   for="some_html_id"
                 >
-                  Policy ID
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h4>
+                      Policy ID
+                    </h4>
+                  </div>
                 </label>
               </div>
               <div

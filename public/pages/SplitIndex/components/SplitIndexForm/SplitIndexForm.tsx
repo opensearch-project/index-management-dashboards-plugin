@@ -3,11 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiSmallButtonEmpty } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiLink,
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiText,
+  EuiPanel,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import FormGenerator, { IField, IFormGeneratorRef, IFieldComponentProps } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
-import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../../../../components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import {
@@ -20,6 +29,7 @@ import {
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ServerResponse } from "../../../../../server/models/types";
 import { ActionType, OperationType } from "../../../Notifications/constant";
+import { OptionalLabel } from "../../../../components/CustomFormRow";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -81,7 +91,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
     const formFields: IField[] = [
       {
         rowProps: {
-          label: "Target Index Name",
+          label: (
+            <EuiText size="s">
+              <h3>Target Index Name</h3>
+            </EuiText>
+          ),
           helpText: INDEX_NAMING_MESSAGE,
           position: "bottom",
         },
@@ -112,7 +126,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
       },
       {
         rowProps: {
-          label: "Number of primary shards",
+          label: (
+            <EuiText size="s">
+              <h3>Number of primary shards</h3>
+            </EuiText>
+          ),
           helpText: (
             <>
               <p>Specify the number of primary shards for the new split index.</p>
@@ -149,7 +167,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
       },
       {
         rowProps: {
-          label: "Number of replicas",
+          label: (
+            <EuiText size="s">
+              <h3>Number of replicas</h3>
+            </EuiText>
+          ),
           helpText: REPLICA_NUMBER_MESSAGE,
         },
         name: "index.number_of_replicas",
@@ -165,8 +187,13 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
       {
         name: "aliases",
         rowProps: {
-          label: "Index alias",
-          isOptional: true,
+          label: (
+            <EuiText size="s">
+              <h3>
+                Index alias <OptionalLabel />
+              </h3>
+            </EuiText>
+          ),
           helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
         },
         options: {
@@ -192,7 +219,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         {readyForSplit && (
           <>
             <EuiSpacer />
-            <ContentPanel title="Configure target index" titleSize="s">
+            <EuiPanel>
+              <EuiText size="s">
+                <h2>Configure target index</h2>
+              </EuiText>
+              <EuiHorizontalRule margin="xs" />
               <FormGenerator
                 value={{ "index.number_of_replicas": "1", ...this.state.settings }}
                 onChange={(totalValue) =>
@@ -223,13 +254,17 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   },
                 }}
               />
-            </ContentPanel>
+            </EuiPanel>
           </>
         )}
         <NotificationConfig
           withPanel
           panelProps={{
-            title: "Advanced settings",
+            title: (
+              <EuiText size="s">
+                <h2>Advanced settings</h2>
+              </EuiText>
+            ),
             titleSize: "s",
           }}
           ref={(ref) => (this.notificationRef = ref)}

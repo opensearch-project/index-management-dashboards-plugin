@@ -259,13 +259,12 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
 
     return (
       <Fragment>
-        <EuiText size="xs" grow={false}>
-          <p>
-            <strong>Preview</strong>
-          </p>
+        <EuiSpacer />
+        <EuiText size="s" grow={false}>
+          <h4>Preview</h4>
         </EuiText>
         <EuiSpacer size="s" />
-        <EuiCodeBlock language="json" fontSize="m" style={{ height: "200px" }}>
+        <EuiCodeBlock language="json" fontSize="s" style={{ height: "200px" }}>
           {policyString}
         </EuiCodeBlock>
         <EuiSpacer size="m" />
@@ -283,17 +282,32 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
             // @ts-ignore */}
         <EuiModal onCancel={onClose} onClose={onClose}>
           <EuiModalHeader>
-            <EuiModalHeaderTitle>Apply policy</EuiModalHeaderTitle>
+            <EuiModalHeaderTitle>
+              {" "}
+              <EuiText size="s">
+                {" "}
+                <h2>Apply policy</h2>{" "}
+              </EuiText>{" "}
+            </EuiModalHeaderTitle>
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiText size="xs" grow={false}>
+            <EuiText size="s" grow={false}>
               <p>
                 Choose the policy you want to use for the selected indices. A copy of the policy will be created and applied to the indices.
               </p>
             </EuiText>
             <EuiSpacer size="m" />
-            <EuiCompressedFormRow label="Policy ID" isInvalid={hasSubmitted && !!selectedPolicyError} error={selectedPolicyError} fullWidth>
+            <EuiCompressedFormRow
+              label={
+                <EuiText size="s">
+                  <h4>Policy ID</h4>
+                </EuiText>
+              }
+              isInvalid={hasSubmitted && !!selectedPolicyError}
+              error={selectedPolicyError}
+              fullWidth
+            >
               <EuiCompressedComboBox
                 placeholder="Search policies"
                 async

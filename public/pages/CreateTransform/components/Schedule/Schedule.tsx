@@ -12,6 +12,9 @@ import {
   EuiCompressedFieldNumber,
   EuiAccordion,
   EuiHorizontalRule,
+  EuiText,
+  EuiTitle,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
@@ -46,7 +49,13 @@ const radios = [
 
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
-    <EuiCompressedFormRow label="Continuous">
+    <EuiCompressedFormRow
+      label={
+        <EuiText size="s">
+          <h4>Continuous</h4>
+        </EuiText>
+      }
+    >
       <EuiCompressedRadioGroup
         options={radios}
         idSelected={continuousJob}
@@ -79,7 +88,11 @@ export default class Schedule extends Component<ScheduleProps> {
       onChangePage,
     } = this.props;
     return (
-      <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Schedule" titleSize="m">
+      <EuiPanel>
+        <EuiText size="s">
+          <h2>Schedule</h2>
+        </EuiText>
+        <EuiHorizontalRule margin="xs" />
         <div>
           {!isEdit && (
             <EuiCompressedCheckbox
@@ -115,7 +128,7 @@ export default class Schedule extends Component<ScheduleProps> {
             </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

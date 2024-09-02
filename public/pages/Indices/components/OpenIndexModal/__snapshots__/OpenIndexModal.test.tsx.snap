@@ -39,7 +39,17 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Open indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Open indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -51,12 +61,20 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following index will be opened.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                />
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    The following index will be opened.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  />
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />

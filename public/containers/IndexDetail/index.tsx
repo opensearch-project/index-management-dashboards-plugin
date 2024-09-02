@@ -47,25 +47,41 @@ export default function IndexDetail(props: IIndexDetailProps) {
         <h2>Source index details</h2>
       </EuiText>
       <EuiHorizontalRule margin="xs" />
-      <EuiSpacer />
+      <EuiSpacer size="s" />
       {items && items.length ? (
         <DescriptionListHoz
           compressed
           listItems={[
             {
-              title: "Index name",
+              title: (
+                <EuiText size="s">
+                  <h4>Index name</h4>
+                </EuiText>
+              ),
               description: items[0].index,
             },
             {
-              title: "Primary shards",
+              title: (
+                <EuiText size="s">
+                  <h4>Primary shards</h4>
+                </EuiText>
+              ),
               description: items[0].pri,
             },
             {
-              title: "Replica shards",
+              title: (
+                <EuiText size="s">
+                  <h4>Replica shards</h4>
+                </EuiText>
+              ),
               description: items[0].rep,
             },
             {
-              title: "Total index size",
+              title: (
+                <EuiText size="s">
+                  <h4>Total index size</h4>
+                </EuiText>
+              ),
               description: items[0]["store.size"],
             },
           ]}
