@@ -426,9 +426,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
           <>
             <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <EuiTitle size="m">
-                  <span title={policyId}>{_.truncate(policyId)}</span>
-                </EuiTitle>
+                <EuiText size="s">
+                  <h1>{_.truncate(policyId)}</h1>
+                </EuiText>
               </EuiFlexItem>
 
               <EuiFlexItem grow={false}>

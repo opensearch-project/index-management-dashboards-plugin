@@ -259,7 +259,14 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
 
           <EuiSpacer size="l" />
 
-          <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
+          <EuiAccordion
+            id="advanced_settings_accordian"
+            buttonContent={
+              <EuiText size="s">
+                <h3>Advanced options</h3>
+              </EuiText>
+            }
+          >
             <EuiSpacer size="m" />
 
             <SnapshotAdvancedSettings

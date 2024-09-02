@@ -294,29 +294,30 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       if (response.ok) {
         this.onRestore(true, response);
       } else {
-        this.onRestore(false, JSON.parse(response.error).error);
+        this.onRestore(false, response);
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
 
-  onRestore = (success: boolean, error: object = {}) => {
+  onRestore = (success: boolean, response: object = {}) => {
     const { selectedItems } = this.state;
     let errorMessage: string | undefined;
     if (!success) {
       let optionalMessage = "";
+      const errorString = response.error || JSON.stringify(response);
 
-      if (error.reason.indexOf("open index with same name") >= 0) {
+      if (errorString.indexOf("open index with same name") >= 0) {
         optionalMessage = "You have an index with the same name. Try a different prefix.";
       }
-      errorMessage = `${optionalMessage}`;
+      errorMessage = `${optionalMessage} ${errorString}`;
     }
 
     const toasts = success
-      ? getToasts("success_restore_toast", errorMessage, selectedItems[0].id, this.onClickTab)
+      ? getToasts("success_restore_toast", undefined, selectedItems[0].id, this.onClickTab)
       : getToasts("error_restore_toast", errorMessage, selectedItems[0].id, this.onOpenError);
-    this.setState({ toasts, error: error });
+    this.setState({ toasts, error: response.error });
   };
 
   onOpenError = () => {
@@ -534,7 +535,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       <EuiSmallButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
         Restore
       </EuiSmallButton>,
-      <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="takeSnapshotButton">
+      <EuiSmallButton iconType="plus" onClick={this.onClickCreate} fill={true} data-test-subj="takeSnapshotButton">
         Take snapshot
       </EuiSmallButton>,
     ];
@@ -555,6 +556,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
         id: "Take snapshot",
         label: "Take snapshot",
         fill: true,
+        iconType: "plus",
         run: this.onClickCreate,
         testId: "takeSnapshot",
         controlType: "button",
@@ -612,13 +614,11 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls, setAppDescriptionControls } = getApplication();
-    const showTitle = useNewUX 
-      ? undefined 
-      : (
-        <EuiText size="s">
-          <h1>Snapshots</h1>
-        </EuiText>
-      );
+    const showTitle = useNewUX ? undefined : (
+      <EuiText size="s">
+        <h1>Snapshots</h1>
+      </EuiText>
+    );
     const SnapshotTabName = useNewUX ? "Index snapshots" : "Snapshots";
     const useActions = useNewUX ? undefined : actions;
     const useSubTitle = useNewUX ? undefined : subTitleText;

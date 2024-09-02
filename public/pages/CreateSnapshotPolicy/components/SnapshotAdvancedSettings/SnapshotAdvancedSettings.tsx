@@ -6,6 +6,7 @@
 import { EuiCompressedCheckbox, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
 import React, { ChangeEvent } from "react";
+import { CheckBoxLabel } from "../../../Snapshots/helper";
 
 interface SnapshotAdvancedSettingsProps {
   includeGlobalState: boolean;
@@ -41,7 +42,7 @@ const SnapshotAdvancedSettings = ({
   <div>
     <EuiCompressedCheckbox
       id="include_global_state"
-      label={<CustomLabel title="Include cluster state in snapshots" checkboxLable={true} />}
+      label={<CheckBoxLabel title="Include cluster state in snapshots" />}
       checked={includeGlobalState}
       onChange={onIncludeGlobalStateToggle}
     />
@@ -51,10 +52,9 @@ const SnapshotAdvancedSettings = ({
     <EuiCompressedCheckbox
       id="ignore_unavailable"
       label={
-        <CustomLabel
+        <CheckBoxLabel
           title="Ignore unavailable indices"
           helpText="Instead of failing snapshot, ignore any indexes that are unavailable or do not exist."
-          checkboxLable={true}
         />
       }
       checked={ignoreUnavailable}
@@ -65,13 +65,7 @@ const SnapshotAdvancedSettings = ({
 
     <EuiCompressedCheckbox
       id="partial"
-      label={
-        <CustomLabel
-          title="Allow partial snapshots"
-          helpText="Allow partial snapshots if one or more shards failed to store."
-          checkboxLable={true}
-        />
-      }
+      label={<CheckBoxLabel title="Allow partial snapshots" helpText="Allow partial snapshots if one or more shards failed to store." />}
       checked={partial}
       onChange={onPartialToggle}
     />

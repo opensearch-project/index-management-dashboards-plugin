@@ -10,15 +10,14 @@ interface CustomLabelProps {
   title: string | JSX.Element;
   isOptional?: boolean;
   helpText?: string | JSX.Element;
-  checkboxLable?: boolean;
 }
 
-const CustomLabel = ({ title, isOptional = false, helpText, checkboxLable = false }: CustomLabelProps) => (
+const CustomLabel = ({ title, isOptional = false, helpText }: CustomLabelProps) => (
   <>
     {title && typeof title == "string" ? (
       <EuiFlexGroup gutterSize="xs" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiText size="s">{checkboxLable ? <h4>{title}</h4> : <h3>{title}</h3>}</EuiText>
+          <EuiText size="s">{<h3>{title}</h3>}</EuiText>
         </EuiFlexItem>
 
         {isOptional ? (
@@ -35,7 +34,7 @@ const CustomLabel = ({ title, isOptional = false, helpText, checkboxLable = fals
 
     {helpText && typeof helpText === "string" ? <span style={{ fontWeight: 200, fontSize: "12px" }}>{helpText}</span> : helpText}
 
-    {checkboxLable ? null : <EuiSpacer size="s" />}
+    <EuiSpacer size="s" />
   </>
 );
 

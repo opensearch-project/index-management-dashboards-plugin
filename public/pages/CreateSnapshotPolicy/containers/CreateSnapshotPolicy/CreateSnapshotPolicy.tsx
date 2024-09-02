@@ -579,9 +579,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
           <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
         ) : (
           <>
-            <EuiTitle size="l">
+            <EuiText size="s">
               <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-            </EuiTitle>
+            </EuiText>
             {subTitleText}
             <EuiSpacer />
           </>
@@ -928,7 +928,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiSpacer />
 
-        <EuiFlexGroup justifyContent="flexEnd">
+        <EuiFlexGroup justifyContent="flexEnd" gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.onClickCancel}>Cancel</EuiSmallButtonEmpty>
           </EuiFlexItem>

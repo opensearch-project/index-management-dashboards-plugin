@@ -821,7 +821,7 @@ Object {
             class="euiFlyoutFooter"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+              class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
