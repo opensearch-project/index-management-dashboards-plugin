@@ -133,42 +133,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 16px;"
-    >
       <div
-        class="euiText euiText--small"
-      >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Define component template
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
-      </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 16px;"
-    >
+        class="euiSpacer euiSpacer--l"
+      />
       <div
         class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-_meta.description"
