@@ -442,7 +442,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
 
         {isModalOpen && (
           <EuiOverlayMask>
-            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+            <EuiModal onClose={this.closeModal}>
               <EuiModalHeader>
                 <EuiModalHeaderTitle>{"View JSON of " + id} </EuiModalHeaderTitle>
               </EuiModalHeader>

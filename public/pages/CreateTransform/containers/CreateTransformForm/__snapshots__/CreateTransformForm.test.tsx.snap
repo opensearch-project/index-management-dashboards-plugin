@@ -24,13 +24,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
               class="euiSteps"
             >
               <div
-                class="euiStep"
+                class="euiStep euiStep--small"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStep__circle"
+                    class="euiStepNumber euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -45,7 +45,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Set up indices
                   </h6>
@@ -55,13 +55,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -76,7 +76,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Define transforms
                   </h6>
@@ -86,13 +86,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -107,7 +107,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Specify schedule
                   </h6>
@@ -117,13 +117,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -138,7 +138,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Review and create
                   </h6>
@@ -634,7 +634,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
       />
     </div>
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
       style="padding: 5px 50px;"
     >
       <div
