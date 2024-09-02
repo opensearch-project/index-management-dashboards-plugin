@@ -44,25 +44,33 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Close indexes</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Close indexes</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         <>
-          <EuiCallOut color="warning" hidden={!showWarning}>
+          <EuiCallOut color="warning" size="s" hidden={!showWarning}>
             This index may contain critical system data. Closing system indexes may break OpenSearch.
+            <EuiSpacer />
           </EuiCallOut>
-          <EuiSpacer />
         </>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following index will be closed. It is not possible to index documents or to search for documents in a closed index.</p>
-          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-            {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <EuiText size="s">
+            <p>The following index will be closed. It is not possible to index documents or to search for documents in a closed index.</p>
+          </EuiText>
+          <EuiText size="s">
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {selectedItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </EuiText>
           <EuiSpacer />
-          <EuiText color="subdued">
+          <EuiText color="subdued" size="s">
             To confirm your action, type <b style={{ color: "#000" }}>close</b>.
           </EuiText>
           <EuiCompressedFieldText placeholder="close" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />

@@ -13,6 +13,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 
 interface OpenIndexModalProps {
@@ -31,17 +32,27 @@ export default function OpenIndexModal(props: OpenIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Open indexes</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          {" "}
+          <EuiText size="s">
+            {" "}
+            <h2>Open indexes</h2>{" "}
+          </EuiText>{" "}
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following index will be opened.</p>
-          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-            {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <EuiText size="s">
+            <p>The following index will be opened.</p>
+          </EuiText>
+          <EuiText size="s">
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {selectedItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </EuiText>
           <EuiSpacer />
         </div>
       </EuiModalBody>

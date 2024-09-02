@@ -123,6 +123,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
       <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>
           <EuiSearchBar
+            compressed
             query={search}
             box={{ placeholder: "Search", schema, incremental: true }}
             onChange={onSearchChange}

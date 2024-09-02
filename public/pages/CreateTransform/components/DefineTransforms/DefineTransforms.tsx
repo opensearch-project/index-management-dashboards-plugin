@@ -168,8 +168,8 @@ export default function DefineTransforms({
   if (isReadOnly)
     return (
       <div>
-        <EuiText>
-          <h5>Original fields with sample data</h5>
+        <EuiText size="s">
+          <h3>Original fields with sample data</h3>
         </EuiText>
         <EuiSpacer size="s" />
         <EuiDataGrid
@@ -195,8 +195,8 @@ export default function DefineTransforms({
           gridStyle={{ rowHover: "none" }}
         />
         <EuiSpacer size="l" />
-        <EuiText>
-          <h5>Transformed fields preview based on sample data</h5>
+        <EuiText size="s">
+          <h3>Transformed fields preview based on sample data</h3>
         </EuiText>
         <EuiSpacer size="s" />
         <PreviewTransform
@@ -210,9 +210,18 @@ export default function DefineTransforms({
     );
 
   return (
-    <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Select fields to transform" titleSize="m">
-      <EuiText>
-        <h5>Original fields with sample data</h5>
+    <ContentPanel
+      panelStyles={{ padding: "16px 16px" }}
+      bodyStyles={{ padding: "10px" }}
+      title={
+        <EuiText size="s">
+          <h2>Select fields to transform</h2>
+        </EuiText>
+      }
+      titleSize="m"
+    >
+      <EuiText size="s">
+        <h3>Original fields with sample data</h3>
       </EuiText>
       <EuiSpacer size="s" />
       {/*TODO: Substitute "source index", and "filtered by" fields with actual values*/}
@@ -242,8 +251,8 @@ export default function DefineTransforms({
         }}
       />
       <EuiSpacer size="l" />
-      <EuiText>
-        <h5>Transformed fields preview based on sample data</h5>
+      <EuiText size="s">
+        <h3>Transformed fields preview based on sample data</h3>
       </EuiText>
       <EuiSpacer size="s" />
       <EuiText color="subdued" size="xs">

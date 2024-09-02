@@ -363,7 +363,6 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
                       buttonProps: {
                         onClick: () => this.onEdit(),
                         fill: true,
-                        style: { marginRight: 20 },
                       },
                     },
                   ]}
@@ -390,9 +389,9 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem grow={false}>
-            <EuiTitle size="m">
-              <h2>{id}</h2>
-            </EuiTitle>
+            <EuiText size="s">
+              <h1>{id}</h1>
+            </EuiText>
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
@@ -407,7 +406,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -430,7 +429,6 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
         <EuiSpacer />
         <TransformStatus metadata={metadata} />
         <EuiSpacer />
-        <EuiSpacer />
         <TransformSettings
           {...this.props}
           transformService={this.props.transformService}
@@ -443,13 +441,17 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
 
         {isModalOpen && (
           <EuiOverlayMask>
-            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+            <EuiModal onClose={this.closeModal}>
               <EuiModalHeader>
-                <EuiModalHeaderTitle>{"View JSON of " + id} </EuiModalHeaderTitle>
+                <EuiModalHeaderTitle>
+                  <EuiText size="s">
+                    <h2>{"View JSON of " + id}</h2>
+                  </EuiText>
+                </EuiModalHeaderTitle>
               </EuiModalHeader>
 
               <EuiModalBody>
-                <EuiCodeBlock language="json" fontSize="m" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
+                <EuiCodeBlock language="json" fontSize="s" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
                   {JSON.stringify(transformJson, null, 4)}
                 </EuiCodeBlock>
               </EuiModalBody>
@@ -482,7 +484,6 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
         <EuiSpacer />
         <TransformStatus metadata={metadata} />
         <EuiSpacer />
-        <EuiSpacer />
         <TransformSettings
           {...this.props}
           transformService={this.props.transformService}
@@ -495,13 +496,17 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
 
         {isModalOpen && (
           <EuiOverlayMask>
-            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+            <EuiModal onClose={this.closeModal}>
               <EuiModalHeader>
-                <EuiModalHeaderTitle>{"View JSON of " + id} </EuiModalHeaderTitle>
+                <EuiModalHeaderTitle>
+                  <EuiText size="s">
+                    <h2>{"View JSON of " + id}</h2>
+                  </EuiText>
+                </EuiModalHeaderTitle>
               </EuiModalHeader>
 
               <EuiModalBody>
-                <EuiCodeBlock language="json" fontSize="m" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
+                <EuiCodeBlock language="json" fontSize="s" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
                   {JSON.stringify(transformJson, null, 4)}
                 </EuiCodeBlock>
               </EuiModalBody>

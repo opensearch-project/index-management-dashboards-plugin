@@ -4,10 +4,18 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCompressedCheckbox, EuiAccordion, EuiCompressedFormRow, EuiCompressedFieldNumber } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiCompressedCheckbox,
+  EuiAccordion,
+  EuiCompressedFormRow,
+  EuiCompressedFieldNumber,
+  EuiText,
+  EuiPanel,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../utils/metadataHelper";
 
 interface ScheduleProps {
@@ -47,14 +55,22 @@ export default class Schedule extends Component<ScheduleProps> {
       intervalTimeUnit,
       onIntervalChange,
       onIntervalTimeUnitChange,
-      size,
     } = this.props;
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize={size}>
-        <div style={{ paddingLeft: "10px" }}>
+      <EuiPanel>
+        <EuiText size="s">
+          {" "}
+          <h2>Schedule</h2>{" "}
+        </EuiText>
+        <EuiHorizontalRule margin="xs" />
+        <div>
           <EuiCompressedCheckbox
             id="jobEnabled"
-            label="Job enabled by default"
+            label={
+              <EuiText size="s">
+                <p>Job enabled by default</p>
+              </EuiText>
+            }
             checked={enabled}
             onChange={onEnabledChange}
             data-test-subj="jobEnabled"
@@ -69,7 +85,14 @@ export default class Schedule extends Component<ScheduleProps> {
 
           <EuiSpacer size="m" />
 
-          <EuiAccordion id={htmlIdGenerator()()} buttonContent="Advanced">
+          <EuiAccordion
+            id={htmlIdGenerator()()}
+            buttonContent={
+              <EuiText size="s">
+                <h3>Advanced</h3>
+              </EuiText>
+            }
+          >
             <EuiSpacer size="m" />
             <EuiCompressedFormRow
               label={"Pages per execution"}
@@ -81,7 +104,7 @@ export default class Schedule extends Component<ScheduleProps> {
             </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

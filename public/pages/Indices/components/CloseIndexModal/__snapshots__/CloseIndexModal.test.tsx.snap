@@ -39,7 +39,13 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Close indexes
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Close indexes
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -49,36 +55,44 @@ HTMLCollection [
               class="euiModalBody__overflow"
             >
               <div
-                class="euiCallOut euiCallOut--warning"
+                class="euiCallOut euiCallOut--warning euiCallOut--small"
                 hidden=""
               >
                 <div
-                  class="euiText euiText--small"
+                  class="euiText euiText--extraSmall"
                 >
                   <div
                     class="euiTextColor euiTextColor--default"
                   >
                     This index may contain critical system data. Closing system indexes may break OpenSearch.
+                    <div
+                      class="euiSpacer euiSpacer--l"
+                    />
                   </div>
                 </div>
               </div>
               <div
-                class="euiSpacer euiSpacer--l"
-              />
-              <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following index will be closed. It is not possible to index documents or to search for documents in a closed index.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                />
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    The following index will be closed. It is not possible to index documents or to search for documents in a closed index.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  />
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiText euiText--medium"
+                  class="euiText euiText--small"
                 >
                   <div
                     class="euiTextColor euiTextColor--subdued"
