@@ -10,19 +10,9 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
     <div
       class="euiText euiText--small"
     >
-      <div
-        class="euiText euiText--small"
-      >
-        <h1>
-          Define policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
-      </div>
+      <h2>
+        Define policy
+      </h2>
     </div>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"

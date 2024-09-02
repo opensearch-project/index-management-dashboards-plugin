@@ -7,11 +7,114 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
-        class="euiText"
+        class="euiFlexItem"
       >
-        <h1>
-          Create component template
-        </h1>
+        <div
+          class="euiText euiText--small"
+        >
+          <h1
+            class="euiTitle euiTitle--large"
+          >
+            Create component template
+          </h1>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              <div>
+                Component templates are reusable building blocks for composing index or data stream templates. You can define component templates with common index configurations and associate them to an index template.
+                 
+                <button
+                  class="euiLink euiLink--primary"
+                  type="button"
+                >
+                  Learn more
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h2>
+            Define component template
+          </h2>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        class="euiFormRow euiFormRow--compressed"
+        data-test-subj="form-row-name"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Name
+              </h3>
+            </div>
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            <div>
+              Name cannot be changed after the component template is created.
+            </div>
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout euiFormControlLayout--compressed"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText euiFieldText--compressed"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </span>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--compressed"
@@ -335,7 +438,22 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 id="some_html_id-help-0"
               >
                 <div>
-                  Index alias
+                  Define how documents and their fields are stored and indexed.
+                   
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                    EuiIconMock
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      (opens in a new tab or window)
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -399,23 +517,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     <div
       class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
-      <div
-        class="euiFlexItem"
-      >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Index settings
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
-      </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >

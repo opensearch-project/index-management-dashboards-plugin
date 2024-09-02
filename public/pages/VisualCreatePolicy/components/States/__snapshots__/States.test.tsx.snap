@@ -11,22 +11,19 @@ exports[`<States /> spec renders the component 1`] = `
     <div
       class="euiText euiText--small"
     >
-      <div
-        class="euiText euiText--small"
-      >
-        <h1>
-          States (2)
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
-      </div>
-      <div
-        class="euiText euiText--small"
-        style="padding: 5px 0px;"
+      <h2>
+        States (2)
+      </h2>
+    </div>
+  </div>
+  <div
+    class="euiText euiText--extraSmall"
+  >
+    <div
+      class="euiTextColor euiTextColor--subdued"
+    >
+      <p
+        style="font-weight: 350;"
       >
         You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
         <br />

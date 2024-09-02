@@ -444,7 +444,22 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                   id="some_html_id-help-0"
                 >
                   <div>
-                    Index alias
+                    Define how documents and their fields are stored and indexed.
+                     
+                    <a
+                      class="euiLink euiLink--primary"
+                      href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      EuiIconMock
+                      <span
+                        class="euiScreenReaderOnly"
+                      >
+                        (opens in a new tab or window)
+                      </span>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -503,199 +518,6 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         />
       </div>
     </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding: 0px 0px 0px 0px;"
-    >
-      <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
-      >
-        <div
-          class="euiFlexItem"
-        >
-          <div
-            class="euiText euiText--small"
-          >
-            <h1>
-              Index settings
-              <span
-                class="panel-header-count"
-              >
-                 
-                 
-              </span>
-            </h1>
-          </div>
-        </div>
-        <div
-          class="euiFlexItem euiFlexItem--flexGrowZero"
-        >
-          <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-          >
-            <div
-              class="euiFlexItem"
-            >
-              <div>
-                <span
-                  class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-                >
-                  <div>
-                    <div
-                      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
-                    >
-                      <button
-                        aria-checked="false"
-                        aria-labelledby="some_html_id"
-                        class="euiSwitch__button"
-                        id="some_html_id"
-                        role="switch"
-                        type="button"
-                      >
-                        <span
-                          class="euiSwitch__body"
-                        >
-                          <span
-                            class="euiSwitch__thumb"
-                          />
-                          <span
-                            class="euiSwitch__track"
-                          />
-                        </span>
-                      </button>
-                      <span
-                        class="euiSwitch__label"
-                        id="some_html_id"
-                      >
-                        Use configuration
-                      </span>
-                    </div>
-                  </div>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full"
-      />
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding: 0px 0px 0px 0px;"
-    >
-      <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
-      >
-        <div
-          class="euiFlexItem"
-        >
-          <div
-            class="euiText euiText--small"
-          >
-            <h2
-              class="euiTitle euiTitle--medium"
-            >
-              Index mapping
-            </h2>
-          </div>
-          <div
-            class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                <div>
-                  Define how documents and their fields are stored and indexed.
-                   
-                  <a
-                    class="euiLink euiLink--primary"
-                    href="https://opensearch.org/docs/undefined/opensearch/mappings/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Learn more
-                    EuiIconMock
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      (opens in a new tab or window)
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiFlexItem euiFlexItem--flexGrowZero"
-        >
-          <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-          >
-            <div
-              class="euiFlexItem"
-            >
-              <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-              >
-                <div>
-                  <div
-                    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
-                  >
-                    <button
-                      aria-checked="false"
-                      aria-labelledby="some_html_id"
-                      class="euiSwitch__button"
-                      id="some_html_id"
-                      role="switch"
-                      type="button"
-                    >
-                      <span
-                        class="euiSwitch__body"
-                      >
-                        <span
-                          class="euiSwitch__thumb"
-                        />
-                        <span
-                          class="euiSwitch__track"
-                        />
-                      </span>
-                    </button>
-                    <span
-                      class="euiSwitch__label"
-                      id="some_html_id"
-                    >
-                      Use configuration
-                    </span>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full"
-      />
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
   </div>
 </div>
 `;

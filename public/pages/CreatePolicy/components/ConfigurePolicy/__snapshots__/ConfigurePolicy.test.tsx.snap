@@ -10,19 +10,9 @@ exports[`<ConfigurePolicy /> spec renders the component 1`] = `
     <div
       class="euiText euiText--small"
     >
-      <div
-        class="euiText euiText--small"
-      >
-        <h1>
-          Name policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
-      </div>
+      <h2>
+        Name policy
+      </h2>
     </div>
   </div>
   <hr
