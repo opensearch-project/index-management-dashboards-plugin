@@ -64,7 +64,7 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   const isGhost = color === "ghost";
   const titleContent = (
     <EuiFlexGroup
-      style={{ ...(noExtraPadding ? { marginTop: 0, marginBottom: 0 } : {}), padding: isGhost || accordion ? undefined : "0px 10px" }}
+      style={{ ...(noExtraPadding ? { marginTop: 0, marginBottom: 0 } : {}), padding: isGhost || accordion ? undefined : "0px 16px" }}
       justifyContent="spaceBetween"
       alignItems="flexStart"
     >
@@ -111,7 +111,7 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
       {children ? (
         <div
           style={{
-            padding: isGhost ? undefined : "0px 10px",
+            padding: isGhost ? undefined : "0px 16px",
             ...bodyStyles,
             display: accordion && isAccordionOpen === "closed" ? "none" : undefined,
           }}

@@ -18,7 +18,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Index segments
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Index segments
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -87,7 +93,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Flush indexes
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Flush indexes
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -137,7 +149,13 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Remove deleted documents
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Remove deleted documents
+                </h3>
+              </div>
             </label>
           </div>
           <div
@@ -190,7 +208,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Index segments
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Index segments
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -259,7 +283,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Flush indexes
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Flush indexes
+              </h3>
+            </div>
           </label>
         </div>
         <div
@@ -309,7 +339,13 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Remove deleted documents
+            <div
+              class="euiText euiText--small"
+            >
+              <h3>
+                Remove deleted documents
+              </h3>
+            </div>
           </label>
         </div>
         <div

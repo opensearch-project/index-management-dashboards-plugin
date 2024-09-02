@@ -412,9 +412,11 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           <>
             <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <EuiTitle size="m">
-                  <h2>{rollupId}</h2>
-                </EuiTitle>
+                <EuiText size="s">
+                  <EuiTitle size="m">
+                    <h1>{rollupId}</h1>
+                  </EuiTitle>
+                </EuiText>
               </EuiFlexItem>
               <EuiFlexItem>
                 {enabled ? (
@@ -480,9 +482,14 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
 
         {isModalOpen && (
           <EuiOverlayMask>
-            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+            <EuiModal onClose={this.closeModal}>
               <EuiModalHeader>
-                <EuiModalHeaderTitle>{"View JSON of " + rollupId} </EuiModalHeaderTitle>
+                <EuiModalHeaderTitle>
+                  {" "}
+                  <EuiText size="s">
+                    <h2>{"View JSON of " + rollupId}</h2>
+                  </EuiText>{" "}
+                </EuiModalHeaderTitle>
               </EuiModalHeader>
 
               <EuiModalBody>

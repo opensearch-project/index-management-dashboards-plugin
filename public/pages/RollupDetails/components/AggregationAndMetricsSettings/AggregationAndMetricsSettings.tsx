@@ -16,6 +16,8 @@ import {
   //@ts-ignore
   Pagination,
   EuiTableSortingType,
+  EuiHorizontalRule,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS } from "../../../Rollups/utils/constants";
@@ -131,9 +133,16 @@ export default class AggregationAndMetricsSettings extends Component<
       interval = intervalValue[0] + " " + parseTimeunit(intervalUnit[0]);
     }
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title={AGGREGATION_AND_METRIC_SETTINGS} titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="s" />
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>{AGGREGATION_AND_METRIC_SETTINGS}</h2>
+            </EuiText>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiText size="s">
             <h3>Additional metrics</h3>
           </EuiText>
@@ -187,7 +196,7 @@ export default class AggregationAndMetricsSettings extends Component<
           {sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination, sorting, this.onTableChange)}
           <EuiSpacer size="s" />
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

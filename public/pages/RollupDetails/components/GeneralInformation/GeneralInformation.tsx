@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 
@@ -47,18 +47,23 @@ export default class GeneralInformation extends Component<GeneralInformationProp
           },
         ];
     return (
-      <ContentPanel
-        actions={<ModalConsumer>{() => <ContentPanelActions actions={useActions} />}</ModalConsumer>}
-        bodyStyles={{ padding: "initial" }}
-        title="General information"
-        titleSize="s"
-      >
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="s" />
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>General information</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>{() => <ContentPanelActions actions={useActions} />}</ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiFlexGrid columns={4}>
             {infoItems.map((item) => (
               <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -67,7 +72,7 @@ export default class GeneralInformation extends Component<GeneralInformationProp
           </EuiFlexGrid>
           <EuiSpacer size="s" />
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

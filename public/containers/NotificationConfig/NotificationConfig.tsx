@@ -4,7 +4,7 @@
  */
 
 import React, { useRef, forwardRef, useMemo, useImperativeHandle, useContext, useEffect, useState } from "react";
-import { EuiBadge, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
+import { EuiBadge, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from "@elastic/eui";
 import ChannelSelect, { useChannels } from "../ChannelSelect";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
 import {

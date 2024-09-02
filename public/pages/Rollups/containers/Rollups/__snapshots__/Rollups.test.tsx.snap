@@ -6,20 +6,23 @@ exports[`<Rollups /> spec renders the component 1`] = `
 >
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
       style="padding: 0px 10px;"
     >
       <div
         class="euiFlexItem"
       >
-        <h3
-          class="euiTitle euiTitle--medium"
+        <div
+          class="euiText euiText--small"
         >
-          Rollup jobs (0)
-        </h3>
+          <h1
+            class="euiTitle euiTitle--medium"
+          >
+            Rollup jobs (0)
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -129,6 +132,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
               <span
                 class="euiButtonContent euiButton__content"
               >
+                EuiIconMock
                 <span
                   class="euiButton__text"
                 >
@@ -466,7 +470,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                             class="euiText euiText--medium"
                           >
                             <div
-                              class="euiText euiText--medium"
+                              class="euiText euiText--small"
                             >
                               <p>
                                 Loading rollup jobs...

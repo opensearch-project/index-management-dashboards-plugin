@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext } from "react";
-import { EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiText, EuiFlexGrid, EuiFlexItem } from "@elastic/eui";
 import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -16,32 +16,40 @@ export default function IndexAlias(props: SubDetailProps) {
   const { isEdit, field } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
+
+  const listItems = [
+    {
+      title: "Alias names",
+      description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
+    },
+  ];
+
   return (
     <>
-      <EuiTitle size="s">
-        <CustomFormRow
-          fullWidth
-          label={
-            <EuiTitle size="s">
-              <div>Index alias</div>
-            </EuiTitle>
-          }
-          helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
-        >
-          <></>
-        </CustomFormRow>
-      </EuiTitle>
+      <CustomFormRow
+        fullWidth
+        label={
+          <EuiText size="s">
+            <h3>Index alias</h3>
+          </EuiText>
+        }
+        helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
+      >
+        <></>
+      </CustomFormRow>
       {!isEdit ? (
         <>
           <EuiSpacer size="s" />
-          <DescriptionListHoz
-            listItems={[
-              {
-                title: "Alias names",
-                description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
-              },
-            ]}
-          />
+          <EuiFlexGrid columns={4}>
+            {listItems.map((item) => (
+              <EuiFlexItem key={`${item.title}#${item.description}`}>
+                <EuiText size="s">
+                  <dt>{item.title}</dt>
+                  <dd>{item.description}</dd>
+                </EuiText>
+              </EuiFlexItem>
+            ))}
+          </EuiFlexGrid>
         </>
       ) : (
         <>
@@ -49,7 +57,12 @@ export default function IndexAlias(props: SubDetailProps) {
           <CustomFormRow
             fullWidth
             {...getCommonFormRowProps(["template", "aliases"], field)}
-            label="Index alias"
+            label={
+              <EuiText size="s">
+                {" "}
+                <h3>Index alias</h3>{" "}
+              </EuiText>
+            }
             helpText="Select existing aliases or specify a new alias."
           >
             <AliasSelect
