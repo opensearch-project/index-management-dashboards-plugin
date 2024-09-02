@@ -279,7 +279,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiSpacer />
 
-      <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+      <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
         <EuiFlexItem grow={false}>
           <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="reindexCancelButton">
             Cancel

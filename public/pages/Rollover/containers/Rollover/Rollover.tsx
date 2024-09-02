@@ -389,7 +389,7 @@ export default function Rollover(props: RolloverProps) {
           <EuiSpacer />
         </>
       ) : null}
-      <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+      <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
         <EuiFlexItem grow={false}>
           <EuiSmallButtonEmpty
             onClick={() => {

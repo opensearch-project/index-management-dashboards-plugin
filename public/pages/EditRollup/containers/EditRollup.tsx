@@ -349,7 +349,7 @@ export class EditRollup extends Component<EditRollupProps, EditRollupState> {
 
         <EuiSpacer />
 
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="editRollupCancelButton">
               Cancel
