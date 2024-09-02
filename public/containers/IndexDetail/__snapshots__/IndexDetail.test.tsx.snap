@@ -16,7 +16,7 @@ exports[`<IndexDetail /> spec render the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiSpacer euiSpacer--l"
+      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiSpacer euiSpacer--l"

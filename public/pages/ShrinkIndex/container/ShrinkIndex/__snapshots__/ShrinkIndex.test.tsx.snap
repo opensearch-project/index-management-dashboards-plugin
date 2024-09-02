@@ -5,11 +5,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
   <div
     style="padding: 0px 50px;"
   >
-    <h1
-      class="euiTitle euiTitle--large"
+    <div
+      class="euiText euiText--small"
     >
-      Shrink index
-    </h1>
+      <h1>
+        Shrink index
+      </h1>
+    </div>
     <div
       class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
       id="some_html_id-row"
@@ -58,7 +60,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--s"
       />
       <div
         class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
@@ -72,7 +74,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Index name
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Index name
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -90,7 +98,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Primary shards
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Primary shards
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -108,7 +122,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Replica shards
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Replica shards
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -126,7 +146,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
-              Total index size
+              <div
+                class="euiText euiText--small"
+              >
+                <h4>
+                  Total index size
+                </h4>
+              </div>
             </dt>
             <dd
               class="euiDescriptionList__description"
@@ -146,495 +172,499 @@ exports[`<Shrink index /> spec renders the component 1`] = `
     />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
+        class="euiText euiText--small"
       >
-        <div
-          class="euiFlexItem"
-        >
-          <div
-            class="euiText euiText--small"
-          >
-            <h1>
-              Configure target index
-              <span
-                class="panel-header-count"
-              >
-                 
-                 
-              </span>
-            </h1>
-          </div>
-        </div>
+        <h2>
+          Configure target index
+        </h2>
       </div>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        style="padding: 0px 10px;"
+        class="euiSpacer euiSpacer--m"
+      />
+      <div
+        class="euiForm"
       >
+        <div
+          class="euiFormRow euiFormRow--compressed"
+          data-test-subj="form-name-targetIndex"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Target index name
+                </h3>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--compressed"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText euiFieldText--compressed"
+                    data-test-subj="targetIndexNameInput"
+                    placeholder="Specify a name for the new shrunken index."
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="some_html_id-help-0"
+            >
+              <div>
+                Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--compressed"
+          data-test-subj="form-name-index.number_of_shards"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Number of primary shards
+                </h3>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              <p>
+                Specify the number of shards for the new shrunken index.
+              </p>
+              <p>
+                The number must be a factor of the primary shard count of the source index.
+              </p>
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--compressed"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <select
+                    class="euiSelect euiSelect--compressed"
+                    data-test-subj="numberOfShardsInput"
+                    placeholder="Select primary shard count"
+                  >
+                    <option
+                      value="1"
+                    >
+                      1
+                    </option>
+                    <option
+                      value="5"
+                    >
+                      5
+                    </option>
+                  </select>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <span
+                      class="euiFormControlLayoutCustomIcon"
+                    >
+                      EuiIconMock
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--compressed"
+          data-test-subj="form-name-index.number_of_replicas"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Number of replicas
+                </h3>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              <div>
+                Specify the number of replicas each primary shard should have. Default is 1.
+              </div>
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout euiFormControlLayout--compressed"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldNumber euiFieldNumber--compressed"
+                    data-test-subj="numberOfReplicasInput"
+                    min="0"
+                    type="number"
+                    value="1"
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--compressed"
+          data-test-subj="form-name-aliases"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiText euiText--small"
+              >
+                <h3>
+                  Index alias 
+                  <i>
+                     – optional
+                  </i>
+                </h3>
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Allow this index to be referenced by existing aliases or specify a new alias.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox euiComboBox--compressed"
+                data-test-subj="aliasesInput"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
+                    >
+                      <p
+                        class="euiComboBoxPlaceholder"
+                      >
+                        Select aliases or specify new aliases.
+                      </p>
+                      <div
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
         <div
           class="euiSpacer euiSpacer--m"
         />
         <div
-          class="euiForm"
+          class="euiAccordion accordion-in-advanced-settings"
         >
           <div
-            class="euiFormRow euiFormRow--compressed"
-            data-test-subj="form-name-targetIndex"
-            id="some_html_id-row"
+            class="euiAccordion__triggerWrapper"
           >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Target index name
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
+            <button
+              aria-controls="accordion_for_create_index_settings"
+              aria-expanded="false"
+              class="euiAccordion__button"
+              id="some_html_id"
+              type="button"
             >
               <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                class="euiAccordion__iconWrapper"
               >
-                <div
-                  class="euiFormControlLayout euiFormControlLayout--compressed"
-                >
-                  <div
-                    class="euiFormControlLayout__childrenWrapper"
-                  >
-                    <input
-                      class="euiFieldText euiFieldText--compressed"
-                      data-test-subj="targetIndexNameInput"
-                      placeholder="Specify a name for the new shrunken index."
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
+                EuiIconMock
               </span>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
+              <span
+                class="euiIEFlexWrapFix"
               >
-                <div>
-                  Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
-                </div>
-              </div>
-            </div>
+                <h2>
+                  Advanced settings
+                </h2>
+              </span>
+            </button>
           </div>
           <div
-            class="euiFormRow euiFormRow--compressed"
-            data-test-subj="form-name-index.number_of_shards"
-            id="some_html_id-row"
+            aria-labelledby="some_html_id"
+            class="euiAccordion__childWrapper"
+            id="accordion_for_create_index_settings"
+            role="region"
+            style="height: 0px"
+            tabindex="-1"
           >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Number of primary shards
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
+            <div>
               <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                <p>
-                  Specify the number of shards for the new shrunken index.
-                </p>
-                <p>
-                  The number must be a factor of the primary shard count of the source index.
-                </p>
-              </div>
-              <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                class=""
               >
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--compressed"
+                  class="euiSpacer euiSpacer--s"
+                />
+                <div
+                  class="euiFormRow euiFormRow--compressed"
+                  data-test-subj="formNameAdvancedSettings"
+                  id="some_html_id-row"
                 >
                   <div
-                    class="euiFormControlLayout__childrenWrapper"
+                    class="euiFormRow__labelWrapper"
                   >
-                    <select
-                      class="euiSelect euiSelect--compressed"
-                      data-test-subj="numberOfShardsInput"
-                      placeholder="Select primary shard count"
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
                     >
-                      <option
-                        value="1"
-                      >
-                        1
-                      </option>
-                      <option
-                        value="5"
-                      >
-                        5
-                      </option>
-                    </select>
+                      Specify advanced index settings
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
                     <div
-                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      class="euiFormHelpText euiFormRow__text"
+                      style="padding-top: 0px; padding-bottom: 4px;"
                     >
-                      <span
-                        class="euiFormControlLayoutCustomIcon"
+                      Specify a comma-delimited list of settings. 
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        rel="noopener noreferrer"
+                        target="_blank"
                       >
+                        View index settings.
                         EuiIconMock
-                      </span>
+                        <span
+                          class="euiScreenReaderOnly"
+                        >
+                          (opens in a new tab or window)
+                        </span>
+                      </a>
                     </div>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-          <div
-            class="euiFormRow euiFormRow--compressed"
-            data-test-subj="form-name-index.number_of_replicas"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Number of replicas
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                <div>
-                  Specify the number of replicas each primary shard should have. Default is 1.
-                </div>
-              </div>
-              <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-              >
-                <div
-                  class="euiFormControlLayout euiFormControlLayout--compressed"
-                >
-                  <div
-                    class="euiFormControlLayout__childrenWrapper"
-                  >
-                    <input
-                      class="euiFieldNumber euiFieldNumber--compressed"
-                      data-test-subj="numberOfReplicasInput"
-                      min="0"
-                      type="number"
-                      value="1"
-                    />
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-          <div
-            class="euiFormRow euiFormRow--compressed"
-            data-test-subj="form-name-aliases"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index alias
-                <i>
-                   – optional
-                </i>
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                Allow this index to be referenced by existing aliases or specify a new alias.
-              </div>
-              <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="listbox"
-                  class="euiComboBox euiComboBox--compressed"
-                  data-test-subj="aliasesInput"
-                  role="combobox"
-                >
-                  <div
-                    class="euiFormControlLayout euiFormControlLayout--compressed"
-                  >
-                    <div
-                      class="euiFormControlLayout__childrenWrapper"
+                    <textarea
+                      data-test-subj="jsonEditor-valueDisplay"
+                      readonly=""
+                      style="display: none;"
                     >
-                      <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
-                        data-test-subj="comboBoxInput"
-                        tabindex="-1"
-                      >
-                        <p
-                          class="euiComboBoxPlaceholder"
-                        >
-                          Select aliases or specify new aliases.
-                        </p>
-                        <div
-                          class="euiComboBox__input"
-                          style="font-size: 14px; display: inline-block;"
-                        >
-                          <input
-                            aria-controls=""
-                            data-test-subj="comboBoxSearchInput"
-                            role="textbox"
-                            style="box-sizing: content-box; width: 2px;"
-                            value=""
-                          />
-                          <div
-                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                      >
-                        <button
-                          aria-label="Open list of options"
-                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                          data-test-subj="comboBoxToggleListButton"
-                          type="button"
-                        >
-                          EuiIconMock
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </span>
-            </div>
-          </div>
-          <div
-            class="euiSpacer euiSpacer--m"
-          />
-          <div
-            class="euiAccordion accordion-in-advanced-settings"
-          >
-            <div
-              class="euiAccordion__triggerWrapper"
-            >
-              <button
-                aria-controls="accordion_for_create_index_settings"
-                aria-expanded="false"
-                class="euiAccordion__button"
-                id="some_html_id"
-                type="button"
-              >
-                <span
-                  class="euiAccordion__iconWrapper"
-                >
-                  EuiIconMock
-                </span>
-                <span
-                  class="euiIEFlexWrapFix"
-                >
-                  <h4>
-                    Advanced settings
-                  </h4>
-                </span>
-              </button>
-            </div>
-            <div
-              aria-labelledby="some_html_id"
-              class="euiAccordion__childWrapper"
-              id="accordion_for_create_index_settings"
-              role="region"
-              style="height: 0px"
-              tabindex="-1"
-            >
-              <div>
-                <div
-                  class=""
-                >
-                  <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFormRow euiFormRow--compressed"
-                    data-test-subj="formNameAdvancedSettings"
-                    id="some_html_id-row"
-                  >
-                    <div
-                      class="euiFormRow__labelWrapper"
-                    >
-                      <label
-                        class="euiFormLabel euiFormRow__label"
-                        for="some_html_id"
-                      >
-                        Specify advanced index settings
-                      </label>
-                    </div>
-                    <div
-                      class="euiFormRow__fieldWrapper"
-                    >
-                      <div
-                        class="euiFormHelpText euiFormRow__text"
-                        style="padding-top: 0px; padding-bottom: 4px;"
-                      >
-                        Specify a comma-delimited list of settings. 
-                        <a
-                          class="euiLink euiLink--primary"
-                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          View index settings.
-                          EuiIconMock
-                          <span
-                            class="euiScreenReaderOnly"
-                          >
-                            (opens in a new tab or window)
-                          </span>
-                        </a>
-                      </div>
-                      <textarea
-                        data-test-subj="jsonEditor-valueDisplay"
-                        readonly=""
-                        style="display: none;"
-                      >
-                        {
+                      {
   "index.number_of_shards": 1,
   "index.number_of_replicas": 1
 }
-                      </textarea>
-                      <div
-                        class="euiCodeEditorWrapper"
-                        data-test-subj="codeEditorContainer"
+                    </textarea>
+                    <div
+                      class="euiCodeEditorWrapper"
+                      data-test-subj="codeEditorContainer"
+                    >
+                      <button
+                        class="euiCodeEditorKeyboardHint"
+                        data-test-subj="codeEditorHint"
+                        id="some_html_id"
                       >
-                        <button
-                          class="euiCodeEditorKeyboardHint"
-                          data-test-subj="codeEditorHint"
-                          id="some_html_id"
+                        <p
+                          class="euiText"
                         >
-                          <p
-                            class="euiText"
-                          >
-                            Press Enter to start editing.
-                          </p>
-                          <p
-                            class="euiText"
-                          >
-                            When you're done, press Escape to stop editing.
-                          </p>
-                        </button>
+                          Press Enter to start editing.
+                        </p>
+                        <p
+                          class="euiText"
+                        >
+                          When you're done, press Escape to stop editing.
+                        </p>
+                      </button>
+                      <div
+                        class=" ace_editor ace-tm"
+                        id="some_html_id"
+                        style="width: 500px; height: 500px;"
+                      >
+                        <textarea
+                          autocapitalize="off"
+                          autocorrect="off"
+                          class="ace_text-input"
+                          spellcheck="false"
+                          style="opacity: 0;"
+                          tabindex="-1"
+                          wrap="off"
+                        />
                         <div
-                          class=" ace_editor ace-tm"
-                          id="some_html_id"
-                          style="width: 500px; height: 500px;"
+                          aria-hidden="true"
+                          class="ace_gutter"
                         >
-                          <textarea
-                            autocapitalize="off"
-                            autocorrect="off"
-                            class="ace_text-input"
-                            spellcheck="false"
-                            style="opacity: 0;"
-                            tabindex="-1"
-                            wrap="off"
+                          <div
+                            class="ace_layer ace_gutter-layer ace_folding-enabled"
                           />
                           <div
-                            aria-hidden="true"
-                            class="ace_gutter"
-                          >
-                            <div
-                              class="ace_layer ace_gutter-layer ace_folding-enabled"
-                            />
-                            <div
-                              class="ace_gutter-active-line"
-                            />
-                          </div>
+                            class="ace_gutter-active-line"
+                          />
+                        </div>
+                        <div
+                          class="ace_scroller"
+                        >
                           <div
-                            class="ace_scroller"
+                            class="ace_content"
                           >
                             <div
-                              class="ace_content"
+                              class="ace_layer ace_print-margin-layer"
                             >
                               <div
-                                class="ace_layer ace_print-margin-layer"
-                              >
-                                <div
-                                  class="ace_print-margin"
-                                  style="left: 4px; visibility: visible;"
-                                />
-                              </div>
-                              <div
-                                class="ace_layer ace_marker-layer"
+                                class="ace_print-margin"
+                                style="left: 4px; visibility: visible;"
                               />
-                              <div
-                                class="ace_layer ace_text-layer"
-                                style="padding: 0px 4px;"
-                              />
-                              <div
-                                class="ace_layer ace_marker-layer"
-                              />
-                              <div
-                                class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                              >
-                                <div
-                                  class="ace_cursor"
-                                />
-                              </div>
                             </div>
-                          </div>
-                          <div
-                            class="ace_scrollbar ace_scrollbar-v"
-                            style="display: none; width: 20px;"
-                          >
                             <div
-                              class="ace_scrollbar-inner"
-                              style="width: 20px;"
-                            />
-                          </div>
-                          <div
-                            class="ace_scrollbar ace_scrollbar-h"
-                            style="display: none; height: 20px;"
-                          >
-                            <div
-                              class="ace_scrollbar-inner"
-                              style="height: 20px;"
-                            />
-                          </div>
-                          <div
-                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-                          >
-                            <div
-                              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                              class="ace_layer ace_marker-layer"
                             />
                             <div
-                              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                              class="ace_layer ace_text-layer"
+                              style="padding: 0px 4px;"
+                            />
+                            <div
+                              class="ace_layer ace_marker-layer"
+                            />
+                            <div
+                              class="ace_layer ace_cursor-layer ace_hidden-cursors"
                             >
-                              XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                              <div
+                                class="ace_cursor"
+                              />
                             </div>
+                          </div>
+                        </div>
+                        <div
+                          class="ace_scrollbar ace_scrollbar-v"
+                          style="display: none; width: 20px;"
+                        >
+                          <div
+                            class="ace_scrollbar-inner"
+                            style="width: 20px;"
+                          />
+                        </div>
+                        <div
+                          class="ace_scrollbar ace_scrollbar-h"
+                          style="display: none; height: 20px;"
+                        >
+                          <div
+                            class="ace_scrollbar-inner"
+                            style="height: 20px;"
+                          />
+                        </div>
+                        <div
+                          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+                        >
+                          <div
+                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                          />
+                          <div
+                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                          >
+                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                           </div>
                         </div>
                       </div>
@@ -685,15 +715,9 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                   <div
                     class="euiText euiText--small"
                   >
-                    <h1>
+                    <h2>
                       Advanced settings
-                      <span
-                        class="panel-header-count"
-                      >
-                         
-                         
-                      </span>
-                    </h1>
+                    </h2>
                   </div>
                 </div>
               </div>

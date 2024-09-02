@@ -14,12 +14,14 @@ import {
   EuiTitle,
   EuiCompressedFormRow,
   EuiLoadingSpinner,
+  EuiText,
+  EuiPanel,
+  EuiHorizontalRule,
 } from "@elastic/eui";
 import React, { Component } from "react";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexDetail from "../../../../containers/IndexDetail";
 import { IndexItem } from "../../../../../models/interfaces";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
@@ -53,6 +55,7 @@ import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler"
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
+import { OptionalLabel } from "../../../../components/CustomFormRow";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -382,7 +385,6 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
           <>
             <EuiCallOut title="The source index must block write operations before shrinking." color="danger" iconType="alert">
               <p>In order to shrink an existing index, you must first set the index to block write operations.</p>
-              <EuiSpacer />
               <EuiSmallButton
                 onClick={() => {
                   const indexWriteBlockSettings = {
@@ -481,7 +483,11 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
     const formFields: IField[] = [
       {
         rowProps: {
-          label: "Target index name",
+          label: (
+            <EuiText size="s">
+              <h3>Target index name</h3>
+            </EuiText>
+          ),
           helpText: <div>{INDEX_NAMING_MESSAGE}</div>,
           position: "bottom",
         },
@@ -510,7 +516,11 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       },
       {
         rowProps: {
-          label: "Number of primary shards",
+          label: (
+            <EuiText size="s">
+              <h3>Number of primary shards</h3>
+            </EuiText>
+          ),
           helpText: (
             <>
               <p>Specify the number of shards for the new shrunken index.</p>
@@ -543,7 +553,11 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       },
       {
         rowProps: {
-          label: "Number of replicas",
+          label: (
+            <EuiText size="s">
+              <h3>Number of replicas</h3>
+            </EuiText>
+          ),
           helpText: <div>{REPLICA_NUMBER_MESSAGE}</div>,
         },
         name: "index.number_of_replicas",
@@ -568,8 +582,13 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       {
         name: "aliases",
         rowProps: {
-          label: "Index alias",
-          isOptional: true,
+          label: (
+            <EuiText size="s">
+              <h3>
+                Index alias <OptionalLabel />
+              </h3>
+            </EuiText>
+          ),
           helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
         },
         options: {
@@ -595,7 +614,11 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
     const configurationChildren: React.ReactChild = (
       <>
         <EuiSpacer size="m" />
-        <ContentPanel title="Configure target index" titleSize="s">
+        <EuiPanel>
+          <EuiText size="s">
+            <h2>Configure target index</h2>
+          </EuiText>
+          <EuiHorizontalRule margin="xs" />
           <EuiSpacer size="m" />
           <FormGenerator
             ref={(ref) => (this.formRef = ref)}
@@ -613,7 +636,7 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
               accordionProps: {
                 initialIsOpen: false,
                 id: "accordion_for_create_index_settings",
-                buttonContent: <h4>Advanced settings</h4>,
+                buttonContent: <h2>Advanced settings</h2>,
               },
               blockedNameList: blockNameList,
               rowProps: {
@@ -629,7 +652,7 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
               },
             }}
           />
-        </ContentPanel>
+        </EuiPanel>
       </>
     );
 
@@ -670,7 +693,11 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
           <NotificationConfig
             withPanel
             panelProps={{
-              title: "Advanced settings",
+              title: (
+                <EuiText size="s">
+                  <h2>Advanced settings</h2>
+                </EuiText>
+              ),
               titleSize: "s",
             }}
             ref={(ref) => (this.notificationRef = ref)}
@@ -713,9 +740,9 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       </div>
     ) : (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>Shrink index</h1>
-        </EuiTitle>
+        </EuiText>
         {subTitleText}
         <EuiSpacer />
         {Common()}

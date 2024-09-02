@@ -15,14 +15,14 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
         class="euiFlexItem euiSearchBar__searchHolder"
       >
         <div
-          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <input
               aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed euiFieldSearch-isClearable"
               placeholder="Search"
               type="search"
               value="testing"
@@ -41,7 +41,7 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
             >
               <button
                 aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
+                class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                 type="button"
               >
                 EuiIconMock
@@ -64,7 +64,7 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
               class="euiPopover__anchor"
             >
               <button
-                class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+                class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--small euiFilterButton euiFilterButton--hasIcon"
                 type="button"
               >
                 <span
@@ -142,14 +142,14 @@ exports[`<IndexControls /> spec renders the component 1`] = `
         class="euiFlexItem euiSearchBar__searchHolder"
       >
         <div
-          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <input
               aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed euiFieldSearch-isClearable"
               placeholder="Search"
               type="search"
               value="testing"
@@ -168,7 +168,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
             >
               <button
                 aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
+                class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                 type="button"
               >
                 EuiIconMock

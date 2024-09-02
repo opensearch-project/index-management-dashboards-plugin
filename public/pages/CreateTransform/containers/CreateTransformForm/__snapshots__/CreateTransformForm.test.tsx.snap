@@ -24,13 +24,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
               class="euiSteps"
             >
               <div
-                class="euiStep"
+                class="euiStep euiStep--small"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStep__circle"
+                    class="euiStepNumber euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -45,7 +45,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Set up indices
                   </h6>
@@ -55,13 +55,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -76,7 +76,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Define transforms
                   </h6>
@@ -86,13 +86,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -107,7 +107,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Specify schedule
                   </h6>
@@ -117,13 +117,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep euiStep-isDisabled"
+                class="euiStep euiStep--small euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
                   <span
-                    class="euiStepNumber euiStepNumber--disabled euiStep__circle"
+                    class="euiStepNumber euiStepNumber--disabled euiStep__circle euiStepNumber--small"
                   >
                     <span
                       class="euiScreenReaderOnly"
@@ -138,7 +138,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </span>
                   </span>
                   <h6
-                    class="euiTitle euiTitle--small euiStep__title"
+                    class="euiTitle euiTitle--xsmall euiStep__title"
                   >
                     Review and create
                   </h6>
@@ -153,46 +153,150 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--large"
+          <div
+            class="euiText euiText--small"
           >
-            Set up indices
-          </h1>
+            <h1>
+              Set up indices
+            </h1>
+          </div>
           <div
             class="euiSpacer euiSpacer--l"
           />
           <div
             class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-            style="padding: 20px 20px;"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-              style="padding: 0px 10px;"
+              class="euiText euiText--small"
             >
-              <div
-                class="euiFlexItem"
-              >
-                <div
-                  class="euiText euiText--small"
-                >
-                  <h1>
-                    Job name and description
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
-                </div>
-              </div>
+              <h2>
+                Job name and description
+              </h2>
             </div>
             <hr
               class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
             />
+            <div>
+              <div
+                class="euiFormRow euiFormRow--compressed"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    aria-invalid="false"
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    <div
+                      class="euiText euiText--small"
+                    >
+                      <h3>
+                        Name
+                      </h3>
+                    </div>
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <input
+                        aria-describedby="some_html_id-help-0"
+                        class="euiFieldText euiFieldText--compressed"
+                        id="some_html_id"
+                        placeholder="my-transformjob1"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormHelpText euiFormRow__text"
+                    id="some_html_id-help-0"
+                  >
+                    Specify a unique, descriptive name.
+                  </div>
+                </div>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem euiFlexItem--flexGrowZero"
+                >
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h3>
+                      Description
+                    </h3>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <div
+                      class="euiTextColor euiTextColor--subdued"
+                    >
+                      <h3>
+                        <i>
+                           – optional
+                        </i>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--xs"
+              />
+              <div
+                class="euiFormRow euiFormRow--compressed"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <textarea
+                    class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
+                    data-test-subj="description"
+                    id="some_html_id"
+                    rows="3"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--l"
+          />
+          <div>
             <div
-              style="padding: 10px;"
+              class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
             >
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Indices
+                </h2>
+              </div>
+              <hr
+                class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+              />
               <div>
                 <div
                   class="euiFormRow euiFormRow--compressed"
@@ -206,38 +310,87 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Name
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <h3>
+                          Source index
+                        </h3>
+                      </div>
                     </label>
                   </div>
                   <div
                     class="euiFormRow__fieldWrapper"
                   >
                     <div
-                      class="euiFormControlLayout euiFormControlLayout--compressed"
+                      aria-describedby="some_html_id-help-0"
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      class="euiComboBox euiComboBox--compressed"
+                      data-test-subj="sourceIndexCombobox"
+                      role="combobox"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
-                        <input
-                          aria-describedby="some_html_id-help-0"
-                          class="euiFieldText euiFieldText--compressed"
-                          id="some_html_id"
-                          placeholder="my-transformjob1"
-                          type="text"
-                          value=""
-                        />
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <div
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                            data-test-subj="comboBoxInput"
+                            tabindex="-1"
+                          >
+                            <p
+                              class="euiComboBoxPlaceholder"
+                            >
+                              Select source index
+                            </p>
+                            <div
+                              class="euiComboBox__input"
+                              style="font-size: 14px; display: inline-block;"
+                            >
+                              <input
+                                aria-controls=""
+                                data-test-subj="comboBoxSearchInput"
+                                id="some_html_id"
+                                role="textbox"
+                                style="box-sizing: content-box; width: 2px;"
+                                value=""
+                              />
+                              <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiLoadingSpinner euiLoadingSpinner--medium"
+                            />
+                            <button
+                              aria-label="Open list of options"
+                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                              data-test-subj="comboBoxToggleListButton"
+                              type="button"
+                            >
+                              EuiIconMock
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div
                       class="euiFormHelpText euiFormRow__text"
                       id="some_html_id-help-0"
                     >
-                      Specify a unique, descriptive name.
+                      The index where this transform job is performed on. Type in * as wildcard for index pattern. Indices cannot be changed once the job is created. Please ensure that you select the right source index.
                     </div>
                   </div>
                 </div>
                 <div
-                  class="euiSpacer euiSpacer--l"
+                  class="euiSpacer euiSpacer--s"
                 />
                 <div
                   class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -246,377 +399,208 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
                     <div
-                      class="euiText euiText--extraSmall"
+                      class="euiText euiText--small"
                     >
-                      <h4>
-                        Description
-                      </h4>
+                      <h3>
+                        Source index filter
+                      </h3>
                     </div>
                   </div>
                   <div
                     class="euiFlexItem"
                   >
                     <div
-                      class="euiText euiText--extraSmall"
+                      class="euiText euiText--small"
                     >
                       <div
                         class="euiTextColor euiTextColor--subdued"
                       >
-                        <i>
-                           – optional
-                        </i>
+                        <h3>
+                          <i>
+                             – optional
+                          </i>
+                        </h3>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="euiSpacer euiSpacer--xs"
+                  class="euiText euiText--extraSmall"
+                  style="width: 400px;"
+                >
+                  <div
+                    class="euiTextColor euiTextColor--subdued"
+                  >
+                    You can use the custom DSL to filter a subset of the source index to use in the transform job, which optimizes the job for performance and computing resources. You cannot change these filters once the job is created.
+                  </div>
+                </div>
+                <div
+                  class="euiText euiText--extraSmall"
+                >
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://opensearch.org/docs/opensearch/query-dsl/index/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                     
+                    Learn more
+                    EuiIconMock
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      (opens in a new tab or window)
+                    </span>
+                  </a>
+                </div>
+                <div
+                  class="euiSpacer euiSpacer--s"
+                />
+                <span
+                  class="euiBadge euiBadge--iconRight"
+                  style="background-color: rgb(211, 218, 230); color: rgb(0, 0, 0);"
+                >
+                  <span
+                    class="euiBadge__content"
+                  >
+                    <button
+                      aria-label="Edit Source Index Filter"
+                      class="euiBadge__childButton"
+                    />
+                    <button
+                      aria-label="Clear Source Index Filter"
+                      class="euiBadge__iconButton"
+                      title="Clear Source Index Filter"
+                      type="button"
+                    >
+                      EuiIconMock
+                    </button>
+                  </span>
+                </span>
+                <div
+                  class="euiPopover euiPopover--anchorDownCenter"
+                >
+                  <div
+                    class="euiPopover__anchor"
+                  >
+                    <button
+                      class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall globalFilterBar__addButton"
+                      data-test-subj="addFilter"
+                      type="button"
+                    >
+                      <span
+                        class="euiButtonContent euiButtonEmpty__content"
+                      >
+                        <span
+                          class="euiButtonEmpty__text"
+                        >
+                          Edit data filter
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="euiText euiText--extraSmall"
+                >
+                  <div
+                    class="euiTextColor euiTextColor--danger"
+                  />
+                </div>
+                <div
+                  class="euiSpacer euiSpacer--s"
+                />
+                <hr
+                  class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
                 />
                 <div
                   class="euiFormRow euiFormRow--compressed"
                   id="some_html_id-row"
                 >
                   <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <h3>
+                          Target index
+                        </h3>
+                      </div>
+                    </label>
+                  </div>
+                  <div
                     class="euiFormRow__fieldWrapper"
                   >
-                    <textarea
-                      class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
-                      data-test-subj="description"
-                      id="some_html_id"
-                      rows="3"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
-          <div>
-            <div
-              class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-              style="padding: 20px 20px;"
-            >
-              <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding: 0px 10px;"
-              >
-                <div
-                  class="euiFlexItem"
-                >
-                  <div
-                    class="euiText euiText--small"
-                  >
-                    <h1>
-                      Indices
-                      <span
-                        class="panel-header-count"
-                      >
-                         
-                         
-                      </span>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <hr
-                class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-              />
-              <div
-                style="padding: 10px;"
-              >
-                <div>
-                  <div
-                    class="euiFormRow euiFormRow--compressed"
-                    id="some_html_id-row"
-                  >
                     <div
-                      class="euiFormRow__labelWrapper"
-                    >
-                      <label
-                        aria-invalid="false"
-                        class="euiFormLabel euiFormRow__label"
-                        for="some_html_id"
-                      >
-                        Source index
-                      </label>
-                    </div>
-                    <div
-                      class="euiFormRow__fieldWrapper"
+                      aria-describedby="some_html_id-help-0"
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      class="euiComboBox euiComboBox--compressed"
+                      data-test-subj="targetIndexCombobox"
+                      role="combobox"
                     >
                       <div
-                        aria-describedby="some_html_id-help-0"
-                        aria-expanded="false"
-                        aria-haspopup="listbox"
-                        class="euiComboBox euiComboBox--compressed"
-                        data-test-subj="sourceIndexCombobox"
-                        role="combobox"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
                         <div
-                          class="euiFormControlLayout euiFormControlLayout--compressed"
+                          class="euiFormControlLayout__childrenWrapper"
                         >
                           <div
-                            class="euiFormControlLayout__childrenWrapper"
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                            data-test-subj="comboBoxInput"
+                            tabindex="-1"
                           >
-                            <div
-                              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                              data-test-subj="comboBoxInput"
-                              tabindex="-1"
+                            <p
+                              class="euiComboBoxPlaceholder"
                             >
-                              <p
-                                class="euiComboBoxPlaceholder"
-                              >
-                                Select source index
-                              </p>
-                              <div
-                                class="euiComboBox__input"
-                                style="font-size: 14px; display: inline-block;"
-                              >
-                                <input
-                                  aria-controls=""
-                                  data-test-subj="comboBoxSearchInput"
-                                  id="some_html_id"
-                                  role="textbox"
-                                  style="box-sizing: content-box; width: 2px;"
-                                  value=""
-                                />
-                                <div
-                                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                />
-                              </div>
-                            </div>
+                              Select or create target index
+                            </p>
                             <div
-                              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              class="euiComboBox__input"
+                              style="font-size: 14px; display: inline-block;"
                             >
-                              <span
-                                class="euiLoadingSpinner euiLoadingSpinner--medium"
+                              <input
+                                aria-controls=""
+                                data-test-subj="comboBoxSearchInput"
+                                id="some_html_id"
+                                role="textbox"
+                                style="box-sizing: content-box; width: 2px;"
+                                value=""
                               />
-                              <button
-                                aria-label="Open list of options"
-                                class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                                data-test-subj="comboBoxToggleListButton"
-                                type="button"
-                              >
-                                EuiIconMock
-                              </button>
+                              <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                              />
                             </div>
+                          </div>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiLoadingSpinner euiLoadingSpinner--medium"
+                            />
+                            <button
+                              aria-label="Open list of options"
+                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                              data-test-subj="comboBoxToggleListButton"
+                              type="button"
+                            >
+                              EuiIconMock
+                            </button>
                           </div>
                         </div>
                       </div>
-                      <div
-                        class="euiFormHelpText euiFormRow__text"
-                        id="some_html_id-help-0"
-                      >
-                        The index where this transform job is performed on. Type in * as wildcard for index pattern. Indices cannot be changed once the job is created. Please ensure that you select the right source index.
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-                  >
-                    <div
-                      class="euiFlexItem euiFlexItem--flexGrowZero"
-                    >
-                      <div
-                        class="euiText euiText--extraSmall"
-                      >
-                        <h4>
-                          Source index filter
-                        </h4>
-                      </div>
                     </div>
                     <div
-                      class="euiFlexItem"
+                      class="euiFormHelpText euiFormRow__text"
+                      id="some_html_id-help-0"
                     >
-                      <div
-                        class="euiText euiText--extraSmall"
-                      >
-                        <div
-                          class="euiTextColor euiTextColor--subdued"
-                        >
-                          <i>
-                             – optional
-                          </i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="euiText euiText--extraSmall"
-                    style="width: 400px;"
-                  >
-                    <div
-                      class="euiTextColor euiTextColor--subdued"
-                    >
-                      You can use the custom DSL to filter a subset of the source index to use in the transform job, which optimizes the job for performance and computing resources. You cannot change these filters once the job is created.
-                    </div>
-                  </div>
-                  <div
-                    class="euiText euiText--extraSmall"
-                  >
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opensearch.org/docs/opensearch/query-dsl/index/"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                       
-                      Learn more
-                      EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        (opens in a new tab or window)
-                      </span>
-                    </a>
-                  </div>
-                  <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <span
-                    class="euiBadge euiBadge--iconRight"
-                    style="background-color: rgb(211, 218, 230); color: rgb(0, 0, 0);"
-                  >
-                    <span
-                      class="euiBadge__content"
-                    >
-                      <button
-                        aria-label="Edit Source Index Filter"
-                        class="euiBadge__childButton"
-                      />
-                      <button
-                        aria-label="Clear Source Index Filter"
-                        class="euiBadge__iconButton"
-                        title="Clear Source Index Filter"
-                        type="button"
-                      >
-                        EuiIconMock
-                      </button>
-                    </span>
-                  </span>
-                  <div
-                    class="euiPopover euiPopover--anchorDownCenter"
-                  >
-                    <div
-                      class="euiPopover__anchor"
-                    >
-                      <button
-                        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall globalFilterBar__addButton"
-                        data-test-subj="addFilter"
-                        type="button"
-                      >
-                        <span
-                          class="euiButtonContent euiButtonEmpty__content"
-                        >
-                          <span
-                            class="euiButtonEmpty__text"
-                          >
-                            Edit data filter
-                          </span>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    class="euiText euiText--extraSmall"
-                  >
-                    <div
-                      class="euiTextColor euiTextColor--danger"
-                    />
-                  </div>
-                  <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <hr
-                    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-                  />
-                  <div
-                    class="euiFormRow euiFormRow--compressed"
-                    id="some_html_id-row"
-                  >
-                    <div
-                      class="euiFormRow__labelWrapper"
-                    >
-                      <label
-                        aria-invalid="false"
-                        class="euiFormLabel euiFormRow__label"
-                        for="some_html_id"
-                      >
-                        Target index
-                      </label>
-                    </div>
-                    <div
-                      class="euiFormRow__fieldWrapper"
-                    >
-                      <div
-                        aria-describedby="some_html_id-help-0"
-                        aria-expanded="false"
-                        aria-haspopup="listbox"
-                        class="euiComboBox euiComboBox--compressed"
-                        data-test-subj="targetIndexCombobox"
-                        role="combobox"
-                      >
-                        <div
-                          class="euiFormControlLayout euiFormControlLayout--compressed"
-                        >
-                          <div
-                            class="euiFormControlLayout__childrenWrapper"
-                          >
-                            <div
-                              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
-                              data-test-subj="comboBoxInput"
-                              tabindex="-1"
-                            >
-                              <p
-                                class="euiComboBoxPlaceholder"
-                              >
-                                Select or create target index
-                              </p>
-                              <div
-                                class="euiComboBox__input"
-                                style="font-size: 14px; display: inline-block;"
-                              >
-                                <input
-                                  aria-controls=""
-                                  data-test-subj="comboBoxSearchInput"
-                                  id="some_html_id"
-                                  role="textbox"
-                                  style="box-sizing: content-box; width: 2px;"
-                                  value=""
-                                />
-                                <div
-                                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                                />
-                              </div>
-                            </div>
-                            <div
-                              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                            >
-                              <span
-                                class="euiLoadingSpinner euiLoadingSpinner--medium"
-                              />
-                              <button
-                                aria-label="Open list of options"
-                                class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                                data-test-subj="comboBoxToggleListButton"
-                                type="button"
-                              >
-                                EuiIconMock
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="euiFormHelpText euiFormRow__text"
-                        id="some_html_id-help-0"
-                      >
-                        The index stores transform results. You can look up an existing index to reuse or type to create a new index.
-                      </div>
+                      The index stores transform results. You can look up an existing index to reuse or type to create a new index.
                     </div>
                   </div>
                 </div>
@@ -634,9 +618,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 <div
                   class="euiTextColor euiTextColor--default"
                 >
-                  <p>
-                    You can't change indices after creating a job. Double-check the source and target index names before proceeding.
-                  </p>
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <p>
+                      You can't change indices after creating a job. Double-check the source and target index names before proceeding.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -648,7 +636,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
       />
     </div>
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
       style="padding: 5px 50px;"
     >
       <div
