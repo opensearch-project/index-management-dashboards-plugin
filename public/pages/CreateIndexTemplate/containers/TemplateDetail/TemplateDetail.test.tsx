@@ -23,6 +23,11 @@ jest.mock("../../../../services/Services", () => ({
   getNavigationUI: jest.fn(),
 }));
 
+jest.mock("react-dom", () => ({
+  ...jest.requireActual("react-dom"),
+  createPortal: (element: React.ReactNode) => element,
+}));
+
 beforeEach(() => {
   (getUISettings as jest.Mock).mockReturnValue({
     get: jest.fn().mockReturnValue(false), // or false, depending on your test case

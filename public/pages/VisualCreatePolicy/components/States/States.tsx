@@ -97,7 +97,11 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
             </>
           ) : (
             <EuiEmptyPrompt
-              title={<h3>No states</h3>}
+              title={
+                <EuiText>
+                  <h3>No states</h3>
+                </EuiText>
+              }
               titleSize="s"
               body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
               actions={

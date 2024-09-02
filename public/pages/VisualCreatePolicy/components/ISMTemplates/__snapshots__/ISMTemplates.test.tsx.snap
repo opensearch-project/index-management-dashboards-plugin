@@ -73,11 +73,13 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
       class="euiEmptyPrompt"
       style="max-width: 37em;"
     >
-      <h3
-        class="euiTitle euiTitle--small"
+      <div
+        class="euiText euiText--small euiTitle euiTitle--small"
       >
-        No ISM templates
-      </h3>
+        <h3>
+          No ISM templates
+        </h3>
+      </div>
       <span
         class="euiTextColor euiTextColor--subdued"
       >

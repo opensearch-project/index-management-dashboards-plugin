@@ -40,7 +40,7 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: Defi
         <h2>{`Define policy`}</h2>
       </EuiText>
       <EuiFlexItem grow={false}>
-        <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+        <EuiFlexGroup justifyContent="spaceBetween" alignItems="center" gutterSize="s">
           <EuiFlexItem>
             <EuiCopy textToCopy={jsonString}>
               {(copy: () => void) => (

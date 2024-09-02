@@ -47,7 +47,13 @@ exports[`<DeleteModal /> spec renders the component 1`] = `
               class="euiModalHeader__title"
               data-test-subj="confirmModalTitleText"
             >
-              Delete policy
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Delete policy
+                </h2>
+              </div>
             </div>
           </div>
           <div

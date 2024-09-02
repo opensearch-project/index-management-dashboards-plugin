@@ -334,9 +334,11 @@ export default class CreateState extends Component<CreateStateProps, CreateState
       <EuiPortal>
         <EuiFlyout hideCloseButton ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" aria-labelledby="flyoutTitle">
           <EuiFlyoutHeader hasBorder>
-            <EuiTitle size="m">
-              <h2 id="flyoutTitle">{title}</h2>
-            </EuiTitle>
+            <EuiText size="s">
+              <EuiTitle size="m">
+                <h2 id="flyoutTitle">{title}</h2>
+              </EuiTitle>
+            </EuiText>
           </EuiFlyoutHeader>
           {flyoutContent()}
         </EuiFlyout>

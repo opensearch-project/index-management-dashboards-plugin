@@ -28,7 +28,7 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
         <div
           class="euiFlexItem"

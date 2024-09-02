@@ -5,11 +5,9 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
   <div
     style="padding: 0px 50px;"
   >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
-    >
+    <div>
       <div
-        class="euiFlexItem"
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
         <div
           class="euiText"
@@ -95,124 +93,372 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
         >
           <div
-            class="euiFlexItem"
-            style="max-width: 700px;"
+            class="euiText euiText--small"
           >
-            <div
-              class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+            <h1
+              class="euiTitle euiTitle--large"
+              title="good_template"
             >
-              <div
-                class="euiText euiText--small"
-              >
-                <h3>
-                  Description - 
-                  <i>
-                    optional
-                  </i>
-                </h3>
-              </div>
-            </div>
-            <div
-              class="euiText euiText--small euiDescribedFormGroup__description"
-            >
-              <div
-                class="euiTextColor euiTextColor--subdued"
-              >
-                Describe the purpose or contents to help you identify this component.
-              </div>
-            </div>
+              good_template
+            </h1>
           </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+          style="flex-direction: row;"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton--small"
+            style="margin-right: 20px;"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                View JSON
+              </span>
+            </span>
+          </button>
+          <button
+            class="euiButton euiButton--danger euiButton--small"
+            data-test-subj="deleteAction"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Delete
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
           <div
-            class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+            class="euiText euiText--small"
+          >
+            <h2>
+              Define component template
+            </h2>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        />
+        <div
+          class="euiDescribedFormGroup euiDescribedFormGroup--fullWidth"
+          role="group"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
             <div
-              class="euiFormRow euiFormRow--compressed"
-              data-test-subj="form-row-_meta.description"
-              id="some_html_id-row"
+              class="euiFlexItem"
+              style="max-width: 700px;"
             >
               <div
-                class="euiFormRow__fieldWrapper"
+                class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
               >
-                <span
-                  class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <div
-                    class="euiFormControlLayout euiFormControlLayout--compressed"
+                  <h3>
+                    Description - 
+                    <i>
+                      optional
+                    </i>
+                  </h3>
+                </div>
+              </div>
+              <div
+                class="euiText euiText--small euiDescribedFormGroup__description"
+              >
+                <div
+                  class="euiTextColor euiTextColor--subdued"
+                >
+                  Describe the purpose or contents to help you identify this component.
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+            >
+              <div
+                class="euiFormRow euiFormRow--compressed"
+                data-test-subj="form-row-_meta.description"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <span
+                    class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                   >
                     <div
-                      class="euiFormControlLayout__childrenWrapper"
+                      class="euiFormControlLayout euiFormControlLayout--compressed"
                     >
-                      <input
-                        class="euiFieldText euiFieldText--compressed"
-                        id="some_html_id"
-                        type="text"
-                        value=""
-                      />
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldText euiFieldText--compressed"
+                          id="some_html_id"
+                          type="text"
+                          value=""
+                        />
+                      </div>
                     </div>
-                  </div>
-                </span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding: 0px 0px 0px 0px;"
-    >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+        style="padding: 0px 0px 0px 0px;"
       >
         <div
-          class="euiFlexItem"
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
         >
           <div
-            class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
-            id="some_html_id-row"
+            class="euiFlexItem"
           >
             <div
-              class="euiFormRow__labelWrapper"
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+              id="some_html_id-row"
             >
-              <label
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  class="euiFormLabel euiFormRow__label"
+                  for="some_html_id"
+                >
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h2
+                      class="euiTitle euiTitle--medium"
+                    >
+                      Index alias
+                    </h2>
+                  </div>
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiText euiText--small"
+                  class="euiFormHelpText euiFormRow__text"
+                  style="padding-top: 0px; padding-bottom: 4px;"
+                >
+                  Allow the new indexes to be referenced by existing aliases or specify a new alias.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div>
+                  <span
+                    class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                  >
+                    <div>
+                      <div
+                        class="euiSwitch euiSwitch--primary euiSwitch--compressed"
+                      >
+                        <button
+                          aria-checked="false"
+                          aria-labelledby="some_html_id"
+                          class="euiSwitch__button"
+                          id="some_html_id"
+                          role="switch"
+                          type="button"
+                        >
+                          <span
+                            class="euiSwitch__body"
+                          >
+                            <span
+                              class="euiSwitch__thumb"
+                            />
+                            <span
+                              class="euiSwitch__track"
+                            />
+                          </span>
+                        </button>
+                        <span
+                          class="euiSwitch__label"
+                          id="some_html_id"
+                        >
+                          Use configuration
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full"
+        />
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+        style="padding: 0px 0px 0px 0px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              <h2
+                class="euiTitle euiTitle--medium"
+              >
+                Index settings
+              </h2>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            >
+              <div
+                class="euiFlexItem"
+              >
+                <div>
+                  <span
+                    class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                  >
+                    <div>
+                      <div
+                        class="euiSwitch euiSwitch--primary euiSwitch--compressed"
+                      >
+                        <button
+                          aria-checked="false"
+                          aria-labelledby="some_html_id"
+                          class="euiSwitch__button"
+                          id="some_html_id"
+                          role="switch"
+                          type="button"
+                        >
+                          <span
+                            class="euiSwitch__body"
+                          >
+                            <span
+                              class="euiSwitch__thumb"
+                            />
+                            <span
+                              class="euiSwitch__track"
+                            />
+                          </span>
+                        </button>
+                        <span
+                          class="euiSwitch__label"
+                          id="some_html_id"
+                        >
+                          Use configuration
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full"
+        />
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+        style="padding: 0px 0px 0px 0px;"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--small"
+            >
+              <h2
+                class="euiTitle euiTitle--medium"
+              >
+                Index mapping
+              </h2>
+            </div>
+            <div
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormHelpText euiFormRow__text"
+                  id="some_html_id-help-0"
                 >
                   <div>
                     Index alias
                   </div>
                 </div>
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                Allow the new indexes to be referenced by existing aliases or specify a new alias.
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="euiFlexItem euiFlexItem--flexGrowZero"
-        >
           <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+            class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <div
-              class="euiFlexItem"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
             >
-              <div>
+              <div
+                class="euiFlexItem"
+              >
                 <span
                   class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                 >
@@ -252,10 +498,10 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
             </div>
           </div>
         </div>
+        <hr
+          class="euiHorizontalRule euiHorizontalRule--full"
+        />
       </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full"
-      />
     </div>
     <div
       class="euiSpacer euiSpacer--l"

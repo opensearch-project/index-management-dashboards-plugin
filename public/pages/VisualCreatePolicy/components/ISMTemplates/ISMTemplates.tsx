@@ -108,7 +108,11 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
 
         {!templates.length ? (
           <EuiEmptyPrompt
-            title={<h3>No ISM templates</h3>}
+            title={
+              <EuiText size="s">
+                <h3>No ISM templates</h3>
+              </EuiText>
+            }
             style={{ maxWidth: "37em" }}
             titleSize="s"
             body={

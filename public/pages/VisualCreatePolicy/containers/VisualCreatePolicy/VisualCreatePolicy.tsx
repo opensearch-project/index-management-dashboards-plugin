@@ -4,7 +4,17 @@
  */
 
 import React, { ChangeEvent, Component, useContext } from "react";
-import { EuiText, EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiSmallButton, EuiLink, EuiIcon } from "@elastic/eui";
+import {
+  EuiText,
+  EuiSpacer,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSmallButton,
+  EuiLink,
+  EuiIcon,
+  EuiSmallButtonEmpty,
+} from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import { EMPTY_DEFAULT_POLICY } from "../../utils/constants";
@@ -368,9 +378,9 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           <CreateState state={editingState} policy={policy} onSaveState={this.onSaveState} onCloseFlyout={this.onCloseFlyout} />
         )}
 
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
           <EuiFlexItem grow={false}>
-            <EuiSmallButton onClick={this.onCancel}>Cancel</EuiSmallButton>
+            <EuiSmallButtonEmpty onClick={this.onCancel}>Cancel</EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiSmallButton fill onClick={this.onSubmit}>
