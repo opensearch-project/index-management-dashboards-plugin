@@ -574,7 +574,13 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls, setAppDescriptionControls } = getApplication();
-    const showTitle = useNewUX ? undefined : "Snapshots";
+    const showTitle = useNewUX 
+      ? undefined 
+      : (
+        <EuiText size="s">
+          <h1>Snapshots</h1>
+        </EuiText>
+      );
     const SnapshotTabName = useNewUX ? "Index snapshots" : "Snapshots";
     const useActions = useNewUX ? undefined : actions;
     const useSubTitle = useNewUX ? undefined : subTitleText;

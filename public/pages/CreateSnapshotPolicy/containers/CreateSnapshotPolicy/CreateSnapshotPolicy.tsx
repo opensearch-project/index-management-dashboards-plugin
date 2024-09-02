@@ -698,7 +698,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               <EuiAccordion id="additional_delete_conditions" buttonContent="Additional settings">
                 <EuiSpacer size="m" />
 
-                <EuiText>Number of snapshots retained</EuiText>
+                <EuiText size="s">Number of snapshots retained</EuiText>
                 <EuiSpacer size="s" />
 
                 <EuiFlexGroup alignItems="flexStart">
@@ -726,7 +726,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
                 <EuiSpacer size="m" />
 
-                <EuiText>Deletion frequency</EuiText>
+                <EuiText size="s">Deletion frequency</EuiText>
                 <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>
                   Configure when to check retention conditions and delete snapshots.
                 </span>

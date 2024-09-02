@@ -483,7 +483,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       >
         <EuiContextMenuPanel items={popoverActionItems} size="s" />
       </EuiPopover>,
-      <EuiSmallButton onClick={this.onClickCreate} fill={true}>
+      <EuiSmallButton onClick={this.onClickCreate} fill={true} iconType="plus">
         Create policy
       </EuiSmallButton>,
     ];
@@ -508,7 +508,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
           </EuiText>
         }
         actions={
-          <EuiSmallButton onClick={this.onClickCreate} fill={true}>
+          <EuiSmallButton onClick={this.onClickCreate} fill={true} iconType="plus">
             Create policy
           </EuiSmallButton>
         }
@@ -569,7 +569,15 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     return !this.state.useNewUx ? (
       <>
-        <ContentPanel title="Snapshot policies" actions={actions} subTitleText={subTitleText}>
+        <ContentPanel 
+          title={
+            <EuiText size="s">
+              <h1>Snapshot policies</h1>
+            </EuiText>
+          }  
+          actions={actions} 
+          subTitleText={subTitleText}
+        >
           <EuiSearchBar
             box={{
               placeholder: "Search snapshot policies",
