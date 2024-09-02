@@ -482,7 +482,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
 
         {isModalOpen && (
           <EuiOverlayMask>
-            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+            <EuiModal onClose={this.closeModal}>
               <EuiModalHeader>
                 <EuiModalHeaderTitle>
                   {" "}

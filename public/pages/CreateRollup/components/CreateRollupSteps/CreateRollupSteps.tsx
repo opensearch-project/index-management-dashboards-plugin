@@ -34,7 +34,7 @@ const setOfSteps = (step: number) => {
 };
 const CreateRollupSteps = ({ step }: CreateRollupStepsProps) => (
   <div style={{ paddingLeft: "10px" }}>
-    <EuiSteps steps={setOfSteps(step)} headingElement="h6" />
+    <EuiSteps steps={setOfSteps(step)} headingElement="h6" titleSize="xs" />
   </div>
 );
 

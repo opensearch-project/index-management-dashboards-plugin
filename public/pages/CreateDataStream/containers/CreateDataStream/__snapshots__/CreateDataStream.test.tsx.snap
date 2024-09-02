@@ -265,9 +265,6 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div

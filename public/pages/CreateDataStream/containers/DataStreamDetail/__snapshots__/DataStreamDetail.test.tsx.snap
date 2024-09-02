@@ -262,9 +262,6 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
     <div
