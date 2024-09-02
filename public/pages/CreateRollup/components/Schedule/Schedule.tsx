@@ -17,6 +17,8 @@ import {
   EuiTextArea,
   EuiFormHelpText,
   EuiText,
+  EuiHorizontalRule,
+  EuiPanel,
 } from "@elastic/eui";
 import { DelayTimeunitOptions, ScheduleIntervalTimeunitOptions } from "../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -67,14 +69,17 @@ const selectInterval = (
   onChangeTimeunit: (value: ChangeEvent<HTMLSelectElement>) => void
 ) => (
   <React.Fragment>
+    <EuiText size="s">
+      <h3>Rollup interval</h3>
+    </EuiText>
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
-        <EuiCompressedFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError != ""}>
+        <EuiCompressedFormRow error={intervalError} isInvalid={intervalError != ""}>
           <EuiCompressedFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
         </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
-        <EuiCompressedFormRow hasEmptyLabelSpace={true}>
+        <EuiCompressedFormRow>
           <EuiCompressedSelect
             id="selectIntervalTimeunit"
             options={ScheduleIntervalTimeunitOptions}
@@ -90,7 +95,13 @@ const selectInterval = (
 
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
-    <EuiCompressedFormRow label="Continuous">
+    <EuiCompressedFormRow
+      label={
+        <EuiText size="s">
+          <h3>Continuous</h3>
+        </EuiText>
+      }
+    >
       <EuiCompressedRadioGroup
         options={radios}
         idSelected={continuousJob}
@@ -135,89 +146,108 @@ export default class Schedule extends Component<ScheduleProps> {
       onChangeIntervalTimeunit,
     } = this.props;
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          {!isEdit && (
-            <EuiCompressedCheckbox
-              id="jobEnabledByDefault"
-              label="Enable job by default"
-              checked={jobEnabledByDefault}
-              onChange={onChangeJobEnabledByDefault}
-              data-test-subj="jobEnabledByDefault"
-            />
-          )}
-          <EuiSpacer size="m" />
-          {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiText size="s">
+            <h2>Schedule</h2>
+          </EuiText>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        {!isEdit && (
+          <EuiCompressedCheckbox
+            id="jobEnabledByDefault"
+            label="Enable job by default"
+            checked={jobEnabledByDefault}
+            onChange={onChangeJobEnabledByDefault}
+            data-test-subj="jobEnabledByDefault"
+          />
+        )}
+        {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
-          <EuiCompressedFormRow label="Rollup execution frequency">
-            <EuiCompressedSelect
-              id="continuousDefinition"
-              options={[
-                { value: "fixed", text: "Define by fixed interval" },
-                { value: "cron", text: "Define by cron expression" },
-              ]}
-              value={continuousDefinition}
-              onChange={onChangeContinuousDefinition}
-            />
-          </EuiCompressedFormRow>
-          <EuiSpacer size="m" />
+        <EuiCompressedFormRow
+          label={
+            <EuiText size="s">
+              <h3>Rollup execution frequency</h3>
+            </EuiText>
+          }
+        >
+          <EuiCompressedSelect
+            id="continuousDefinition"
+            options={[
+              { value: "fixed", text: "Define by fixed interval" },
+              { value: "cron", text: "Define by cron expression" },
+            ]}
+            value={continuousDefinition}
+            onChange={onChangeContinuousDefinition}
+          />
+        </EuiCompressedFormRow>
+        <EuiSpacer size="m" />
 
-          {continuousDefinition == "fixed" ? (
-            selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)
-          ) : (
-            <React.Fragment>
-              <EuiCompressedFormRow label="Define by cron expression">
-                <EuiTextArea value={cronExpression} onChange={onChangeCron} compressed={true} />
-              </EuiCompressedFormRow>
-              <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-                <EuiCompressedSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
-              </EuiCompressedFormRow>
-            </React.Fragment>
-          )}
+        {continuousDefinition == "fixed" ? (
+          selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)
+        ) : (
+          <React.Fragment>
+            <EuiCompressedFormRow
+              label={
+                <EuiText size="s">
+                  <h3>Define by cron expression</h3>
+                </EuiText>
+              }
+            >
+              <EuiTextArea value={cronExpression} onChange={onChangeCron} compressed={true} />
+            </EuiCompressedFormRow>
+            <EuiCompressedFormRow
+              label={
+                <EuiText size="s">
+                  <h3>Timezone</h3>
+                </EuiText>
+              }
+              helpText="A day starts from 00:00:00 in the specified timezone."
+            >
+              <EuiCompressedSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
+            </EuiCompressedFormRow>
+          </React.Fragment>
+        )}
 
-          <EuiSpacer size="m" />
+        <EuiSpacer size="m" />
 
-          <EuiCompressedFormRow
-            label="Page per execution"
-            helpText="The number of pages every execution processes. A larger number means faster execution and higher costs on memory."
-          >
-            <EuiCompressedFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
-          </EuiCompressedFormRow>
-          <EuiSpacer size="m" />
-          <EuiFlexGroup style={{ maxWidth: 400 }}>
-            <EuiFlexItem grow={false} style={{ width: 200 }}>
-              <EuiFlexGroup gutterSize="xs">
-                <EuiFlexItem grow={false}>
-                  <EuiText size="xs">
-                    <h4>Execution delay</h4>
-                  </EuiText>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <EuiText size="xs" color="subdued">
-                    <i> – optional</i>
-                  </EuiText>
-                </EuiFlexItem>
-              </EuiFlexGroup>
-              <EuiCompressedFormRow>
-                <EuiCompressedFieldNumber value={delayTime} onChange={onChangeDelayTime} />
-              </EuiCompressedFormRow>
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                <EuiCompressedSelect
-                  id="selectTimeunit"
-                  options={DelayTimeunitOptions}
-                  value={delayTimeunit}
-                  onChange={onChangeDelayTimeunit}
-                />
-              </EuiCompressedFormRow>
-            </EuiFlexItem>
-          </EuiFlexGroup>
-          <EuiFormHelpText style={{ maxWidth: 400 }}>
-            The amount of time the job waits for data ingestion to accommodate any necessary processing time.
-          </EuiFormHelpText>
-        </div>
-      </ContentPanel>
+        <EuiCompressedFormRow
+          label={
+            <EuiText size="s">
+              <h3>Page per execution</h3>
+            </EuiText>
+          }
+          helpText="The number of pages every execution processes. A larger number means faster execution and higher costs on memory."
+        >
+          <EuiCompressedFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
+        </EuiCompressedFormRow>
+        <EuiSpacer size="m" />
+        <EuiText size="s">
+          <h3>
+            Execution delay<i> – optional</i>
+          </h3>
+        </EuiText>
+        <EuiFlexGroup style={{ maxWidth: 400 }}>
+          <EuiFlexItem grow={false} style={{ width: 200 }}>
+            <EuiCompressedFormRow>
+              <EuiCompressedFieldNumber value={delayTime} onChange={onChangeDelayTime} />
+            </EuiCompressedFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiCompressedFormRow>
+              <EuiCompressedSelect
+                id="selectTimeunit"
+                options={DelayTimeunitOptions}
+                value={delayTimeunit}
+                onChange={onChangeDelayTimeunit}
+              />
+            </EuiCompressedFormRow>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiFormHelpText style={{ maxWidth: 400 }}>
+          The amount of time the job waits for data ingestion to accommodate any necessary processing time.
+        </EuiFormHelpText>
+      </EuiPanel>
     );
   }
 }

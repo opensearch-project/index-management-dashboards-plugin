@@ -8,11 +8,13 @@ exports[`<Notifications /> spec View without permission 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small"
       >
-        Notification settings
-      </h1>
+        <h1>
+          Notification settings
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -96,11 +98,13 @@ exports[`<Notifications /> spec renders 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small"
       >
-        Notification settings
-      </h1>
+        <h1>
+          Notification settings
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -170,9 +174,13 @@ exports[`<Notifications /> spec renders 1`] = `
             class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
           >
             <div
-              class="ISM-notifications-first-letter-uppercase"
+              class="euiText euiText--small"
             >
-              reindex
+              <h3
+                class="ISM-notifications-first-letter-uppercase"
+              >
+                reindex
+              </h3>
             </div>
           </div>
           <div
@@ -292,9 +300,13 @@ exports[`<Notifications /> spec renders 1`] = `
             class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
           >
             <div
-              class="ISM-notifications-first-letter-uppercase"
+              class="euiText euiText--small"
             >
-              shrink, split, clone
+              <h3
+                class="ISM-notifications-first-letter-uppercase"
+              >
+                shrink, split, clone
+              </h3>
             </div>
           </div>
           <div
@@ -414,9 +426,13 @@ exports[`<Notifications /> spec renders 1`] = `
             class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
           >
             <div
-              class="ISM-notifications-first-letter-uppercase"
+              class="euiText euiText--small"
             >
-              force merge
+              <h3
+                class="ISM-notifications-first-letter-uppercase"
+              >
+                force merge
+              </h3>
             </div>
           </div>
           <div
@@ -536,9 +552,13 @@ exports[`<Notifications /> spec renders 1`] = `
             class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
           >
             <div
-              class="ISM-notifications-first-letter-uppercase"
+              class="euiText euiText--small"
             >
-              open
+              <h3
+                class="ISM-notifications-first-letter-uppercase"
+              >
+                open
+              </h3>
             </div>
           </div>
           <div

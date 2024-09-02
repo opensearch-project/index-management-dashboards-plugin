@@ -28,7 +28,7 @@ export default function SearchControls(props: SearchControlsProps) {
     setState(props.value);
   }, [props.value]);
   return (
-    <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
+    <EuiFlexGroup gutterSize="s" alignItems="center">
       <EuiFlexItem>
         <EuiCompressedFieldSearch
           fullWidth

@@ -219,7 +219,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
     >
       <div
         class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
+        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
       >
         <div
           class="euiFlexItem"
@@ -237,7 +237,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         class="euiHorizontalRule euiHorizontalRule--full"
       />
       <div
-        style="padding: 0px 10px;"
+        style="padding: 0px 16px;"
       >
         <div
           class="euiSpacer euiSpacer--s"

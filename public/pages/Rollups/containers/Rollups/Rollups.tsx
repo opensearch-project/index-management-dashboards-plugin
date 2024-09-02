@@ -34,6 +34,8 @@ import {
   EuiLink,
   EuiTableFieldDataColumnType,
   EuiButtonIcon,
+  EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
@@ -470,6 +472,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       {
         id: "Create rollup job",
         label: "Create rollup job",
+        iconType: "plus",
         fill: true,
         run: this.onClickCreate,
         testId: "createRollupButton",
@@ -477,18 +480,15 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       },
     ];
 
-    const searchbar_padding = { padding: "0px 0px 16px 0px" };
-
     return useNewUX ? (
       <>
         <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
-        <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center" style={searchbar_padding}>
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
             <EuiFlexItem grow={true}>
               <EuiCompressedFieldSearch
-                autoFocus
+                fullWidth
                 incremental={true}
-                fullWidth={true}
                 value={search}
                 placeholder="Search"
                 aria-label="Search"
@@ -519,17 +519,20 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
               </EuiPopover>
             </EuiFlexItem>
           </EuiFlexGroup>
+          <EuiSpacer size="m" />
           {commonTable()}
           {commonDeleteModal()}
-        </ContentPanel>
+        </EuiPanel>
       </>
     ) : (
-      <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-        <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
+      <EuiPanel>
+        <EuiFlexGroup style={{ padding: "0px 10px" }} gutterSize="s" justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>
-            <EuiTitle size="m">
-              <h3>{"Rollup jobs (" + `${rollups.length}` + ")"}</h3>
-            </EuiTitle>
+            <EuiText size="s">
+              <EuiTitle size="m">
+                <h1>{"Rollup jobs (" + `${rollups.length}` + ")"}</h1>
+              </EuiTitle>
+            </EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">
@@ -560,15 +563,15 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                   button={actionButton}
                   isOpen={isPopoverOpen}
                   closePopover={this.closePopover}
-                  panelPaddingSize="none"
+                  panelPaddingSize="s"
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
+                <EuiSmallButton iconType="plus" onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
                   Create rollup job
                 </EuiSmallButton>
               </EuiFlexItem>

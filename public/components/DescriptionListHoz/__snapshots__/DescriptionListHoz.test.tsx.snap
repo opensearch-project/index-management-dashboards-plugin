@@ -9,7 +9,7 @@ exports[`<DescriptionListHoz /> spec renders the component 1`] = `
       class="euiFlexItem"
     >
       <dl
-        class="euiDescriptionList euiDescriptionList--row"
+        class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
       >
         <dt
           class="euiDescriptionList__title"

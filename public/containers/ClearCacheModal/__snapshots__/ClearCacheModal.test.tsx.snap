@@ -39,18 +39,14 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Clear cache for 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div

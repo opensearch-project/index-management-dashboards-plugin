@@ -4,11 +4,13 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
 <div
   style="padding: 0px 50px;"
 >
-  <h1
-    class="euiTitle euiTitle--large"
+  <div
+    class="euiText euiText--small"
   >
-    Force merge
-  </h1>
+    <h1>
+      Force merge
+    </h1>
+  </div>
   <div
     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     id="some_html_id-row"
@@ -29,124 +31,108 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
-        class="euiFlexItem"
+        class="euiText euiText--small"
       >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Configure source index
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Configure source index
+        </h2>
       </div>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: 0px 10px;"
+      class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+      id="some_html_id-row"
     >
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
-        id="some_html_id-row"
+        class="euiFormRow__labelWrapper"
       >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Select source indexes or data streams
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
+            class="euiText euiText--small"
           >
-            Select one or more indexes or data streams you want to force merge.
+            <h3>
+              Select source indexes or data streams
+            </h3>
           </div>
-          <div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          Select one or more indexes or data streams you want to force merge.
+        </div>
+        <div>
+          <div
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            class="euiComboBox euiComboBox--compressed"
+            data-test-subj="sourceSelector"
+            role="combobox"
+          >
             <div
-              aria-expanded="false"
-              aria-haspopup="listbox"
-              class="euiComboBox euiComboBox--compressed"
-              data-test-subj="sourceSelector"
-              role="combobox"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
-                class="euiFormControlLayout euiFormControlLayout--compressed"
+                class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
+                  data-test-subj="comboBoxInput"
+                  tabindex="-1"
                 >
-                  <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
-                    data-test-subj="comboBoxInput"
-                    tabindex="-1"
+                  <p
+                    class="euiComboBoxPlaceholder"
                   >
-                    <p
-                      class="euiComboBoxPlaceholder"
-                    >
-                      Select indexes or data streams
-                    </p>
+                    Select indexes or data streams
+                  </p>
+                  <div
+                    class="euiComboBox__input"
+                    style="font-size: 14px; display: inline-block;"
+                  >
+                    <input
+                      aria-controls=""
+                      data-test-subj="comboBoxSearchInput"
+                      role="textbox"
+                      style="box-sizing: content-box; width: 2px;"
+                      value=""
+                    />
                     <div
-                      class="euiComboBox__input"
-                      style="font-size: 14px; display: inline-block;"
-                    >
-                      <input
-                        aria-controls=""
-                        data-test-subj="comboBoxSearchInput"
-                        role="textbox"
-                        style="box-sizing: content-box; width: 2px;"
-                        value=""
-                      />
-                      <div
-                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                      />
-                    </div>
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
                   </div>
-                  <div
-                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                </div>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <button
+                    aria-label="Open list of options"
+                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                    data-test-subj="comboBoxToggleListButton"
+                    type="button"
                   >
-                    <button
-                      aria-label="Open list of options"
-                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                      data-test-subj="comboBoxToggleListButton"
-                      type="button"
-                    >
-                      EuiIconMock
-                    </button>
-                  </div>
+                    EuiIconMock
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
     </div>
   </div>
   <div
@@ -158,7 +144,7 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
+      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 16px;"
     >
       <div
         class="euiFlexItem"
@@ -181,11 +167,13 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
-            <h3
-              class="euiTitle euiTitle--small"
+            <div
+              class="euiText euiText--small"
             >
-              Advanced settings
-            </h3>
+              <h2>
+                Advanced settings
+              </h2>
+            </div>
           </div>
         </div>
       </div>
@@ -198,7 +186,7 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"

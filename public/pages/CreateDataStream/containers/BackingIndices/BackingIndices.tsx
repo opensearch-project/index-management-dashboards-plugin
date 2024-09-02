@@ -3,7 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext, useEffect, useState } from "react";
-import { EuiBasicTable, EuiHealth, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiBasicTable,
+  EuiHealth,
+  EuiLink,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiHorizontalRule,
+  EuiPanel,
+  EuiFlexItem,
+} from "@elastic/eui";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
@@ -53,22 +64,19 @@ export default function BackingIndices(props: SubDetailProps) {
   }, [values.name]);
   const writingIndex = (values.indices || [])[(values.indices?.length || 0) - 1]?.index_name;
   return (
-    <ContentPanel
-      title={
-        <>
-          <EuiTitle size="s">
-            <span>Backing indexes</span>
-          </EuiTitle>
-          <CustomFormRow
-            fullWidth
-            helpText="A data stream is composed of backing indexes. Search requests are routed to all backing indexes, while indexing requests are routed to the write backing index."
-          >
-            <></>
-          </CustomFormRow>
-        </>
-      }
-    >
-      <EuiSpacer size="s" />
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="xs" alignItems="center">
+        <EuiText size="s">
+          <h2>Backing indexes</h2>
+        </EuiText>
+      </EuiFlexGroup>
+      <EuiText color="subdued" size="xs">
+        <p>
+          A data stream is composed of backing indexes. Search requests are routed to all backing indexes, while indexing requests are
+          routed to the write backing index.
+        </p>
+      </EuiText>
+      <EuiHorizontalRule margin={"xs"} />
       <EuiBasicTable
         pagination={undefined}
         items={indexes}
@@ -180,6 +188,6 @@ export default function BackingIndices(props: SubDetailProps) {
           },
         ]}
       />
-    </ContentPanel>
+    </EuiPanel>
   );
 }

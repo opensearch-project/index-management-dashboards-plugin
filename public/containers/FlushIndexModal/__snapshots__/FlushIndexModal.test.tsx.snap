@@ -40,18 +40,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   aliases
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -94,18 +90,30 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following aliases will not be flushed because one or more indexes are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following aliases will not be flushed because one or more indexes are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
-                        <li>
-                          alias1
-                        </li>
-                        <li>
-                          alias3
-                        </li>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            alias1
+                          </li>
+                        </div>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            alias3
+                          </li>
+                        </div>
                       </ul>
                     </div>
                   </div>
@@ -204,18 +212,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   data streams
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -258,18 +262,30 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following data streams will not be flushed because one or more backing indexes are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following data streams will not be flushed because one or more backing indexes are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
-                        <li>
-                          ds1
-                        </li>
-                        <li>
-                          ds3
-                        </li>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            ds1
+                          </li>
+                        </div>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            ds3
+                          </li>
+                        </div>
                       </ul>
                     </div>
                   </div>
@@ -368,18 +384,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -425,18 +437,30 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following indexes will not be flushed because they are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following indexes will not be flushed because they are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
-                        <li>
-                          test_index1
-                        </li>
-                        <li>
-                          test_index4
-                        </li>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            test_index1
+                          </li>
+                        </div>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            test_index4
+                          </li>
+                        </div>
                       </ul>
                     </div>
                   </div>
@@ -535,18 +559,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -558,9 +578,13 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  All open indexes will be flushed.
-                </p>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    All open indexes will be flushed.
+                  </p>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -575,9 +599,13 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following indexes will not be flushed because they are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following indexes will not be flushed because they are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       />
@@ -678,18 +706,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -736,9 +760,13 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following indexes will not be flushed because they are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following indexes will not be flushed because they are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       />
