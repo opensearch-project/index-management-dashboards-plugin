@@ -309,8 +309,18 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
             <div
               class="euiModalHeader__title"
             >
-              Refresh 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Refresh 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -322,19 +332,27 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following index
-                   will be refreshed.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li
-                    data-test-subj="UnblockedItem-unblocked_index"
+                  <p>
+                    The following index
+                     will be refreshed.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
                   >
-                    unblocked_index
-                  </li>
-                </ul>
+                    <li
+                      data-test-subj="UnblockedItem-unblocked_index"
+                    >
+                      unblocked_index
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -485,8 +503,18 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-              Flush 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Flush 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -498,19 +526,27 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following indexes will be flushed:
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <li>
-                    test_index2
-                  </li>
-                  <li>
-                    test_index3
-                  </li>
-                </ul>
+                  <p>
+                    The following indexes will be flushed:
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  >
+                    <li>
+                      test_index2
+                    </li>
+                    <li>
+                      test_index3
+                    </li>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />

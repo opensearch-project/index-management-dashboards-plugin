@@ -5,7 +5,7 @@
 
 import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiSpacer, EuiTitle, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSmallButtonEmpty } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSmallButtonEmpty, EuiText } from "@elastic/eui";
 import { IndexService, ManagedIndexService } from "../../../../services";
 import ChangeManagedIndices from "../../components/ChangeManagedIndices";
 import NewPolicy from "../../components/NewPolicy";
@@ -208,9 +208,9 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 
     return !useUpdatedUX ? (
       <div style={{ padding: "0px 25px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>Change policy</h1>
-        </EuiTitle>
+        </EuiText>
 
         <EuiSpacer />
 

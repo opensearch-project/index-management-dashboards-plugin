@@ -39,7 +39,13 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              test
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  test
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -51,15 +57,23 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  test
-                </p>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    test
+                  </p>
+                </div>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
                 >
-                  <li>
-                    test
-                  </li>
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <li>
+                      test
+                    </li>
+                  </div>
                 </ul>
                 <div
                   class="euiSpacer euiSpacer--l"
@@ -70,13 +84,15 @@ HTMLCollection [
                   <div
                     class="euiTextColor euiTextColor--subdued"
                   >
-                    To confirm your action, type 
-                    <b
-                      style="color: rgb(0, 0, 0);"
-                    >
-                      delete
-                    </b>
-                    .
+                    <p>
+                      To confirm your action, type 
+                      <b
+                        style="color: rgb(0, 0, 0);"
+                      >
+                        delete
+                      </b>
+                      .
+                    </p>
                   </div>
                 </div>
                 <div

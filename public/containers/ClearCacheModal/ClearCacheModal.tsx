@@ -21,6 +21,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiSpacer,
+  EuiText,
 } from "@elastic/eui";
 
 export interface ClearCacheModalProps {
@@ -176,12 +177,16 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
       <div style={{ lineHeight: 1.5 }}>
         {unBlockedItems.length > 0 && (
           <>
-            <p>{hint}</p>
-            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-              {unBlockedItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <EuiText size="s">
+              <p>{hint}</p>
+            </EuiText>
+            <EuiText size="s">
+              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                {unBlockedItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </EuiText>
             <EuiSpacer />
           </>
         )}
@@ -200,7 +205,9 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   const noSpecificIndexesChildren: React.ReactChild = (
     <>
       <div style={{ lineHeight: 1.5 }}>
-        <p>Cache will be cleared for all open indexes.</p>
+        <EuiText size="s">
+          <p>Cache will be cleared for all open indexes.</p>
+        </EuiText>
         <EuiSpacer />
       </div>
     </>
@@ -209,7 +216,13 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Clear cache for {type}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          {" "}
+          <EuiText size="s">
+            {" "}
+            <h2>Clear cache for {type}</h2>{" "}
+          </EuiText>{" "}
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiModalBody>

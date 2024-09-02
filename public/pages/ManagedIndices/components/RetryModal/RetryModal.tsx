@@ -17,6 +17,7 @@ import {
   EuiCompressedSelect,
   EuiSpacer,
   EuiCompressedFormRow,
+  EuiText,
 } from "@elastic/eui";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -135,14 +136,25 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
             // @ts-ignore */}
         <EuiModal onCancel={onClose} onClose={onClose}>
           <EuiModalHeader>
-            <EuiModalHeaderTitle>Retry policy</EuiModalHeaderTitle>
+            <EuiModalHeaderTitle>
+              <EuiText size="s">
+                <h2>Retry policy</h2>
+              </EuiText>
+            </EuiModalHeaderTitle>
           </EuiModalHeader>
 
           <EuiModalBody>
             <EuiCompressedRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
 
             <EuiSpacer size="s" />
-            <EuiCompressedFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">
+            <EuiCompressedFormRow
+              label={
+                <EuiText size="s">
+                  <h3>Start state</h3>
+                </EuiText>
+              }
+              helpText="Only common states shared across all selected indexes are available"
+            >
               <EuiCompressedSelect
                 disabled={radioIdSelected !== Radio.State}
                 options={stateOptions}

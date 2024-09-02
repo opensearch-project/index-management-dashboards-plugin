@@ -4,41 +4,23 @@ exports[`<IndexDetail /> spec render the component 1`] = `
 <div>
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      class="euiText euiText--small"
     >
-      <div
-        class="euiFlexItem"
-      >
-        <h1
-          class="euiTitle euiTitle--small"
-        >
-          Source index details
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
-      </div>
+      <h2>
+        Source index details
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-    </div>
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
   </div>
 </div>
 `;

@@ -69,27 +69,35 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Delete aliases</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Delete aliases</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         {hasSystemIndex ? (
           <>
-            <EuiCallOut color="warning">
+            <EuiCallOut color="warning" size="s">
               These aliases may contain critical system data. Deleting system aliases may break OpenSearch.
             </EuiCallOut>
             <EuiSpacer />
           </>
         ) : null}
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following alias will be permanently deleted. This action cannot be undone.</p>
-          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-            {selectedItems.map((item) => (
-              <li key={item.alias}>{item.alias}</li>
-            ))}
-          </ul>
+          <EuiText size="s">
+            <p>The following alias will be permanently deleted. This action cannot be undone.</p>
+          </EuiText>
+          <EuiText size="s">
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {selectedItems.map((item) => (
+                <li key={item.alias}>{item.alias}</li>
+              ))}
+            </ul>
+          </EuiText>
           <EuiSpacer />
-          <EuiText color="subdued">
+          <EuiText color="subdued" size="s">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
           <EuiCompressedFieldText
