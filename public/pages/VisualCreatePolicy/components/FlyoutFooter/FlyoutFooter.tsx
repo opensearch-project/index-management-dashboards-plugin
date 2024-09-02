@@ -36,7 +36,7 @@ const FlyoutFooter = ({
       </EuiSmallButtonEmpty>
     </EuiFlexItem>
     <EuiFlexItem grow={false}>
-      <EuiSmallButton disabled={disabledAction} onClick={onClickAction} fill data-test-subj="flyout-footer-action-button">
+      <EuiSmallButton disabled={disabledAction} onClick={onClickAction} fill data-test-subj="flyout-footer-action-button" iconType={"Add" ? "plusInCircle" : "plus"}>
         {text ? text : restore ? "Restore snapshot" : !save ? `${edit ? "Edit" : "Add"} ${action}` : save ? "Save" : "Create"}
       </EuiSmallButton>
     </EuiFlexItem>
