@@ -213,15 +213,16 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
     } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
+    const invalidChar = ["\\", "/", "*", "?", '"', "<", ">", "|", " ", ",", " ", "#"];
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
-            <EuiText size="s">
+          <EuiText size="s">
+            <EuiTitle size="m">
               <h2 id="flyoutTitle"> Create snapshot</h2>
-            </EuiText>
-          </EuiTitle>
+            </EuiTitle>
+          </EuiText>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
@@ -236,7 +237,11 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
               placeholder="Enter snapshot name"
             />
           </EuiCompressedFormRow>
-          <EuiFormHelpText>A valid snapshot name can not contain upper case characters. </EuiFormHelpText>
+          <EuiFormHelpText>
+            {" "}
+            A valid snapshot name must not start with _ and must be lowercase. It must not contain any of the following characters:{" "}
+            {invalidChar.map((char) => `[${char}]`).join(" ")}{" "}
+          </EuiFormHelpText>
 
           <EuiSpacer size="m" />
 
@@ -254,7 +259,14 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
 
           <EuiSpacer size="l" />
 
-          <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
+          <EuiAccordion
+            id="advanced_settings_accordian"
+            buttonContent={
+              <EuiText size="s">
+                <h3>Advanced options</h3>
+              </EuiText>
+            }
+          >
             <EuiSpacer size="m" />
 
             <SnapshotAdvancedSettings

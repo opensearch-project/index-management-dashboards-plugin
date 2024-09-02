@@ -102,7 +102,7 @@ export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, Sna
     let error;
     if (snapshot?.failures != null) {
       error = (
-        <EuiText size="xs">
+        <EuiText size="s">
           <dt>Error details</dt>
           <dd>
             <ModalConsumer>
@@ -116,16 +116,18 @@ export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, Sna
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
-            <h2 id="flyoutTitle">{snapshot?.snapshot}</h2>
-          </EuiTitle>
+          <EuiText size="s">
+            <EuiTitle size="m">
+              <h2 id="flyoutTitle">{snapshot?.snapshot}</h2>
+            </EuiTitle>
+          </EuiText>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
           <EuiFlexGrid columns={2}>
             {items1.map((item) => (
               <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -140,7 +142,7 @@ export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, Sna
           <EuiFlexGrid columns={2}>
             {items2.map((item) => (
               <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -150,7 +152,7 @@ export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, Sna
 
           <EuiSpacer size="l" />
 
-          <EuiText size="xs">
+          <EuiText size="s">
             <dt>Indices</dt>
             <dd>{snapshot?.indices.join(", ")}</dd>
           </EuiText>

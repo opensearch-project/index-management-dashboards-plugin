@@ -29,11 +29,8 @@ const SnapshotRenameOptions = ({
   const { do_not_rename, add_prefix, rename_indices } = RESTORE_OPTIONS;
 
   return (
-    <div style={{ width: width }}>
-      <h5>Rename restored indices</h5>
-
-      <EuiSpacer size="m" />
-
+    <div>
+      <CustomLabel title={"Rename restored indices"} />
       <EuiCompressedRadio
         id={do_not_rename}
         name="rename_option"

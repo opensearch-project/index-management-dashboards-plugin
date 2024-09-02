@@ -202,7 +202,14 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
 
           <EuiSpacer size="l" />
 
-          <EuiAccordion id="repo_advanced_settings" buttonContent="Advanced settings">
+          <EuiAccordion
+            id="repo_advanced_settings"
+            buttonContent={
+              <EuiText size="s">
+                <h3>Advanced settings</h3>
+              </EuiText>
+            }
+          >
             <EuiSpacer size="s" />
 
             <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
@@ -274,9 +281,11 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="s">
-            <h2 id="flyoutTitle">{!!editRepo ? "Edit" : "Create"} repository</h2>
-          </EuiTitle>
+          <EuiText size="s">
+            <EuiTitle size="m">
+              <h2 id="flyoutTitle">{!!editRepo ? "Edit" : "Create"} repository</h2>
+            </EuiTitle>
+          </EuiText>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
