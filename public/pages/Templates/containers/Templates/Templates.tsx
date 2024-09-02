@@ -23,6 +23,7 @@ import {
   EuiText,
   EuiToolTip,
   EuiSmallButtonIcon,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -42,8 +43,7 @@ import IndexPatternDisplay from "./IndexPatternDisplay";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlDescriptionData } from "src/plugins/navigation/public";
-import { description } from "joi";
+import { TopNavControlButtonData, TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 interface TemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -334,7 +334,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             ) ? (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>You have no templates.</p>
                   </EuiText>
                 }
@@ -344,6 +344,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_TEMPLATE);
                     }}
+                    iconType="plus"
                   >
                     Create template
                   </EuiSmallButton>,
@@ -352,7 +353,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             ) : (
               <EuiEmptyPrompt
                 body={
-                  <EuiText>
+                  <EuiText size="s">
                     <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
                   </EuiText>
                 }
@@ -381,22 +382,17 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
 
     const description = [
       {
-        renderComponent: (
-          <EuiCompressedFormRow
-            fullWidth
-            helpText={
-              <div>
-                Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
-                <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
-                  Learn more
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </EuiCompressedFormRow>
-        ),
-      },
+        description: "Index templates let you initialize new indexes or data streams with predefined mappings and settings.",
+        links: {
+          label: "Learn more",
+          href: (this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     const onClickCreate = () => {
@@ -421,7 +417,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             } as TopNavControlButtonData,
           ]}
         />
-        <ContentPanel>
+        <EuiPanel>
           <IndexControls
             value={{
               search: this.state.search,
@@ -433,7 +429,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
           />
 
           {commonTable()}
-        </ContentPanel>
+        </EuiPanel>
       </div>
     ) : (
       <ContentPanel
@@ -451,6 +447,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                 buttonProps: {
                   fill: true,
                   onClick: onClickCreate,
+                  iconType: "plus",
                 },
               },
             ]}

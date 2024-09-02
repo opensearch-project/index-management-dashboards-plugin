@@ -11,12 +11,15 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--large"
-          title="good_template"
+        <div
+          class="euiText euiText--small"
         >
-          good_template
-        </h1>
+          <h1
+            title="good_template"
+          >
+            good_template
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -58,112 +61,118 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
     />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
+        class="euiText euiText--small"
       >
-        <div
-          class="euiFlexItem"
-        >
-          <h1
-            class="euiTitle euiTitle--small"
-          >
-            Overview
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Overview
+        </h2>
       </div>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        style="padding: 0px 10px;"
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
       >
         <div
-          class="euiSpacer euiSpacer--s"
-        />
-        <div
-          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+          class="euiFlexItem"
         >
-          <div
-            class="euiFlexItem"
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
           >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+            <dt
+              class="euiDescriptionList__title"
             >
-              <dt
-                class="euiDescriptionList__title"
+              <div
+                class="euiText euiText--small"
               >
-                Template type
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                Indexes
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
+                <h4>
+                  Template type
+                </h4>
+              </div>
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              Indexes
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
           >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+            <dt
+              class="euiDescriptionList__title"
             >
-              <dt
-                class="euiDescriptionList__title"
+              <div
+                class="euiText euiText--small"
               >
-                Index patterns
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                -
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
+                <h4>
+                  Index patterns
+                </h4>
+              </div>
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              -
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
           >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+            <dt
+              class="euiDescriptionList__title"
             >
-              <dt
-                class="euiDescriptionList__title"
+              <div
+                class="euiText euiText--small"
               >
-                Priority
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                undefined
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
+                <h4>
+                  Priority
+                </h4>
+              </div>
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              undefined
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
           >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+            <dt
+              class="euiDescriptionList__title"
             >
-              <dt
-                class="euiDescriptionList__title"
+              <div
+                class="euiText euiText--small"
               >
-                Associated component templates
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                -
-              </dd>
-            </dl>
-          </div>
+                <h4>
+                  Associated component templates
+                </h4>
+              </div>
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              -
+            </dd>
+          </dl>
         </div>
       </div>
     </div>
@@ -171,7 +180,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiTabs"
+      class="euiTabs euiTabs--small"
       role="tablist"
     >
       <button
@@ -215,17 +224,13 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Preview template
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h2>
+              Preview template
+            </h2>
+          </div>
         </div>
       </div>
       <hr
@@ -249,9 +254,11 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
               for="some_html_id"
             >
               <div
-                class="euiTitle euiTitle--small"
+                class="euiText euiText--small"
               >
-                Index alias
+                <h3>
+                  Index alias
+                </h3>
               </div>
             </label>
           </div>
@@ -276,12 +283,18 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             class="euiFlexItem"
           >
             <dl
-              class="euiDescriptionList euiDescriptionList--row"
+              class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
             >
               <dt
                 class="euiDescriptionList__title"
               >
-                Alias names
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h4>
+                    Alias names
+                  </h4>
+                </div>
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -294,11 +307,13 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiSpacer euiSpacer--l"
         />
-        <span
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Index settings
-        </span>
+          <h3>
+            Index settings
+          </h3>
+        </div>
         <div
           class="euiSpacer euiSpacer--s"
         />
@@ -309,12 +324,18 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             class="euiFlexItem"
           >
             <dl
-              class="euiDescriptionList euiDescriptionList--row"
+              class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
             >
               <dt
                 class="euiDescriptionList__title"
               >
-                Number of primary shards
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h4>
+                    Number of primary shards
+                  </h4>
+                </div>
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -327,12 +348,18 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             class="euiFlexItem"
           >
             <dl
-              class="euiDescriptionList euiDescriptionList--row"
+              class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
             >
               <dt
                 class="euiDescriptionList__title"
               >
-                Number of replicas
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h4>
+                    Number of replicas
+                  </h4>
+                </div>
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -345,12 +372,18 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             class="euiFlexItem"
           >
             <dl
-              class="euiDescriptionList euiDescriptionList--row"
+              class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
             >
               <dt
                 class="euiDescriptionList__title"
               >
-                Refresh interval
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h4>
+                    Refresh interval
+                  </h4>
+                </div>
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -594,9 +627,11 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiTitle euiTitle--small"
+          class="euiText euiText--small"
         >
-          Index mapping
+          <h3>
+            Index mapping
+          </h3>
         </div>
         <div
           class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -707,9 +742,13 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             <div
               class="euiSpacer euiSpacer--l"
             />
-            <p>
-              You have no field mappings.
-            </p>
+            <div
+              class="euiText euiText--small"
+            >
+              <p>
+                You have no field mappings.
+              </p>
+            </div>
           </div>
         </div>
         <div

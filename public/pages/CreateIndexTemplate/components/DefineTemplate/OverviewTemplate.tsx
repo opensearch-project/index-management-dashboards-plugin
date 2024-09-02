@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiLink, EuiPanel, EuiSpacer, EuiText, EuiHorizontalRule } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { ROUTES } from "../../../../utils/constants";
 import { TemplateConvert } from "../TemplateType";
@@ -18,24 +17,41 @@ export default function OverviewTemplate(props: SubDetailProps) {
     <>
       <EuiSpacer size="s" />
       <DescriptionListHoz
+        compressed
         columns={columns}
         listItems={[
           {
-            title: "Template type",
+            title: (
+              <EuiText size="s">
+                <h4>Template type</h4>
+              </EuiText>
+            ),
             description: TemplateConvert({
               value: values.data_stream,
             }),
           },
           {
-            title: "Index patterns",
+            title: (
+              <EuiText size="s">
+                <h4>Index patterns</h4>
+              </EuiText>
+            ),
             description: values.index_patterns?.join(", "),
           },
           {
-            title: "Priority",
+            title: (
+              <EuiText size="s">
+                <h4>Priority</h4>
+              </EuiText>
+            ),
             description: values.priority,
           },
           {
-            title: "Associated component templates",
+            title: (
+              <EuiText size="s">
+                <h4>Associated component templates</h4>
+              </EuiText>
+            ),
             description: (values.composed_of || []).length
               ? (values.composed_of || []).map((item) => (
                   <div key={item}>
@@ -54,8 +70,12 @@ export default function OverviewTemplate(props: SubDetailProps) {
   return withoutPanel ? (
     content
   ) : (
-    <ContentPanel title="Overview" titleSize="s">
+    <EuiPanel>
+      <EuiText size="s">
+        <h2>Overview</h2>
+      </EuiText>
+      <EuiHorizontalRule margin="xs" />
       {content}
-    </ContentPanel>
+    </EuiPanel>
   );
 }

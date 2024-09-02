@@ -13,6 +13,7 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiCodeBlock,
+  EuiText,
 } from "@elastic/eui";
 
 interface InfoModalProps {
@@ -26,11 +27,15 @@ const InfoModal = ({ info, onClose }: InfoModalProps) => (
       // @ts-ignore */}
     <EuiModal onCancel={onClose} onClose={onClose} maxWidth={1000}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Managed Index Info</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>Managed Index Info</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
-        <EuiCodeBlock language="json" fontSize="m">
+        <EuiCodeBlock language="json" fontSize="s">
           {JSON.stringify(info, null, 4)}
         </EuiCodeBlock>
       </EuiModalBody>

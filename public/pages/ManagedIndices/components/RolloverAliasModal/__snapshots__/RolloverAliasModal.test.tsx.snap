@@ -34,7 +34,13 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            Edit rollover alias
+            <div
+              class="euiText euiText--small"
+            >
+              <h2>
+                Edit rollover alias
+              </h2>
+            </div>
           </div>
         </div>
         <div
@@ -54,7 +60,13 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
                   class="euiFormLabel euiFormRow__label"
                   for="some_html_id"
                 >
-                  Rollover alias
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h3>
+                      Rollover alias
+                    </h3>
+                  </div>
                 </label>
               </div>
               <div

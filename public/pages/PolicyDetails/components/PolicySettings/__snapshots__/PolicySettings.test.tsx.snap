@@ -12,17 +12,19 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--small"
+      <div
+        class="euiText euiText--small"
       >
-        Policy settings
-        <span
-          class="panel-header-count"
-        >
-           
-           
-        </span>
-      </h1>
+        <h1>
+          Policy settings
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
+        </h1>
+      </div>
     </div>
   </div>
   <hr

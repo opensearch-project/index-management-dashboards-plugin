@@ -4,7 +4,17 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiSmallButton, EuiSmallButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiCodeBlock,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiLink,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
@@ -226,7 +236,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
               {useNewUX ? (
                 <></>
               ) : (
-                <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiTitle>
+                <EuiText size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiText>
               )}
               {isEdit ? null : useNewUX ? (
                 <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />

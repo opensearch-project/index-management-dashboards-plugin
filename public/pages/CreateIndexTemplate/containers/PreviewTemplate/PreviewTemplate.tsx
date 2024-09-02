@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, Ref } from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import useField, { FieldInstance } from "../../../../lib/field";
 import { OverviewTemplate } from "../../components/DefineTemplate";
@@ -43,7 +43,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiTitle size="s">{<div>Template settings</div>}</EuiTitle>
+          <EuiText size="s">
+            <h3>Template settings</h3>
+          </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />

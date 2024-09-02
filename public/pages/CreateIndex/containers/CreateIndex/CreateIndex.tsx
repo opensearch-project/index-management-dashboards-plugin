@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import IndexForm from "../IndexForm";
 import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
@@ -59,9 +59,9 @@ export class CreateIndex extends Component<CreateIndexProps> {
       </div>
     ) : (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>{isEdit ? "Edit" : "Create"} index</h1>
-        </EuiTitle>
+        </EuiText>
         <EuiSpacer />
         <IndexForm
           index={this.index}

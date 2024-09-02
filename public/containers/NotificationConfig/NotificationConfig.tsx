@@ -4,7 +4,7 @@
  */
 
 import React, { useRef, forwardRef, useMemo, useImperativeHandle, useContext, useEffect, useState } from "react";
-import { EuiBadge, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiBadge, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
 import ChannelSelect, { useChannels } from "../ChannelSelect";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
 import {
@@ -122,9 +122,9 @@ const NotificationConfig = (
 
   const content = (
     <div>
-      <EuiTitle size="s">
-        <h5>Notifications</h5>
-      </EuiTitle>
+      <EuiText size="s">
+        <h3>Notifications</h3>
+      </EuiText>
       <NotificationCallout
         actionType={actionType}
         operationType={operationType}
@@ -172,8 +172,14 @@ const NotificationConfig = (
       ) : null}
       {values.customize && permissionForCreateLRON ? (
         <>
-          <EuiSpacer />
-          <CustomFormRow label="Send additional notifications when operation">
+          <EuiSpacer size="s" />
+          <CustomFormRow
+            label={
+              <EuiText size="s">
+                <h4>Send additional notifications when operation</h4>
+              </EuiText>
+            }
+          >
             <>
               <AllBuiltInComponents.CheckBox
                 {...field.registerField({

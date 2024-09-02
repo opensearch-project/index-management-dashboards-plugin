@@ -172,17 +172,19 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
               <div
                 class="euiFlexItem"
               >
-                <h1
-                  class="euiTitle euiTitle--medium"
+                <div
+                  class="euiText euiText--small"
                 >
-                  Job name and description
-                  <span
-                    class="panel-header-count"
-                  >
-                     
-                     
-                  </span>
-                </h1>
+                  <h1>
+                    Job name and description
+                    <span
+                      class="panel-header-count"
+                    >
+                       
+                       
+                    </span>
+                  </h1>
+                </div>
               </div>
             </div>
             <hr
@@ -303,17 +305,19 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <h1
-                    class="euiTitle euiTitle--medium"
+                  <div
+                    class="euiText euiText--small"
                   >
-                    Indices
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
+                    <h1>
+                      Indices
+                      <span
+                        class="panel-header-count"
+                      >
+                         
+                         
+                      </span>
+                    </h1>
+                  </div>
                 </div>
               </div>
               <hr

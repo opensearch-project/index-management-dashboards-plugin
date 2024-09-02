@@ -3,9 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTextColor } from "@elastic/eui";
+import {
+  EuiCallOut,
+  EuiCheckableCard,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
+  EuiTextColor,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
@@ -24,13 +33,21 @@ export default function DefineTemplate(props: SubDetailProps) {
     name: ["_meta", "flow"],
   });
   return readonly ? null : (
-    <ContentPanel title="Template settings" titleSize="s">
+    <EuiPanel>
+      <EuiText size="s">
+        <h2>Template settings</h2>
+      </EuiText>
+      <EuiHorizontalRule margin="xs" />
       <EuiSpacer size="s" />
       {isEdit ? null : (
         <>
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
-            label="Template name"
+            label={
+              <EuiText size="s">
+                <h3>Template name</h3>
+              </EuiText>
+            }
             direction="ver"
             helpText={<div>Template name cannot be changed after the template is created.</div>}
           >
@@ -52,7 +69,15 @@ export default function DefineTemplate(props: SubDetailProps) {
           <EuiSpacer />
         </>
       )}
-      <CustomFormRow direction={isEdit ? "hoz" : "ver"} {...getCommonFormRowProps("data_stream", field)} label="Template type">
+      <CustomFormRow
+        direction={isEdit ? "hoz" : "ver"}
+        {...getCommonFormRowProps("data_stream", field)}
+        label={
+          <EuiText size="s">
+            <h3>Template type</h3>
+          </EuiText>
+        }
+      >
         <TemplateType
           {...field.registerField({
             name: "data_stream",
@@ -62,7 +87,11 @@ export default function DefineTemplate(props: SubDetailProps) {
       <EuiSpacer />
       <CustomFormRow
         {...getCommonFormRowProps("index_patterns", field)}
-        label="Index patterns"
+        label={
+          <EuiText size="s">
+            <h3>Index patterns</h3>
+          </EuiText>
+        }
         direction={isEdit ? "hoz" : "ver"}
         helpText="Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards."
       >
@@ -108,7 +137,11 @@ export default function DefineTemplate(props: SubDetailProps) {
       <CustomFormRow
         direction={isEdit ? "hoz" : "ver"}
         {...getCommonFormRowProps("priority", field)}
-        label="Priority"
+        label={
+          <EuiText size="s">
+            <h3>Priority</h3>
+          </EuiText>
+        }
         helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index."
       >
         <AllBuiltInComponents.Number
@@ -133,7 +166,15 @@ export default function DefineTemplate(props: SubDetailProps) {
         />
       </CustomFormRow>
       <EuiSpacer />
-      <CustomFormRow {...getCommonFormRowProps(["_meta", "flow"], field)} fullWidth label="Choose a method to define your template">
+      <CustomFormRow
+        {...getCommonFormRowProps(["_meta", "flow"], field)}
+        fullWidth
+        label={
+          <EuiText size="s">
+            <h3>Choose a method to define your templates</h3>
+          </EuiText>
+        }
+      >
         <EuiFlexGroup>
           <EuiFlexItem style={{ width: 350 }} grow={false}>
             <EuiCheckableCard
@@ -141,7 +182,9 @@ export default function DefineTemplate(props: SubDetailProps) {
               label={
                 <>
                   <div className="euiCheckableCard__label" style={{ paddingRight: 0 }}>
-                    Simple template
+                    <EuiText size="s">
+                      <h4>Simple template</h4>
+                    </EuiText>
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
                     <EuiTextColor color="subdued">Define an index template with index aliases, settings, and mappings.</EuiTextColor>
@@ -161,7 +204,9 @@ export default function DefineTemplate(props: SubDetailProps) {
               label={
                 <>
                   <div className="euiCheckableCard__label" style={{ paddingRight: 0 }}>
-                    Component template
+                    <EuiText size="s">
+                      <h4>Component template</h4>
+                    </EuiText>
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
                     <EuiTextColor color="subdued">
@@ -177,6 +222,6 @@ export default function DefineTemplate(props: SubDetailProps) {
           </EuiFlexItem>
         </EuiFlexGroup>
       </CustomFormRow>
-    </ContentPanel>
+    </EuiPanel>
   );
 }

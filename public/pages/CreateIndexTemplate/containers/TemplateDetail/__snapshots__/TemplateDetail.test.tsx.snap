@@ -8,12 +8,14 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small"
       >
-        Create
-         template
-      </h1>
+        <h1>
+          Create
+           template
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -53,405 +55,429 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      class="euiText euiText--small"
     >
-      <div
-        class="euiFlexItem"
-      >
-        <h1
-          class="euiTitle euiTitle--small"
-        >
-          Template settings
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
-      </div>
+      <h2>
+        Template settings
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      style="padding: 0px 10px;"
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      data-test-subj="form-row-name"
+      id="some_html_id-row"
     >
       <div
-        class="euiSpacer euiSpacer--s"
-      />
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Template name
+            </h3>
+          </div>
+        </label>
+      </div>
       <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-name"
-        id="some_html_id-row"
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiFormRow__labelWrapper"
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
+          <div>
+            Template name cannot be changed after the template is created.
+          </div>
+        </div>
+        <span
+          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
-            Template name
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText euiFieldText--compressed"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          <div>
+            Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      data-test-subj="form-row-data_stream"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Template type
+            </h3>
+          </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiRadio euiRadio--compressed"
+        >
+          <input
+            checked=""
+            class="euiRadio__input"
+            id="Indexes"
+            type="radio"
+            value=""
+          />
+          <div
+            class="euiRadio__circle"
+          />
+          <label
+            class="euiRadio__label"
+            for="Indexes"
+          >
+            Indexes
           </label>
         </div>
         <div
-          class="euiFormRow__fieldWrapper"
+          class="euiRadio euiRadio--compressed"
+        >
+          <input
+            class="euiRadio__input"
+            id="Data streams"
+            type="radio"
+            value=""
+          />
+          <div
+            class="euiRadio__circle"
+          />
+          <label
+            class="euiRadio__label"
+            for="Data streams"
+          >
+            Data streams
+          </label>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      data-test-subj="form-row-index_patterns"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
+            class="euiText euiText--small"
           >
-            <div>
-              Template name cannot be changed after the template is created.
-            </div>
+            <h3>
+              Index patterns
+            </h3>
           </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
+        </div>
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox euiComboBox--compressed"
+          role="combobox"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
+              class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
               >
-                <input
-                  class="euiFieldText euiFieldText--compressed"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            <div>
-              Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-data_stream"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Template type
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiRadio euiRadio--compressed"
-          >
-            <input
-              checked=""
-              class="euiRadio__input"
-              id="Indexes"
-              type="radio"
-              value=""
-            />
-            <div
-              class="euiRadio__circle"
-            />
-            <label
-              class="euiRadio__label"
-              for="Indexes"
-            >
-              Indexes
-            </label>
-          </div>
-          <div
-            class="euiRadio euiRadio--compressed"
-          >
-            <input
-              class="euiRadio__input"
-              id="Data streams"
-              type="radio"
-              value=""
-            />
-            <div
-              class="euiRadio__circle"
-            />
-            <label
-              class="euiRadio__label"
-              for="Data streams"
-            >
-              Data streams
-            </label>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-index_patterns"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Index patterns
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
-          </div>
-          <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox euiComboBox--compressed"
-            role="combobox"
-          >
-            <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
+                <p
+                  class="euiComboBoxPlaceholder"
                 >
-                  <p
-                    class="euiComboBoxPlaceholder"
-                  >
-                    Select index patterns or input wildcards
-                  </p>
+                  Select index patterns or input wildcards
+                </p>
+                <div
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
+                >
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
                   <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
-                  >
-                    <input
-                      aria-controls=""
-                      data-test-subj="comboBoxSearchInput"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
-                    <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
-                  </div>
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      data-test-subj="form-row-priority"
+      id="some_html_id-row"
+    >
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        data-test-subj="form-row-priority"
-        id="some_html_id-row"
+        class="euiFormRow__labelWrapper"
       >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Priority
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
+            class="euiText euiText--small"
           >
-            Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index.
+            <h3>
+              Priority
+            </h3>
           </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldNumber euiFieldNumber--compressed"
-                  type="number"
-                  value="0"
-                />
-              </div>
-            </div>
-          </span>
-        </div>
+        </label>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
-        data-test-subj="form-row-_meta.flow"
-        id="some_html_id-row"
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiFormRow__labelWrapper"
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Choose a method to define your template
-          </label>
+          Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index.
         </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+        <span
+          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
-              style="width: 350px;"
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldNumber euiFieldNumber--compressed"
+                type="number"
+                value="0"
+              />
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+      data-test-subj="form-row-_meta.flow"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Choose a method to define your templates
+            </h3>
+          </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+            style="width: 350px;"
+          >
+            <div
+              class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard euiCheckableCard-isChecked eui-fullHeight"
             >
               <div
-                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard euiCheckableCard-isChecked eui-fullHeight"
+                class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--primary euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--primary euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
+                  class="euiRadio euiRadio--noLabel"
+                >
+                  <input
+                    checked=""
+                    class="euiRadio__input"
+                    id="checkboxForIndexTemplateFlowSimple"
+                    type="radio"
+                    value=""
+                  />
+                  <div
+                    class="euiRadio__circle"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--transparent euiPanel--noShadow euiPanel--noBorder euiSplitPanel__inner"
+              >
+                <label
+                  class="euiCheckableCard__label"
+                  for="checkboxForIndexTemplateFlowSimple"
                 >
                   <div
-                    class="euiRadio euiRadio--noLabel"
-                  >
-                    <input
-                      checked=""
-                      class="euiRadio__input"
-                      id="checkboxForIndexTemplateFlowSimple"
-                      type="radio"
-                      value=""
-                    />
-                    <div
-                      class="euiRadio__circle"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--transparent euiPanel--noShadow euiPanel--noBorder euiSplitPanel__inner"
-                >
-                  <label
                     class="euiCheckableCard__label"
-                    for="checkboxForIndexTemplateFlowSimple"
+                    style="padding-right: 0px;"
                   >
                     <div
-                      class="euiCheckableCard__label"
-                      style="padding-right: 0px;"
+                      class="euiText euiText--small"
                     >
-                      Simple template
+                      <h4>
+                        Simple template
+                      </h4>
                     </div>
-                    <div
-                      class="euiText euiText--extraSmall euiCheckableCard__children"
+                  </div>
+                  <div
+                    class="euiText euiText--extraSmall euiCheckableCard__children"
+                  >
+                    <span
+                      class="euiTextColor euiTextColor--subdued"
                     >
-                      <span
-                        class="euiTextColor euiTextColor--subdued"
-                      >
-                        Define an index template with index aliases, settings, and mappings.
-                      </span>
-                    </div>
-                  </label>
-                </div>
+                      Define an index template with index aliases, settings, and mappings.
+                    </span>
+                  </div>
+                </label>
               </div>
             </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+            style="width: 350px;"
+          >
             <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
-              style="width: 350px;"
+              class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard eui-fullHeight"
             >
               <div
-                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard eui-fullHeight"
+                class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--subdued euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--subdued euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
+                  class="euiRadio euiRadio--noLabel"
+                >
+                  <input
+                    class="euiRadio__input"
+                    id="checkboxForIndexTemplateFlowComponents"
+                    type="radio"
+                    value=""
+                  />
+                  <div
+                    class="euiRadio__circle"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--transparent euiPanel--noShadow euiPanel--noBorder euiSplitPanel__inner"
+              >
+                <label
+                  class="euiCheckableCard__label"
+                  for="checkboxForIndexTemplateFlowComponents"
                 >
                   <div
-                    class="euiRadio euiRadio--noLabel"
-                  >
-                    <input
-                      class="euiRadio__input"
-                      id="checkboxForIndexTemplateFlowComponents"
-                      type="radio"
-                      value=""
-                    />
-                    <div
-                      class="euiRadio__circle"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--transparent euiPanel--noShadow euiPanel--noBorder euiSplitPanel__inner"
-                >
-                  <label
                     class="euiCheckableCard__label"
-                    for="checkboxForIndexTemplateFlowComponents"
+                    style="padding-right: 0px;"
                   >
                     <div
-                      class="euiCheckableCard__label"
-                      style="padding-right: 0px;"
+                      class="euiText euiText--small"
                     >
-                      Component template
+                      <h4>
+                        Component template
+                      </h4>
                     </div>
-                    <div
-                      class="euiText euiText--extraSmall euiCheckableCard__children"
+                  </div>
+                  <div
+                    class="euiText euiText--extraSmall euiCheckableCard__children"
+                  >
+                    <span
+                      class="euiTextColor euiTextColor--subdued"
                     >
-                      <span
-                        class="euiTextColor euiTextColor--subdued"
-                      >
-                        Define an index template by associating component templates containing index configurations.
-                      </span>
-                    </div>
-                  </label>
-                </div>
+                      Define an index template by associating component templates containing index configurations.
+                    </span>
+                  </div>
+                </label>
               </div>
             </div>
           </div>
@@ -473,17 +499,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Template definition
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h2>
+            Template definition
+          </h2>
+        </div>
       </div>
     </div>
     <hr
@@ -507,9 +529,11 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             for="some_html_id"
           >
             <div
-              class="euiTitle euiTitle--small"
+              class="euiText euiText--small"
             >
-              Index alias
+              <h3>
+                Index alias
+              </h3>
             </div>
           </label>
         </div>
@@ -540,7 +564,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Index alias
+            <div
+              class="euiText euiText--small"
+            >
+              <h4>
+                Index alias
+              </h4>
+            </div>
           </label>
         </div>
         <div
@@ -610,11 +640,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <span
-        class="euiTitle euiTitle--small"
+      <div
+        class="euiText euiText--small"
       >
-        Index settings
-      </span>
+        <h3>
+          Index settings
+        </h3>
+      </div>
       <div
         class="euiSpacer euiSpacer--s"
       />
@@ -631,7 +663,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Number of primary shards
+            <div
+              class="euiText euiText--small"
+            >
+              <h4>
+                Number of primary shards
+              </h4>
+            </div>
           </label>
         </div>
         <div
@@ -678,7 +716,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Number of replicas
+            <div
+              class="euiText euiText--small"
+            >
+              <h4>
+                Number of replicas
+              </h4>
+            </div>
           </label>
         </div>
         <div
@@ -725,7 +769,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Refresh interval
+            <div
+              class="euiText euiText--small"
+            >
+              <h4>
+                Refresh interval
+              </h4>
+            </div>
           </label>
         </div>
         <div
@@ -987,9 +1037,11 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiTitle euiTitle--small"
+        class="euiText euiText--small"
       >
-        Index mapping
+        <h3>
+          Index mapping
+        </h3>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -1100,9 +1152,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           <div
             class="euiSpacer euiSpacer--l"
           />
-          <p>
-            You have no field mappings.
-          </p>
+          <div
+            class="euiText euiText--small"
+          >
+            <p>
+              You have no field mappings.
+            </p>
+          </div>
           <div
             class="euiSpacer euiSpacer--l"
           />

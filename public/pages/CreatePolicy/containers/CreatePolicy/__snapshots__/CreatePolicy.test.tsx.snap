@@ -24,17 +24,19 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Name policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Name policy
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
     </div>
     <hr
@@ -115,17 +117,19 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Define policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Define policy
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -367,17 +371,19 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Name policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Name policy
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
     </div>
     <hr
@@ -459,17 +465,19 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Define policy
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Define policy
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

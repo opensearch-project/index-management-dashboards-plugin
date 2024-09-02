@@ -17,6 +17,10 @@ import {
   EuiTabs,
   EuiText,
   EuiTitle,
+  EuiPanel,
+  EuiTextColor,
+  EuiAccordion,
+  htmlIdGenerator,
 } from "@elastic/eui";
 import queryString from "query-string";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
@@ -46,6 +50,7 @@ import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottom
 import { IndexForm } from "../../../../containers/IndexForm";
 import { TABS_ENUM, tabs } from "../../constant";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -200,15 +205,17 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
 
   const descriptionData = [
     {
-      renderComponent: (
-        <EuiText size="s" color="subdued">
-          Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
-          <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
-            Learn more
-          </EuiLink>
-        </EuiText>
-      ),
-    },
+      description: "Define an automated snapshot schedule and retention period with a snapshot policy.",
+      links: {
+        label: "Learn more",
+        href: coreServices.docLinks.links.opensearch.indexTemplates.base,
+        iconType: "popout",
+        iconSide: "right",
+        controlType: "link",
+        target: "_blank",
+        flush: "both",
+      } as TopNavControlLinkData,
+    } as TopNavControlDescriptionData,
   ];
 
   const HeaderRight = [
@@ -234,7 +241,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       renderComponent: (
         <EuiSmallButton
           fill
-          style={{ marginRight: 20 }}
           onClick={() => {
             const showValue: TemplateItemRemote = {
               ...values,
@@ -248,9 +254,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 width: 800,
               },
               "data-test-subj": "templateJSONDetailModal",
-              title: values.name,
+              title: (
+                <EuiText size="s">
+                  <h2>{values.name}</h2>
+                </EuiText>
+              ),
               content: (
-                <EuiCodeBlock language="json" isCopyable>
+                <EuiCodeBlock language="json" isCopyable fontSize="s">
                   {JSON.stringify(showValue, null, 2)}
                 </EuiCodeBlock>
               ),
@@ -268,9 +278,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <>
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem>
-            <EuiTitle size="l">
+            <EuiText size="s">
               {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
-            </EuiTitle>
+            </EuiText>
             {isEdit ? null : (
               <CustomFormRow
                 fullWidth
@@ -306,7 +316,11 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                         width: 800,
                       },
                       "data-test-subj": "templateJSONDetailModal",
-                      title: values.name,
+                      title: (
+                        <EuiText size="s">
+                          <h2>{values.name}</h2>
+                        </EuiText>
+                      ),
                       content: (
                         <EuiCodeBlock language="json" isCopyable>
                           {JSON.stringify(showValue, null, 2)}
@@ -359,7 +373,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       ) : null}
       {isEdit ? (
         <>
-          <EuiTabs>
+          <EuiTabs size="s">
             {tabs.map((item) => (
               <EuiTab
                 onClick={() => {
@@ -388,13 +402,48 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           <EuiSpacer />
         </>
       ) : null}
+      {/* <EuiPanel>
+        {
+          isEdit && selectedTabId === TABS_ENUM.SUMMARY ? (
+            <EuiText size="s">
+              <h2>Preview template</h2>
+            </EuiText>
+          ) : values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
+            <EuiText size="s">
+              <h2>Override template definition</h2>
+            </EuiText>
+          ) : (
+            <EuiText size="s">
+              <h2>Template definition</h2>
+            </EuiText>
+          )
+        }
+        {
+          (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? <EuiText size="xs">
+                <EuiTextColor color="subdued">Provide additional configurations such as index aliases, settings, and mappings. Configurations defined in this section will take precedent if they overlap with the associated component templates.</EuiTextColor>
+              </EuiText>
+            : undefined
+        }
+        {(!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+          ? <EuiAccordion id={htmlIdGenerator()()} forceState={isAccordionOpen} onToggle={toggleAccordion} buttonContent={titleContent}></EuiAccordion> : undefined
+        }
+      </EuiPanel> */}
       <ContentPanel
         title={
-          isEdit && selectedTabId === TABS_ENUM.SUMMARY
-            ? "Preview template"
-            : values._meta?.flow === FLOW_ENUM.COMPONENTS
-            ? "Override template definition"
-            : "Template definition"
+          isEdit && selectedTabId === TABS_ENUM.SUMMARY ? (
+            <EuiText size="s">
+              <h2>Preview template</h2>
+            </EuiText>
+          ) : values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
+            <EuiText size="s">
+              <h2>Override template definition</h2>
+            </EuiText>
+          ) : (
+            <EuiText size="s">
+              <h2>Template definition</h2>
+            </EuiText>
+          )
         }
         subTitleText={
           (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
@@ -454,6 +503,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   }}
                   isLoading={isSubmitting}
                   data-test-subj="CreateIndexTemplateCreateButton"
+                  iconType={"plus"}
                 >
                   Create template
                 </EuiSmallButton>

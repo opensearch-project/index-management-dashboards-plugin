@@ -18,6 +18,7 @@ import {
   EuiCopy,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiText,
 } from "@elastic/eui";
 
 interface PolicyModalProps {
@@ -36,11 +37,15 @@ const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessa
       // @ts-ignore */}
       <EuiModal onCancel={onClose} onClose={onClose} maxWidth={1000}>
         <EuiModalHeader>
-          <EuiModalHeaderTitle>{policyId}</EuiModalHeaderTitle>
+          <EuiModalHeaderTitle>
+            <EuiText size="s">
+              <h2>{policyId}</h2>
+            </EuiText>
+          </EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiCodeBlock language="json" fontSize="m" style={{ minWidth: 600 }}>
+          <EuiCodeBlock language="json" fontSize="s" style={{ minWidth: 600 }}>
             {errorMessage != null ? errorMessage : policyString}
           </EuiCodeBlock>
         </EuiModalBody>

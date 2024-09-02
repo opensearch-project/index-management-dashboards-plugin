@@ -35,7 +35,13 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            some-id
+            <div
+              class="euiText euiText--small"
+            >
+              <h2>
+                some-id
+              </h2>
+            </div>
           </div>
         </div>
         <div
@@ -45,7 +51,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
             class="euiModalBody__overflow"
           >
             <div
-              class="euiCodeBlock euiCodeBlock--fontMedium euiCodeBlock--paddingLarge prismjs language-json"
+              class="euiCodeBlock euiCodeBlock--fontSmall euiCodeBlock--paddingLarge prismjs language-json"
             >
               <pre
                 class="euiCodeBlock__pre euiCodeBlock__pre--whiteSpacePreWrap"

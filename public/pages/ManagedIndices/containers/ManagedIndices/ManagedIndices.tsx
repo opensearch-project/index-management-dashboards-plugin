@@ -28,6 +28,7 @@ import {
   EuiContextMenuItem,
   EuiPopover,
   EuiContextMenuPanel,
+  EuiPanel,
 } from "@elastic/eui";
 import queryString from "query-string";
 import _ from "lodash";
@@ -542,6 +543,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       <ModalConsumer>
         {({ onShow, onClose }) => (
           <EuiContextMenuItem
+            size="s"
             key="Edit"
             toolTipPosition="left"
             disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
@@ -558,6 +560,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         )}
       </ModalConsumer>,
       <EuiContextMenuItem
+        size="s"
         key="Remove"
         toolTipPosition="left"
         disabled={!selectedItems.length}
@@ -572,6 +575,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       <ModalConsumer>
         {({ onShow, onClose }) => (
           <EuiContextMenuItem
+            size="s"
             key="Retry"
             toolTipPosition="left"
             disabled={isRetryDisabled}
@@ -599,7 +603,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             anchorPosition="downLeft"
             panelPaddingSize="none"
           >
-            <EuiContextMenuPanel items={popoverActionItems} />
+            <EuiContextMenuPanel items={popoverActionItems} size="s" />
           </EuiPopover>
         </EuiFlexItem>
       );
@@ -653,7 +657,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         />
 
         <div style={{ padding: "0px" }}>
-          <ContentPanel>
+          <EuiPanel>
             <ManagedIndexControls
               search={search}
               onSearchChange={this.onSearchChange}
@@ -664,7 +668,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               Actions={Action()}
             />
             {CommonTable()}
-          </ContentPanel>
+          </EuiPanel>
           {RemovePolicyModal()}
         </div>
       </>

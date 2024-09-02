@@ -100,17 +100,19 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Define data stream
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h1>
+              Define data stream
+              <span
+                class="panel-header-count"
+              >
+                 
+                 
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
       <hr

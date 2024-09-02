@@ -8,11 +8,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText"
       >
-        Create component template
-      </h1>
+        <h1>
+          Create component template
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -53,17 +55,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Define component template
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Define component template
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
     </div>
     <hr
@@ -218,9 +222,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               for="some_html_id"
             >
               <div
-                class="euiTitle euiTitle--small"
+                class="euiText euiText--small"
               >
-                Index alias
+                <div>
+                  Index alias
+                </div>
               </div>
             </label>
           </div>
@@ -304,17 +310,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Index settings
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Index settings
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
