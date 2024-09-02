@@ -170,25 +170,9 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
               <div
                 class="euiText euiText--small"
               >
-<<<<<<< HEAD
-                <div
-                  class="euiText euiText--small"
-                >
-                  <h1>
-                    Job name and description
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
-                </div>
-=======
                 <h2>
                   Job name and description
                 </h2>
->>>>>>> fba0e6e0 (Makde changes for Rollup page)
               </div>
             </div>
             <hr
@@ -306,25 +290,9 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
               <div
                 class="euiText euiText--small"
               >
-<<<<<<< HEAD
-                <div
-                  class="euiText euiText--small"
-                >
-                  <h1>
-                    Indices
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
-                </div>
-=======
                 <h2>
                   Indices
                 </h2>
->>>>>>> fba0e6e0 (Makde changes for Rollup page)
               </div>
             </div>
             <hr

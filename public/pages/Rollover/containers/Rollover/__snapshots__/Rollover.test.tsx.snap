@@ -36,19 +36,9 @@ exports[`container <Rollover /> spec render the component 1`] = `
       <div
         class="euiText euiText--small"
       >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Configure source
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Configure source
+        </h2>
       </div>
     </div>
     <hr

@@ -336,19 +336,19 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
                      will be refreshed.
                   </p>
                 </div>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
                   >
                     <li
                       data-test-subj="UnblockedItem-unblocked_index"
                     >
                       unblocked_index
                     </li>
-                  </div>
-                </ul>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
@@ -525,24 +525,20 @@ HTMLCollection [
                     The following indexes will be flushed:
                   </p>
                 </div>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
+                <div
+                  class="euiText euiText--small"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
                   >
                     <li>
                       test_index2
                     </li>
-                  </div>
-                  <div
-                    class="euiText euiText--small"
-                  >
                     <li>
                       test_index3
                     </li>
-                  </div>
-                </ul>
+                  </ul>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />

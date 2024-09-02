@@ -97,19 +97,9 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
       <div
         class="euiText euiText--small"
       >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Define data stream
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Define data stream
+        </h2>
       </div>
     </div>
     <hr
@@ -262,7 +252,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"

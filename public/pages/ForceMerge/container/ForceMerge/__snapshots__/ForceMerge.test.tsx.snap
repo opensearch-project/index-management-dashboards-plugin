@@ -38,19 +38,9 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
       <div
         class="euiText euiText--small"
       >
-        <div
-          class="euiText euiText--small"
-        >
-          <h1>
-            Configure source index
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Configure source index
+        </h2>
       </div>
     </div>
     <hr

@@ -167,8 +167,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
             class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-              style="padding: 0px 16px;"
+              class="euiText euiText--small"
             >
               <h2>
                 Job name and description
@@ -537,58 +536,6 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                   </div>
                   <div
                     class="euiFormRow__fieldWrapper"
-                  >
-                    <textarea
-                      class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
-                      data-test-subj="description"
-                      id="some_html_id"
-                      rows="3"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
-          <div>
-            <div
-              class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-              style="padding: 20px 20px;"
-            >
-              <div
-                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-                style="padding: 0px 16px;"
-              >
-                <div
-                  class="euiFlexItem"
-                >
-                  <div
-                    class="euiText euiText--small"
-                  >
-                    <h1>
-                      Indices
-                      <span
-                        class="panel-header-count"
-                      >
-                         
-                         
-                      </span>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <hr
-                class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-              />
-              <div
-                style="padding: 10px;"
-              >
-                <div>
-                  <div
-                    class="euiFormRow euiFormRow--compressed"
-                    id="some_html_id-row"
                   >
                     <div
                       aria-describedby="some_html_id-help-0"

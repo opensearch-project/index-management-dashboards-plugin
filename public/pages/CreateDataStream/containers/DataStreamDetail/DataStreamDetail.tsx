@@ -307,7 +307,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       {isEdit ? null : (
         <>
           <EuiSpacer />
-          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
             <EuiFlexItem grow={false}>
               <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="CreateDataStreamCancelButton">
                 Cancel
