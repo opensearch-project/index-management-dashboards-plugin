@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { TransformService } from "../../../../services";
 import ConfigureTransform from "../../components/ConfigureTransform";
@@ -52,9 +52,9 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Set up indices</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

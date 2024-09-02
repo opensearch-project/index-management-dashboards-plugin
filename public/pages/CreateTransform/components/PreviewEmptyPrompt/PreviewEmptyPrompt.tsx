@@ -24,16 +24,18 @@ export default function PreviewEmptyPrompt({ isReadOnly }: PreviewEmptyPromptPro
       ) : (
         <EuiEmptyPrompt
           title={
-            <EuiText size="m">
+            <EuiText size="s">
               <h4> No fields selected </h4>
             </EuiText>
           }
           body={
-            <p>
-              {" "}
-              From the table above, select a field you want to transform by clicking <EuiIcon type="plusInCircleFilled" /> next to the field
-              name.
-            </p>
+            <EuiText size="s">
+              <p>
+                {" "}
+                From the table above, select a field you want to transform by clicking <EuiIcon type="plusInCircleFilled" /> next to the
+                field name.
+              </p>
+            </EuiText>
           }
         />
       )}

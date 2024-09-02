@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment } from "react";
-import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer, EuiText } from "@elastic/eui";
 
 // TODO: Merge with Rollup to create generic component
 interface DeleteModalProps {
@@ -31,7 +31,11 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
     return (
       <EuiOverlayMask>
         <EuiConfirmModal
-          title="Delete job(s)"
+          title={
+            <EuiText size="s">
+              <h2>Delete job(s)</h2>
+            </EuiText>
+          }
           onCancel={closeDeleteModal}
           onConfirm={onClickDelete}
           cancelButtonText="Cancel"
@@ -42,8 +46,12 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
         >
           <EuiForm>
             <Fragment>
-              By deleting <strong>{item}</strong>, all future scheduled executions will be canceled. However, your target index and data in
-              it will remain intact.
+              <EuiText size="s">
+                <p>
+                  By deleting <strong>{item}</strong>, all future scheduled executions will be canceled. However, your target index and data
+                  in it will remain intact.
+                </p>
+              </EuiText>
             </Fragment>
             <EuiSpacer size="s" />
             <EuiCompressedFormRow helpText="To confirm deletion, enter delete in the text field">

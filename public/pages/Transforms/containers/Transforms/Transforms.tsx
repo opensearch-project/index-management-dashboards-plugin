@@ -271,8 +271,8 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
             } as TopNavControlButtonData,
           ]}
         />
-        <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-          <div style={{ padding: "initial" }}>
+        <EuiPanel>
+          <div>
             <EuiFlexGroup gutterSize="s">
               <EuiFlexItem>
                 <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
@@ -297,7 +297,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -368,18 +368,18 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
+                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton" iconType="plus">
                   Create transform job
                 </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
-
+        <EuiHorizontalRule margin="s" />
         <div style={{ padding: "initial" }}>
           <EuiFlexGroup style={{ padding: "0px 5px" }}>
             <EuiFlexItem>
