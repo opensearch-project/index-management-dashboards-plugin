@@ -6,11 +6,13 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
     class="euiSpacer euiSpacer--l"
   />
   <div>
-    <h5
-      class="euiTitle euiTitle--small"
+    <div
+      class="euiText euiText--small"
     >
-      Notifications
-    </h5>
+      <h3>
+        Notifications
+      </h3>
+    </div>
     <div
       class="euiSpacer euiSpacer--s"
     />
@@ -32,7 +34,7 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
       </div>
     </div>
     <div
-      class="euiSpacer euiSpacer--l"
+      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiFormRow euiFormRow--compressed"
@@ -45,7 +47,13 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
           class="euiFormLabel euiFormRow__label"
           for="some_html_id"
         >
-          Send additional notifications when operation
+          <div
+            class="euiText euiText--small"
+          >
+            <h4>
+              Send additional notifications when operation
+            </h4>
+          </div>
         </label>
       </div>
       <div
@@ -111,11 +119,13 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
     class="euiSpacer euiSpacer--l"
   />
   <div>
-    <h5
-      class="euiTitle euiTitle--small"
+    <div
+      class="euiText euiText--small"
     >
-      Notifications
-    </h5>
+      <h3>
+        Notifications
+      </h3>
+    </div>
     <div
       class="euiSpacer euiSpacer--s"
     />
@@ -287,11 +297,13 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
     class="euiSpacer euiSpacer--l"
   />
   <div>
-    <h5
-      class="euiTitle euiTitle--small"
+    <div
+      class="euiText euiText--small"
     >
-      Notifications
-    </h5>
+      <h3>
+        Notifications
+      </h3>
+    </div>
     <div
       class="euiSpacer euiSpacer--s"
     />
@@ -313,7 +325,7 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
       </div>
     </div>
     <div
-      class="euiSpacer euiSpacer--l"
+      class="euiSpacer euiSpacer--s"
     />
     <div
       class="euiFormRow euiFormRow--compressed"
@@ -326,7 +338,13 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
           class="euiFormLabel euiFormRow__label"
           for="some_html_id"
         >
-          Send additional notifications when operation
+          <div
+            class="euiText euiText--small"
+          >
+            <h4>
+              Send additional notifications when operation
+            </h4>
+          </div>
         </label>
       </div>
       <div
@@ -407,11 +425,13 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
     class="euiSpacer euiSpacer--l"
   />
   <div>
-    <h5
-      class="euiTitle euiTitle--small"
+    <div
+      class="euiText euiText--small"
     >
-      Notifications
-    </h5>
+      <h3>
+        Notifications
+      </h3>
+    </div>
     <div
       class="euiSpacer euiSpacer--s"
     />

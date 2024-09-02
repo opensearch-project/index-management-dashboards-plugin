@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext, useRef } from "react";
-import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
@@ -16,9 +16,9 @@ export default function TemplateMappings(props: SubDetailProps) {
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   return (
     <>
-      <EuiTitle size="s">
-        <div>Index mapping</div>
-      </EuiTitle>
+      <EuiText size="s">
+        <h3>Index mapping</h3>
+      </EuiText>
       <EuiCompressedFormRow
         fullWidth
         helpText={

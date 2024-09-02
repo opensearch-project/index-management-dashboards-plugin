@@ -34,7 +34,13 @@ exports[`<RetryModal /> spec renders the component 1`] = `
           <div
             class="euiModalHeader__title"
           >
-            Retry policy
+            <div
+              class="euiText euiText--small"
+            >
+              <h2>
+                Retry policy
+              </h2>
+            </div>
           </div>
         </div>
         <div
@@ -98,7 +104,13 @@ exports[`<RetryModal /> spec renders the component 1`] = `
                   class="euiFormLabel euiFormRow__label"
                   for="some_html_id"
                 >
-                  Start state
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <h3>
+                      Start state
+                    </h3>
+                  </div>
                 </label>
               </div>
               <div

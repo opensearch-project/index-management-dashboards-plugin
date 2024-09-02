@@ -39,8 +39,18 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Clear cache for 
-              indexes
+               
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h2>
+                  Clear cache for 
+                  indexes
+                </h2>
+                 
+              </div>
+               
             </div>
           </div>
           <div
@@ -52,9 +62,13 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  Cache will be cleared for all open indexes.
-                </p>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    Cache will be cleared for all open indexes.
+                  </p>
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />

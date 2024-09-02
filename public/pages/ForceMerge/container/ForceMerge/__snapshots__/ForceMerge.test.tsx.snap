@@ -38,17 +38,19 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiText euiText--small"
         >
-          Configure source index
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Configure source index
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
     </div>
     <hr

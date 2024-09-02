@@ -65,17 +65,19 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--large"
+        <div
+          class="euiText euiText--small"
         >
-          Policy managed indexes
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Policy managed indexes
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -174,14 +176,14 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
               class="euiFlexItem euiSearchBar__searchHolder"
             >
               <div
-                class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
                     aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-                    class="euiFieldSearch euiFieldSearch--fullWidth"
+                    class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed"
                     placeholder="Search index name"
                     type="search"
                     value=""
@@ -491,7 +493,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                             class="euiText euiText--medium"
                           >
                             <div
-                              class="euiText euiText--medium"
+                              class="euiText euiText--small"
                             >
                               <p>
                                 Loading managed indexes...

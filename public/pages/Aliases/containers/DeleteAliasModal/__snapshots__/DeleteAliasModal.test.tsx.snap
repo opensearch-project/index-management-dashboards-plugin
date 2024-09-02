@@ -39,7 +39,13 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Delete aliases
+              <div
+                class="euiText euiText--small"
+              >
+                <h2>
+                  Delete aliases
+                </h2>
+              </div>
             </div>
           </div>
           <div
@@ -51,17 +57,25 @@ HTMLCollection [
               <div
                 style="line-height: 1.5;"
               >
-                <p>
-                  The following alias will be permanently deleted. This action cannot be undone.
-                </p>
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                />
+                <div
+                  class="euiText euiText--small"
+                >
+                  <p>
+                    The following alias will be permanently deleted. This action cannot be undone.
+                  </p>
+                </div>
+                <div
+                  class="euiText euiText--small"
+                >
+                  <ul
+                    style="list-style-type: disc; list-style-position: inside;"
+                  />
+                </div>
                 <div
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiText euiText--medium"
+                  class="euiText euiText--small"
                 >
                   <div
                     class="euiTextColor euiTextColor--subdued"

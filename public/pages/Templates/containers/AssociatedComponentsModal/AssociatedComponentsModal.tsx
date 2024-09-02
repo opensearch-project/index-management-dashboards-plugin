@@ -16,6 +16,7 @@ import {
   EuiLink,
   EuiTitle,
   EuiToolTip,
+  EuiText,
 } from "@elastic/eui";
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
@@ -43,9 +44,9 @@ export default function AssociatedComponentsModal(props: AssociatedComponentsMod
       {visible ? (
         <EuiFlyout onClose={() => setVisible(false)}>
           <EuiFlyoutHeader>
-            <EuiTitle>
+            <EuiText size="s">
               <h2>Associated component templates</h2>
-            </EuiTitle>
+            </EuiText>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
             <EuiInMemoryTable
@@ -55,7 +56,7 @@ export default function AssociatedComponentsModal(props: AssociatedComponentsMod
               }))}
               columns={[
                 {
-                  name: "component template",
+                  name: "Component template",
                   field: "name",
                   sortable: true,
                   render: (value: string, record) => (

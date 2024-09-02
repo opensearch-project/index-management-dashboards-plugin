@@ -6,7 +6,7 @@
 import React from "react";
 import CreateIndex, { IndexFormProps, IndexForm } from "../../../CreateIndex/containers/IndexForm";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
+import { EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiText, EuiTitle } from "@elastic/eui";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 
 interface CreateIndexFlyoutProps extends IndexFormProps {
@@ -24,9 +24,9 @@ export default class CreateIndexFlyout extends React.Component<CreateIndexFlyout
     return (
       <EuiFlyout onClose={() => {}} hideCloseButton>
         <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
+          <EuiText size="s">
             <h2 id="flyoutTitle"> Create Index </h2>
-          </EuiTitle>
+          </EuiText>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>

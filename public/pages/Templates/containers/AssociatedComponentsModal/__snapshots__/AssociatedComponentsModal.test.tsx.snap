@@ -41,11 +41,13 @@ HTMLCollection [
         <div
           class="euiFlyoutHeader"
         >
-          <h2
-            class="euiTitle euiTitle--medium"
+          <div
+            class="euiText euiText--small"
           >
-            Associated component templates
-          </h2>
+            <h2>
+              Associated component templates
+            </h2>
+          </div>
         </div>
         <div
           class="euiFlyoutBody"
@@ -98,9 +100,9 @@ HTMLCollection [
                           >
                             <span
                               class="euiTableCellContent__text"
-                              title="component template"
+                              title="Component template"
                             >
-                              component template
+                              Component template
                             </span>
                           </span>
                         </th>
@@ -133,7 +135,7 @@ HTMLCollection [
                           <div
                             class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
                           >
-                            component template
+                            Component template
                           </div>
                           <div
                             class="euiTableCellContent euiTableCellContent--overflowingContent"

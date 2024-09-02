@@ -46,118 +46,100 @@ exports[`<Shrink index /> spec renders the component 1`] = `
     />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
+        class="euiText euiText--small"
       >
-        <div
-          class="euiFlexItem"
-        >
-          <h1
-            class="euiTitle euiTitle--small"
-          >
-            Source index details
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
-        </div>
+        <h2>
+          Source index details
+        </h2>
       </div>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
       <div
-        style="padding: 0px 10px;"
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
       >
         <div
-          class="euiSpacer euiSpacer--l"
-        />
-        <div
-          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+          class="euiFlexItem"
         >
-          <div
-            class="euiFlexItem"
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
           >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+            <dt
+              class="euiDescriptionList__title"
             >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Index name
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                test3
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
-          >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
+              Index name
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
             >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Primary shards
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                5
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
-          >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
-            >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Replica shards
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                0
-              </dd>
-            </dl>
-          </div>
-          <div
-            class="euiFlexItem"
-          >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
-            >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Total index size
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                100KB
-              </dd>
-            </dl>
-          </div>
+              test3
+            </dd>
+          </dl>
         </div>
         <div
-          class="euiSpacer euiSpacer--l"
-        />
-        <ul />
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
+              Primary shards
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              5
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
+              Replica shards
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              0
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row euiDescriptionList--compressed"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
+              Total index size
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              100KB
+            </dd>
+          </dl>
+        </div>
       </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <ul />
     </div>
     <div
       class="euiSpacer euiSpacer--m"
@@ -173,17 +155,19 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Configure target index
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h1>
+              Configure target index
+              <span
+                class="panel-header-count"
+              >
+                 
+                 
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
       <hr
@@ -698,17 +682,19 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <h1
-                    class="euiTitle euiTitle--small"
+                  <div
+                    class="euiText euiText--small"
                   >
-                    Advanced settings
-                    <span
-                      class="panel-header-count"
-                    >
-                       
-                       
-                    </span>
-                  </h1>
+                    <h1>
+                      Advanced settings
+                      <span
+                        class="panel-header-count"
+                      >
+                         
+                         
+                      </span>
+                    </h1>
+                  </div>
                 </div>
               </div>
             </span>
@@ -739,13 +725,15 @@ exports[`<Shrink index /> spec renders the component 1`] = `
           class="euiSpacer euiSpacer--s"
         />
         <div>
-          <h5
-            class="euiTitle euiTitle--small"
-          >
-            Notifications
-          </h5>
           <div
-            class="euiSpacer euiSpacer--l"
+            class="euiText euiText--small"
+          >
+            <h3>
+              Notifications
+            </h3>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--s"
           />
           <div
             class="euiFormRow euiFormRow--compressed"
@@ -758,7 +746,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Send additional notifications when operation
+                <div
+                  class="euiText euiText--small"
+                >
+                  <h4>
+                    Send additional notifications when operation
+                  </h4>
+                </div>
               </label>
             </div>
             <div

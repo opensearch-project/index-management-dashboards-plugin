@@ -40,7 +40,7 @@ const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIs
   return (
     <ModalConsumer>
       {({ onShow }) => (
-        <EuiSmallButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })}>
+        <EuiSmallButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })} iconType={"plus"}>
           Create policy
         </EuiSmallButton>
       )}
@@ -59,7 +59,7 @@ const ManagedIndexEmptyPrompt: React.SFC<ManagedIndexEmptyPromptProps> = (props)
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={
-      <EuiText>
+      <EuiText size="s">
         <p>{getMessagePrompt(props)}</p>
       </EuiText>
     }

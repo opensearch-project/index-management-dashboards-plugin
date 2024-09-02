@@ -14,6 +14,7 @@ import {
   EuiButtonGroup,
   EuiLink,
   EuiCallOut,
+  EuiText,
 } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
 import MonacoJSONEditor, { IJSONEditorRef } from "../MonacoJSONEditor";
@@ -166,6 +167,7 @@ const IndexMapping = (
         idSelected={editorMode as string}
         onChange={(id) => setEditorMode(id as EDITOR_MODE)}
         legend="Editor Type"
+        buttonSize="s"
         options={[
           {
             label: readonly ? "Tree view" : "Visual Editor",
@@ -184,7 +186,7 @@ const IndexMapping = (
         <>
           {noAdditionalPropertiesValidator(transformArrayToObject(newValue)) ? null : (
             <>
-              <EuiCallOut color="warning" title="You have advanced configurations not supported by the visual editor">
+              <EuiCallOut color="warning" title="You have advanced configurations not supported by the visual editor" size="s">
                 To view or modify all of your configurations, switch to the JSON editor.
               </EuiCallOut>
               <EuiSpacer />
@@ -199,7 +201,9 @@ const IndexMapping = (
               items={transformValueToTreeItems(value)}
             />
           ) : (
-            <p>You have no field mappings.</p>
+            <EuiText size="s">
+              <p>You have no field mappings.</p>
+            </EuiText>
           )}
           {readonly ? null : (
             <>

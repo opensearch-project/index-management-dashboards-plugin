@@ -3,196 +3,185 @@
 exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
 <div
   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-  style="padding-left: 0px; padding-right: 0px;"
 >
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-    style="padding: 0px 10px;"
+    class="euiText euiText--small"
   >
-    <div
-      class="euiFlexItem"
-    >
-      <h1
-        class="euiTitle euiTitle--small"
-      >
-        Choose managed indices
-        <span
-          class="panel-header-count"
-        >
-           
-           
-        </span>
-      </h1>
-    </div>
+    <h2>
+      Choose managed indices
+    </h2>
   </div>
   <hr
     class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
   />
-  <div
-    style="padding: initial;"
-  >
+  <div>
     <div
-      style="padding-left: 10px;"
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
     >
       <div
-        class="euiSpacer euiSpacer--m"
-      />
-      <div
-        class="euiFormRow euiFormRow--compressed"
-        id="some_html_id-row"
+        class="euiFormRow__labelWrapper"
       >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Managed indices
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+        <label
+          aria-invalid="false"
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
         >
           <div
-            aria-describedby="some_html_id-help-0"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox euiComboBox--compressed"
-            role="combobox"
+            class="euiText euiText--small"
           >
-            <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
-                >
-                  <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
-                  >
-                    <input
-                      aria-controls=""
-                      data-test-subj="comboBoxSearchInput"
-                      id="some_html_id"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
-                    <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
-                </div>
-              </div>
-            </div>
+            <h3>
+              Managed indices
+            </h3>
           </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help-0"
-          >
-            You can use * as wildcards to form index patterns.
-          </div>
-        </div>
+        </label>
       </div>
       <div
-        class="euiFormRow euiFormRow--compressed"
-        id="some_html_id-row"
+        class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            State filters
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
+          aria-describedby="some_html_id-help-0"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox euiComboBox--compressed"
+          role="combobox"
         >
           <div
-            aria-describedby="some_html_id-help-0"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox euiComboBox--compressed euiComboBox-isDisabled"
-            role="combobox"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
-              class="euiFormControlLayout euiFormControlLayout--compressed"
+              class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
                 >
-                  <p
-                    class="euiComboBoxPlaceholder"
-                  >
-                    Choose state filters
-                  </p>
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    id="some_html_id"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
                   <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
-                  >
-                    <input
-                      aria-controls=""
-                      data-test-subj="comboBoxSearchInput"
-                      disabled=""
-                      id="some_html_id"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
-                    <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
-                  </div>
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
                 </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              </div>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <button
+                  aria-label="Open list of options"
+                  class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                  data-test-subj="comboBoxToggleListButton"
+                  type="button"
                 >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    disabled=""
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
-                </div>
+                  EuiIconMock
+                </button>
               </div>
             </div>
           </div>
+        </div>
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          id="some_html_id-help-0"
+        >
+          You can use * as wildcards to form index patterns.
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFormRow euiFormRow--compressed"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__labelWrapper"
+      >
+        <label
+          class="euiFormLabel euiFormRow__label"
+          for="some_html_id"
+        >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help-0"
+            class="euiText euiText--small"
           >
-            Apply new policy only on managed indices in these states.
+            <h3>
+              State filters
+            </h3>
           </div>
+        </label>
+      </div>
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          aria-describedby="some_html_id-help-0"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox euiComboBox--compressed euiComboBox-isDisabled"
+          role="combobox"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--compressed"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <div
+                class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
+              >
+                <p
+                  class="euiComboBoxPlaceholder"
+                >
+                  Choose state filters
+                </p>
+                <div
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
+                >
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    disabled=""
+                    id="some_html_id"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
+                  <div
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <button
+                  aria-label="Open list of options"
+                  class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                  data-test-subj="comboBoxToggleListButton"
+                  disabled=""
+                  type="button"
+                >
+                  EuiIconMock
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          id="some_html_id-help-0"
+        >
+          Apply new policy only on managed indices in these states.
         </div>
       </div>
     </div>

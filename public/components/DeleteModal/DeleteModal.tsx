@@ -42,20 +42,30 @@ export default function DeleteTemplateModal(props: DeleteModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>{props.title}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>
+          <EuiText size="s">
+            <h2>{props.title}</h2>
+          </EuiText>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <p>{props.tips}</p>
+          <EuiText size="s">
+            <p>{props.tips}</p>
+          </EuiText>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
             {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
+              <EuiText size="s">
+                <li key={item}>{item}</li>
+              </EuiText>
             ))}
           </ul>
           <EuiSpacer />
           <EuiText color="subdued" size="s">
-            To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
+            <p>
+              To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
+            </p>
           </EuiText>
           <EuiCompressedFieldText
             data-test-subj="deleteInput"
