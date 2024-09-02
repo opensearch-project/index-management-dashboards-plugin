@@ -248,7 +248,7 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
       <EuiSmallButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
       </EuiSmallButton>,
-      <EuiSmallButton onClick={this.onClickCreate} fill={true}>
+      <EuiSmallButton onClick={this.onClickCreate} fill={true} iconType="plus">
         Create repository
       </EuiSmallButton>,
     ];
@@ -341,7 +341,13 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls, setAppDescriptionControls } = getApplication();
-    const useTitle = useNewUX ? undefined : "Repositories";
+    const useTitle = useNewUX 
+      ? undefined 
+      : (
+        <EuiText size="s">
+          <h1>Repositories</h1>
+        </EuiText>
+      );  
     const useActions = useNewUX ? undefined : actions;
     const useSubTitleText = useNewUX ? undefined : subTitleText;
 

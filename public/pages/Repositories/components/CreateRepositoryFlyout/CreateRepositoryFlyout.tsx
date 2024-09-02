@@ -231,13 +231,15 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
       configuration = (
         <>
           <EuiCallOut title="Install and configure custom repository types">
-            <p>
-              To use a custom repository, such as Amazon S3, Azure Blob Storage or similar, install and configure the respective repository
-              plugin on OpenSearch and then define the repository configuration below.{" "}
-              <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more
-              </EuiLink>
-            </p>
+            <EuiText size="s">
+              <p>
+                To use a custom repository, such as Amazon S3, Azure Blob Storage or similar, install and configure the respective repository
+                plugin on OpenSearch and then define the repository configuration below.{" "}
+                <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                  Learn more
+                </EuiLink>
+              </p>
+            </EuiText>
           </EuiCallOut>
 
           <EuiSpacer size="s" />
@@ -272,7 +274,7 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
+          <EuiTitle size="s">
             <h2 id="flyoutTitle">{!!editRepo ? "Edit" : "Create"} repository</h2>
           </EuiTitle>
         </EuiFlyoutHeader>
