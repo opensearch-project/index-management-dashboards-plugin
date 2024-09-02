@@ -2,7 +2,7 @@
 
 exports[`<TransitionContent /> spec renders the component 1`] = `
 <div
-  class="euiText euiText--medium"
+  class="euiText euiText--small"
 >
   <dl>
     <dt>

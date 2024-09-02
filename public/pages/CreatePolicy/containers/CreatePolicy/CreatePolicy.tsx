@@ -28,6 +28,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData, TopNavControlLinkData } from "src/plugins/navigation/public";
 
 interface CreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
@@ -249,15 +250,17 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
 
     const descriptionData = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Policies let you automatically perform administrative operations on indices.{" "}
-            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more
-            </EuiLink>
-          </EuiText>
-        ),
-      },
+        description: "Policies let you automatically perform administrative operations on indices.",
+        links: {
+          label: "Learn more",
+          href: POLICY_DOCUMENTATION_URL,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     let hasJSONError = false;
@@ -285,13 +288,7 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
         {this.renderEditCallOut()}
         <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} useNewUx={useNewUX} />
         <EuiSpacer />
-        <DefinePolicy
-          jsonString={jsonString}
-          onChange={this.onChangeJSON}
-          onAutoIndent={this.onAutoIndent}
-          hasJSONError={hasJSONError}
-          useNewUx={useNewUX}
-        />
+        <DefinePolicy jsonString={jsonString} onChange={this.onChangeJSON} onAutoIndent={this.onAutoIndent} hasJSONError={hasJSONError} />
         <EuiSpacer />
         {submitError && (
           <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
@@ -299,7 +296,7 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
           </EuiCallOut>
         )}
         <EuiSpacer />
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton">
               Cancel

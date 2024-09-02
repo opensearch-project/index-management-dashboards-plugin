@@ -2,11 +2,12 @@
 
 exports[`<FormGenerator /> spec render the component 1`] = `
 HTMLCollection [
-  <div />,
-  <div>
+  <div
+    id="app-wrapper"
+  >
     <section
       aria-label="Page level controls"
-      class="euiBottomBar euiBottomBar--fixed euiBottomBar--paddingMedium"
+      class="euiBottomBar euiBottomBar--sticky euiBottomBar--paddingMedium"
     >
       <h2
         class="euiScreenReaderOnly"
@@ -14,7 +15,7 @@ HTMLCollection [
         Page level controls
       </h2>
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -39,7 +40,7 @@ HTMLCollection [
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButton euiButton--primary euiButton--fill"
+            class="euiButton euiButton--primary euiButton--small euiButton--fill"
             type="button"
           >
             <span
@@ -63,5 +64,6 @@ HTMLCollection [
       There is a new region landmark with page level controls at the end of the document.
     </p>
   </div>,
+  <div />,
 ]
 `;

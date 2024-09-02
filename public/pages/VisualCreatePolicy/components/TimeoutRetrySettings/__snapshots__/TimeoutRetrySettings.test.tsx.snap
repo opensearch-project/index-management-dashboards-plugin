@@ -59,25 +59,32 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
           <div
             class="euiFlexItem"
           >
-            <div
-              class="euiText euiText--medium"
-              style="margin-bottom: 5px;"
-            >
-              <h5
-                class="euiFormLabel "
-                style="margin-bottom: 2px;"
+            <div>
+              <div
+                class="euiText euiText--small"
+                style="margin-bottom: 5px;"
               >
-                Timeout
-              </h5>
-              <p>
-                 
-                <span
-                  style="font-weight: 200; font-size: 12px;"
+                <h3
+                  class="euiFormLabel "
+                  style="margin-bottom: 2px;"
                 >
-                  The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                  Timeout
+                </h3>
+              </div>
+              <div
+                class="euiText euiText--extraSmall"
+                style="margin-bottom: 5px;"
+              >
+                <p>
                    
-                </span>
-              </p>
+                  <span
+                    style="font-weight: 300; font-size: 14px;"
+                  >
+                    The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                     
+                  </span>
+                </p>
+              </div>
             </div>
             <div
               class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -114,25 +121,32 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
           <div
             class="euiFlexItem"
           >
-            <div
-              class="euiText euiText--medium"
-              style="margin-bottom: 5px;"
-            >
-              <h5
-                class="euiFormLabel "
-                style="margin-bottom: 2px;"
+            <div>
+              <div
+                class="euiText euiText--small"
+                style="margin-bottom: 5px;"
               >
-                Retry count
-              </h5>
-              <p>
-                 
-                <span
-                  style="font-weight: 200; font-size: 12px;"
+                <h3
+                  class="euiFormLabel "
+                  style="margin-bottom: 2px;"
                 >
-                  The number of times the action should be retried if it fails. Must be greater than 0.
+                  Retry count
+                </h3>
+              </div>
+              <div
+                class="euiText euiText--extraSmall"
+                style="margin-bottom: 5px;"
+              >
+                <p>
                    
-                </span>
-              </p>
+                  <span
+                    style="font-weight: 300; font-size: 14px;"
+                  >
+                    The number of times the action should be retried if it fails. Must be greater than 0.
+                     
+                  </span>
+                </p>
+              </div>
             </div>
             <div
               class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -170,25 +184,32 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
           <div
             class="euiFlexItem"
           >
-            <div
-              class="euiText euiText--medium"
-              style="margin-bottom: 5px;"
-            >
-              <h5
-                class="euiFormLabel "
-                style="margin-bottom: 2px;"
+            <div>
+              <div
+                class="euiText euiText--small"
+                style="margin-bottom: 5px;"
               >
-                Retry backoff
-              </h5>
-              <p>
-                 
-                <span
-                  style="font-weight: 200; font-size: 12px;"
+                <h3
+                  class="euiFormLabel "
+                  style="margin-bottom: 2px;"
                 >
-                  The backoff policy type to use when retrying.
+                  Retry backoff
+                </h3>
+              </div>
+              <div
+                class="euiText euiText--extraSmall"
+                style="margin-bottom: 5px;"
+              >
+                <p>
                    
-                </span>
-              </p>
+                  <span
+                    style="font-weight: 300; font-size: 14px;"
+                  >
+                    The backoff policy type to use when retrying.
+                     
+                  </span>
+                </p>
+              </div>
             </div>
             <div
               class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -240,25 +261,32 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
           <div
             class="euiFlexItem"
           >
-            <div
-              class="euiText euiText--medium"
-              style="margin-bottom: 5px;"
-            >
-              <h5
-                class="euiFormLabel "
-                style="margin-bottom: 2px;"
+            <div>
+              <div
+                class="euiText euiText--small"
+                style="margin-bottom: 5px;"
               >
-                Retry delay
-              </h5>
-              <p>
-                 
-                <span
-                  style="font-weight: 200; font-size: 12px;"
+                <h3
+                  class="euiFormLabel "
+                  style="margin-bottom: 2px;"
                 >
-                  The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                  Retry delay
+                </h3>
+              </div>
+              <div
+                class="euiText euiText--extraSmall"
+                style="margin-bottom: 5px;"
+              >
+                <p>
                    
-                </span>
-              </p>
+                  <span
+                    style="font-weight: 300; font-size: 14px;"
+                  >
+                    The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                     
+                  </span>
+                </p>
+              </div>
             </div>
             <div
               class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"

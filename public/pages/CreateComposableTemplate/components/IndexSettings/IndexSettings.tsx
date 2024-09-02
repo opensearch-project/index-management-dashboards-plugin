@@ -1,5 +1,5 @@
 import React from "react";
-import { EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -31,7 +31,13 @@ export default function IndexSettings(props: SubDetailProps) {
   return (
     <ContentPanel
       color={noPanel ? "ghost" : undefined}
-      title="Index settings"
+      title={
+        <EuiText size="s">
+          <EuiTitle>
+            <h2>Index settings</h2>
+          </EuiTitle>
+        </EuiText>
+      }
       noExtraPadding
       actions={
         <div>
@@ -48,10 +54,15 @@ export default function IndexSettings(props: SubDetailProps) {
     >
       {values.includes?.[IndicesUpdateMode.settings] ? (
         <>
-          <EuiSpacer />
+          <EuiSpacer size="s" />
           <CustomFormRow
-            label="Number of primary shards"
-            helpText="Specify the number of primary shards in the index. Default is 1."
+            fullWidth
+            label={
+              <EuiText size="s">
+                <h3>Number of primary shards</h3>
+              </EuiText>
+            }
+            helpText={<div>Specify the number of primary shards in the index. Default is 1.</div>}
             direction={isEdit ? "hoz" : "ver"}
             {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"], field)}
           >
@@ -83,8 +94,12 @@ export default function IndexSettings(props: SubDetailProps) {
           <EuiSpacer />
           <CustomFormRow
             fullWidth
-            label="Number of replicas"
-            helpText="Specify the number of replicas each primary shard should have. Default is 1."
+            label={
+              <EuiText size="s">
+                <h3>Number of replicas</h3>
+              </EuiText>
+            }
+            helpText={<div>Specify the number of replicas each primary shard should have. Default is 1.</div>}
             direction={isEdit ? "hoz" : "ver"}
             {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"], field)}
           >
@@ -115,8 +130,17 @@ export default function IndexSettings(props: SubDetailProps) {
           </CustomFormRow>
           <EuiSpacer />
           <CustomFormRow
-            label="Refresh interval"
-            helpText="Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s."
+            label={
+              <EuiText size="s">
+                <h3>Refresh interval</h3>
+              </EuiText>
+            }
+            helpText={
+              <div>
+                Specify how often the index should refresh, which publishes its most recent changes and makes them available for search.
+                Default is 1s.
+              </div>
+            }
             direction={isEdit ? "hoz" : "ver"}
             {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"], field)}
           >

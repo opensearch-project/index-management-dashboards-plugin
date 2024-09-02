@@ -37,7 +37,6 @@ interface CreateStateProps {
   onSaveState: (state: State, states: State[], order: string, afterBeforeState: string) => void;
   onCloseFlyout: () => void;
   state: State | null;
-  useNewUx?: boolean;
 }
 
 interface CreateStateState {
@@ -191,14 +190,14 @@ export default class CreateState extends Component<CreateStateProps, CreateState
   };
 
   renderDefault = () => {
-    const { policy, state, useNewUx } = this.props;
+    const { policy, state } = this.props;
     const { actions, name, nameError, afterBeforeState, order, disableOrderSelections } = this.state;
     // If we are editing a state filter it out from the selectable options
     const stateOptions = policy.states.map((state) => ({ value: state.name, text: state.name })).filter((s) => s.value !== state?.name);
     return (
       <>
-        <EuiText>
-          <h5>State name</h5>
+        <EuiText size="s">
+          <h3>State name</h3>
           <span /> {/* Dummy span to get rid of last child styling on h5 */}
         </EuiText>
 
@@ -216,8 +215,8 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
         <EuiSpacer />
 
-        <EuiText>
-          <h5>Order</h5>
+        <EuiText size="s">
+          <h3>Order</h3>
           <span /> {/* Dummy span to get rid of last child styling on h5 */}
         </EuiText>
 
@@ -257,7 +256,6 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           onClickEditAction={this.onClickEditAction}
           onDragEndActions={this.onDragEndActions}
           onClickAddAction={this.onClickAddAction}
-          useNewUx={useNewUx}
         />
 
         <EuiHorizontalRule />
@@ -268,14 +266,13 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           onClickDeleteTransition={this.onClickDeleteTransition}
           onClickEditTransition={this.onClickEditTransition}
           onClickAddTransition={this.onClickAddTransition}
-          useNewUx={useNewUx}
         />
       </>
     );
   };
 
   renderDefaultFooter = () => {
-    const { onCloseFlyout, state, useNewUx } = this.props;
+    const { onCloseFlyout, state } = this.props;
     const { name, nameError } = this.state;
     const isEditing = !!state;
     return (
@@ -295,7 +292,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
   };
 
   render() {
-    const { onCloseFlyout, policy, state, useNewUx } = this.props;
+    const { onCloseFlyout, policy, state } = this.props;
     const { name, createAction, editAction, createTransition, editTransition, actions } = this.state;
     const isEditing = !!state;
 
@@ -315,7 +312,6 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           stateName={name}
           onClickCancelAction={this.onClickCancelAction}
           onClickSaveAction={this.onClickSaveAction}
-          useNewUx={useNewUx}
         />
       );
     if (createTransition || editTransition)
@@ -325,7 +321,6 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           editTransition={editTransition}
           onCloseCreateTransition={() => this.setState({ createTransition: false, editTransition: null })}
           onClickSaveTransition={this.onClickSaveTransition}
-          useNewUx={useNewUx}
         />
       );
     if (!flyoutContent)
@@ -339,9 +334,11 @@ export default class CreateState extends Component<CreateStateProps, CreateState
       <EuiPortal>
         <EuiFlyout hideCloseButton ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" aria-labelledby="flyoutTitle">
           <EuiFlyoutHeader hasBorder>
-            <EuiTitle size="m">
-              <h2 id="flyoutTitle">{title}</h2>
-            </EuiTitle>
+            <EuiText size="s">
+              <EuiTitle size="m">
+                <h2 id="flyoutTitle">{title}</h2>
+              </EuiTitle>
+            </EuiText>
           </EuiFlyoutHeader>
           {flyoutContent()}
         </EuiFlyout>

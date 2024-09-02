@@ -1,24 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EuiFormCustomLabel /> spec renders the component 1`] = `
-<div
-  class="euiText euiText--medium"
-  style="margin-bottom: 5px;"
->
-  <h5
-    class="euiFormLabel "
-    style="margin-bottom: 2px;"
+<div>
+  <div
+    class="euiText euiText--small"
+    style="margin-bottom: 5px;"
   >
-    Some title
-  </h5>
-  <p>
-     
-    <span
-      style="font-weight: 200; font-size: 12px;"
+    <h3
+      class="euiFormLabel "
+      style="margin-bottom: 2px;"
     >
-      Some helpful text
+      Some title
+    </h3>
+  </div>
+  <div
+    class="euiText euiText--extraSmall"
+    style="margin-bottom: 5px;"
+  >
+    <p>
        
-    </span>
-  </p>
+      <span
+        style="font-weight: 300; font-size: 14px;"
+      >
+        Some helpful text
+         
+      </span>
+    </p>
+  </div>
 </div>
 `;

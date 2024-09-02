@@ -1200,5 +1200,84 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
       />
     </div>
   </div>
+  <section
+    aria-label="Page level controls"
+    class="euiBottomBar euiBottomBar--sticky euiBottomBar--paddingMedium"
+  >
+    <h2
+      class="euiScreenReaderOnly"
+    >
+      Page level controls
+    </h2>
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButtonEmpty euiButtonEmpty--ghost euiButtonEmpty--small"
+          data-test-subj="CreateIndexTemplateCancelButton"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButtonEmpty__content"
+          >
+            EuiIconMock
+            <span
+              class="euiButtonEmpty__text"
+            >
+              Cancel
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--ghost euiButton--small"
+          data-test-subj="CreateIndexTemplatePreviewButton"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Preview template
+            </span>
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
+          data-test-subj="CreateIndexTemplateCreateButton"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            EuiIconMock
+            <span
+              class="euiButton__text"
+            >
+              Create template
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <p
+    aria-live="assertive"
+    class="euiScreenReaderOnly"
+  >
+    There is a new region landmark with page level controls at the end of the document.
+  </p>
 </div>
 `;

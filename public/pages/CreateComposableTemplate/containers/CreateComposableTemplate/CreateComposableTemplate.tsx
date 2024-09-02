@@ -35,6 +35,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
   setBreadCrumb() {
     const isEdit = this.template;
     const readonly = this.readonly;
+    const useNewUx = this.useNewUX;
     let lastBread: typeof BREADCRUMBS.CREATE_COMPOSABLE_TEMPLATE;
     if (readonly && this.template) {
       lastBread = {
@@ -49,7 +50,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
     } else {
       lastBread = BREADCRUMBS.CREATE_COMPOSABLE_TEMPLATE;
     }
-    this.useNewUX
+    useNewUx
       ? this.context.chrome.setBreadcrumbs([BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread])
       : this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread]);
   }
@@ -69,7 +70,8 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
   };
 
   render() {
-    const paddingStyle = this.useNewUX ? { padding: "0px 0px" } : { padding: "0px 50px" };
+    const useNewUx = this.useNewUX;
+    const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "0px 50px" };
     return (
       <div style={paddingStyle}>
         <TemplateDetail
@@ -79,7 +81,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.COMPOSABLE_TEMPLATES)}
           dataSourceId={this.props.dataSourceId}
-          useNewUX={this.useNewUX}
+          useNewUX={useNewUx}
         />
       </div>
     );

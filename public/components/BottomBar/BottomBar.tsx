@@ -29,5 +29,9 @@ export default function BottomBar(props: CustomFormRowProps) {
     };
   }, []);
 
-  return <EuiBottomBar ref={bottomBarRef}>{props.children}</EuiBottomBar>;
+  return (
+    <EuiBottomBar ref={bottomBarRef} position="sticky">
+      {props.children}
+    </EuiBottomBar>
+  );
 }

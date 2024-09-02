@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { EuiSpacer } from "@elastic/eui";
+import { EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -55,7 +55,11 @@ export default function DefineTemplate(props: SubDetailProps) {
         <>
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
-            label="Name"
+            label={
+              <EuiText size="s">
+                <h3>Name</h3>
+              </EuiText>
+            }
             helpText={<div>Name cannot be changed after the component template is created.</div>}
           >
             <Component
@@ -82,9 +86,11 @@ export default function DefineTemplate(props: SubDetailProps) {
       <CustomFormRow
         {...getCommonFormRowProps(["_meta", "description"], field)}
         label={
-          <div>
-            Description - <i>optional</i>
-          </div>
+          <EuiText size="s">
+            <h3>
+              Description - <i>optional</i>
+            </h3>
+          </EuiText>
         }
         helpText="Describe the purpose or contents to help you identify this component."
         direction={isEdit ? "hoz" : "ver"}
@@ -102,9 +108,14 @@ export default function DefineTemplate(props: SubDetailProps) {
   }
 
   return (
-    <ContentPanel title="Define component template" titleSize="s">
-      <EuiSpacer size="s" />
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="xs" alignItems="center">
+        <EuiText size="s">
+          <h2>{`Define component template`}</h2>
+        </EuiText>
+      </EuiFlexGroup>
+      <EuiHorizontalRule margin={"xs"} />
       {content}
-    </ContentPanel>
+    </EuiPanel>
   );
 }

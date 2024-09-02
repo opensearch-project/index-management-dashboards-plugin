@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
+import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { ErrorNotification, ISMTemplate } from "../../../../../models/interfaces";
@@ -50,13 +50,18 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     ];
 
     return (
-      <ContentPanel bodyStyles={{ padding: "10px" }} title="Policy settings" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="s" />
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiText size="s">
+            <h2>{`Policy settings`}</h2>
+          </EuiText>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiFlexGrid columns={4}>
             {infoItems.map((item) => (
               <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -64,7 +69,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
             ))}
           </EuiFlexGrid>
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

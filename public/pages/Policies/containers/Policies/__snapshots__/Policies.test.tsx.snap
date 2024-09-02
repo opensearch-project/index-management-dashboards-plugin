@@ -353,7 +353,7 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                             class="euiText euiText--medium"
                           >
                             <div
-                              class="euiText euiText--medium"
+                              class="euiText euiText--small"
                             >
                               <p>
                                 Loading policies...

@@ -2,11 +2,10 @@
 
 exports[`<FormGenerator /> spec render the component 1`] = `
 HTMLCollection [
-  <div />,
   <div>
     <section
       aria-label="Page level controls"
-      class="euiBottomBar euiBottomBar--fixed euiBottomBar--paddingMedium"
+      class="euiBottomBar euiBottomBar--sticky euiBottomBar--paddingMedium"
     >
       <h2
         class="euiScreenReaderOnly"
