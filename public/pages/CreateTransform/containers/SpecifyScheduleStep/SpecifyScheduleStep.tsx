@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { TransformService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -129,9 +129,9 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Specify Schedule</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

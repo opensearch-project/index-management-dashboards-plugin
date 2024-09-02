@@ -353,9 +353,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   ) : (
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <EuiTitle size="m">
-          <span>{index}</span>
-        </EuiTitle>
+        <EuiText size="s">
+          <h1>{index}</h1>
+        </EuiText>
         <IndicesActions
           selectedItems={[record]}
           history={props.history}

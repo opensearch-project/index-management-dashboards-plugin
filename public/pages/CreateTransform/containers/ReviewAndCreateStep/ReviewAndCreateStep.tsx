@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiCallOut } from "@elastic/eui";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiCallOut, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { TransformService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -64,9 +64,9 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Review and Create</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

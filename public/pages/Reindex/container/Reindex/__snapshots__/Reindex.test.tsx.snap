@@ -4,11 +4,13 @@ exports[`<Reindex /> spec renders the component 1`] = `
 <div
   style="padding: 0px 50px;"
 >
-  <h1
-    class="euiTitle euiTitle--large"
+  <div
+    class="euiText euiText--small"
   >
-    Reindex
-  </h1>
+    <h1>
+      Reindex
+    </h1>
+  </div>
   <div
     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     id="some_html_id-row"

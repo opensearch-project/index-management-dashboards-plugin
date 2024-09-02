@@ -740,9 +740,9 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
       </div>
     ) : (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>Shrink index</h1>
-        </EuiTitle>
+        </EuiText>
         {subTitleText}
         <EuiSpacer />
         {Common()}

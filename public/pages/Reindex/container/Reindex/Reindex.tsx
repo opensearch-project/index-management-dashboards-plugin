@@ -762,9 +762,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
       </div>
     ) : (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
+        <EuiText size="s">
           <h1>Reindex</h1>
-        </EuiTitle>
+        </EuiText>
         {subTitleText}
         <EuiSpacer />
 

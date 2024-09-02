@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component, useContext } from "react";
-import { EuiCallOut, EuiSpacer, EuiTitle, EuiSmallButton, EuiLink, EuiCompressedFormRow } from "@elastic/eui";
+import { EuiCallOut, EuiSpacer, EuiTitle, EuiSmallButton, EuiLink, EuiCompressedFormRow, EuiText } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -273,9 +273,9 @@ export class SplitIndex extends Component<SplitIndexProps> {
       </div>
     ) : (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle>
+        <EuiText size="s">
           <h1>Split index</h1>
-        </EuiTitle>
+        </EuiText>
 
         <EuiCompressedFormRow
           fullWidth
