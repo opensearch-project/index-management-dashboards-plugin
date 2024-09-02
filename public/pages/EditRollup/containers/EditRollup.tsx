@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import queryString from "query-string";
-import { EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiTitle, EuiSpacer, EuiSmallButtonEmpty } from "@elastic/eui";
+import { EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiTitle, EuiSpacer, EuiSmallButtonEmpty, EuiText } from "@elastic/eui";
 import ConfigureRollup from "../../CreateRollup/components/ConfigureRollup";
 import Schedule from "../../CreateRollup/components/Schedule";
 import { getErrorMessage } from "../../../utils/helpers";
@@ -298,9 +298,9 @@ export class EditRollup extends Component<EditRollupProps, EditRollupState> {
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Edit rollup job</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

@@ -206,9 +206,9 @@ const Notifications = (props: NotificationsProps) => {
         <>
           <EuiFlexGroup justifyContent="spaceBetween">
             <EuiFlexItem>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Notification settings</h1>
-              </EuiTitle>
+              </EuiText>
               <CustomFormRow
                 fullWidth
                 helpText={

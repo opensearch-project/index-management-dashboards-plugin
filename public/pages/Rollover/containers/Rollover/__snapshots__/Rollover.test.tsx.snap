@@ -4,11 +4,13 @@ exports[`container <Rollover /> spec render the component 1`] = `
 <div
   style="padding: 0px 50px;"
 >
-  <h1
-    class="euiTitle euiTitle--medium"
+  <div
+    class="euiText euiText--small"
   >
-    Roll over
-  </h1>
+    <h1>
+      Roll over
+    </h1>
+  </div>
   <div
     class="euiFormRow euiFormRow--compressed"
     id="some_html_id-row"

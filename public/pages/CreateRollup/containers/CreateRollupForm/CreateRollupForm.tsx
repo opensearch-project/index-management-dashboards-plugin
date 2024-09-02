@@ -699,7 +699,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           submitError={submitError}
           useNewUX={useNewUX}
         />
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={useNewUX ? undefined : { padding: "5px 50px" }} gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createRollupCancelButton">
               Cancel

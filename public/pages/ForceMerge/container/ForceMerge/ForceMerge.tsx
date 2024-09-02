@@ -200,9 +200,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       {useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
       {!useNewUX && (
         <>
-          <EuiTitle size="l">
+          <EuiText size="s">
             <h1>Force merge</h1>
-          </EuiTitle>
+          </EuiText>
           <CustomFormRow
             fullWidth
             helpText="Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents within indexes."

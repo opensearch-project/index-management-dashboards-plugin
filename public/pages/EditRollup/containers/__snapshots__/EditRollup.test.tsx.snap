@@ -4,11 +4,13 @@ exports[`<EditRollup /> spec renders the component 1`] = `
 <div
   style="padding: 25px 50px;"
 >
-  <h1
-    class="euiTitle euiTitle--large"
+  <div
+    class="euiText euiText--small"
   >
-    Edit rollup job
-  </h1>
+    <h1>
+      Edit rollup job
+    </h1>
+  </div>
   <div
     class="euiSpacer euiSpacer--l"
   />

@@ -567,11 +567,11 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
-                  <EuiContextMenuPanel items={actionItems} />
+                  <EuiContextMenuPanel items={actionItems} size="s" />
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
+                <EuiSmallButton iconType="plus" onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
                   Create rollup job
                 </EuiSmallButton>
               </EuiFlexItem>

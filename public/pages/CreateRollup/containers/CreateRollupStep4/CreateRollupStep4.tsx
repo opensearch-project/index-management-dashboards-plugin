@@ -67,9 +67,9 @@ export default class CreateRollupStep4 extends Component<CreateRollupProps> {
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Review and create</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

@@ -151,11 +151,13 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--large"
+          <div
+            class="euiText euiText--small"
           >
-            Set up indices
-          </h1>
+            <h1>
+              Set up indices
+            </h1>
+          </div>
           <div
             class="euiSpacer euiSpacer--l"
           />
@@ -562,6 +564,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
     </div>
     <div
       class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 5px 50px;"
     >
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

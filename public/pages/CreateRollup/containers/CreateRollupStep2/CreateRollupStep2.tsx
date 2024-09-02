@@ -61,9 +61,9 @@ export default class CreateRollupStep2 extends Component<CreateRollupStep2Props>
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Define aggregations and metrics</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

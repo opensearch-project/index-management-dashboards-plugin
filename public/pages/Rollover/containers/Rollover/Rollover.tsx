@@ -251,9 +251,9 @@ export default function Rollover(props: RolloverProps) {
       {useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
       {!useNewUX && (
         <>
-          <EuiTitle>
+          <EuiText size="s">
             <h1>Roll over</h1>
-          </EuiTitle>
+          </EuiText>
           <CustomFormRow
             helpText="Rollover creates a new writing index for a data stream or index alias."
             style={{

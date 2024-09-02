@@ -8,11 +8,13 @@ exports[`<Notifications /> spec View without permission 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small"
       >
-        Notification settings
-      </h1>
+        <h1>
+          Notification settings
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
@@ -96,11 +98,13 @@ exports[`<Notifications /> spec renders 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--large"
+      <div
+        class="euiText euiText--small"
       >
-        Notification settings
-      </h1>
+        <h1>
+          Notification settings
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
