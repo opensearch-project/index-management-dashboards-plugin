@@ -12,11 +12,13 @@ exports[`<Aliases /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <span
-        class="euiTitle euiTitle--medium"
+      <div
+        class="euiText euiText--small"
       >
-        Aliases
-      </span>
+        <h1>
+          Aliases
+        </h1>
+      </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"

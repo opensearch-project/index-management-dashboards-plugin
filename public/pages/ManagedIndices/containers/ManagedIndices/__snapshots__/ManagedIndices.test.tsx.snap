@@ -65,17 +65,19 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--large"
+        <div
+          class="euiText euiText--small"
         >
-          Policy managed indexes
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h1>
+          <h1>
+            Policy managed indexes
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

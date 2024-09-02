@@ -11,12 +11,15 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--large"
-          title="good_template"
+        <div
+          class="euiText"
         >
-          good_template
-        </h1>
+          <h1
+            title="good_template"
+          >
+            good_template
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -68,17 +71,19 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Define component template
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h1>
+              Define component template
+              <span
+                class="panel-header-count"
+              >
+                 
+                 
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
       <hr
@@ -183,9 +188,11 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                 for="some_html_id"
               >
                 <div
-                  class="euiTitle euiTitle--small"
+                  class="euiText euiText--small"
                 >
-                  Index alias
+                  <div>
+                    Index alias
+                  </div>
                 </div>
               </label>
             </div>
@@ -269,17 +276,19 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         <div
           class="euiFlexItem"
         >
-          <h1
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiText euiText--small"
           >
-            Index settings
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h1>
+            <h1>
+              Index settings
+              <span
+                class="panel-header-count"
+              >
+                 
+                 
+              </span>
+            </h1>
+          </div>
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"

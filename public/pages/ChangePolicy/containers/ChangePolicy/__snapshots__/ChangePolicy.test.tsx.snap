@@ -4,11 +4,13 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
 <div
   style="padding: 0px 25px;"
 >
-  <h1
-    class="euiTitle euiTitle--large"
+  <div
+    class="euiText euiText--small"
   >
-    Change policy
-  </h1>
+    <h1>
+      Change policy
+    </h1>
+  </div>
   <div
     class="euiSpacer euiSpacer--l"
   />

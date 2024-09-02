@@ -526,9 +526,9 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
         bodyStyles={{ padding: "initial" }}
         title={
           <>
-            <EuiTitle>
-              <span>Aliases</span>
-            </EuiTitle>
+            <EuiText size="s">
+              <h1>Aliases</h1>
+            </EuiText>
             <EuiCompressedFormRow
               fullWidth
               helpText={

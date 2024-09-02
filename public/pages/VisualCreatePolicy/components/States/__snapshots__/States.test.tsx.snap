@@ -12,17 +12,19 @@ exports[`<States /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h1
-        class="euiTitle euiTitle--small"
+      <div
+        class="euiText euiText--small"
       >
-        States (2)
-        <span
-          class="panel-header-count"
-        >
-           
-           
-        </span>
-      </h1>
+        <h1>
+          States (2)
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
+        </h1>
+      </div>
       <div
         class="euiText euiText--small"
         style="padding: 5px 0px;"

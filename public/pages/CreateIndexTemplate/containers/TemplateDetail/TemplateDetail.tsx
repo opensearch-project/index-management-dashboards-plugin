@@ -278,9 +278,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <>
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem>
-            <EuiTitle size="l">
+            <EuiText size="s">
               {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
-            </EuiTitle>
+            </EuiText>
             {isEdit ? null : (
               <CustomFormRow
                 fullWidth

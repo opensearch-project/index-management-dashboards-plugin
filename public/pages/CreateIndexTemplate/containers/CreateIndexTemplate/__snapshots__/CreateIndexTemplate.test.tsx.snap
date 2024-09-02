@@ -11,12 +11,15 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h1
-          class="euiTitle euiTitle--large"
-          title="good_template"
+        <div
+          class="euiText euiText--small"
         >
-          good_template
-        </h1>
+          <h1
+            title="good_template"
+          >
+            good_template
+          </h1>
+        </div>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

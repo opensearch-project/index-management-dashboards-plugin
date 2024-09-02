@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSpacer, EuiText } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -23,9 +23,9 @@ export default function IndexAlias(props: SubDetailProps) {
           <CustomFormRow
             fullWidth
             label={
-              <EuiTitle size="s">
+              <EuiText size="s">
                 <div>Index alias</div>
-              </EuiTitle>
+              </EuiText>
             }
             helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
           >
