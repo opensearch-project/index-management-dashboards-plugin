@@ -80,7 +80,9 @@ const SnapshotRestoreAdvancedOptions = ({
 
       <EuiSpacer size="l" />
 
-      <h5>Custom index settings</h5>
+      <EuiText size="s">
+        <h5>Custom index settings</h5>
+      </EuiText>
       <EuiText size="xs" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           By default, index settings are restored from indices in snapshots. You can choose to

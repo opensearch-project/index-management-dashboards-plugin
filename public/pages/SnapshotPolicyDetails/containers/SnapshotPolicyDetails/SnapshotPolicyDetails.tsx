@@ -21,6 +21,8 @@ import {
   EuiText,
   EuiTitle,
   EuiHealth,
+  EuiHorizontalRule,
+  EuiPanel,
 } from "@elastic/eui";
 import { NotificationService, SnapshotManagementService } from "../../../../services";
 import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
@@ -424,9 +426,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
           <>
             <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <EuiTitle size="m">
-                  <span title={policyId}>{_.truncate(policyId)}</span>
-                </EuiTitle>
+                <EuiText size="s">
+                  <h1>{_.truncate(policyId)}</h1>
+                </EuiText>
               </EuiFlexItem>
 
               <EuiFlexItem grow={false}>
@@ -446,7 +448,13 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
           </>
         )}
 
-        <ContentPanel title="Policy settings" titleSize="s">
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="xs" alignItems="center">
+            <EuiText size="s">
+              <h2>Policy settings</h2>
+            </EuiText>
+          </EuiFlexGroup>
+          <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
             {policySettingItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
@@ -473,11 +481,17 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
               ))}
             </EuiFlexGrid>
           </EuiAccordion>
-        </ContentPanel>
+        </EuiPanel>
 
         <EuiSpacer />
 
-        <ContentPanel title="Snapshot schedule" titleSize="s">
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="xs" alignItems="center">
+            <EuiText size="s">
+              <h2>Snapshot schedule</h2>
+            </EuiText>
+          </EuiFlexGroup>
+          <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
             {snapshotScheduleItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
@@ -488,11 +502,17 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
               </EuiFlexItem>
             ))}
           </EuiFlexGrid>
-        </ContentPanel>
+        </EuiPanel>
 
         <EuiSpacer />
 
-        <ContentPanel title="Snapshot retention period" titleSize="s">
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="xs" alignItems="center">
+            <EuiText size="s">
+              <h2>Snapshot retention period</h2>
+            </EuiText>
+          </EuiFlexGroup>
+          <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
             {retentionItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
@@ -516,11 +536,17 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
               ))}
             </EuiFlexGrid>
           )}
-        </ContentPanel>
+        </EuiPanel>
 
         <EuiSpacer />
 
-        <ContentPanel title="Notifications" titleSize="s">
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="xs" alignItems="center">
+            <EuiText size="s">
+              <h2>Notifications</h2>
+            </EuiText>
+          </EuiFlexGroup>
+          <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={2}>
             {notificationItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
@@ -531,21 +557,26 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
               </EuiFlexItem>
             ))}
           </EuiFlexGrid>
-        </ContentPanel>
+        </EuiPanel>
 
         <EuiSpacer />
 
-        <ContentPanel
-          title="Last creation/deletion"
-          titleSize="s"
-          actions={
-            <EuiSmallButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
-              Refresh
-            </EuiSmallButton>
-          }
-        >
+        <EuiPanel>
+          <EuiFlexGroup gutterSize="xs" alignItems="center">
+            <EuiFlexItem>
+              <EuiText size="s">
+                <h2>Last creation/deletion</h2>
+              </EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiSmallButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
+                Refresh
+              </EuiSmallButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          <EuiHorizontalRule margin={"xs"} />
           <EuiBasicTable items={latestActivities} itemId="name" columns={this.columns} />
-        </ContentPanel>
+        </EuiPanel>
 
         {isDeleteModalVisible && (
           <DeleteModal policyId={policyId} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
