@@ -100,10 +100,19 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     this.getRollups = _.debounce(this.getRollups, 500, { leading: true });
   }
 
+  async updateBreadCrumbs() {
+    if (this.state.useNewUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.ROLLUPS.text.concat(` (${this.state.rollups.length})`), href: BREADCRUMBS.ROLLUPS.href },
+      ]);
+    }
+  }
+
   async componentDidMount() {
     const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.ROLLUPS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getRollups();
+    this.updateBreadCrumbs();
   }
 
   async componentDidUpdate(prevProps: RollupsProps, prevState: RollupsState) {
@@ -112,6 +121,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getRollups();
     }
+    this.updateBreadCrumbs();
   }
 
   static getQueryObjectFromState({
