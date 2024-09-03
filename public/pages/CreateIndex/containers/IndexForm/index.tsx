@@ -464,7 +464,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
         {hideButtons ? null : (
           <>
             <EuiSpacer />
-            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
               <EuiFlexItem grow={false}>
                 <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
                   Cancel
