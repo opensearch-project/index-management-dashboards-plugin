@@ -7,6 +7,7 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSmallButtonEmpty, EuiButtonPro
 import classNames from "classnames";
 import BottomBar from "../BottomBar";
 import "./index.scss";
+import { createPortal } from "react-dom";
 
 export type CustomFormRowProps = {
   unsavedCount: number;
@@ -67,7 +68,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
           iconType="check"
           color="primary"
           fill
-          size="m"
+          size="s"
           children="Save"
           {...props.confirmButtonProps}
         />
@@ -116,9 +117,9 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
       </>
     ));
 
-  return (
+  const bottomBar = (
     <BottomBar>
-      <EuiFlexGroup alignItems="center">
+      <EuiFlexGroup alignItems="center" gutterSize="s" justifyContent="spaceBetween">
         {renderProps({
           renderCancel,
           renderConfirm,
@@ -128,4 +129,6 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
       </EuiFlexGroup>
     </BottomBar>
   );
+
+  return createPortal(bottomBar, document.getElementById("app-wrapper")!);
 }

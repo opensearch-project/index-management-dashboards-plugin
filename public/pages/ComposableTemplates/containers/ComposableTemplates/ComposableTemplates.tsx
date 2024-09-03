@@ -24,6 +24,8 @@ import {
   EuiSmallButtonIcon,
   EuiToolTip,
   EuiBasicTableColumn,
+  EuiSpacer,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -42,7 +44,12 @@ import "./index.scss";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlTextData } from "src/plugins/navigation/public";
+import {
+  TopNavControlButtonData,
+  TopNavControlDescriptionData,
+  TopNavControlLinkData,
+  TopNavControlTextData,
+} from "src/plugins/navigation/public";
 
 interface ComposableTemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -401,16 +408,18 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
 
     const descriptionData = [
       {
-        renderComponent: (
-          <EuiText size="s" color="subdued">
-            Component templates are reusable building blocks for composing index or data stream templates.
-            <br /> You can define component templates with common index configurations and associate them to an index template.{" "}
-            <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
-              Learn more
-            </EuiLink>
-          </EuiText>
-        ),
-      },
+        description:
+          "Component templates are reusable building blocks for composing index or data stream templates. You can define component templates with common index configurations and associate them to an index template.",
+        links: {
+          label: "Learn more",
+          href: (this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable,
+          iconType: "popout",
+          iconSide: "right",
+          controlType: "link",
+          target: "_blank",
+          flush: "both",
+        } as TopNavControlLinkData,
+      } as TopNavControlDescriptionData,
     ];
 
     return useNewUX ? (
@@ -430,16 +439,16 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
           ]}
         />
         <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
-        <ContentPanel>
+        <EuiPanel>
           <IndexControls
             value={{
               search: this.state.search,
               selectedTypes: this.state.selectedTypes,
             }}
             onSearchChange={this.onSearchChange}
+            useNewUx={useNewUX}
           />
-          <EuiHorizontalRule margin="xs" />
-
+          <EuiSpacer size="m" />
           <EuiBasicTable
             className="ISM-component-templates-table"
             data-test-subj="templatesTable"
@@ -472,6 +481,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                       }}
                       data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
+                      iconType="plus"
                     >
                       Create component template
                     </EuiSmallButton>,
@@ -500,7 +510,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               )
             }
           />
-        </ContentPanel>
+        </EuiPanel>
       </>
     ) : (
       <>
@@ -515,9 +525,10 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               selectedTypes: this.state.selectedTypes,
             }}
             onSearchChange={this.onSearchChange}
+            useNewUx={useNewUX}
           />
           <EuiHorizontalRule margin="xs" />
-
+          <EuiSpacer size="s" />
           <EuiBasicTable
             className="ISM-component-templates-table"
             data-test-subj="templatesTable"

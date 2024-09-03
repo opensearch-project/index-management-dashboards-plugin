@@ -13,7 +13,7 @@ interface TransitionContentProps {
 }
 
 const TransitionContent = ({ transition }: TransitionContentProps) => (
-  <EuiText>
+  <EuiText size="s">
     <dl>
       <dt>Destination state</dt>
       <dd>{transition.state_name}</dd>

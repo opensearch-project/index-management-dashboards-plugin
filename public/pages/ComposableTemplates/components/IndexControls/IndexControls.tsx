@@ -14,6 +14,7 @@ export interface SearchControlsProps {
     selectedTypes: string[];
   };
   onSearchChange: (args: SearchControlsProps["value"]) => void;
+  useNewUx?: boolean;
 }
 
 export default function SearchControls(props: SearchControlsProps) {
@@ -29,10 +30,12 @@ export default function SearchControls(props: SearchControlsProps) {
   useEffect(() => {
     setState(props.value);
   }, [props.value]);
+  const paddingStyle = props.useNewUx ? { padding: "0px 0px" } : { padding: "0px 5px" };
   return (
-    <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
+    <EuiFlexGroup gutterSize="s" alignItems="center" style={paddingStyle}>
       <EuiFlexItem>
         <EuiCompressedFieldSearch
+          autoFocus
           fullWidth
           placeholder="Search..."
           value={state.search}

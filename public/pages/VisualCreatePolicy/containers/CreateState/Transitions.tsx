@@ -16,7 +16,6 @@ interface TransitionsProps {
   onClickEditTransition: (transition: UITransition) => void;
   onDragEndTransitions: (dropResult: DropResult) => void;
   onClickAddTransition: () => void;
-  useNewUx?: boolean;
 }
 
 const Transitions = ({
@@ -25,7 +24,6 @@ const Transitions = ({
   onClickEditTransition,
   onDragEndTransitions,
   onClickAddTransition,
-  useNewUx,
 }: TransitionsProps) => {
   return (
     <>

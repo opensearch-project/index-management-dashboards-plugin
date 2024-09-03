@@ -35,14 +35,20 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
       // @ts-ignore */}
       <EuiModal onCancel={onClose} onClose={onClose} maxWidth={600}>
         <EuiModalHeader>
-          <EuiModalHeaderTitle>Configuration method</EuiModalHeaderTitle>
+          <EuiModalHeaderTitle>
+            <EuiText size="s">
+              <h2>Configuration method</h2>
+            </EuiText>
+          </EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>
           <EuiFlexGroup gutterSize="m" direction="column" style={{ margin: "-4px" }}>
             <EuiFlexItem grow={false}>
               <EuiText size="s" style={{ marginTop: 0 }}>
-                Choose how you would like to {isEdit ? "modify" : "define"} your policy, either using a visual editor or writing JSON.
+                <p>
+                  Choose how you would like to {isEdit ? "modify" : "define"} your policy, either using a visual editor or writing JSON.
+                </p>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>

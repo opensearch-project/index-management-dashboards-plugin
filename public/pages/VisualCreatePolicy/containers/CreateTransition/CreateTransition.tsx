@@ -27,7 +27,6 @@ interface CreateTransitionProps {
   onCloseCreateTransition: () => void;
   onClickSaveTransition: (uiTransition: UITransition) => void;
   stateOptions: string[];
-  useNewUx?: boolean;
 }
 
 interface CreateTransitionState {
@@ -87,7 +86,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
   };
 
   render() {
-    const { editTransition, onCloseCreateTransition, stateOptions, useNewUx } = this.props;
+    const { editTransition, onCloseCreateTransition, stateOptions } = this.props;
     const { uiTransition } = this.state;
     let title = "Add transition";
     if (!!editTransition) title = "Edit transition";
@@ -129,11 +128,10 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
 
           <EuiSpacer />
 
-          {!!uiTransition && <Transition uiTransition={uiTransition} onChangeTransition={this.onChangeTransition} useNewUx={useNewUx} />}
+          {!!uiTransition && <Transition uiTransition={uiTransition} onChangeTransition={this.onChangeTransition} />}
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <FlyoutFooter
-            useNewUx={useNewUx}
             edit={!!editTransition}
             action="transition"
             onClickCancel={onCloseCreateTransition}

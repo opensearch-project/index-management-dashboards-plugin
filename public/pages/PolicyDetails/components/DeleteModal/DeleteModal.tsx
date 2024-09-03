@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment } from "react";
-import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer, EuiText } from "@elastic/eui";
 
 interface DeleteModalProps {
   policyId: string;
@@ -30,7 +30,11 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
     return (
       <EuiOverlayMask>
         <EuiConfirmModal
-          title="Delete policy"
+          title={
+            <EuiText size="s">
+              <h2>Delete policy</h2>
+            </EuiText>
+          }
           onCancel={closeDeleteModal}
           onConfirm={onClickDelete}
           cancelButtonText="Cancel"

@@ -16,6 +16,7 @@ import {
   EuiEmptyPrompt,
   EuiCompressedFormRow,
   EuiSelect,
+  EuiPanel,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
@@ -31,41 +32,33 @@ interface StatesProps {
   onClickDeleteState: (idx: number) => void;
   onChangeDefaultState: (event: ChangeEvent<HTMLSelectElement>) => void;
   isReadOnly: boolean;
-  useNewUx?: boolean;
 }
 
-const States = ({
-  onOpenFlyout,
-  policy,
-  onClickEditState,
-  onClickDeleteState,
-  onChangeDefaultState,
-  isReadOnly = false,
-  useNewUx,
-}: StatesProps) => {
-  const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
+const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState, isReadOnly = false }: StatesProps) => {
   return (
-    <ContentPanel
-      bodyStyles={{ padding: "initial" }}
-      title={`States (${policy.states.length})`}
-      titleSize="s"
-      subTitleText={
-        <EuiText color="subdued" size="s" style={paddingStyle}>
-          <p style={{ fontWeight: 200 }}>
-            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
-            <br />
-            "Transitions" define when to move from one state to another.{" "}
-            <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more
-            </EuiLink>
-          </p>
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="xs" alignItems="center">
+        <EuiText size="s">
+          <h2>{`States (${policy.states.length})`}</h2>
         </EuiText>
-      }
-    >
-      <div style={{ padding: "0px 10px" }}>
+      </EuiFlexGroup>
+
+      <EuiText color="subdued" size="xs">
+        <p style={{ fontWeight: 350 }}>
+          You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+          <br />
+          "Transitions" define when to move from one state to another.{" "}
+          <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+            Learn more
+          </EuiLink>
+        </p>
+      </EuiText>
+      <EuiHorizontalRule margin={"xs"} />
+
+      <div>
         {!isReadOnly && (
           <>
-            <EuiCompressedFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
+            <EuiCompressedFormRow style={{ maxWidth: "300px" }} isInvalid={false} error={null}>
               <EuiSelect
                 compressed
                 prepend="Initial state"
@@ -74,8 +67,7 @@ const States = ({
                 onChange={onChangeDefaultState}
               />
             </EuiCompressedFormRow>
-            <EuiSpacer size="s" />
-            <EuiHorizontalRule margin="none" />
+            <EuiHorizontalRule margin={"xs"} />
           </>
         )}
 
@@ -105,7 +97,11 @@ const States = ({
             </>
           ) : (
             <EuiEmptyPrompt
-              title={<h2>No states</h2>}
+              title={
+                <EuiText>
+                  <h3>No states</h3>
+                </EuiText>
+              }
               titleSize="s"
               body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
               actions={
@@ -116,7 +112,7 @@ const States = ({
             />
           ))}
       </div>
-    </ContentPanel>
+    </EuiPanel>
   );
 };
 
