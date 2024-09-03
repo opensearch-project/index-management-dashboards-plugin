@@ -24,7 +24,7 @@ export const setMatchedTemplate = ({ matchedTemplate, field }: { matchedTemplate
     template: JSON.parse(
       JSON.stringify({
         ...matchedTemplate.index_template.template,
-        settings: flatten(matchedTemplate.index_template.template.settings || {}),
+        settings: matchedTemplate.index_template?.template?.settings ? flatten(matchedTemplate.index_template.template.settings) : {},
       })
     ),
   };

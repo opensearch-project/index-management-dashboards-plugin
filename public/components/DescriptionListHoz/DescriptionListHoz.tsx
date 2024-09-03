@@ -13,6 +13,7 @@ const DisplayItem = (
   const { listItem, ...others } = props;
   return (
     <EuiDescriptionList
+      compressed={true}
       listItems={[
         {
           ...listItem,

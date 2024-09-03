@@ -83,85 +83,104 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
 
     return (
       <EuiPanel>
-        <EuiTitle size="s">
-          <h1>Time aggregation </h1>
-        </EuiTitle>
+        <EuiText size="s">
+          <h2>Time aggregation </h2>
+        </EuiText>
         <EuiFormHelpText>
-          Your source indices must include a timestamp field. The rollup job creates a date histogram for the field you specify." "
+          Your source indices must include a timestamp field. The rollup job creates a date histogram for the field you specify.
         </EuiFormHelpText>
         <EuiHorizontalRule margin="xs" />
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiSpacer size="s" />
-          <EuiCompressedFormRow label="Timestamp field" error={timestampError} isInvalid={!!timestampError}>
-            <EuiCompressedComboBox
-              placeholder="Select timestamp"
-              options={dateFields}
-              selectedOptions={selectedTimestamp}
-              onChange={onChangeTimestamp}
-              singleSelection={{ asPlainText: true }}
-              isInvalid={!!timestampError}
-            />
-          </EuiCompressedFormRow>
-          <EuiSpacer size="m" />
-          <EuiCompressedFormRow label="Interval type">
-            <EuiCompressedRadioGroup
-              options={radios}
-              idSelected={intervalType}
-              onChange={(id) => onChangeIntervalType(id)}
-              name="intervalType"
-            />
-          </EuiCompressedFormRow>
-          <EuiFlexGroup style={{ maxWidth: 300 }}>
-            {intervalType == "fixed" ? (
-              <Fragment>
-                <EuiSpacer size="m" />
-                <EuiFlexItem grow={false} style={{ width: 100 }}>
-                  <EuiCompressedFormRow label="Interval">
-                    <EuiCompressedFieldNumber
-                      min={1}
-                      value={intervalType == "fixed" ? intervalValue : 1}
-                      onChange={onChangeIntervalValue}
-                    />
-                  </EuiCompressedFormRow>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                    <EuiCompressedSelect
-                      id="selectTimeunit"
-                      options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
-                      value={timeunit}
-                      onChange={onChangeTimeunit}
-                    />
-                  </EuiCompressedFormRow>
-                </EuiFlexItem>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <EuiFlexItem grow={false}>
-                  <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                    <EuiText size="m">
-                      <dd>Every 1</dd>{" "}
-                    </EuiText>
-                  </EuiCompressedFormRow>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                    <EuiCompressedSelect
-                      id="selectTimeunit"
-                      options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
-                      value={timeunit}
-                      onChange={onChangeTimeunit}
-                    />
-                  </EuiCompressedFormRow>
-                </EuiFlexItem>
-              </Fragment>
-            )}
-          </EuiFlexGroup>
-          <EuiSpacer size="m" />
-          <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-            <EuiCompressedSelect id="timezone" options={timezones} value={timezone} onChange={onChangeTimezone} />
-          </EuiCompressedFormRow>
-        </div>
+        <EuiSpacer size="s" />
+        <EuiCompressedFormRow
+          label={
+            <EuiText size="s">
+              <h3>Timestamp field</h3>
+            </EuiText>
+          }
+          error={timestampError}
+          isInvalid={!!timestampError}
+        >
+          <EuiCompressedComboBox
+            placeholder="Select timestamp"
+            options={dateFields}
+            selectedOptions={selectedTimestamp}
+            onChange={onChangeTimestamp}
+            singleSelection={{ asPlainText: true }}
+            isInvalid={!!timestampError}
+          />
+        </EuiCompressedFormRow>
+        <EuiSpacer size="m" />
+        <EuiCompressedFormRow
+          label={
+            <EuiText size="s">
+              <h3>Interval type</h3>
+            </EuiText>
+          }
+        >
+          <EuiCompressedRadioGroup
+            options={radios}
+            idSelected={intervalType}
+            onChange={(id) => onChangeIntervalType(id)}
+            name="intervalType"
+          />
+        </EuiCompressedFormRow>
+        <EuiSpacer size="m" />
+        <EuiText size="s">
+          <h3>Interval</h3>
+        </EuiText>
+        <EuiFlexGroup style={{ maxWidth: 300 }} alignItems="center">
+          {intervalType == "fixed" ? (
+            <Fragment>
+              <EuiSpacer size="m" />
+              <EuiFlexItem grow={false} style={{ width: 100 }}>
+                <EuiCompressedFormRow>
+                  <EuiCompressedFieldNumber min={1} value={intervalType == "fixed" ? intervalValue : 1} onChange={onChangeIntervalValue} />
+                </EuiCompressedFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiCompressedFormRow>
+                  <EuiCompressedSelect
+                    id="selectTimeunit"
+                    options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
+                    value={timeunit}
+                    onChange={onChangeTimeunit}
+                  />
+                </EuiCompressedFormRow>
+              </EuiFlexItem>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <EuiFlexItem grow={false}>
+                <EuiCompressedFormRow>
+                  <EuiText size="s">
+                    <dd>Every 1</dd>{" "}
+                  </EuiText>
+                </EuiCompressedFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiCompressedFormRow>
+                  <EuiCompressedSelect
+                    id="selectTimeunit"
+                    options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
+                    value={timeunit}
+                    onChange={onChangeTimeunit}
+                  />
+                </EuiCompressedFormRow>
+              </EuiFlexItem>
+            </Fragment>
+          )}
+        </EuiFlexGroup>
+        <EuiSpacer size="m" />
+        <EuiCompressedFormRow
+          label={
+            <EuiText size="s">
+              <h3>Timezone</h3>
+            </EuiText>
+          }
+          helpText="A day starts from 00:00:00 in the specified timezone."
+        >
+          <EuiCompressedSelect id="timezone" options={timezones} value={timezone} onChange={onChangeTimezone} />
+        </EuiCompressedFormRow>
       </EuiPanel>
     );
   }

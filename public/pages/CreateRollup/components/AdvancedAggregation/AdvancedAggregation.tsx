@@ -349,20 +349,23 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
 
     return (
       <EuiPanel>
-        <EuiFlexGroup style={{ padding: "0px 0px 0px 10px" }} justifyContent="spaceBetween">
+        <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>
             <EuiFlexGroup gutterSize="xs" direction="column">
               <EuiFlexItem>
                 <EuiFlexGroup gutterSize="xs">
                   <EuiFlexItem grow={false}>
-                    <EuiTitle size="s">
-                      <h1>Additional aggregation{` (${selectedDimensionField.length})`} </h1>
-                    </EuiTitle>
+                    <EuiText size="s">
+                      <h2>Additional aggregation{` (${selectedDimensionField.length})`} </h2>
+                    </EuiText>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiTitle size="s">
-                      <i> – optional </i>
-                    </EuiTitle>
+                    <EuiText size="s" color="subdued">
+                      <h2>
+                        {" "}
+                        <i>– optional</i>{" "}
+                      </h2>
+                    </EuiText>
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>
@@ -378,11 +381,13 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
                 <Fragment>
                   <EuiFlexItem>
                     <EuiCallOut>
-                      <p>
-                        The order of fields impacts rollup performance. Aggregating by smaller buckets and then by larger buckets is faster
-                        than the opposite. For example, if you are rolling up flight data for five airlines with 100 destinations,
-                        aggregating by airline and then by destination is faster than aggregating by destination first.
-                      </p>
+                      <EuiText size="s">
+                        <p>
+                          The order of fields impacts rollup performance. Aggregating by smaller buckets and then by larger buckets is
+                          faster than the opposite. For example, if you are rolling up flight data for five airlines with 100 destinations,
+                          aggregating by airline and then by destination is faster than aggregating by destination first.
+                        </p>
+                      </EuiText>
                     </EuiCallOut>
                     <EuiSpacer size="s" />
                   </EuiFlexItem>
@@ -404,79 +409,77 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
 
         <EuiSpacer size="s" />
         <EuiHorizontalRule margin="xs" />
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiBasicTable
-            items={dimensionsShown}
-            itemId="sequence"
-            columns={aggregationColumns}
-            tableLayout="auto"
-            hasActions={true}
-            onChange={this.onDimensionTableChange}
-            pagination={dimensionPagination}
-            sorting={dimensionSorting}
-            noItemsMessage={
-              <Fragment>
-                <EuiSpacer />
-                <EuiText>No fields added for aggregations</EuiText>
-                <EuiSpacer />
-                <EuiFlexGroup style={{ padding: "5px 10px" }} alignItems="center">
-                  <EuiFlexItem>
-                    <EuiSpacer />
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <EuiSmallButton onClick={this.showModal} data-test-subj="addFieldsAggregationEmpty">
-                      Add fields
-                    </EuiSmallButton>
-                  </EuiFlexItem>
-                  <EuiFlexItem>
-                    <EuiSpacer size="m" />
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-              </Fragment>
-            }
-          />
-          <EuiSpacer size="s" />
-          {isModalVisible && (
-            <EuiOverlayMask>
-              <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
-                <EuiModalHeader>
-                  <EuiModalHeaderTitle>Add fields</EuiModalHeaderTitle>
-                </EuiModalHeader>
-
-                <EuiModalBody>
-                  <EuiForm title="Add fields">
-                    <EuiBasicTable
-                      columns={AddFieldsColumns}
-                      items={fieldsOption}
-                      itemId="label"
-                      rowHeader="fieldName"
-                      noItemsMessage="No fields available"
-                      isSelectable={true}
-                      selection={selection}
-                      tableLayout="fixed"
-                    />
-                  </EuiForm>
-                </EuiModalBody>
-
-                <EuiModalFooter>
-                  <EuiSmallButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsAggregationCancel">
-                    Cancel
-                  </EuiSmallButtonEmpty>
-                  <EuiSmallButton
-                    fill
-                    onClick={() => {
-                      this.closeModal();
-                      this.onClickAdd();
-                    }}
-                    data-test-subj="addFieldsAggregationAdd"
-                  >
-                    Add
+        <EuiBasicTable
+          items={dimensionsShown}
+          itemId="sequence"
+          columns={aggregationColumns}
+          tableLayout="auto"
+          hasActions={true}
+          onChange={this.onDimensionTableChange}
+          pagination={dimensionPagination}
+          sorting={dimensionSorting}
+          noItemsMessage={
+            <Fragment>
+              <EuiSpacer />
+              <EuiText>No fields added for aggregations</EuiText>
+              <EuiSpacer />
+              <EuiFlexGroup style={{ padding: "5px 10px" }} alignItems="center">
+                <EuiFlexItem>
+                  <EuiSpacer />
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <EuiSmallButton onClick={this.showModal} data-test-subj="addFieldsAggregationEmpty">
+                    Add fields
                   </EuiSmallButton>
-                </EuiModalFooter>
-              </EuiModal>
-            </EuiOverlayMask>
-          )}
-        </div>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <EuiSpacer size="m" />
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            </Fragment>
+          }
+        />
+        <EuiSpacer size="s" />
+        {isModalVisible && (
+          <EuiOverlayMask>
+            <EuiModal onClose={this.closeModal} style={{ padding: "5px 30px" }}>
+              <EuiModalHeader>
+                <EuiModalHeaderTitle>Add fields</EuiModalHeaderTitle>
+              </EuiModalHeader>
+
+              <EuiModalBody>
+                <EuiForm title="Add fields">
+                  <EuiBasicTable
+                    columns={AddFieldsColumns}
+                    items={fieldsOption}
+                    itemId="label"
+                    rowHeader="fieldName"
+                    noItemsMessage="No fields available"
+                    isSelectable={true}
+                    selection={selection}
+                    tableLayout="fixed"
+                  />
+                </EuiForm>
+              </EuiModalBody>
+
+              <EuiModalFooter>
+                <EuiSmallButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsAggregationCancel">
+                  Cancel
+                </EuiSmallButtonEmpty>
+                <EuiSmallButton
+                  fill
+                  onClick={() => {
+                    this.closeModal();
+                    this.onClickAdd();
+                  }}
+                  data-test-subj="addFieldsAggregationAdd"
+                >
+                  Add
+                </EuiSmallButton>
+              </EuiModalFooter>
+            </EuiModal>
+          </EuiOverlayMask>
+        )}
       </EuiPanel>
     );
   }

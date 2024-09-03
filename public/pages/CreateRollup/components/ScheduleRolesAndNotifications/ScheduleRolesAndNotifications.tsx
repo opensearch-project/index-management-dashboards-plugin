@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiFlexItem, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiFlexGrid, EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { parseTimeunit, buildIntervalScheduleText, buildCronScheduleText } from "../../utils/helpers";
@@ -45,50 +45,54 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
         : buildCronScheduleText(continuousJob === "yes", cronExpression);
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onChangeStep(3),
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>Schedule</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onChangeStep(3),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        bodyStyles={{ padding: "initial" }}
-        title="Schedule"
-        titleSize="s"
-      >
-        <div style={{ padding: "15px" }}>
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Enabled by default</dt>
                 <dd>{jobEnabledByDefault ? "Yes" : "No"}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Schedule</dt>
                 <dd>{scheduleText}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Pages per execution</dt>
                 <dd>{pageSize}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Execution delay</dt>
                 <dd>
                   {isNaN(delayTime) || delayTime == undefined || delayTime == 0 ? "-" : delayTime + " " + parseTimeunit(delayTimeunit)}
@@ -98,7 +102,7 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
           </EuiFlexGrid>
           <EuiSpacer size="s" />
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

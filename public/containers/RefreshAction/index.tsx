@@ -169,11 +169,9 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps) {
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
         <EuiModalHeaderTitle>
-          {" "}
           <EuiText size="s">
-            {" "}
-            <h2>Refresh {type}</h2>{" "}
-          </EuiText>{" "}
+            <h2>Refresh {type}</h2>
+          </EuiText>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
 

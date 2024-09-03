@@ -192,10 +192,14 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
         )}
       </div>
       <EuiCallOut color="warning" iconType="warning" hidden={blockedItems.length == 0} size="s">
-        <p>{blockHint}</p>
+        <EuiText size="s">
+          <p>{blockHint}</p>
+        </EuiText>
         <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
           {blockedItems.map((item) => (
-            <li key={item}>{item}</li>
+            <EuiText size="s">
+              <li key={item}>{item}</li>
+            </EuiText>
           ))}
         </ul>
       </EuiCallOut>
@@ -217,11 +221,9 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
         <EuiModalHeaderTitle>
-          {" "}
           <EuiText size="s">
-            {" "}
-            <h2>Clear cache for {type}</h2>{" "}
-          </EuiText>{" "}
+            <h2>Clear cache for {type}</h2>
+          </EuiText>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
 

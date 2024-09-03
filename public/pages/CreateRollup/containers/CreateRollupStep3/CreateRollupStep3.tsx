@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -145,9 +145,9 @@ export default class CreateRollupStep3 extends Component<CreateRollupProps, Crea
       ? () => {
           return (
             <>
-              <EuiTitle size="l">
+              <EuiText size="s">
                 <h1>Specify schedule</h1>
-              </EuiTitle>
+              </EuiText>
               <EuiSpacer />
             </>
           );

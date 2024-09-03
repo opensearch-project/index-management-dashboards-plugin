@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiFlexGrid, EuiFlexItem, EuiLink, EuiSpacer, EuiText } from "@elastic/eui";
 import flat from "flat";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -16,33 +16,48 @@ import { getCommonFormRowProps } from "../../hooks";
 export default function IndexSettings(props: SubDetailProps) {
   const { readonly, field } = props;
   const values = field.getValues();
+  const listItems = [
+    {
+      title: "Number of primary shards",
+      description: values.template?.settings?.["index.number_of_shards"] || "-",
+    },
+    {
+      title: "Number of replicas",
+      description: values.template?.settings?.["index.number_of_replicas"] || "-",
+    },
+    {
+      title: "Refresh interval",
+      description: values.template?.settings?.["index.refresh_interval"] || "-",
+    },
+  ];
+
   return (
     <>
-      <EuiTitle size="s">
-        <span>Index settings</span>
-      </EuiTitle>
+      <EuiText size="s">
+        <h3>Index settings</h3>
+      </EuiText>
       <EuiSpacer size="s" />
       {readonly ? (
-        <DescriptionListHoz
-          listItems={[
-            {
-              title: "Number of primary shards",
-              description: values.template?.settings?.["index.number_of_shards"] || "-",
-            },
-            {
-              title: "Number of replicas",
-              description: values.template?.settings?.["index.number_of_replicas"] || "-",
-            },
-            {
-              title: "Refresh interval",
-              description: values.template?.settings?.["index.refresh_interval"] || "-",
-            },
-          ]}
-        />
+        <EuiFlexGrid columns={4}>
+          {listItems.map((item) => (
+            <EuiFlexItem key={`${item.title}#${item.description}`}>
+              <EuiText size="s">
+                <dt>{item.title}</dt>
+                <dd>{item.description}</dd>
+              </EuiText>
+            </EuiFlexItem>
+          ))}
+        </EuiFlexGrid>
       ) : (
         <>
           <CustomFormRow
-            label="Number of primary shards"
+            fullWidth
+            label={
+              <EuiText size="s">
+                {" "}
+                <h4>Number of primary shards</h4>
+              </EuiText>
+            }
             helpText="Specify the number of primary shards in the index. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"], field)}
           >
@@ -55,7 +70,12 @@ export default function IndexSettings(props: SubDetailProps) {
           <EuiSpacer />
           <CustomFormRow
             fullWidth
-            label="Number of replicas"
+            label={
+              <EuiText size="s">
+                {" "}
+                <h4>Number of replicas</h4>
+              </EuiText>
+            }
             helpText="Specify the number of replicas each primary shard should have. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"], field)}
           >
@@ -67,7 +87,12 @@ export default function IndexSettings(props: SubDetailProps) {
           </CustomFormRow>
           <EuiSpacer />
           <CustomFormRow
-            label="Refresh interval"
+            label={
+              <EuiText size="s">
+                {" "}
+                <h4>Refresh interval</h4>
+              </EuiText>
+            }
             helpText="Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s."
             {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"], field)}
           >

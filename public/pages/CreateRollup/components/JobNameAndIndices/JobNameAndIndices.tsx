@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { IndexItem } from "../../../../../models/interfaces";
@@ -26,50 +26,54 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
     const { rollupId, description, onChangeStep, sourceIndex, targetIndex } = this.props;
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onChangeStep(1),
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>Job name and indexes</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onChangeStep(1),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        bodyStyles={{ padding: "initial" }}
-        title="Job name and indexes"
-        titleSize="s"
-      >
-        <div style={{ padding: "15px" }}>
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiHorizontalRule margin={"xs"} />
+        <div>
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={3}>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Name</dt>
                 <dd>{rollupId}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Source Index</dt>
                 <dd>{sourceIndex[0].label}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Target index</dt>
                 <dd>{targetIndex[0].label}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiText size="xs">
+              <EuiText size="s">
                 <dt>Description</dt>
                 <dd>{description == "" ? "-" : description}</dd>
               </EuiText>
@@ -77,7 +81,7 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
           </EuiFlexGrid>
           <EuiSpacer size="s" />
         </div>
-      </ContentPanel>
+      </EuiPanel>
     );
   }
 }

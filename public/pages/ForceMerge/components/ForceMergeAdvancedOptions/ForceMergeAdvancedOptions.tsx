@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { EuiSpacer } from "@elastic/eui";
+import { EuiSpacer, EuiText } from "@elastic/eui";
 import React from "react";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -21,7 +21,11 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       <CustomFormRow
         isInvalid={!!field.getError("max_num_segments")}
         error={field.getError("max_num_segments")}
-        label="Index segments"
+        label={
+          <EuiText size="s">
+            <h3>Index segments</h3>
+          </EuiText>
+        }
         helpText="Define how many segments to merge to."
       >
         <SwitchNumber
@@ -45,7 +49,14 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
         />
       </CustomFormRow>
       <EuiSpacer />
-      <CustomFormRow label="Flush indexes" helpText="Opensearch will perform a flush on the indexes after the force merge.">
+      <CustomFormRow
+        label={
+          <EuiText size="s">
+            <h3>Flush indexes</h3>
+          </EuiText>
+        }
+        helpText="Opensearch will perform a flush on the indexes after the force merge."
+      >
         <AllBuiltInComponents.CheckBox
           {...field.registerField({
             name: "flush",
@@ -55,7 +66,11 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       </CustomFormRow>
       <EuiSpacer />
       <CustomFormRow
-        label="Remove deleted documents"
+        label={
+          <EuiText size="s">
+            <h3>Remove deleted documents</h3>
+          </EuiText>
+        }
         fullWidth
         helpText="Expunge all segments containing more than 10% of deleted documents. The percentage is configurable in the index.merge.policy.expunge_deletes_allowed setting."
       >

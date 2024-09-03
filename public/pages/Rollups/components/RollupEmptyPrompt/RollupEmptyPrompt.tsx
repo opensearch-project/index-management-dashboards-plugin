@@ -33,8 +33,13 @@ const getActions: React.SFC<RollupEmptyPromptProps> = ({ filterIsApplied, loadin
   }
 
   return (
-    <EuiSmallButton href={`${PLUGIN_NAME}#${ROUTES.CREATE_ROLLUP}`} data-test-subj="emptyPromptCreateRollupButton">
-      Create rollup
+    <EuiSmallButton
+      href={`${PLUGIN_NAME}#${ROUTES.CREATE_ROLLUP}`}
+      data-test-subj="emptyPromptCreateRollupButton"
+      iconType={"plus"}
+      fill={true}
+    >
+      Create rollup job
     </EuiSmallButton>
   );
 };
@@ -49,7 +54,7 @@ const RollupEmptyPrompt: React.SFC<RollupEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={
-      <EuiText>
+      <EuiText size="s">
         <p>{getMessagePrompt(props)}</p>
       </EuiText>
     }

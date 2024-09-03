@@ -309,18 +309,14 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
             <div
               class="euiModalHeader__title"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Refresh 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -503,18 +499,14 @@ HTMLCollection [
               class="euiModalHeader__title"
               data-test-subj="flushModalTitle"
             >
-               
               <div
                 class="euiText euiText--small"
               >
-                 
                 <h2>
                   Flush 
                   indexes
                 </h2>
-                 
               </div>
-               
             </div>
           </div>
           <div
@@ -560,18 +552,30 @@ HTMLCollection [
                     <div
                       class="euiTextColor euiTextColor--default"
                     >
-                      <p>
-                        The following indexes will not be flushed because they are either closed or in red status:
-                      </p>
+                      <div
+                        class="euiText euiText--small"
+                      >
+                        <p>
+                          The following indexes will not be flushed because they are either closed or in red status:
+                        </p>
+                      </div>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
-                        <li>
-                          test_index1
-                        </li>
-                        <li>
-                          test_index4
-                        </li>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            test_index1
+                          </li>
+                        </div>
+                        <div
+                          class="euiText euiText--small"
+                        >
+                          <li>
+                            test_index4
+                          </li>
+                        </div>
                       </ul>
                     </div>
                   </div>
