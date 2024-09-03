@@ -1,7 +1,482 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TransformDetails /> spec renders the component 1`] = `
-<div>
-  Testing transform landing page
+<div
+  style="padding: 5px 50px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiText euiText--small"
+      >
+        <h1 />
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiPopover euiPopover--anchorDownLeft"
+            data-test-subj="actionPopover"
+            id="action"
+          >
+            <div
+              class="euiPopover__anchor"
+            >
+              <button
+                class="euiButton euiButton--primary euiButton--small"
+                data-test-subj="actionButton"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+                >
+                  EuiIconMock
+                  <span
+                    class="euiButton__text"
+                  >
+                    Actions
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h2>
+            General information
+          </h2>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary euiButton--small"
+              data-test-subj="EditButton"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Edit
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Name
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              State
+            </dt>
+            <dd>
+              Enabled on 1/1/1970, 5:30:00 AM
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Source index
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Schedule
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Description
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt />
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Source index filter
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Pages per execution
+            </dt>
+            <dd>
+              1000
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt />
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt />
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Target index
+            </dt>
+            <dd />
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiText euiText--small"
+    >
+      <h2>
+        Transform Status
+      </h2>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Status
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Documents indexed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Document processed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Indexed time (ms)
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        />
+        <div
+          class="euiFlexItem"
+        />
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Page processed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Search time (ms)
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiText euiText--small"
+    >
+      <h2>
+        Transform Settings
+      </h2>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiSpacer euiSpacer--m"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      />
+      <div
+        class="euiSpacer euiSpacer--m"
+      />
+    </div>
+    <div>
+      <div
+        class="euiAccordion"
+      >
+        <div
+          class="euiAccordion__triggerWrapper"
+        >
+          <button
+            aria-controls="some_html_id"
+            aria-expanded="false"
+            class="euiAccordion__button"
+            id="some_html_id"
+            type="button"
+          >
+            <span
+              class="euiAccordion__iconWrapper"
+            >
+              EuiIconMock
+            </span>
+            <span
+              class="euiIEFlexWrapFix"
+            >
+              <div
+                class="euiText euiText--small"
+              >
+                 
+                <h3>
+                  Sample source index and transform result
+                </h3>
+                 
+              </div>
+            </span>
+          </button>
+        </div>
+        <div
+          aria-labelledby="some_html_id"
+          class="euiAccordion__childWrapper"
+          id="some_html_id"
+          role="region"
+          tabindex="-1"
+        >
+          <div>
+            <div
+              class=""
+            >
+              <div
+                style="padding: 10px;"
+              >
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiText euiText--medium"
+                >
+                  <h5>
+                    Preview result based on sample data
+                  </h5>
+                </div>
+                <div
+                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+                >
+                  <div
+                    class="euiEmptyPrompt"
+                  >
+                    <div
+                      class="euiText euiText--medium euiTitle euiTitle--medium"
+                    >
+                      <h4>
+                         No preview available 
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

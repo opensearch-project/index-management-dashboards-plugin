@@ -1,7 +1,583 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RollupDetails /> spec renders the component 1`] = `
-<div>
-  Testing rollup landing page
+<div
+  style="padding: 5px 50px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiText euiText--small"
+      >
+        <h1
+          class="euiTitle euiTitle--medium"
+        />
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiHealth euiHealth--textSizeS"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            EuiIconMock
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            Disabled
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton--small euiButton-isDisabled"
+            data-test-subj="disableButton"
+            disabled=""
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Disable
+              </span>
+            </span>
+          </button>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton--small"
+            data-test-subj="enableButton"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Enable
+              </span>
+            </span>
+          </button>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton--small"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                View JSON
+              </span>
+            </span>
+          </button>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--danger euiButton--small"
+            data-test-subj="deleteButton"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Delete
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h2>
+            General information
+          </h2>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              class="euiButton euiButton--primary euiButton--small"
+              data-test-subj="EditButton"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Edit
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Name
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Source index
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Target index
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Schedule
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Description
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Last updated
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Pages per execution
+            </dt>
+            <dd>
+              1000
+            </dd>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h2>
+            Rollup status
+          </h2>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Current rollup window
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Status
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Rollup indexed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Indexed time (ms)
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Document processed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Search time (ms)
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <dt>
+              Page processed
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiText euiText--small"
+        >
+          <h2>
+            Aggregation and metrics settings
+          </h2>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div>
+      <div
+        class="euiText euiText--small"
+      >
+        <h3>
+          Additional metrics
+        </h3>
+      </div>
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--thirds euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Timestamp field
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Interval
+            </dt>
+            <dd />
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Timezone
+            </dt>
+            <dd>
+              UTC +0
+            </dd>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Additional aggregations
+            </h3>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <div
+              class="euiTextAlign euiTextAlign--left"
+            >
+              <div
+                class="euiTextColor euiTextColor--subdued"
+              >
+                <h3>
+                  (0)
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <dd>
+          No fields added for aggregation
+        </dd>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <h3>
+              Additional metrics
+            </h3>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <div
+              class="euiTextAlign euiTextAlign--left"
+            >
+              <div
+                class="euiTextColor euiTextColor--subdued"
+              >
+                <h3>
+                  (0)
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <dd>
+          No fields added for metrics
+        </dd>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
 </div>
 `;
