@@ -100,10 +100,19 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     this.getTransforms = _.debounce(this.getTransforms, 500, { leading: true });
   }
 
+  async updateBreadCrumbs() {
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.TRANSFORMS.text.concat(` (${this.state.transforms.length})`), href: BREADCRUMBS.TRANSFORMS.href },
+      ]);
+    }
+  }
+
   async componentDidMount() {
     const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.TRANSFORMS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getTransforms();
+    this.updateBreadCrumbs();
   }
 
   async componentDidUpdate(prevProps: TransformProps, prevState: TransformState) {
@@ -112,6 +121,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getTransforms();
     }
+    this.updateBreadCrumbs();
   }
 
   render() {
