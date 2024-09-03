@@ -853,7 +853,6 @@ Object {
                   <span
                     class="euiButtonContent euiButton__content"
                   >
-                    EuiIconMock
                     <span
                       class="euiButton__text"
                     >
