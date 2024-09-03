@@ -386,9 +386,11 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
         ) : (
           <>
             <EuiFlyoutHeader hasBorder>
-              <EuiTitle size="m">
-                <h2 id="flyoutTitle">Restore snapshot</h2>
-              </EuiTitle>
+              <EuiText size="s">
+                <EuiTitle size="m">
+                  <h2 id="flyoutTitle">Restore snapshot</h2>
+                </EuiTitle>
+              </EuiText>
             </EuiFlyoutHeader>
 
             <EuiFlyoutBody>
@@ -396,20 +398,26 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
                 <EuiFlexItem>
                   <CustomLabel title="Snapshot name" />
                   <EuiSpacer size="xs" />
-                  <h3 style={{ fontSize: "1.1rem" }}>{snapshot?.snapshot}</h3>
+                  <EuiText size="s">
+                    <p>{snapshot?.snapshot}</p>
+                  </EuiText>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Status" />
                   <EuiHealth textSize="m" color={`${status?.toLowerCase()}`} title={`${status} indicator icon`}>
                     {" "}
-                    {status}
+                    <EuiText size="s">
+                      <p> {status}</p>
+                    </EuiText>
                   </EuiHealth>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Indices" />
                   <EuiSpacer size="xs" />
-                  <a onClick={this.onClickIndices} style={{ fontSize: "1.1rem" }}>
-                    {snapshot?.indices.length}
+                  <a onClick={this.onClickIndices}>
+                    <EuiText size="s">
+                      <p> {snapshot?.indices.length}</p>
+                    </EuiText>
                   </a>
                 </EuiFlexItem>
               </EuiFlexGroup>
@@ -462,7 +470,14 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
               )}
 
               <EuiSpacer size="xxl" />
-              <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
+              <EuiAccordion
+                id="advanced_restore_options"
+                buttonContent={
+                  <EuiText size="s">
+                    <h3>Advanced options</h3>
+                  </EuiText>
+                }
+              >
                 <EuiSpacer size="m" />
 
                 <SnapshotRestoreAdvancedOptions

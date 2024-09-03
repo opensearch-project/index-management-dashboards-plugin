@@ -71,15 +71,17 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
 
 interface CheckboxLabelProps {
   title: string;
-  helpText: string;
+  helpText?: string;
 }
 
 export const CheckBoxLabel = ({ title, helpText }: CheckboxLabelProps) => (
   <>
     <EuiText size="s">{title}</EuiText>
-    <EuiText size="xs" style={{ fontWeight: "200" }}>
-      {helpText}
-    </EuiText>
+    {helpText ? (
+      <EuiText size="xs" style={{ fontWeight: "200" }}>
+        {helpText}
+      </EuiText>
+    ) : null}
   </>
 );
 

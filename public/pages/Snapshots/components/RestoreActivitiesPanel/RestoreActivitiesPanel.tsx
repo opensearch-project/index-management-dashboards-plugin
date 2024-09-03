@@ -3,7 +3,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiSmallButton, EuiButtonIcon, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
+import {
+  EuiInMemoryTable,
+  EuiSpacer,
+  EuiLink,
+  EuiFlyout,
+  EuiSmallButton,
+  EuiButtonIcon,
+  EuiEmptyPrompt,
+  EuiHealth,
+  EuiPanel,
+  EuiFlexGroup,
+  EuiText,
+  EuiFlexItem,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
@@ -252,6 +266,39 @@ export const RestoreActivitiesPanel = ({
       incremental: true,
       compressed: true,
     },
+    compressed: true,
+  };
+
+  const restoreActivityTable = () => {
+    return !useNewUX ? (
+      <ContentPanel title={title} actions={useActions}>
+        <EuiInMemoryTable
+          items={snapshotId && restoreCount ? restoreStatus : []}
+          columns={columns}
+          pagination={false}
+          message={message}
+          search={useSearch}
+        />
+      </ContentPanel>
+    ) : (
+      <EuiPanel>
+        <EuiFlexGroup gutterSize="xs" alignItems="center">
+          <EuiFlexItem>
+            <EuiText size="s">
+              <h2>{title}</h2>
+            </EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem>{useActions}</EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiInMemoryTable
+          items={snapshotId && restoreCount ? restoreStatus : []}
+          columns={columns}
+          pagination={false}
+          message={message}
+          search={useSearch}
+        />
+      </EuiPanel>
+    );
   };
 
   const oldMessage = <EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s"></EuiEmptyPrompt>;
@@ -283,23 +330,7 @@ export const RestoreActivitiesPanel = ({
           />
         </EuiFlyout>
       )}
-      <ContentPanel title={title} actions={useActions}>
-        <EuiInMemoryTable
-          items={snapshotId && restoreCount ? restoreStatus : []}
-          columns={columns}
-          pagination={false}
-          message={message}
-          search={useSearch}
-        />
-        {useNewUX ? null : (
-          <>
-            <EuiSpacer size="xxl" />
-            <EuiSpacer size="xxl" />
-            <EuiSpacer size="xxl" />
-            <EuiSpacer size="xxl" />
-          </>
-        )}
-      </ContentPanel>
+      {restoreActivityTable()}
     </>
   );
 };
