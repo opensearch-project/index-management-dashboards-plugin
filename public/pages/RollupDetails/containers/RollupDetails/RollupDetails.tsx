@@ -129,6 +129,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
       this.forceUpdate();
     } else {
       this.context.notifications.toasts.addDanger(`Invalid rollup id: ${id}`);
+      this.props.history.push(ROUTES.ROLLUPS);
     }
   };
 

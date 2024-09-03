@@ -118,6 +118,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       this.forceUpdate();
     } else {
       this.context.notifications.toasts.addDanger(`Invalid transform id: ${id}`);
+      this.props.history.push(ROUTES.TRANSFORMS);
     }
   };
 
