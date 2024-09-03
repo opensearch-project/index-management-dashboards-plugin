@@ -54,7 +54,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
     <>
       <SimplePopover
         data-test-subj="moreAction"
-        panelPaddingSize="none"
+        panelPaddingSize="s"
         button={
           <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions

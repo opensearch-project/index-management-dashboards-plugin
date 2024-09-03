@@ -503,7 +503,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   }}
                   isLoading={isSubmitting}
                   data-test-subj="CreateIndexTemplateCreateButton"
-                  iconType={"plus"}
                 >
                   Create template
                 </EuiSmallButton>

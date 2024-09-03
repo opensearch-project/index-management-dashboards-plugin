@@ -705,7 +705,6 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
             operationType={OperationType.SHRINK}
           />
           <EuiSpacer />
-          <EuiSpacer />
           <EuiFlexGroup justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
               <EuiSmallButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">

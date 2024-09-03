@@ -137,7 +137,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         {({ onShow }) => (
           <SimplePopover
             data-test-subj="moreAction"
-            panelPaddingSize="none"
+            panelPaddingSize="s"
             button={
               <EuiSmallButton iconType="arrowDown" iconSide="right">
                 Actions

@@ -1262,7 +1262,6 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           <span
             class="euiButtonContent euiButton__content"
           >
-            EuiIconMock
             <span
               class="euiButton__text"
             >

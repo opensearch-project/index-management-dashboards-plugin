@@ -293,7 +293,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   button={actionButton}
                   isOpen={isPopOverOpen}
                   closePopover={this.closePopover}
-                  panelPaddingSize="none"
+                  panelPaddingSize="s"
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >
@@ -364,7 +364,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   button={actionButton}
                   isOpen={isPopOverOpen}
                   closePopover={this.closePopover}
-                  panelPaddingSize="none"
+                  panelPaddingSize="s"
                   anchorPosition="downLeft"
                   data-test-subj="actionPopover"
                 >

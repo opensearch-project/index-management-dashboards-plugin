@@ -464,7 +464,6 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
         {hideButtons ? null : (
           <>
             <EuiSpacer />
-            <EuiSpacer />
             <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
               <EuiFlexItem grow={false}>
                 <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
@@ -472,13 +471,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
                 </EuiSmallButtonEmpty>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton
-                  fill
-                  onClick={this.onSubmit}
-                  isLoading={isSubmitting}
-                  data-test-subj="createIndexCreateButton"
-                  iconType={isEdit ? undefined : "plus"}
-                >
+                <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
                   {isEdit ? "Update" : "Create"}
                 </EuiSmallButton>
               </EuiFlexItem>
