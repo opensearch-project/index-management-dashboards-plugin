@@ -40,25 +40,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Action type
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            Select the action you want to add to this state.
+            Action type
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              Select the action you want to add to this state.
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -180,25 +187,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--l"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Minimum index age
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".
+            Minimum index age
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -227,25 +241,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--s"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Minimum doc count
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            The minimum number of documents required to roll over the index.
+            Minimum doc count
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              The minimum number of documents required to roll over the index.
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -274,25 +295,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--s"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Minimum index size
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+            Minimum index size
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -321,25 +349,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <div
         class="euiSpacer euiSpacer--s"
       />
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
+      <div>
+        <div
+          class="euiText euiText--small"
+          style="margin-bottom: 5px;"
         >
-          Minimum primary shard size
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
+          <h3
+            class="euiFormLabel "
+            style="margin-bottom: 2px;"
           >
-            The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+            Minimum primary shard size
+          </h3>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="margin-bottom: 5px;"
+        >
+          <p>
              
-          </span>
-        </p>
+            <span
+              style="font-weight: 300; font-size: 14px;"
+            >
+              The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+               
+            </span>
+          </p>
+        </div>
       </div>
       <div
         class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -426,25 +461,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <div
-                    class="euiText euiText--medium"
-                    style="margin-bottom: 5px;"
-                  >
-                    <h5
-                      class="euiFormLabel "
-                      style="margin-bottom: 2px;"
+                  <div>
+                    <div
+                      class="euiText euiText--small"
+                      style="margin-bottom: 5px;"
                     >
-                      Timeout
-                    </h5>
-                    <p>
-                       
-                      <span
-                        style="font-weight: 200; font-size: 12px;"
+                      <h3
+                        class="euiFormLabel "
+                        style="margin-bottom: 2px;"
                       >
-                        The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                        Timeout
+                      </h3>
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin-bottom: 5px;"
+                    >
+                      <p>
                          
-                      </span>
-                    </p>
+                        <span
+                          style="font-weight: 300; font-size: 14px;"
+                        >
+                          The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                           
+                        </span>
+                      </p>
+                    </div>
                   </div>
                   <div
                     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -481,25 +523,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <div
-                    class="euiText euiText--medium"
-                    style="margin-bottom: 5px;"
-                  >
-                    <h5
-                      class="euiFormLabel "
-                      style="margin-bottom: 2px;"
+                  <div>
+                    <div
+                      class="euiText euiText--small"
+                      style="margin-bottom: 5px;"
                     >
-                      Retry count
-                    </h5>
-                    <p>
-                       
-                      <span
-                        style="font-weight: 200; font-size: 12px;"
+                      <h3
+                        class="euiFormLabel "
+                        style="margin-bottom: 2px;"
                       >
-                        The number of times the action should be retried if it fails. Must be greater than 0.
+                        Retry count
+                      </h3>
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin-bottom: 5px;"
+                    >
+                      <p>
                          
-                      </span>
-                    </p>
+                        <span
+                          style="font-weight: 300; font-size: 14px;"
+                        >
+                          The number of times the action should be retried if it fails. Must be greater than 0.
+                           
+                        </span>
+                      </p>
+                    </div>
                   </div>
                   <div
                     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -537,25 +586,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <div
-                    class="euiText euiText--medium"
-                    style="margin-bottom: 5px;"
-                  >
-                    <h5
-                      class="euiFormLabel "
-                      style="margin-bottom: 2px;"
+                  <div>
+                    <div
+                      class="euiText euiText--small"
+                      style="margin-bottom: 5px;"
                     >
-                      Retry backoff
-                    </h5>
-                    <p>
-                       
-                      <span
-                        style="font-weight: 200; font-size: 12px;"
+                      <h3
+                        class="euiFormLabel "
+                        style="margin-bottom: 2px;"
                       >
-                        The backoff policy type to use when retrying.
+                        Retry backoff
+                      </h3>
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin-bottom: 5px;"
+                    >
+                      <p>
                          
-                      </span>
-                    </p>
+                        <span
+                          style="font-weight: 300; font-size: 14px;"
+                        >
+                          The backoff policy type to use when retrying.
+                           
+                        </span>
+                      </p>
+                    </div>
                   </div>
                   <div
                     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
@@ -607,25 +663,32 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <div
-                    class="euiText euiText--medium"
-                    style="margin-bottom: 5px;"
-                  >
-                    <h5
-                      class="euiFormLabel "
-                      style="margin-bottom: 2px;"
+                  <div>
+                    <div
+                      class="euiText euiText--small"
+                      style="margin-bottom: 5px;"
                     >
-                      Retry delay
-                    </h5>
-                    <p>
-                       
-                      <span
-                        style="font-weight: 200; font-size: 12px;"
+                      <h3
+                        class="euiFormLabel "
+                        style="margin-bottom: 2px;"
                       >
-                        The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                        Retry delay
+                      </h3>
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall"
+                      style="margin-bottom: 5px;"
+                    >
+                      <p>
                          
-                      </span>
-                    </p>
+                        <span
+                          style="font-weight: 300; font-size: 14px;"
+                        >
+                          The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                           
+                        </span>
+                      </p>
+                    </div>
                   </div>
                   <div
                     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"

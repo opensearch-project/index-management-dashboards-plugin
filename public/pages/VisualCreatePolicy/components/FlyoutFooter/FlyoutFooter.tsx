@@ -15,20 +15,9 @@ interface FlyoutFooterProps {
   save?: boolean;
   restore?: boolean;
   text?: string;
-  useNewUx?: boolean;
 }
 
-const FlyoutFooter = ({
-  edit,
-  action,
-  disabledAction = false,
-  onClickCancel,
-  onClickAction,
-  save,
-  restore,
-  text,
-  useNewUx,
-}: FlyoutFooterProps) => (
+const FlyoutFooter = ({ edit, action, disabledAction = false, onClickCancel, onClickAction, save, restore, text }: FlyoutFooterProps) => (
   <EuiFlexGroup justifyContent="flexEnd">
     <EuiFlexItem grow={false}>
       <EuiSmallButtonEmpty onClick={onClickCancel} flush="left" data-test-subj="flyout-footer-cancel-button">

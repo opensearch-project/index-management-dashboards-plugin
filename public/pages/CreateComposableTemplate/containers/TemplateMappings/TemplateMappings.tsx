@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
 import IndexMapping, { IIndexMappingsRef } from "../../../../components/IndexMapping";
@@ -9,7 +9,7 @@ import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export default function TemplateMappings(props: SubDetailProps) {
-  const { field, noPanel, useNewUx } = props;
+  const { field, noPanel } = props;
   const values = field.getValues();
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -19,9 +19,11 @@ export default function TemplateMappings(props: SubDetailProps) {
       color={noPanel ? "ghost" : undefined}
       title={
         <>
-          <EuiTitle size="s">
-            <div>Index mapping</div>
-          </EuiTitle>
+          <EuiText size="s">
+            <EuiTitle>
+              <h2>Index mapping</h2>
+            </EuiTitle>
+          </EuiText>
           <EuiCompressedFormRow
             fullWidth
             helpText={
@@ -76,7 +78,6 @@ export default function TemplateMappings(props: SubDetailProps) {
                   },
                 ],
               })}
-              useNewUx={useNewUx}
               isEdit
               ref={mappingsRef}
               oldMappingsEditable

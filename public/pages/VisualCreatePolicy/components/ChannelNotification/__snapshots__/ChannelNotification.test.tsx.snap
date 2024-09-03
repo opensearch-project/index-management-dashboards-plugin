@@ -1,18 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChannelNotification /> spec renders the component 1`] = `
-<div
-  class="euiText euiText--medium"
-  style="margin-bottom: 5px;"
->
-  <h5
-    class="euiFormLabel "
-    style="margin-bottom: 2px;"
+<div>
+  <div
+    class="euiText euiText--small"
+    style="margin-bottom: 5px;"
   >
-    Channel ID
-  </h5>
-  <p>
-     
-  </p>
+    <h3
+      class="euiFormLabel "
+      style="margin-bottom: 2px;"
+    >
+      Channel ID
+    </h3>
+  </div>
+  <div
+    class="euiText euiText--extraSmall"
+    style="margin-bottom: 5px;"
+  >
+    <p>
+       
+    </p>
+  </div>
 </div>
 `;

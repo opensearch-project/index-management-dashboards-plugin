@@ -15,10 +15,9 @@ interface ActionsProps {
   onClickEditAction: (action: UIAction<Action>) => void;
   onDragEndActions: (dropResult: DropResult) => void;
   onClickAddAction: () => void;
-  useNewUx?: boolean;
 }
 
-const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndActions, onClickAddAction, useNewUx }: ActionsProps) => {
+const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndActions, onClickAddAction }: ActionsProps) => {
   return (
     <>
       <EuiFormCustomLabel title="Actions" helpText="Actions are the operations ISM performs when an index is in a certain state." />

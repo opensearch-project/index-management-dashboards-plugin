@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiText } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiText, EuiPanel, EuiHorizontalRule, EuiFlexGroup } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigurePolicyProps {
@@ -16,32 +16,42 @@ interface ConfigurePolicyProps {
 }
 
 const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange, useNewUx }: ConfigurePolicyProps) => (
-  <ContentPanel bodyStyles={useNewUx ? { padding: "0px 0px" } : { padding: "initial" }} title="Name policy" titleSize="s">
-    <div style={{ paddingLeft: "10px" }}>
-      {!useNewUx ? (
+  <EuiPanel>
+    <EuiFlexGroup gutterSize="xs" alignItems="center">
+      <EuiText size="s">
+        <h2>{`Name policy`}</h2>
+      </EuiText>
+    </EuiFlexGroup>
+    <EuiHorizontalRule margin={"xs"} />
+    {useNewUx ? (
+      <></>
+    ) : (
+      <>
         <EuiText size="xs">
           <p>Policies let you automatically perform administrative operations on indices.</p>
         </EuiText>
-      ) : (
-        <></>
-      )}
-      <EuiSpacer size="s" />
-      <EuiCompressedFormRow
-        label="Policy ID"
-        helpText="Specify a unique ID that is easy to recognize and remember."
+        <EuiSpacer size="s" />
+      </>
+    )}
+    <EuiCompressedFormRow
+      label={
+        <EuiText size="s">
+          <h3>{"Policy ID"}</h3>
+        </EuiText>
+      }
+      helpText="Specify a unique ID that is easy to recognize and remember."
+      isInvalid={!!policyIdError}
+      error={policyIdError}
+    >
+      <EuiCompressedFieldText
         isInvalid={!!policyIdError}
-        error={policyIdError}
-      >
-        <EuiCompressedFieldText
-          isInvalid={!!policyIdError}
-          placeholder="example_policy"
-          readOnly={isEdit}
-          value={policyId}
-          onChange={onChange}
-        />
-      </EuiCompressedFormRow>
-    </div>
-  </ContentPanel>
+        placeholder="example_policy"
+        readOnly={isEdit}
+        value={policyId}
+        onChange={onChange}
+      />
+    </EuiCompressedFormRow>
+  </EuiPanel>
 );
 
 // @ts-ignore

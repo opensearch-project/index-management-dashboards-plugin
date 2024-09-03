@@ -24,6 +24,11 @@ function renderCreateIndexWithRouter(props: IndexFormProps) {
   };
 }
 
+jest.mock("react-dom", () => ({
+  ...jest.requireActual("react-dom"),
+  createPortal: (element: React.ReactNode) => element,
+}));
+
 describe("<IndexForm /> spec", () => {
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
