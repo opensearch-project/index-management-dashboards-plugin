@@ -125,7 +125,6 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
         ? [BREADCRUMBS.ROLLUPS, { text: id }]
         : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, { text: id }];
       this.context.chrome.setBreadcrumbs(newBreadCrumbs);
-      this.props.history.push(`${ROUTES.ROLLUP_DETAILS}?id=${id}`);
       await this.getRollup(id);
       this.forceUpdate();
     } else {
