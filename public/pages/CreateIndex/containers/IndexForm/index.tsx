@@ -464,21 +464,14 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
         {hideButtons ? null : (
           <>
             <EuiSpacer />
-            <EuiSpacer />
-            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
               <EuiFlexItem grow={false}>
                 <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
                   Cancel
                 </EuiSmallButtonEmpty>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiSmallButton
-                  fill
-                  onClick={this.onSubmit}
-                  isLoading={isSubmitting}
-                  data-test-subj="createIndexCreateButton"
-                  iconType={isEdit ? undefined : "plus"}
-                >
+                <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
                   {isEdit ? "Update" : "Create"}
                 </EuiSmallButton>
               </EuiFlexItem>

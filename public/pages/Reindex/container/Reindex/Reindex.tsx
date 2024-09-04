@@ -728,7 +728,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
           <EuiSpacer />
 
-          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
             <EuiFlexItem grow={false}>
               <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="reindexCancelButton">
                 Cancel

@@ -114,7 +114,6 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
         ? [BREADCRUMBS.TRANSFORMS, { text: id }]
         : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, { text: id }];
       this.context.chrome.setBreadcrumbs(breadCrumbsUp);
-      this.props.history.push(`${ROUTES.TRANSFORM_DETAILS}?id=${id}`);
       await this.getTransform(id);
       this.forceUpdate();
     } else {
