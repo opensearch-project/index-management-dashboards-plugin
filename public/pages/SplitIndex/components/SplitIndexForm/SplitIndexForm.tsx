@@ -273,7 +273,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         />
 
         <EuiSpacer />
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiSmallButtonEmpty onClick={this.props.onCancel} data-test-subj="splitCancelButton">
               Cancel

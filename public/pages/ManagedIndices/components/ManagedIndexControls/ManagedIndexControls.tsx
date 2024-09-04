@@ -9,21 +9,14 @@ import {
   ArgsWithError,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiPagination,
   EuiSearchBar,
   EuiCompressedSwitch,
-  EuiButton,
-  EuiPopover,
-  EuiContextMenuPanel,
   EuiButtonIcon,
   EuiButtonEmpty,
   EuiSpacer,
 } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
-import { ManagedIndices } from "../../containers/ManagedIndices/ManagedIndices";
-import { ManagedIndexItem } from "plugins/index-management-dashboards-plugin/models/interfaces";
 import { getUISettings } from "../../../../services/Services";
-import { size } from "lodash";
 
 interface ManagedIndexControlsProps {
   search: string;

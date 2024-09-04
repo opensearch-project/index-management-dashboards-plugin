@@ -186,7 +186,7 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
 
           <EuiSpacer />
 
-          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd" gutterSize="s">
             <EuiFlexItem grow={false}>
               <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="editTransformCancelButton">
                 Cancel
