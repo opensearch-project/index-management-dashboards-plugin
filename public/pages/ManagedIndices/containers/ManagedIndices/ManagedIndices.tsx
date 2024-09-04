@@ -601,7 +601,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             isOpen={isPopoverOpen}
             closePopover={this.closePopover}
             anchorPosition="downLeft"
-            panelPaddingSize="none"
+            panelPaddingSize="s"
           >
             <EuiContextMenuPanel items={popoverActionItems} size="s" />
           </EuiPopover>

@@ -36,7 +36,7 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
     <>
       <SimplePopover
         data-test-subj="moreAction"
-        panelPaddingSize="none"
+        panelPaddingSize="s"
         button={
           <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions

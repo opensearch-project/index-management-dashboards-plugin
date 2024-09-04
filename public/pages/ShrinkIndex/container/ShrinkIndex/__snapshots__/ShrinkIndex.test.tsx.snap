@@ -842,10 +842,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
