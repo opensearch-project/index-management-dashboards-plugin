@@ -120,6 +120,7 @@ const CronSchedule = ({
   let startTimeContent;
   startTimeContent = (
     <EuiDatePicker
+      compressed={true}
       showTimeSelect
       showTimeSelectOnly
       selected={startTime(hour, minute)}
