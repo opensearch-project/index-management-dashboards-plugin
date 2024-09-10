@@ -4,8 +4,6 @@
  */
 
 import { BASE_PATH, IM_API } from "./constants";
-const fs = require("fs");
-const path = require("path");
 
 export const ADMIN_AUTH = {
   username: Cypress.env("username"),
