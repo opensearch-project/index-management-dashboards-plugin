@@ -150,7 +150,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         mode: IndicesUpdateMode.settings,
         content: (
           <>
-            <EuiSpacer />
+            <EuiSpacer size="m" />
             <EuiPanel>
               <EuiText size="s">
                 <h2>Index settings</h2>
@@ -168,7 +168,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         mode: IndicesUpdateMode.mappings,
         content: (
           <>
-            <EuiSpacer />
+            <EuiSpacer size="m" />
             <EuiPanel>
               <EuiText size="s">
                 <h2>Index mappings</h2>
@@ -206,7 +206,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         mode: IndicesUpdateMode.alias,
         content: (
           <>
-            <EuiSpacer />
+            <EuiSpacer size="m" />
             <EuiPanel>
               <EuiText size="s">
                 <h2>Index alias</h2>

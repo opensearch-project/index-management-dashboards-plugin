@@ -121,7 +121,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "150px",
         render: (index: string) => <span title={index}>{index}</span>,
       },
       {
@@ -130,7 +129,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "120px",
         render: (dataStream) => dataStream || DEFAULT_EMPTY_DATA,
       },
       {
@@ -139,7 +137,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "140px",
         render: this.renderPolicyId,
       },
       {
@@ -147,7 +144,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         name: "State",
         sortable: false,
         truncateText: false,
-        width: "150px",
         // @ts-ignore
         render: (state: string) => state || DEFAULT_EMPTY_DATA,
       },
@@ -156,7 +152,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         name: "Action",
         sortable: false,
         truncateText: false,
-        width: "150px",
         // @ts-ignore
         render: (action: string) => (
           <span style={{ textTransform: "capitalize" }}>{(action || DEFAULT_EMPTY_DATA).split("_").join(" ")}</span>
@@ -168,7 +163,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         sortable: false,
         truncateText: true,
         textOnly: true,
-        width: "150px",
         render: (info: object) => (
           <ModalConsumer>
             {({ onShow }) => (
@@ -184,7 +178,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         name: "Job Status",
         sortable: false,
         truncateText: false,
-        width: "150px",
         render: (index: string, item: ManagedIndexItem) => {
           const { managedIndexMetaData } = item;
           if (!managedIndexMetaData) return "Initializing";

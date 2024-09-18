@@ -17,6 +17,7 @@ import {
   EuiText,
   EuiFlexItem,
   EuiHorizontalRule,
+  EuiToolTip,
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
@@ -218,7 +219,13 @@ export const RestoreActivitiesPanel = ({
   );
 
   const renderToolsRight = () => {
-    return [<EuiButtonIcon iconType="refresh" onClick={getRestoreStatus} aria-label="refresh" size="s" display="base" />];
+    return [
+      <>
+        <EuiToolTip content="Refresh">
+          <EuiButtonIcon iconType="refresh" onClick={getRestoreStatus} aria-label="refresh" size="s" display="base" />
+        </EuiToolTip>
+      </>,
+    ];
   };
 
   const currentStage = stage.slice(0, stage.indexOf(" "));

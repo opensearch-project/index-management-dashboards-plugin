@@ -23,6 +23,7 @@ import {
   EuiButtonIcon,
   EuiButton,
   EuiPanel,
+  EuiToolTip,
 } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -466,7 +467,11 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
 
     const renderToolsRight = () => {
       return [
-        <EuiButtonIcon iconType="refresh" onClick={this.getSnapshots} aria-label="refresh" size="s" display="base" />,
+        <>
+          <EuiToolTip content="Refresh">
+            <EuiButtonIcon iconType="refresh" onClick={this.getSnapshots} aria-label="refresh" size="s" display="base" />
+          </EuiToolTip>
+        </>,
         <EuiPopover
           id="action"
           button={actionsButton}
