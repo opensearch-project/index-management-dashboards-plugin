@@ -197,24 +197,22 @@ const Notifications = ({ onClose, visible }: NotificationsProps) => {
       </EuiModalHeader>
       <EuiModalBody>
         {noPermission ? (
-          <EuiPanel>
-            <EuiEmptyPrompt
-              iconType="alert"
-              iconColor="danger"
-              title={
-                <EuiText size="s">
-                  {" "}
-                  <h2>Error loading Notification settings</h2>{" "}
-                </EuiText>
-              }
-              body={
-                <EuiText size="s">
-                  {" "}
-                  <p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>
-                </EuiText>
-              }
-            />
-          </EuiPanel>
+          <EuiEmptyPrompt
+            iconType="alert"
+            iconColor="danger"
+            title={
+              <EuiText size="s">
+                {" "}
+                <h2>Error loading Notification settings</h2>{" "}
+              </EuiText>
+            }
+            body={
+              <EuiText size="s">
+                {" "}
+                <p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>
+              </EuiText>
+            }
+          />
         ) : (
           <>
             {submitClicked && allErrors.length ? (
