@@ -27,6 +27,8 @@ import {
   EuiTableSelectionType,
   EuiTableSortingType,
   EuiSpacer,
+  EuiToolTip,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
@@ -297,6 +299,18 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   />
                 </EuiFlexItem>
               )}
+              <EuiFlexItem grow={false}>
+                <EuiToolTip content="Refresh">
+                  <EuiButtonIcon
+                    iconType="refresh"
+                    onClick={this.getTransforms}
+                    aria-label="refresh"
+                    size="s"
+                    display="base"
+                    data-test-subj="refreshButton"
+                  />
+                </EuiToolTip>
+              </EuiFlexItem>
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   id="action"

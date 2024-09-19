@@ -190,6 +190,7 @@ const Notifications = (props: NotificationsProps) => {
       controlType: "button",
       display: "base",
       iconType: "popout",
+      iconSide: "right",
       fill: true,
     } as TopNavControlButtonData,
   ];

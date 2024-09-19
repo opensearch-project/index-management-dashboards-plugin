@@ -13,6 +13,7 @@ import {
   EuiTextColor,
   EuiButtonIcon,
   EuiPanel,
+  EuiToolTip,
 } from "@elastic/eui";
 import { getErrorMessage } from "../../../../utils/helpers";
 import React, { Component, useContext } from "react";
@@ -257,14 +258,18 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
 
     const renderToolsRight = () => {
       return [
-        <EuiButtonIcon
-          iconType="refresh"
-          onClick={this.getRepos}
-          data-test-subj="refreshButton"
-          aria-label="refresh"
-          size="s"
-          display="base"
-        />,
+        <>
+          <EuiToolTip content="Refresh">
+            <EuiButtonIcon
+              iconType="refresh"
+              onClick={this.getRepos}
+              data-test-subj="refreshButton"
+              aria-label="refresh"
+              size="s"
+              display="base"
+            />
+          </EuiToolTip>
+        </>,
       ];
     };
 
@@ -369,13 +374,11 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls, setAppDescriptionControls } = getApplication();
-    const useTitle = useNewUX 
-      ? undefined 
-      : (
-        <EuiText size="s">
-          <h1>Repositories</h1>
-        </EuiText>
-      );  
+    const useTitle = useNewUX ? undefined : (
+      <EuiText size="s">
+        <h1>Repositories</h1>
+      </EuiText>
+    );
     const useActions = useNewUX ? undefined : actions;
     const useSubTitleText = useNewUX ? undefined : subTitleText;
 

@@ -15,6 +15,7 @@ import {
   EuiSearchBar,
   EuiCompressedSwitch,
   EuiButtonEmpty,
+  EuiToolTip,
 } from "@elastic/eui";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndicesActions from "../../containers/IndicesActions";
@@ -96,7 +97,9 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
+            <EuiToolTip content="Refresh">
+              <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" onClick={onRefresh} />
+            </EuiToolTip>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <IndicesActions

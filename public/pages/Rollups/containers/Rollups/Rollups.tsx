@@ -36,6 +36,7 @@ import {
   EuiButtonIcon,
   EuiSpacer,
   EuiText,
+  EuiToolTip,
 } from "@elastic/eui";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
@@ -506,14 +507,16 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
               />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButtonIcon
-                iconType="refresh"
-                onClick={this.getRollups}
-                aria-label="refresh"
-                size="s"
-                display="base"
-                data-test-subj="refreshButton"
-              />
+              <EuiToolTip content="Refresh">
+                <EuiButtonIcon
+                  iconType="refresh"
+                  onClick={this.getRollups}
+                  aria-label="refresh"
+                  size="s"
+                  display="base"
+                  data-test-subj="refreshButton"
+                />
+              </EuiToolTip>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiPopover

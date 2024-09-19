@@ -300,7 +300,6 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               run: this.toggleNotificationModal,
               testId: "notificationSettingsButton",
               controlType: "button",
-              color: "secondary",
             } as TopNavControlButtonData,
             {
               id: "Create index",

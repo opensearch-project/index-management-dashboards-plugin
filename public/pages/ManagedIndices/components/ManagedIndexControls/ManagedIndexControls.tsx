@@ -14,6 +14,7 @@ import {
   EuiButtonIcon,
   EuiButtonEmpty,
   EuiSpacer,
+  EuiToolTip,
 } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { getUISettings } from "../../../../services/Services";
@@ -43,7 +44,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
   };
 
   render() {
-    const { search, onSearchChange, showDataStreams, toggleShowDataStreams, Actions } = this.props;
+    const { search, onSearchChange, showDataStreams, toggleShowDataStreams, Actions, onRefresh } = this.props;
 
     const schema = {
       strict: true,
@@ -94,7 +95,9 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
             />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
+            <EuiToolTip content="Refresh">
+              <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" onClick={onRefresh} />
+            </EuiToolTip>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>{Actions}</EuiFlexItem>
           <EuiFlexItem grow={false}>

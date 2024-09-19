@@ -111,7 +111,6 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "150px",
         render: (name: string, item: PolicyItem) => (
           <EuiLink onClick={() => this.props.history.push(`${ROUTES.POLICY_DETAILS}?id=${name}`)} data-test-subj={`policyLink_${name}`}>
             {name}
@@ -124,7 +123,6 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "150px",
       },
       {
         field: "policy.last_updated_time",
@@ -133,7 +131,6 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
         truncateText: false,
         render: renderTime,
         dataType: "date",
-        width: "150px",
       },
     ];
   }
