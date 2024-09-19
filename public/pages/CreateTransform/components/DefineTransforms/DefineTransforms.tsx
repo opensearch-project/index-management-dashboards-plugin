@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiDataGrid, EuiDataGridColumn, EuiSpacer, EuiText, EuiToolTip } from "@elastic/eui";
+import { EuiDataGrid, EuiDataGridColumn, EuiSpacer, EuiText, EuiTitle, EuiToolTip } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import React, { useCallback, useState } from "react";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -214,9 +214,9 @@ export default function DefineTransforms({
       panelStyles={{ padding: "16px 16px" }}
       bodyStyles={{ padding: "10px" }}
       title={
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Select fields to transform</h2>
-        </EuiText>
+        </EuiTitle>
       }
       titleSize="m"
     >

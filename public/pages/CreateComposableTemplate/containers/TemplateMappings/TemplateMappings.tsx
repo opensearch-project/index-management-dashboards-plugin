@@ -19,11 +19,9 @@ export default function TemplateMappings(props: SubDetailProps) {
       color={noPanel ? "ghost" : undefined}
       title={
         <>
-          <EuiText size="s">
-            <EuiTitle>
-              <h2>Index mapping</h2>
-            </EuiTitle>
-          </EuiText>
+          <EuiTitle size="s">
+            <h2>Index mapping</h2>
+          </EuiTitle>
           <EuiCompressedFormRow
             fullWidth
             helpText={

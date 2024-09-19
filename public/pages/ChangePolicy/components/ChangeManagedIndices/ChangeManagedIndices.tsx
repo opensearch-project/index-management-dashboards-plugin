@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiCompressedComboBox, EuiCompressedFormRow, EuiText, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedComboBox, EuiCompressedFormRow, EuiText, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ManagedIndexService } from "../../../../services";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
@@ -90,9 +90,9 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
 
     return (
       <EuiPanel>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Choose managed indices</h2>
-        </EuiText>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiCompressedFormRow

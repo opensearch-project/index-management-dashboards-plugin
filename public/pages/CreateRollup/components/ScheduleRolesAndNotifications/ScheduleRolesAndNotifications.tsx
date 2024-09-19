@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiFlexGrid, EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { parseTimeunit, buildIntervalScheduleText, buildCronScheduleText } from "../../utils/helpers";
@@ -48,9 +48,9 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs">
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Schedule</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>

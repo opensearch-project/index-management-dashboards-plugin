@@ -230,7 +230,11 @@ const NotificationConfig = (
                     />
                   </EuiFlexItem>
                   <EuiFlexItem>
-                    <EuiSmallButton onClick={() => window.open("/app/notifications-dashboards#/channels")} iconType="popout">
+                    <EuiSmallButton
+                      onClick={() => window.open("/app/notifications-dashboards#/channels")}
+                      iconType="popout"
+                      iconSide="right"
+                    >
                       Manage channels
                     </EuiSmallButton>
                   </EuiFlexItem>

@@ -16,7 +16,6 @@ import {
   EuiTitle,
   EuiPanel,
 } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
 
 interface ScheduleProps {
@@ -89,9 +88,9 @@ export default class Schedule extends Component<ScheduleProps> {
     } = this.props;
     return (
       <EuiPanel>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Schedule</h2>
-        </EuiText>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           {!isEdit && (

@@ -457,10 +457,9 @@ const IndexDetail = (
             return (
               <>
                 <EuiPanel>
-                  <EuiText size="s">
-                    {" "}
-                    <h2>{title}</h2>{" "}
-                  </EuiText>
+                  <EuiTitle size="s">
+                    <h2>{title}</h2>
+                  </EuiTitle>
                   <EuiHorizontalRule margin="xs" />
                   {content}
                 </EuiPanel>
@@ -581,10 +580,9 @@ const IndexDetail = (
             return (
               <>
                 <EuiPanel>
-                  <EuiText size="s">
-                    {" "}
-                    <h2>Index settings</h2>{" "}
-                  </EuiText>
+                  <EuiTitle size="s">
+                    <h2>Index settings</h2>
+                  </EuiTitle>
                   <EuiHorizontalRule margin="xs" />
                   {content}
                 </EuiPanel>
@@ -628,12 +626,12 @@ const IndexDetail = (
 
             return (
               <EuiPanel>
-                <EuiText size="s">
+                <EuiTitle size="s">
                   <h2>
                     Index mapping
                     <OptionalLabel />
                   </h2>
-                </EuiText>
+                </EuiTitle>
                 <EuiCompressedFormRow
                   fullWidth
                   helpText={

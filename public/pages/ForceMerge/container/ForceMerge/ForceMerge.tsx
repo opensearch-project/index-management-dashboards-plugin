@@ -153,9 +153,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Advanced settings</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexItem>
     </EuiFlexGroup>
   );
@@ -215,9 +215,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Configure source index</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         <CustomFormRow

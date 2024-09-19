@@ -15,6 +15,7 @@ import {
   EuiPanel,
   EuiHorizontalRule,
   EuiFlexGrid,
+  EuiTitle,
 } from "@elastic/eui";
 import { DataStreamInEdit, SubDetailProps, TemplateItem } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -140,9 +141,9 @@ export default function DefineDataStream(
   return isEdit ? (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Data stream details</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexGroup>
       <EuiHorizontalRule margin={"xs"} />
       <div>
@@ -161,9 +162,9 @@ export default function DefineDataStream(
   ) : (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Define data stream</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexGroup>
       <EuiHorizontalRule margin={"xs"} />
       <div>

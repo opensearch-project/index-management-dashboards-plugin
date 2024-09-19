@@ -17,15 +17,11 @@ exports[`<EditTransform /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-       
-      <h2>
-        Job name and description
-      </h2>
-       
-    </div>
+      Job name and description
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -143,15 +139,11 @@ exports[`<EditTransform /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-       
-      <h2>
-        Indices
-      </h2>
-       
-    </div>
+      Indices
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -304,15 +296,11 @@ exports[`<EditTransform /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-       
-      <h2>
-        Schedule
-      </h2>
-       
-    </div>
+      Schedule
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />

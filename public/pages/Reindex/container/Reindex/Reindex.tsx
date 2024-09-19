@@ -533,9 +533,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Advanced settings</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
     );
@@ -577,9 +577,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
       return (
         <>
           <EuiPanel>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Configure source index</h2>
-            </EuiText>
+            </EuiTitle>
             <EuiHorizontalRule margin="xs" />
             <EuiSpacer size="s" />
             <CustomFormRow
@@ -663,9 +663,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           <EuiSpacer />
 
           <EuiPanel>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Configure destination index</h2>
-            </EuiText>
+            </EuiTitle>
             <EuiHorizontalRule margin="xs" />
             <EuiSpacer size="s" />
             <EuiFlexGroup alignItems="flexEnd">

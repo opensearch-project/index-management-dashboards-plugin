@@ -4,11 +4,20 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiCallOut, EuiText, EuiLink, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiCompressedFormRow,
+  EuiCallOut,
+  EuiText,
+  EuiLink,
+  EuiFlexGroup,
+  EuiHorizontalRule,
+  EuiPanel,
+  EuiTitle,
+} from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
 import EuiCompressedComboBox from "../../../../components/ComboBoxWithoutWarning";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -123,9 +132,9 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     return (
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Indices</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         <EuiSpacer size="s" />

@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 
@@ -50,9 +50,9 @@ export default class GeneralInformation extends Component<GeneralInformationProp
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs">
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>General information</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>{() => <ContentPanelActions actions={useActions} />}</ModalConsumer>

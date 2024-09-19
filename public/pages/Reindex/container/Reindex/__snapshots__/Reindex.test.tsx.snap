@@ -49,13 +49,11 @@ exports[`<Reindex /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Configure source index
-      </h2>
-    </div>
+      Configure source index
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -228,13 +226,11 @@ exports[`<Reindex /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Configure destination index
-      </h2>
-    </div>
+      Configure destination index
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -376,13 +372,11 @@ exports[`<Reindex /> spec renders the component 1`] = `
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
-        <div
-          class="euiText euiText--small"
+        <h2
+          class="euiTitle euiTitle--small"
         >
-          <h2>
-            Advanced settings
-          </h2>
-        </div>
+          Advanced settings
+        </h2>
       </div>
     </div>
   </div>

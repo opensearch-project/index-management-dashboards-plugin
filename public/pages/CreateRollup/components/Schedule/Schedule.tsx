@@ -19,6 +19,7 @@ import {
   EuiText,
   EuiHorizontalRule,
   EuiPanel,
+  EuiTitle,
 } from "@elastic/eui";
 import { DelayTimeunitOptions, ScheduleIntervalTimeunitOptions } from "../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -148,9 +149,9 @@ export default class Schedule extends Component<ScheduleProps> {
     return (
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Schedule</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         {!isEdit && (

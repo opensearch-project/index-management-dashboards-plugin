@@ -59,7 +59,7 @@ const ChannelNotification = ({
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+          <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank" iconSide="right">
             Manage channels
           </EuiSmallButton>
         </EuiFlexItem>

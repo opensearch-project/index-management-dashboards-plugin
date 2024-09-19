@@ -56,13 +56,11 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Template settings
-      </h2>
-    </div>
+      Template settings
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -499,13 +497,11 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
       <div
         class="euiFlexItem"
       >
-        <div
-          class="euiText euiText--small"
+        <h2
+          class="euiTitle euiTitle--small"
         >
-          <h2>
-            Template definition
-          </h2>
-        </div>
+          Template definition
+        </h2>
       </div>
     </div>
     <hr

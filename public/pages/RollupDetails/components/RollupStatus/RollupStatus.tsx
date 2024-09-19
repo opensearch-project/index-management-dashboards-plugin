@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { RollupMetadata } from "../../../../../models/interfaces";
 import { renderTime } from "../../../Rollups/utils/helpers";
@@ -18,9 +18,9 @@ const RollupStatus = ({ metadata }: RollupStatusProps) => (
   <EuiPanel>
     <EuiFlexGroup gutterSize="xs">
       <EuiFlexItem>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Rollup status</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexItem>
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />

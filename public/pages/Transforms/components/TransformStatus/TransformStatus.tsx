@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiPanel, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { TransformMetadata } from "../../../../../models/interfaces";
 import { renderStatus } from "../../utils/metadataHelper";
 
@@ -21,9 +21,9 @@ export default class TransformStatus extends Component<TransformStatusProps> {
     const { metadata } = this.props;
     return (
       <EuiPanel>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Transform Status</h2>
-        </EuiText>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiSpacer size="s" />

@@ -355,17 +355,17 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
               <EuiFlexItem>
                 <EuiFlexGroup gutterSize="xs">
                   <EuiFlexItem grow={false}>
-                    <EuiText size="s">
+                    <EuiTitle size="s">
                       <h2>Additional aggregation{` (${selectedDimensionField.length})`} </h2>
-                    </EuiText>
+                    </EuiTitle>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiText size="s" color="subdued">
+                    <EuiTitle size="s" color="subdued">
                       <h2>
                         {" "}
                         <i>– optional</i>{" "}
                       </h2>
-                    </EuiText>
+                    </EuiTitle>
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFlexItem>

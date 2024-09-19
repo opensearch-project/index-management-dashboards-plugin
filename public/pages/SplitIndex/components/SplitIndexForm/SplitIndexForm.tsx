@@ -13,6 +13,7 @@ import {
   EuiText,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 import FormGenerator, { IField, IFormGeneratorRef, IFieldComponentProps } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
@@ -261,9 +262,9 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           withPanel
           panelProps={{
             title: (
-              <EuiText size="s">
+              <EuiTitle size="s">
                 <h2>Advanced settings</h2>
-              </EuiText>
+              </EuiTitle>
             ),
             titleSize: "s",
           }}
