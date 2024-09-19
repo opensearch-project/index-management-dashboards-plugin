@@ -43,7 +43,12 @@ const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loa
   }
 
   return (
-    <EuiSmallButton href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`} data-test-subj="emptyPromptCreateTransformButton" iconType="plus">
+    <EuiSmallButton
+      href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`}
+      data-test-subj="emptyPromptCreateTransformButton"
+      iconType="plus"
+      fill
+    >
       Create transform
     </EuiSmallButton>
   );

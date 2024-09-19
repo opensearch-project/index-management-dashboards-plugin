@@ -1,9 +1,7 @@
 // FILE: UnsavedChangesButtons.tsx
 
 import React, { useCallback, useRef, useState } from "react";
-import { EuiSmallButton, EuiSmallButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiText } from "@elastic/eui";
-import classNames from "classnames";
-
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiText, EuiPanel } from "@elastic/eui";
 interface UnsavedChangesButtonsProps {
   unsavedCount: number;
   formErrorsCount?: number;
@@ -37,7 +35,7 @@ const UnsavedChangesButtons: React.FC<UnsavedChangesButtonsProps> = ({
 
   const renderCancel = useCallback(
     () => (
-      <EuiSmallButtonEmpty onClick={onClickCancel} iconType="cross" target="_blank">
+      <EuiSmallButtonEmpty onClick={onClickCancel} target="_blank">
         Cancel
       </EuiSmallButtonEmpty>
     ),
@@ -51,7 +49,6 @@ const UnsavedChangesButtons: React.FC<UnsavedChangesButtonsProps> = ({
         onClick={onClick}
         isLoading={loading}
         disabled={loading}
-        iconType="check"
         color="primary"
         fill
       >
@@ -62,27 +59,28 @@ const UnsavedChangesButtons: React.FC<UnsavedChangesButtonsProps> = ({
   );
 
   return (
-    <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-      <>
+    <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" style={{ padding: "0px 16px" }}>
+      <EuiFlexGroup gutterSize="s" alignItems="center">
         {formErrorsCount ? (
           <EuiFlexItem grow={false}>
             <EuiText color="danger" size="s">
-              {" "}
-              {formErrorsCount} form errors{" "}
+              {formErrorsCount} form errors
             </EuiText>
           </EuiFlexItem>
         ) : null}
         {unsavedCount && !formErrorsCount ? (
           <EuiFlexItem grow={false}>
             <EuiText color="warning" size="s">
-              {" "}
-              {unsavedCount} unsaved changes{" "}
+              {unsavedCount} unsaved changes
             </EuiText>
           </EuiFlexItem>
         ) : null}
-      </>
-      <EuiFlexItem grow={false}>{renderCancel()}</EuiFlexItem>
-      <EuiFlexItem grow={false}>{renderConfirm()}</EuiFlexItem>
+      </EuiFlexGroup>
+
+      <EuiFlexGroup gutterSize="s" alignItems="center" justifyContent="flexEnd">
+        <EuiFlexItem grow={false}>{renderCancel()}</EuiFlexItem>
+        <EuiFlexItem grow={false}>{renderConfirm()}</EuiFlexItem>
+      </EuiFlexGroup>
     </EuiFlexGroup>
   );
 };

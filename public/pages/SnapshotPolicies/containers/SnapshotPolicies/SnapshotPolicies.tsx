@@ -33,6 +33,7 @@ import {
   EuiCompressedFieldSearch,
   EuiPanel,
   EuiSpacer,
+  EuiToolTip,
 } from "@elastic/eui";
 import { BREADCRUMBS, PLUGIN_NAME, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
@@ -574,13 +575,13 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     return !this.state.useNewUx ? (
       <>
-        <ContentPanel 
+        <ContentPanel
           title={
             <EuiText size="s">
               <h1>Snapshot policies</h1>
             </EuiText>
-          }  
-          actions={actions} 
+          }
+          actions={actions}
           subTitleText={subTitleText}
         >
           <EuiCompressedFieldSearch placeholder="Search snapshot policies" incremental={false} fullWidth onChange={this.onSearchChange} />
@@ -605,7 +606,9 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
               />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButtonIcon iconType="refresh" onClick={this.getPolicies} aria-label="refresh" size="s" display="base" />
+              <EuiToolTip content="Refresh">
+                <EuiButtonIcon iconType="refresh" onClick={this.getPolicies} aria-label="refresh" size="s" display="base" />
+              </EuiToolTip>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiPopover
