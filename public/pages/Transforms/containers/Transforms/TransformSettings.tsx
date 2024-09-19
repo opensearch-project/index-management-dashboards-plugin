@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem, EuiPanel, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { TransformService } from "../../../../services";
@@ -89,9 +89,9 @@ export default class TransformSettings extends Component<TransformSettingsProps,
 
     return (
       <EuiPanel>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Transform Settings</h2>
-        </EuiText>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiSpacer size="m" />
@@ -107,7 +107,7 @@ export default class TransformSettings extends Component<TransformSettingsProps,
             buttonContent={
               <EuiText size="s">
                 {" "}
-                <h3>Sample source index and transform result</h3>{" "}
+                <h4>Sample source index and transform result</h4>{" "}
               </EuiText>
             }
             onClick={this.onClick}

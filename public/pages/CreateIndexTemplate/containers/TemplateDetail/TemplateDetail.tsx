@@ -405,17 +405,17 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <ContentPanel
         title={
           isEdit && selectedTabId === TABS_ENUM.SUMMARY ? (
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Preview template</h2>
-            </EuiText>
+            </EuiTitle>
           ) : values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Override template definition</h2>
-            </EuiText>
+            </EuiTitle>
           ) : (
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Template definition</h2>
-            </EuiText>
+            </EuiTitle>
           )
         }
         subTitleText={

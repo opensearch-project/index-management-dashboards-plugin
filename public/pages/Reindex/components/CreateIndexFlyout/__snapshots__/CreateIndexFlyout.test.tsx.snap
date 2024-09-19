@@ -56,15 +56,11 @@ Object {
                 <div
                   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <h2
+                    class="euiTitle euiTitle--small"
                   >
-                     
-                    <h2>
-                      Define index
-                    </h2>
-                     
-                  </div>
+                    Define index
+                  </h2>
                   <hr
                     class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
                   />
@@ -234,15 +230,11 @@ Object {
                 <div
                   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <h2
+                    class="euiTitle euiTitle--small"
                   >
-                     
-                    <h2>
-                      Index settings
-                    </h2>
-                     
-                  </div>
+                    Index settings
+                  </h2>
                   <hr
                     class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
                   />
@@ -648,16 +640,14 @@ Object {
                 <div
                   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <h2
+                    class="euiTitle euiTitle--small"
                   >
-                    <h2>
-                      Index mapping
-                      <i>
-                         – optional
-                      </i>
-                    </h2>
-                  </div>
+                    Index mapping
+                    <i>
+                       – optional
+                    </i>
+                  </h2>
                   <div
                     class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                     id="some_html_id-row"

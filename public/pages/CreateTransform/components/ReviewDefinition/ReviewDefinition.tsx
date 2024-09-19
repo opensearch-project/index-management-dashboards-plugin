@@ -4,7 +4,17 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiAccordion, EuiFlexGroup, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import {
+  EuiFlexGrid,
+  EuiSpacer,
+  EuiFlexItem,
+  EuiText,
+  EuiAccordion,
+  EuiFlexGroup,
+  EuiPanel,
+  EuiHorizontalRule,
+  EuiTitle,
+} from "@elastic/eui";
 import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { TransformGroupItem, FieldItem, TransformAggItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
@@ -85,9 +95,9 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
       <EuiPanel>
         <EuiFlexGroup>
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Define transforms</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>
@@ -114,7 +124,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
             id=""
             buttonContent={
               <EuiText size="s">
-                <h3>Sample source index and transform result</h3>
+                <h4>Sample source index and transform result</h4>
               </EuiText>
             }
           >

@@ -4,8 +4,16 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiText, EuiPanel, EuiHorizontalRule, EuiFlexGroup } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
+import {
+  EuiSpacer,
+  EuiCompressedFormRow,
+  EuiCompressedFieldText,
+  EuiText,
+  EuiPanel,
+  EuiHorizontalRule,
+  EuiFlexGroup,
+  EuiTitle,
+} from "@elastic/eui";
 
 interface ConfigurePolicyProps {
   policyId: string;
@@ -18,9 +26,9 @@ interface ConfigurePolicyProps {
 const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange, useNewUx }: ConfigurePolicyProps) => (
   <EuiPanel>
     <EuiFlexGroup gutterSize="xs" alignItems="center">
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>{`Name policy`}</h2>
-      </EuiText>
+      </EuiTitle>
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />
     {useNewUx ? (

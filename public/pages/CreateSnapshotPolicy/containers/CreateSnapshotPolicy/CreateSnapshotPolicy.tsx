@@ -589,9 +589,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Policy settings</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <CustomLabel title="Policy name" />
@@ -622,9 +622,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Source and destination</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <SnapshotIndicesRepoInput
@@ -653,9 +653,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Snapshot schedule</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <CronSchedule
@@ -686,9 +686,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Retention period</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiCompressedRadioGroup
@@ -794,9 +794,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Notifications</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiText size="s">
@@ -864,11 +864,11 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiText size="s">
+              <EuiTitle size="s">
                 <h2>
                   Advanced settings <i>– optional</i>
                 </h2>
-              </EuiText>
+              </EuiTitle>
             </EuiFlexItem>
           </EuiFlexGroup>
 

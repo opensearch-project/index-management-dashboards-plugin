@@ -14,6 +14,7 @@ import {
   EuiFlexItem,
   EuiHorizontalRule,
   EuiPanel,
+  EuiTitle,
 } from "@elastic/eui";
 
 interface ConfigureRollupProps {
@@ -28,9 +29,9 @@ interface ConfigureRollupProps {
 const ConfigureRollup = ({ isEdit, rollupId, rollupIdError, onChangeName, onChangeDescription, description }: ConfigureRollupProps) => (
   <EuiPanel>
     <EuiFlexGroup gutterSize="xs" alignItems="center">
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>Job name and description</h2>
-      </EuiText>
+      </EuiTitle>
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />
     <EuiCompressedFormRow

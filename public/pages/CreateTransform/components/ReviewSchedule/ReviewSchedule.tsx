@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule } from "@elastic/eui";
+import { EuiFlexGrid, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
@@ -34,9 +34,9 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
       <EuiPanel>
         <EuiFlexGroup>
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Specify schedule</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>

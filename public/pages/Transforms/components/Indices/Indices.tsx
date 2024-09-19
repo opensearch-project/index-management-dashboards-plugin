@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiCodeEditor, EuiSpacer, EuiText, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import { EuiCodeEditor, EuiSpacer, EuiText, EuiPanel, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 
 interface IndicesProps {
   sourceIndex: string;
@@ -23,10 +23,9 @@ export default class Indices extends Component<IndicesProps> {
 
     return (
       <EuiPanel>
-        <EuiText size="s">
-          {" "}
-          <h2>Indices</h2>{" "}
-        </EuiText>
+        <EuiTitle size="s">
+          <h2>Indices</h2>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiText size="s">

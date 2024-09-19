@@ -16,6 +16,7 @@ import {
   EuiIcon,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService } from "../../../../services";
@@ -111,9 +112,9 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
     const radioOptions = [currentRadio, stateRadio];
     return (
       <EuiPanel>
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Choose new policy</h2>
-        </EuiText>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiText size="xs">

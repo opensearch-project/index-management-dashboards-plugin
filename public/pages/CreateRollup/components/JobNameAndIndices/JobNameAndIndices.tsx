@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { IndexItem } from "../../../../../models/interfaces";
@@ -29,9 +29,9 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs">
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Job name and indexes</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>

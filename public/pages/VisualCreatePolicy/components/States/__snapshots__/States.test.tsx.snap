@@ -7,13 +7,11 @@ exports[`<States /> spec renders the component 1`] = `
   <div
     class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        States (2)
-      </h2>
-    </div>
+      States (2)
+    </h2>
   </div>
   <div
     class="euiText euiText--extraSmall"

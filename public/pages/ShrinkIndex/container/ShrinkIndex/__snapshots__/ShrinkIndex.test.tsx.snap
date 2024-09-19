@@ -49,13 +49,11 @@ exports[`<Shrink index /> spec renders the component 1`] = `
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Source index details
-        </h2>
-      </div>
+        Source index details
+      </h2>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
@@ -712,13 +710,11 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <div
-                    class="euiText euiText--small"
+                  <h2
+                    class="euiTitle euiTitle--small"
                   >
-                    <h2>
-                      Advanced settings
-                    </h2>
-                  </div>
+                    Advanced settings
+                  </h2>
                 </div>
               </div>
             </span>

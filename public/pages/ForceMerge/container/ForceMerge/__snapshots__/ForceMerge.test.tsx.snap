@@ -35,13 +35,11 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
     <div
       class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Configure source index
-        </h2>
-      </div>
+        Configure source index
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
@@ -167,13 +165,11 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
-            <div
-              class="euiText euiText--small"
+            <h2
+              class="euiTitle euiTitle--small"
             >
-              <h2>
-                Advanced settings
-              </h2>
-            </div>
+              Advanced settings
+            </h2>
           </div>
         </div>
       </div>

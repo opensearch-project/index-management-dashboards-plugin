@@ -66,9 +66,9 @@ export default function BackingIndices(props: SubDetailProps) {
   return (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>Backing indexes</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexGroup>
       <EuiText color="subdued" size="xs">
         <p>

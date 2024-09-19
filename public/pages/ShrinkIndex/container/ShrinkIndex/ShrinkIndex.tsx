@@ -694,9 +694,9 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
             withPanel
             panelProps={{
               title: (
-                <EuiText size="s">
+                <EuiTitle size="s">
                   <h2>Advanced settings</h2>
-                </EuiText>
+                </EuiTitle>
               ),
               titleSize: "s",
             }}

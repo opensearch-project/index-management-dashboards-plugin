@@ -33,13 +33,11 @@ exports[`container <Rollover /> spec render the component 1`] = `
     <div
       class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Configure source
-        </h2>
-      </div>
+        Configure source
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"

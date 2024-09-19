@@ -18,6 +18,7 @@ import {
   EuiHorizontalRule,
   EuiFlexItem,
   EuiFlexGroup,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
@@ -36,9 +37,9 @@ interface DefinePolicyProps {
 const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: DefinePolicyProps) => (
   <EuiPanel>
     <EuiFlexGroup justifyContent="spaceBetween" gutterSize="xs" alignItems="center">
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>{`Define policy`}</h2>
-      </EuiText>
+      </EuiTitle>
       <EuiFlexItem grow={false}>
         <EuiFlexGroup justifyContent="spaceBetween" alignItems="center" gutterSize="s">
           <EuiFlexItem>

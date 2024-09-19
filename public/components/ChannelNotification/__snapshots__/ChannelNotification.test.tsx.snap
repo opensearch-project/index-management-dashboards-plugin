@@ -91,7 +91,7 @@ exports[`<ChannelNotification /> spec renders the component 1`] = `
           target="_blank"
         >
           <span
-            class="euiButtonContent euiButton__content"
+            class="euiButtonContent euiButtonContent--iconRight euiButton__content"
           >
             EuiIconMock
             <span

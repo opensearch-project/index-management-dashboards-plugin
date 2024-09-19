@@ -17,6 +17,7 @@ import {
   EuiCompressedFormRow,
   EuiSelect,
   EuiPanel,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
@@ -38,9 +39,9 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
   return (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>{`States (${policy.states.length})`}</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexGroup>
 
       <EuiText color="subdued" size="xs">

@@ -223,7 +223,7 @@ const Notifications = (props: NotificationsProps) => {
               </CustomFormRow>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+              <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank" iconSide="right">
                 Manage channels
               </EuiSmallButton>
             </EuiFlexItem>
@@ -242,9 +242,9 @@ const Notifications = (props: NotificationsProps) => {
         </EuiPanel>
       ) : (
         <EuiPanel>
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Defaults for index operations</h2>
-          </EuiText>
+          </EuiTitle>
           {submitClicked && allErrors.length ? (
             <EuiCallOut iconType="iInCircle" color="danger" title="Address the following error(s) in the form">
               <ul>

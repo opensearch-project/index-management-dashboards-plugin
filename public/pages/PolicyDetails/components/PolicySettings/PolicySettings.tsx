@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule } from "@elastic/eui";
+import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiPanel, EuiFlexGroup, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { ErrorNotification, ISMTemplate } from "../../../../../models/interfaces";
@@ -52,9 +52,9 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     return (
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>{`Policy settings`}</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         <div>

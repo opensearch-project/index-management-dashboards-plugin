@@ -10,26 +10,26 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Error notification
-        </h2>
-      </div>
+        Error notification
+      </h2>
     </div>
     <div
       class="euiFlexItem"
     >
       <div
-        class="euiText euiText--medium"
+        class="euiText euiText--medium euiTitle euiTitle--small"
       >
         <div
           class="euiTextColor euiTextColor--subdued"
         >
+           
           <i>
              – optional
           </i>
+           
         </div>
       </div>
     </div>
@@ -168,7 +168,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
           target="_blank"
         >
           <span
-            class="euiButtonContent euiButton__content"
+            class="euiButtonContent euiButtonContent--iconRight euiButton__content"
           >
             EuiIconMock
             <span

@@ -14,6 +14,7 @@ import {
   EuiFlexItem,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 
 interface ConfigureTransformProps {
@@ -34,9 +35,9 @@ const ConfigureTransform = ({
   description,
 }: ConfigureTransformProps) => (
   <EuiPanel>
-    <EuiText size="s">
+    <EuiTitle size="s">
       <h2>Job name and description</h2>
-    </EuiText>
+    </EuiTitle>
     <EuiHorizontalRule margin="xs" />
     <div>
       <EuiCompressedFormRow
