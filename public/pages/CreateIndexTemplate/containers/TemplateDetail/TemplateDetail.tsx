@@ -387,7 +387,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               </EuiTab>
             ))}
           </EuiTabs>
-          <EuiSpacer />
+          <EuiSpacer size="m" />
         </>
       ) : null}
       {subCompontentProps.readonly ? null : (

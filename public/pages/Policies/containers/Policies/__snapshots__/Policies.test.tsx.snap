@@ -254,7 +254,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                   data-test-subj="tableHeaderCell_id_0"
                   role="columnheader"
                   scope="col"
-                  style="width: 150px;"
                 >
                   <button
                     class="euiTableHeaderButton euiTableHeaderButton-isSorted"
@@ -281,7 +280,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                   data-test-subj="tableHeaderCell_policy.description_1"
                   role="columnheader"
                   scope="col"
-                  style="width: 150px;"
                 >
                   <button
                     class="euiTableHeaderButton"
@@ -307,7 +305,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                   data-test-subj="tableHeaderCell_policy.last_updated_time_2"
                   role="columnheader"
                   scope="col"
-                  style="width: 150px;"
                 >
                   <button
                     class="euiTableHeaderButton"
