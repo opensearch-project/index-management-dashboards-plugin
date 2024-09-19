@@ -13,8 +13,8 @@ import {
   EuiFlexGroup,
   EuiText,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
@@ -31,9 +31,9 @@ interface PolicyInfoProps {
 const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePolicyId, onChangeDescription }: PolicyInfoProps) => (
   <EuiPanel>
     <EuiFlexGroup gutterSize="xs" alignItems="center">
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>{`Policy info`}</h2>
-      </EuiText>
+      </EuiTitle>
     </EuiFlexGroup>
     <EuiHorizontalRule margin={"xs"} />
     <EuiFormCustomLabel title="Policy ID" helpText="Specify a unique and descriptive ID that is easy to recognize and remember." />

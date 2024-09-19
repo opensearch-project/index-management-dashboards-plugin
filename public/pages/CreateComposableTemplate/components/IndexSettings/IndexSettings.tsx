@@ -32,11 +32,9 @@ export default function IndexSettings(props: SubDetailProps) {
     <ContentPanel
       color={noPanel ? "ghost" : undefined}
       title={
-        <EuiText size="s">
-          <EuiTitle>
-            <h2>Index settings</h2>
-          </EuiTitle>
-        </EuiText>
+        <EuiTitle size="s">
+          <h2>Index settings</h2>
+        </EuiTitle>
       }
       noExtraPadding
       actions={

@@ -14,6 +14,7 @@ import {
   EuiLink,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
@@ -47,9 +48,9 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>ISM templates</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiText color="subdued">

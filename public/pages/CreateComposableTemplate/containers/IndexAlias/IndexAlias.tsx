@@ -23,11 +23,9 @@ export default function IndexAlias(props: SubDetailProps) {
           <CustomFormRow
             fullWidth
             label={
-              <EuiText size="s">
-                <EuiTitle>
-                  <h2>Index alias</h2>
-                </EuiTitle>
-              </EuiText>
+              <EuiTitle size="s">
+                <h2>Index alias</h2>
+              </EuiTitle>
             }
             helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
           >

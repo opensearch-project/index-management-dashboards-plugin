@@ -62,13 +62,11 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Overview
-        </h2>
-      </div>
+        Overview
+      </h2>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
       />
@@ -224,13 +222,11 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiFlexItem"
         >
-          <div
-            class="euiText euiText--small"
+          <h2
+            class="euiTitle euiTitle--small"
           >
-            <h2>
-              Preview template
-            </h2>
-          </div>
+            Preview template
+          </h2>
         </div>
       </div>
       <hr

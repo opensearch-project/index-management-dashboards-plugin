@@ -18,6 +18,7 @@ import {
   EuiTableSortingType,
   EuiHorizontalRule,
   EuiPanel,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS } from "../../../Rollups/utils/constants";
@@ -136,9 +137,9 @@ export default class AggregationAndMetricsSettings extends Component<
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs">
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>{AGGREGATION_AND_METRIC_SETTINGS}</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />

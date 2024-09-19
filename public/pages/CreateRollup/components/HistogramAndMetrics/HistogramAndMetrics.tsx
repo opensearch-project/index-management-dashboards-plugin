@@ -20,6 +20,7 @@ import {
   EuiTableSortingType,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
@@ -187,9 +188,9 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs">
           <EuiFlexItem>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>{AGGREGATION_AND_METRIC_SETTINGS}</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <ModalConsumer>

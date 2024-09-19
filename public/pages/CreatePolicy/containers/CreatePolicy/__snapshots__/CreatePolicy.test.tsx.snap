@@ -19,13 +19,11 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
     <div
       class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Name policy
-        </h2>
-      </div>
+        Name policy
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
@@ -352,13 +350,11 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
     <div
       class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          Name policy
-        </h2>
-      </div>
+        Name policy
+      </h2>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"

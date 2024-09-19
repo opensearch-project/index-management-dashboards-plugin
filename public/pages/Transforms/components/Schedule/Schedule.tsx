@@ -13,6 +13,7 @@ import {
   EuiText,
   EuiPanel,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
@@ -58,10 +59,9 @@ export default class Schedule extends Component<ScheduleProps> {
     } = this.props;
     return (
       <EuiPanel>
-        <EuiText size="s">
-          {" "}
-          <h2>Schedule</h2>{" "}
-        </EuiText>
+        <EuiTitle size="s">
+          <h2>Schedule</h2>
+        </EuiTitle>
         <EuiHorizontalRule margin="xs" />
         <div>
           <EuiCompressedCheckbox

@@ -508,20 +508,20 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
 
     return (
       <EuiPanel>
-        <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween">
+        <EuiFlexGroup style={{ padding: "0px" }} justifyContent="spaceBetween">
           <EuiFlexItem>
             <EuiFlexGroup gutterSize="xs">
               <EuiFlexItem grow={false}>
-                <EuiText size="s">
+                <EuiTitle size="s">
                   <h2>Additional metrics{` (${selectedMetrics.length})`} </h2>
-                </EuiText>
+                </EuiTitle>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiText size="s">
+                <EuiTitle size="s">
                   <h2>
                     <i> – optional </i>
                   </h2>
-                </EuiText>
+                </EuiTitle>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
@@ -567,7 +567,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
           </EuiFlexItem>
         </EuiFlexGroup>
 
-        <EuiFlexGroup style={{ padding: "0px 10px" }}>
+        <EuiFlexGroup style={{ padding: "0pxpx" }}>
           <EuiFlexItem grow={3}>
             <EuiFormHelpText>
               You can aggregate additional fields from the source index into the target index. Rollup supports the terms aggregation (for

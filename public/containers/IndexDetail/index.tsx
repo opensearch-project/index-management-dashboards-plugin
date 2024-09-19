@@ -43,9 +43,9 @@ export default function IndexDetail(props: IIndexDetailProps) {
   }, [props.indices.join(","), setLoading, setItems, coreServices]);
   return (
     <EuiPanel>
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>Source index details</h2>
-      </EuiText>
+      </EuiTitle>
       <EuiHorizontalRule margin="xs" />
       <EuiSpacer size="s" />
       {items && items.length ? (

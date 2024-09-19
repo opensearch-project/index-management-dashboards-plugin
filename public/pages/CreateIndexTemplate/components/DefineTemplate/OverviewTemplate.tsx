@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiLink, EuiPanel, EuiSpacer, EuiText, EuiHorizontalRule } from "@elastic/eui";
+import { EuiLink, EuiPanel, EuiSpacer, EuiText, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { ROUTES } from "../../../../utils/constants";
@@ -71,9 +71,9 @@ export default function OverviewTemplate(props: SubDetailProps) {
     content
   ) : (
     <EuiPanel>
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>Overview</h2>
-      </EuiText>
+      </EuiTitle>
       <EuiHorizontalRule margin="xs" />
       {content}
     </EuiPanel>

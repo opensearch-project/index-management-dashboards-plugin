@@ -17,13 +17,11 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Choose managed indices
-      </h2>
-    </div>
+      Choose managed indices
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -206,13 +204,11 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Choose new policy
-      </h2>
-    </div>
+      Choose new policy
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />

@@ -13,6 +13,7 @@ import {
   EuiText,
   EuiTextColor,
   EuiHorizontalRule,
+  EuiTitle,
 } from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -34,9 +35,9 @@ export default function DefineTemplate(props: SubDetailProps) {
   });
   return readonly ? null : (
     <EuiPanel>
-      <EuiText size="s">
+      <EuiTitle size="s">
         <h2>Template settings</h2>
-      </EuiText>
+      </EuiTitle>
       <EuiHorizontalRule margin="xs" />
       <EuiSpacer size="s" />
       {isEdit ? null : (

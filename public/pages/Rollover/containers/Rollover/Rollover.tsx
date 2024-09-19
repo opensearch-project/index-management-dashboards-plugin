@@ -266,9 +266,9 @@ export default function Rollover(props: RolloverProps) {
       )}
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Configure source</h2>
-          </EuiText>
+          </EuiTitle>
         </EuiFlexGroup>
         <EuiHorizontalRule margin={"xs"} />
         {sourceType === "alias" && filterByMinimatch(tempValue.source || "", SYSTEM_ALIAS) ? (

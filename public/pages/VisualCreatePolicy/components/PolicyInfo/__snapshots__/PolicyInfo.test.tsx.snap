@@ -7,13 +7,11 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
   <div
     class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Policy info
-      </h2>
-    </div>
+      Policy info
+    </h2>
   </div>
   <hr
     class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"

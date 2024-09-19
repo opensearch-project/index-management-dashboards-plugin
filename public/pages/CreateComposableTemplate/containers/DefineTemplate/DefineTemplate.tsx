@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -110,9 +110,9 @@ export default function DefineTemplate(props: SubDetailProps) {
   return (
     <EuiPanel>
       <EuiFlexGroup gutterSize="xs" alignItems="center">
-        <EuiText size="s">
+        <EuiTitle size="s">
           <h2>{`Define component template`}</h2>
-        </EuiText>
+        </EuiTitle>
       </EuiFlexGroup>
       <EuiHorizontalRule margin={"xs"} />
       {content}

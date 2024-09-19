@@ -5,13 +5,11 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Template settings
-      </h2>
-    </div>
+      Template settings
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
@@ -418,13 +416,11 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Template settings
-      </h2>
-    </div>
+      Template settings
+    </h2>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
