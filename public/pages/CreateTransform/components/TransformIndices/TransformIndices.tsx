@@ -18,6 +18,7 @@ import {
   EuiBadge,
   EuiLink,
   EuiPanel,
+  EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
 import EuiCompressedComboBox from "../../../../components/ComboBoxWithoutWarning";
@@ -164,9 +165,9 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     return (
       <div>
         <EuiPanel>
-          <EuiText size="s">
+          <EuiTitle size="s">
             <h2>Indices</h2>
-          </EuiText>
+          </EuiTitle>
           <EuiHorizontalRule margin="xs" />
           <div>
             {hasAggregation && (

@@ -10,13 +10,11 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
-      <div
-        class="euiText euiText--small"
+      <h2
+        class="euiTitle euiTitle--small"
       >
-        <h2>
-          ISM templates
-        </h2>
-      </div>
+        ISM templates
+      </h2>
     </div>
     <div
       class="euiFlexItem"

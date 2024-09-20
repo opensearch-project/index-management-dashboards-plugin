@@ -450,9 +450,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Policy settings</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
@@ -487,9 +487,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Snapshot schedule</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
@@ -508,9 +508,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Snapshot retention period</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={3}>
@@ -542,9 +542,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Notifications</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiFlexGrid columns={2}>
@@ -564,9 +564,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
             <EuiFlexItem>
-              <EuiText size="s">
+              <EuiTitle size="s">
                 <h2>Last creation/deletion</h2>
-              </EuiText>
+              </EuiTitle>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiSmallButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">

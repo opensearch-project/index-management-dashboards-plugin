@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiPanel, EuiHorizontalRule } from "@elastic/eui";
+import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiPanel, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { getUISettings } from "../../../../services/Services";
@@ -54,9 +54,9 @@ export default class GeneralInformation extends Component<GeneralInformationProp
         <EuiPanel>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <EuiText size="s">
+              <EuiTitle size="s">
                 <h2>General information</h2>
-              </EuiText>
+              </EuiTitle>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               {!useUpdatedUX ? (

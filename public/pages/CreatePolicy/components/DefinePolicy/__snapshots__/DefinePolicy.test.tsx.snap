@@ -7,13 +7,11 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
   <div
     class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Define policy
-      </h2>
-    </div>
+      Define policy
+    </h2>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >

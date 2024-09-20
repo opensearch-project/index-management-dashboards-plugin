@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiLink, EuiIcon, EuiFlexGroup, EuiFlexItem, EuiText, EuiPanel, EuiSpacer, EuiHorizontalRule } from "@elastic/eui";
+import { EuiLink, EuiIcon, EuiFlexGroup, EuiFlexItem, EuiText, EuiPanel, EuiSpacer, EuiHorizontalRule, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -101,14 +101,17 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       <EuiPanel>
         <EuiFlexGroup gutterSize="xs" alignItems="center">
           <EuiFlexItem grow={false}>
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>Error notification</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiText color="subdued">
-              <i> – optional</i>
-            </EuiText>
+            <EuiTitle size="s">
+              <EuiText color="subdued">
+                {" "}
+                <i> – optional</i>{" "}
+              </EuiText>
+            </EuiTitle>
           </EuiFlexItem>
         </EuiFlexGroup>
 

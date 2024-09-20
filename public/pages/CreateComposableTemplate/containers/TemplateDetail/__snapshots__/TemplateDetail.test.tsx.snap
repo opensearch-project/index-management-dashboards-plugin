@@ -53,13 +53,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
-        <div
-          class="euiText euiText--small"
+        <h2
+          class="euiTitle euiTitle--small"
         >
-          <h2>
-            Define component template
-          </h2>
-        </div>
+          Define component template
+        </h2>
       </div>
       <hr
         class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
@@ -215,15 +213,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                <div
-                  class="euiText euiText--small"
+                <h2
+                  class="euiTitle euiTitle--small"
                 >
-                  <h2
-                    class="euiTitle euiTitle--medium"
-                  >
-                    Index alias
-                  </h2>
-                </div>
+                  Index alias
+                </h2>
               </label>
             </div>
             <div
@@ -306,15 +300,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <div
-            class="euiText euiText--small"
+          <h2
+            class="euiTitle euiTitle--small"
           >
-            <h2
-              class="euiTitle euiTitle--medium"
-            >
-              Index settings
-            </h2>
-          </div>
+            Index settings
+          </h2>
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -384,15 +374,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <div
-            class="euiText euiText--small"
+          <h2
+            class="euiTitle euiTitle--small"
           >
-            <h2
-              class="euiTitle euiTitle--medium"
-            >
-              Index mapping
-            </h2>
-          </div>
+            Index mapping
+          </h2>
           <div
             class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
             id="some_html_id-row"

@@ -331,9 +331,9 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
         <EuiSpacer />
         <EuiPanel>
           <EuiFlexGroup gutterSize="xs" alignItems="center">
-            <EuiText size="s">
+            <EuiTitle size="s">
               <h2>{`ISM Templates (${convertedISMTemplates.length})`}</h2>
-            </EuiText>
+            </EuiTitle>
           </EuiFlexGroup>
           <EuiHorizontalRule margin={"xs"} />
           <EuiBasicTable items={convertedISMTemplates} columns={columns} pagination={pagination} onChange={this.onTableChange} />

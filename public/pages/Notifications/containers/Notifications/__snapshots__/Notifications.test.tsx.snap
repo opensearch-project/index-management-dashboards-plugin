@@ -41,7 +41,7 @@ exports[`<Notifications /> spec View without permission 1`] = `
         target="_blank"
       >
         <span
-          class="euiButtonContent euiButton__content"
+          class="euiButtonContent euiButtonContent--iconRight euiButton__content"
         >
           EuiIconMock
           <span
@@ -131,7 +131,7 @@ exports[`<Notifications /> spec renders 1`] = `
         target="_blank"
       >
         <span
-          class="euiButtonContent euiButton__content"
+          class="euiButtonContent euiButtonContent--iconRight euiButton__content"
         >
           EuiIconMock
           <span
@@ -149,13 +149,11 @@ exports[`<Notifications /> spec renders 1`] = `
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
-    <div
-      class="euiText euiText--small"
+    <h2
+      class="euiTitle euiTitle--small"
     >
-      <h2>
-        Defaults for index operations
-      </h2>
-    </div>
+      Defaults for index operations
+    </h2>
     <div
       class="euiSpacer euiSpacer--l"
     />
