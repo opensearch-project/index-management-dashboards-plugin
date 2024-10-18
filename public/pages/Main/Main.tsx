@@ -198,7 +198,7 @@ const LocalCluster: DataSourceOption = {
   label: i18n.translate("dataSource.localCluster", {
     defaultMessage: "Local cluster",
   }),
-  id: "",
+  id: "Local",
 };
 
 export const dataSourceObservable = new BehaviorSubject<DataSourceOption>(LocalCluster);
@@ -231,8 +231,8 @@ export default class Main extends Component<MainProps, MainState> {
        * empty string: using the local cluster.
        * string: using the selected data source.
        */
-      dataSourceLoading: dataSourceId === undefined ? props.multiDataSourceEnabled : false,
-    };
+      dataSourceLoading: dataSourceId === undefined || dataSourceId === "Local" ? props.multiDataSourceEnabled : false,
+    }; //Checking for dataSourceId to be Local to ensure that we set the dataSource once so that if no Local cluster present then it is set to default data source
   }
 
   setDataSourceReadOnly = (readonly: boolean) => {
@@ -280,6 +280,10 @@ export default class Main extends Component<MainProps, MainState> {
   }
 
   onSelectedDataSources = (dataSources: DataSourceOption[]) => {
+    if (dataSources.length == 0) {
+      //No datasource selected
+      return;
+    }
     const { id = "", label = "" } = dataSources[0] || {};
     if (this.state.dataSourceId !== id || this.state.dataSourceLabel !== label) {
       this.setState({
