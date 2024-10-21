@@ -111,12 +111,24 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       path: `${NODE_API._SEARCH_SAMPLE_DATA}/{index}`,
       validate: {
         params: schema.object({
-          index: schema.string(),
+          index: schema.string({
+            pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+            minLength: 1,
+            maxLength: 100000,
+          }),
         }),
         query: schema.object({
           from: schema.number(),
           size: schema.number(),
-          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+          ...(dataSourceEnabled
+            ? {
+                dataSourceId: schema.string({
+                  minLength: 1,
+                  maxLength: 100000,
+                  pattern: "^[a-zA-Z0-9_-]+$",
+                }),
+              }
+            : {}),
         }),
         body: schema.any(),
       },
@@ -129,10 +141,59 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       path: `${NODE_API.TRANSFORMS}/_preview`,
       validate: {
         body: schema.object({
-          transform: schema.any(),
+          transform: schema.object({
+            transform_id: schema.string(),
+            schema_version: schema.number(),
+            schedule: schema.object({
+              interval: schema.object({
+                start_time: schema.number(),
+                period: schema.number(),
+                unit: schema.string(),
+              }),
+            }),
+            metadata_id: schema.string(),
+            updated_at: schema.number(),
+            enabled: schema.boolean(),
+            enabled_at: schema.maybe(schema.any()),
+            description: schema.maybe(schema.string()),
+            source_index: schema.string({
+              pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+              minLength: 1,
+              maxLength: 100000,
+            }),
+            data_selection_query: schema.object({
+              match_all: schema.object({
+                boost: schema.maybe(schema.number()),
+              }),
+            }),
+            target_index: schema.string({
+              pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+              minLength: 1,
+              maxLength: 100000,
+            }),
+            page_size: schema.number(),
+            groups: schema.arrayOf(
+              schema.object({
+                terms: schema.object({
+                  source_field: schema.string(),
+                  target_field: schema.string(),
+                }),
+              })
+            ),
+            aggregations: schema.maybe(schema.any()),
+            continuous: schema.maybe(schema.boolean()),
+          }),
         }),
         query: schema.object({
-          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+          ...(dataSourceEnabled
+            ? {
+                dataSourceId: schema.string({
+                  minLength: 1,
+                  maxLength: 100000,
+                  pattern: "^[a-zA-Z0-9_-]+$",
+                }),
+              }
+            : {}),
         }),
       },
     },
