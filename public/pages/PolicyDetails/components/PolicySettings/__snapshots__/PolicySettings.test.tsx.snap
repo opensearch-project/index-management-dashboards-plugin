@@ -72,7 +72,7 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
             Last updated
           </dt>
           <dd>
-            01/08/2021, 12:00:00 am
+            8/1/2021, 12:00:00 AM
           </dd>
         </div>
       </div>
