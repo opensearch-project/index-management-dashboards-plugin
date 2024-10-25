@@ -112,9 +112,14 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       validate: {
         params: schema.object({
           index: schema.string({
-            pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
-            minLength: 1,
-            maxLength: 100000,
+            validate: (value) => {
+              const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+              if (value !== value.toLowerCase() || value.startsWith("_") || value.startsWith("-") || invalidCharactersPattern.test(value)) {
+                return "Invalid index name.";
+              }
+
+              return undefined;
+            },
           }),
         }),
         query: schema.object({
@@ -123,9 +128,7 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
           ...(dataSourceEnabled
             ? {
                 dataSourceId: schema.string({
-                  minLength: 1,
                   maxLength: 100000,
-                  pattern: "^[a-zA-Z0-9_-]+$",
                 }),
               }
             : {}),
@@ -157,9 +160,19 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
             enabled_at: schema.maybe(schema.any()),
             description: schema.maybe(schema.string()),
             source_index: schema.string({
-              pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
-              minLength: 1,
-              maxLength: 100000,
+              validate: (value) => {
+                const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                if (
+                  value !== value.toLowerCase() ||
+                  value.startsWith("_") ||
+                  value.startsWith("-") ||
+                  invalidCharactersPattern.test(value)
+                ) {
+                  return "Invalid index name.";
+                }
+
+                return undefined;
+              },
             }),
             data_selection_query: schema.object({
               match_all: schema.object({
@@ -167,9 +180,19 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
               }),
             }),
             target_index: schema.string({
-              pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
-              minLength: 1,
-              maxLength: 100000,
+              validate: (value) => {
+                const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                if (
+                  value !== value.toLowerCase() ||
+                  value.startsWith("_") ||
+                  value.startsWith("-") ||
+                  invalidCharactersPattern.test(value)
+                ) {
+                  return "Invalid index name.";
+                }
+
+                return undefined;
+              },
             }),
             page_size: schema.number(),
             groups: schema.arrayOf(
@@ -188,9 +211,7 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
           ...(dataSourceEnabled
             ? {
                 dataSourceId: schema.string({
-                  minLength: 1,
                   maxLength: 100000,
-                  pattern: "^[a-zA-Z0-9_-]+$",
                 }),
               }
             : {}),
