@@ -144,68 +144,41 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       path: `${NODE_API.TRANSFORMS}/_preview`,
       validate: {
         body: schema.object({
-          transform: schema.object({
-            transform_id: schema.string(),
-            schema_version: schema.number(),
-            schedule: schema.object({
-              interval: schema.object({
-                start_time: schema.number(),
-                period: schema.number(),
-                unit: schema.string(),
-              }),
-            }),
-            metadata_id: schema.string(),
-            updated_at: schema.number(),
-            enabled: schema.boolean(),
-            enabled_at: schema.maybe(schema.any()),
-            description: schema.maybe(schema.string()),
-            source_index: schema.string({
-              validate: (value) => {
-                const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
-                if (
-                  value !== value.toLowerCase() ||
-                  value.startsWith("_") ||
-                  value.startsWith("-") ||
-                  invalidCharactersPattern.test(value)
-                ) {
-                  return "Invalid index name.";
-                }
+          transform: schema.object(
+            {
+              source_index: schema.string({
+                validate: (value) => {
+                  const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                  if (
+                    value !== value.toLowerCase() ||
+                    value.startsWith("_") ||
+                    value.startsWith("-") ||
+                    invalidCharactersPattern.test(value)
+                  ) {
+                    return "Invalid index name.";
+                  }
 
-                return undefined;
-              },
-            }),
-            data_selection_query: schema.object({
-              match_all: schema.object({
-                boost: schema.maybe(schema.number()),
+                  return undefined;
+                },
               }),
-            }),
-            target_index: schema.string({
-              validate: (value) => {
-                const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
-                if (
-                  value !== value.toLowerCase() ||
-                  value.startsWith("_") ||
-                  value.startsWith("-") ||
-                  invalidCharactersPattern.test(value)
-                ) {
-                  return "Invalid index name.";
-                }
+              target_index: schema.string({
+                validate: (value) => {
+                  const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                  if (
+                    value !== value.toLowerCase() ||
+                    value.startsWith("_") ||
+                    value.startsWith("-") ||
+                    invalidCharactersPattern.test(value)
+                  ) {
+                    return "Invalid index name.";
+                  }
 
-                return undefined;
-              },
-            }),
-            page_size: schema.number(),
-            groups: schema.arrayOf(
-              schema.object({
-                terms: schema.object({
-                  source_field: schema.string(),
-                  target_field: schema.string(),
-                }),
-              })
-            ),
-            aggregations: schema.maybe(schema.any()),
-            continuous: schema.maybe(schema.boolean()),
-          }),
+                  return undefined;
+                },
+              }),
+            },
+            { unknowns: "allow" }
+          ),
         }),
         query: schema.object({
           ...(dataSourceEnabled
