@@ -22,13 +22,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           # TODO: Parse this from index management plugin
-          java-version: 11
+          java-version: 21
       - name: Checkout index management
         uses: actions/checkout@v2
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: '2.x'
+          ref: '2.18'
       - name: Run opensearch with plugin
         run: |
           cd index-management

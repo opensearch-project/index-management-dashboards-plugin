@@ -334,7 +334,7 @@ export default class TransformService extends MDSEnabledClientService {
         },
       });
     } catch (err) {
-      if (err.statusCode === 404 && err.body.error.type === "index_not_found_exception") {
+      if (err.statusCode === 404 && err.body?.error?.type === "index_not_found_exception") {
         return response.custom({
           statusCode: 200,
           body: {
