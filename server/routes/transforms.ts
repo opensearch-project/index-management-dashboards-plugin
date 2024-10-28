@@ -111,12 +111,27 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       path: `${NODE_API._SEARCH_SAMPLE_DATA}/{index}`,
       validate: {
         params: schema.object({
-          index: schema.string(),
+          index: schema.string({
+            validate: (value) => {
+              const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+              if (value !== value.toLowerCase() || value.startsWith("_") || value.startsWith("-") || invalidCharactersPattern.test(value)) {
+                return "Invalid index name.";
+              }
+
+              return undefined;
+            },
+          }),
         }),
         query: schema.object({
           from: schema.number(),
           size: schema.number(),
-          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+          ...(dataSourceEnabled
+            ? {
+                dataSourceId: schema.string({
+                  maxLength: 100000,
+                }),
+              }
+            : {}),
         }),
         body: schema.any(),
       },
@@ -129,10 +144,50 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
       path: `${NODE_API.TRANSFORMS}/_preview`,
       validate: {
         body: schema.object({
-          transform: schema.any(),
+          transform: schema.object(
+            {
+              source_index: schema.string({
+                validate: (value) => {
+                  const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                  if (
+                    value !== value.toLowerCase() ||
+                    value.startsWith("_") ||
+                    value.startsWith("-") ||
+                    invalidCharactersPattern.test(value)
+                  ) {
+                    return "Invalid index name.";
+                  }
+
+                  return undefined;
+                },
+              }),
+              target_index: schema.string({
+                validate: (value) => {
+                  const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                  if (
+                    value !== value.toLowerCase() ||
+                    value.startsWith("_") ||
+                    value.startsWith("-") ||
+                    invalidCharactersPattern.test(value)
+                  ) {
+                    return "Invalid index name.";
+                  }
+
+                  return undefined;
+                },
+              }),
+            },
+            { unknowns: "allow" }
+          ),
         }),
         query: schema.object({
-          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+          ...(dataSourceEnabled
+            ? {
+                dataSourceId: schema.string({
+                  maxLength: 100000,
+                }),
+              }
+            : {}),
         }),
       },
     },
