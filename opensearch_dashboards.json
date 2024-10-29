@@ -2,11 +2,23 @@
   "id": "indexManagementDashboards",
   "version": "3.0.0.0",
   "opensearchDashboardsVersion": "3.0.0",
-  "configPath": ["opensearch_index_management"],
-  "requiredPlugins": ["navigation", "opensearchDashboardsReact", "opensearchDashboardsUtils"],
-  "optionalPlugins": ["managementOverview", "dataSource", "dataSourceManagement"],
+  "configPath": [
+    "opensearch_index_management"
+  ],
+  "requiredPlugins": [
+    "navigation",
+    "opensearchDashboardsReact",
+    "opensearchDashboardsUtils"
+  ],
+  "optionalPlugins": [
+    "managementOverview",
+    "dataSource",
+    "dataSourceManagement"
+  ],
   "server": true,
   "ui": true,
   "supportedOSDataSourceVersions": ">=2.0.0",
-  "requiredOSDataSourcePlugins": ["opensearch-index-management"]
+  "requiredOSDataSourcePlugins": [
+    "opensearch-index-management"
+  ]
 }
