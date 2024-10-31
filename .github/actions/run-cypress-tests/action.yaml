@@ -69,6 +69,23 @@ runs:
         mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
         cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
         yarn osd bootstrap
+    - name: Configure OpenSearch Dashboards for cypress
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      run: |
+        cat << 'EOT' > opensearch_dashboards.yml
+        server.host: "0.0.0.0"
+        opensearch.hosts: ["https://localhost:9200"]
+        opensearch.ssl.verificationMode: none
+        opensearch.username: "kibanaserver"
+        opensearch.password: "kibanaserver"
+        opensearch.requestHeadersWhitelist: [ authorization,securitytenant ]
+        opensearch_security.multitenancy.enabled: true
+        opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
+        opensearch_security.readonly_mode.roles: ["kibana_read_only"]
+        opensearch_security.cookie.secure: false
+        opensearch_security.multitenancy.enable_aggregation_view: true
+        EOT
     - name: Run OpenSearch-Dashboards server
       shell: bash
       run: |
