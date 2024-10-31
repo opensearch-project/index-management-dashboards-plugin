@@ -80,9 +80,20 @@ runs:
     # for now just chrome, use matrix to do all browsers later
     - name: Cypress tests
       uses: cypress-io/github-action@v2
+      shell: bash
+      if: ${{ inputs.with-security == 'false' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
         command: yarn run cypress run
+        wait-on: 'http://localhost:5601'
+        browser: chrome
+    - name: Cypress tests
+      uses: cypress-io/github-action@v2
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      with:
+        working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+        command: yarn run cypress run --env SECURITY_ENABLED=true,openSearchUrl=https://localhost:9200,WAIT_FOR_LOADER_BUFFER_MS=500
         wait-on: 'http://localhost:5601'
         browser: chrome
     # Screenshots are only captured on failure, will change this once we do visual regression tests
