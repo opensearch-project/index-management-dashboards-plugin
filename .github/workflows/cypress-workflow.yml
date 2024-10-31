@@ -19,6 +19,8 @@ jobs:
       # avoid warnings like "tput: No value for $TERM and no -T specified"
       TERM: xterm
     steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
       - id: run-cypress-tests
         uses: ./.github/actions/run-cypress-tests
         with:
