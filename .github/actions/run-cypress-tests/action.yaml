@@ -21,6 +21,7 @@ runs:
         repository: opensearch-project/index-management
         ref: 'main'
     - name: Run opensearch with plugin
+      shell: bash
       if: ${{ inputs.with-security == false }}
       run: |
         cd index-management
@@ -28,6 +29,7 @@ runs:
         sleep 300
       # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
     - name: Run opensearch with plugin
+      shell: bash
       if: ${{ inputs.with-security == true }}
       run: |
         cd index-management
@@ -57,14 +59,18 @@ runs:
         echo "Installing yarn@$YARN_VERSION"
         npm i -g yarn@$YARN_VERSION
     - run: node -v
+      shell: bash
     - run: yarn -v
+      shell: bash
     - name: Bootstrap plugin/OpenSearch-Dashboards
+      shell: bash
       run: |
         mkdir -p OpenSearch-Dashboards/plugins
         mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
         cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
         yarn osd bootstrap
     - name: Run OpenSearch-Dashboards server
+      shell: bash
       run: |
         cd OpenSearch-Dashboards
         yarn start --no-base-path --no-watch --server.host="0.0.0.0" &
