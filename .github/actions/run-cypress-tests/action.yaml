@@ -22,7 +22,7 @@ runs:
         ref: 'main'
     - name: Run opensearch with plugin
       shell: bash
-      if: ${{ inputs.with-security == false }}
+      if: ${{ inputs.with-security == 'false' }}
       run: |
         cd index-management
         ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} &
@@ -30,7 +30,7 @@ runs:
       # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
     - name: Run opensearch with plugin
       shell: bash
-      if: ${{ inputs.with-security == true }}
+      if: ${{ inputs.with-security == 'true' }}
       run: |
         cd index-management
         ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} -Dsecurity=true -Dhttps=true &
