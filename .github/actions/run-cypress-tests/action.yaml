@@ -88,10 +88,10 @@ runs:
       run: |
         cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
     - name: Bootstrap plugin/OpenSearch-Dashboards
-        run: |
-          mkdir -p OpenSearch-Dashboards/plugins
-          mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
-          mv security-dashboards-plugin OpenSearch-Dashboards/plugins
+      run: |
+        mkdir -p OpenSearch-Dashboards/plugins
+        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+        mv security-dashboards-plugin OpenSearch-Dashboards/plugins
     - name: Compile OpenSearch Dashboards
       shell: bash
       run: |
