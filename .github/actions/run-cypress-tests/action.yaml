@@ -40,6 +40,10 @@ runs:
       uses: actions/checkout@v2
       with:
         path: index-management-dashboards-plugin
+    - name: Checkout Security Dashboards plugin
+      uses: actions/checkout@v2
+      with:
+        path: security-dashboards-plugin
     - name: Checkout OpenSearch-Dashboards
       uses: actions/checkout@v2
       with:
@@ -84,12 +88,16 @@ runs:
       run: |
         cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
     - name: Bootstrap plugin/OpenSearch-Dashboards
+        run: |
+          mkdir -p OpenSearch-Dashboards/plugins
+          mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+          mv security-dashboards-plugin OpenSearch-Dashboards/plugins
+    - name: Compile OpenSearch Dashboards
       shell: bash
       run: |
-        mkdir -p OpenSearch-Dashboards/plugins
-        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
-        cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-        yarn osd bootstrap
+        cd OpenSearch-Dashboards
+        node scripts/build_opensearch_dashboards_platform_plugins --no-examples --workers=10 --verbose
+      shell: bash
     - name: Run OpenSearch-Dashboards server
       shell: bash
       run: |
