@@ -66,7 +66,7 @@ runs:
       shell: bash
       if: ${{ inputs.with-security == 'true' }}
       run: |
-        cat << 'EOT' > config/opensearch_dashboards.yml
+        cat << 'EOT' > ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
         server.host: "0.0.0.0"
         opensearch.hosts: ["https://localhost:9200"]
         opensearch.ssl.verificationMode: none
@@ -82,7 +82,7 @@ runs:
       shell: bash
       if: ${{ inputs.with-security == 'true' }}
       run: |
-        cat config/opensearch_dashboards.yml
+        cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
     - name: Bootstrap plugin/OpenSearch-Dashboards
       shell: bash
       run: |
