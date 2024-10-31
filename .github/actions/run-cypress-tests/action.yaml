@@ -88,6 +88,7 @@ runs:
       run: |
         cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
     - name: Bootstrap plugin/OpenSearch-Dashboards
+      shell: bash
       run: |
         mkdir -p OpenSearch-Dashboards/plugins
         mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
@@ -97,7 +98,6 @@ runs:
       run: |
         cd OpenSearch-Dashboards
         node scripts/build_opensearch_dashboards_platform_plugins --no-examples --workers=10 --verbose
-      shell: bash
     - name: Run OpenSearch-Dashboards server
       shell: bash
       run: |
