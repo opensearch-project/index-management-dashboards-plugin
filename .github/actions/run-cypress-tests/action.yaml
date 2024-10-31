@@ -80,7 +80,6 @@ runs:
     # for now just chrome, use matrix to do all browsers later
     - name: Cypress tests
       uses: cypress-io/github-action@v2
-      shell: bash
       if: ${{ inputs.with-security == 'false' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
@@ -89,7 +88,6 @@ runs:
         browser: chrome
     - name: Cypress tests
       uses: cypress-io/github-action@v2
-      shell: bash
       if: ${{ inputs.with-security == 'true' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
