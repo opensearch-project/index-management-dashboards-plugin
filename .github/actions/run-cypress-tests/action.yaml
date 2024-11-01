@@ -91,6 +91,13 @@ runs:
         cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
     - name: Bootstrap plugin/OpenSearch-Dashboards
       shell: bash
+      if: ${{ inputs.with-security == 'false' }}
+      run: |
+        mkdir -p OpenSearch-Dashboards/plugins
+        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+    - name: Bootstrap plugin/OpenSearch-Dashboards
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
       run: |
         mkdir -p OpenSearch-Dashboards/plugins
         mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
