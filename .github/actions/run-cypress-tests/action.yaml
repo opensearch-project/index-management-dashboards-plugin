@@ -111,7 +111,7 @@ runs:
       run: |
         cd OpenSearch-Dashboards
         yarn start --no-base-path --no-watch --server.host="0.0.0.0" &
-        sleep 420
+        sleep 30
       # in main branch, OSD server requires more time to bundle and bootstrap
       # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
     # for now just chrome, use matrix to do all browsers later
