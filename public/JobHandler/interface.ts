@@ -13,14 +13,11 @@ export type CallbackType = (
 ) => Promise<boolean>;
 
 export type TaskResult<T = {}> = {
-  found: boolean;
-  _source: {
-    completed: boolean;
-    response: T;
-    error?: {
-      type: string;
-      reason: string;
-    };
+  completed: boolean;
+  response: T;
+  error?: {
+    type: string;
+    reason: string;
   };
 };
 
