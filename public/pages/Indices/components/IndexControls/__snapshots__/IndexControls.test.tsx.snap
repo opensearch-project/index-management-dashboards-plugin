@@ -9,7 +9,7 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
     class="euiFlexItem"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
     >
       <div
         class="euiFlexItem euiSearchBar__searchHolder"
@@ -136,7 +136,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     class="euiFlexItem"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
     >
       <div
         class="euiFlexItem euiSearchBar__searchHolder"
