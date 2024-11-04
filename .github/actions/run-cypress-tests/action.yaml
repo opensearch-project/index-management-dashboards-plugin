@@ -25,7 +25,7 @@ runs:
       if: ${{ inputs.with-security == 'false' }}
       run: |
         cd index-management
-        ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} &
+        ./gradlew run &
         sleep 300
       # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
     - name: Run opensearch with plugin
@@ -33,7 +33,7 @@ runs:
       if: ${{ inputs.with-security == 'true' }}
       run: |
         cd index-management
-        ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} -Dsecurity=true -Dhttps=true &
+        ./gradlew run -Dsecurity=true -Dhttps=true &
         sleep 300
       # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
     - name: Checkout Index Management Dashboards plugin
