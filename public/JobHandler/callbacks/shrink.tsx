@@ -17,15 +17,15 @@ export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, 
     const tasksResult = await commonService.apiCaller<TaskResult>({
       endpoint: "transport.request",
       data: {
-        path: `/.tasks/_doc/${extras.taskId}`,
+        path: `/_tasks/${extras.taskId}`,
         method: "GET",
       },
     });
 
     if (tasksResult.ok) {
-      const { _source, found } = tasksResult.response;
-      const { completed, error } = (_source || {}) as TaskResult["_source"];
-      if (completed && found) {
+      const _source = tasksResult.response;
+      const { completed, error } = (_source || {}) as TaskResult;
+      if (completed) {
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
         }
