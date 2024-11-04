@@ -40,10 +40,7 @@ describe("callbackForOpen spec", () => {
 
   it("callback when not complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: false,
-      },
+      completed: false,
     });
     const result = await callbackForOpen(openMetaData, {
       core,
@@ -53,13 +50,10 @@ describe("callbackForOpen spec", () => {
 
   it("callback when successfully complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-        response: {
-          acknowledged: true,
-          shards_acknowledged: true,
-        },
+      completed: true,
+      response: {
+        acknowledged: true,
+        shards_acknowledged: true,
       },
     });
     const result = await callbackForOpen(openMetaData, {
@@ -72,12 +66,9 @@ describe("callbackForOpen spec", () => {
 
   it("callback when failed", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-        error: {
-          reason: "reason",
-        },
+      completed: true,
+      error: {
+        reason: "reason",
       },
     });
     const result = await callbackForOpen(openMetaData, {
