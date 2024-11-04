@@ -41,10 +41,7 @@ describe("callbackForOpen spec", () => {
 
   it("callback when not complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: false,
-      },
+      completed: false,
     });
     const result = await callbackForShrink(shrinkMetaData, {
       core,
@@ -54,10 +51,7 @@ describe("callbackForOpen spec", () => {
 
   it("callback when successfully complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-      },
+      completed: true,
     });
     const result = await callbackForShrink(shrinkMetaData, {
       core,
@@ -69,20 +63,17 @@ describe("callbackForOpen spec", () => {
 
   it("callback when failed", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-        error: {
-          reason: "reason",
-        },
-        failures: [
-          {
-            cause: {
-              reason: "cause",
-            },
-          },
-        ],
+      completed: true,
+      error: {
+        reason: "reason",
       },
+      failures: [
+        {
+          cause: {
+            reason: "cause",
+          },
+        },
+      ],
     });
     const result = await callbackForShrink(shrinkMetaData, {
       core,

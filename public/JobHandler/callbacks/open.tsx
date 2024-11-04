@@ -22,13 +22,13 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
   const tasksResult = await commonService.apiCaller<OpenTaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `/.tasks/_doc/${extras.taskId}`,
+      path: `/_tasks/${extras.taskId}`,
       method: "GET",
     },
   });
   if (tasksResult.ok) {
-    const { _source } = tasksResult.response;
-    const { completed, error } = (_source || {}) as OpenTaskResult["_source"];
+    const _source = tasksResult.response;
+    const { completed, error } = (_source || {}) as OpenTaskResult;
     if (completed) {
       const { acknowledged, shards_acknowledged } = _source.response || {};
       if (acknowledged && shards_acknowledged) {

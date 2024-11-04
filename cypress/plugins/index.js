@@ -23,10 +23,6 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-
-const fs = require("fs");
-const path = require("path");
-
 module.exports = (on) => {
   //   const options = {
   //     webpackOptions: {
@@ -46,12 +42,4 @@ module.exports = (on) => {
   //   };
   //
   //   on("file:preprocessor", wp(options));
-  on("task", {
-    readCertAndKey() {
-      const cert = fs.readFileSync(path.resolve(__dirname, "../resources/kirk.pem"));
-      const key = fs.readFileSync(path.resolve(__dirname, "../resources/kirk-key.pem"));
-
-      return { cert, key };
-    },
-  });
 };

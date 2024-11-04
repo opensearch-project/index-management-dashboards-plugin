@@ -41,10 +41,7 @@ describe("callbackForForceMerge spec", () => {
 
   it("callback when not complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: false,
-      },
+      completed: false,
     });
     const result = await callbackForForceMerge(forceMergeMetaData, {
       core,
@@ -54,10 +51,7 @@ describe("callbackForForceMerge spec", () => {
 
   it("callback when complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-      },
+      completed: true,
     });
     const result = await callbackForForceMerge(forceMergeMetaData, {
       core,
@@ -69,14 +63,11 @@ describe("callbackForForceMerge spec", () => {
 
   it("callback when some complete", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-        response: {
-          _shards: {
-            successful: 9,
-            total: 10,
-          },
+      completed: true,
+      response: {
+        _shards: {
+          successful: 9,
+          total: 10,
         },
       },
     });
@@ -90,12 +81,9 @@ describe("callbackForForceMerge spec", () => {
 
   it("callback when failed", async () => {
     httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-        error: {
-          reason: "reason",
-        },
+      completed: true,
+      error: {
+        reason: "reason",
       },
     });
     const result = await callbackForForceMerge(forceMergeMetaData, {

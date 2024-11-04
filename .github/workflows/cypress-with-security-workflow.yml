@@ -10,7 +10,7 @@ env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.x'
 jobs:
   tests:
-    name: Run Cypress E2E tests
+    name: Run Cypress E2E tests with security
     runs-on: ubuntu-latest
     env:
       # prevents extra Cypress installation progress messages
@@ -23,4 +23,4 @@ jobs:
       - id: run-cypress-tests
         uses: ./.github/actions/run-cypress-tests
         with:
-          with-security: false
+          with-security: true

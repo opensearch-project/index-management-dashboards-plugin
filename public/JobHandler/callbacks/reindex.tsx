@@ -27,15 +27,15 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
   const tasksResult = await commonService.apiCaller<TaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `/.tasks/_doc/${extras.taskId}`,
+      path: `/_tasks/${extras.taskId}`,
       method: "GET",
     },
   });
   if (tasksResult.ok) {
-    const { _source, found } = tasksResult.response;
-    const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
+    const _source = tasksResult.response;
+    const { completed, response, error } = (_source || {}) as ReindexTaskResult;
     const { failures, canceled } = response || {};
-    if (completed && found) {
+    if (completed) {
       if (extras.toastId) {
         core.notifications.toasts.remove(extras.toastId);
       }
