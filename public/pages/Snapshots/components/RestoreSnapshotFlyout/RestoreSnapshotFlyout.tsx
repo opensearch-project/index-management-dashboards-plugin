@@ -289,10 +289,21 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
   };
 
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { restore_specific_indices, restore_all_indices, customize_index_settings, ignore_index_settings } = RESTORE_OPTIONS;
+    const {
+      restore_specific_indices,
+      restore_all_indices,
+      customize_index_settings,
+      ignore_index_settings,
+      restore_aliases,
+    } = RESTORE_OPTIONS;
 
     if (e.target.id === restore_specific_indices) {
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      return;
+    }
+
+    if (e.target.id === restore_aliases) {
+      this.setState({ snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
 
@@ -482,7 +493,7 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
 
                 <SnapshotRestoreAdvancedOptions
                   getIndexSettings={this.getIndexSettings}
-                  restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
+                  restoreAliases={String(_.get(snapshot, restore_aliases, false)) == "true"}
                   onRestoreAliasesToggle={this.onToggle}
                   restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}
                   onRestoreClusterStateToggle={this.onToggle}
