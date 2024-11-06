@@ -88,12 +88,12 @@ const CronSchedule = ({
 
   function onDayOfWeekChange(dayOfWeek: string) {
     setWeek(dayOfWeek);
-    // changeCron({ dayOfWeek });
+    changeCron({ dayOfWeek });
   }
 
   function onDayOfMonthChange(dayOfMonth: number) {
     setMonth(dayOfMonth);
-    // changeCron({ dayOfMonth });
+    changeCron({ dayOfMonth });
   }
 
   function onStartTimeChange(date: moment.Moment) {
@@ -101,7 +101,7 @@ const CronSchedule = ({
     const hour = date.hour();
     setMinute(minute);
     setHour(hour);
-    // changeCron({ minute, hour });
+    changeCron({ minute, hour });
   }
 
   function onTypeChange(e: ChangeEvent<HTMLSelectElement>) {

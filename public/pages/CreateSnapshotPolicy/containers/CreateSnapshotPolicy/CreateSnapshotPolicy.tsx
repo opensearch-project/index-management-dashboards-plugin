@@ -477,7 +477,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
     this.setState({
       selectedIndexOptions: selectedIndexOptions,
-      policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
+      policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.map((option) => option.label).join(", ")),
     });
   };
 
