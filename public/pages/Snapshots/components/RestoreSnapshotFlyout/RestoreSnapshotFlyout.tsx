@@ -146,7 +146,7 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
       include_global_state: snapshot?.include_global_state,
       rename_pattern: pattern,
       rename_replacement: renameIndices === add_prefix ? `${prefix}$1` : renameReplacement,
-      include_aliases: snapshot?.restore_aliases ? snapshot.restore_aliases : true,
+      include_aliases: snapshot?.restore_aliases !== undefined ? snapshot.restore_aliases : true,
       partial: snapshot?.partial || false,
     };
     let repoError = "";
