@@ -41,7 +41,10 @@
     "glob-parent": "^5.1.2",
     "ssri": "^6.0.2",
     "lodash": "^4.17.21",
-    "hosted-git-info": "^2.8.9"
+    "hosted-git-info": "^2.8.9",
+    "@cypress/request": "^2.8.12",
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
