@@ -113,7 +113,7 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
         params: schema.object({
           index: schema.string({
             validate: (value) => {
-              const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+              const invalidCharactersPattern = /[\s,:\"+\/\\|?#><]/;
               if (value !== value.toLowerCase() || value.startsWith("_") || value.startsWith("-") || invalidCharactersPattern.test(value)) {
                 return "Invalid index name.";
               }
@@ -148,7 +148,7 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
             {
               source_index: schema.string({
                 validate: (value) => {
-                  const invalidCharactersPattern = /[\s,:\"*+\/\\|?#><]/;
+                  const invalidCharactersPattern = /[\s,:\"+\/\\|?#><]/;
                   if (
                     value !== value.toLowerCase() ||
                     value.startsWith("_") ||
