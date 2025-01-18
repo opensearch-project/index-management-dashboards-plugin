@@ -47,7 +47,7 @@ describe("Transforms", () => {
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/transforms`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
-    cy.contains("Create transform", { timeout: 600000 });
+    cy.contains("Create transform", { timeout: 60000 });
   });
 
   describe("can be created with source index", () => {
