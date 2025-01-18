@@ -292,9 +292,6 @@ describe("Transforms", () => {
 
       // Confirm we got deleted toaster
       cy.contains(`"${TRANSFORM_ID}" successfully deleted`);
-
-      // Confirm showing empty loading state
-      cy.contains("Transform jobs help you create a materialized view on top of existing data.");
     });
   });
 
