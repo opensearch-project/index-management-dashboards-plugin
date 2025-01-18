@@ -209,6 +209,12 @@ describe("Transforms", () => {
       cy.contains(`Transform job "${TRANSFORM_ID_WILDCARD}" successfully created.`);
       cy.location("hash").should("contain", "transforms");
       cy.get(`button[data-test-subj="transformLink_${TRANSFORM_ID_WILDCARD}"]`);
+
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("openSearchUrl")}/_plugins/_transform/${TRANSFORM_ID_WILDCARD}  `,
+        failOnStatusCode: false,
+      });
     });
   });
 
