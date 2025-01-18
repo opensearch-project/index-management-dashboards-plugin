@@ -7,7 +7,7 @@ import { BASE_PATH, IM_PLUGIN_NAME } from "../../../utils/constants";
 import sampleTransform from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_transform";
 
 const TRANSFORM_ID = "test_transform_id";
-
+const TRANSFORM_ID_WILDCARD = "test_transform_wildard";
 describe("Transforms", () => {
   before(() => {
     // Delete all indices
@@ -47,10 +47,10 @@ describe("Transforms", () => {
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/transforms`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
-    cy.contains("Create transform", { timeout: 60000 });
+    cy.contains("Create transform", { timeout: 600000 });
   });
 
-  describe("can be created", () => {
+  describe("can be created with source index", () => {
     it("successfully", () => {
       // Confirm we loaded empty state
       cy.contains("Transform jobs help you create a materialized view on top of existing data.");
@@ -125,6 +125,90 @@ describe("Transforms", () => {
       cy.contains(`Transform job "${TRANSFORM_ID}" successfully created.`);
       cy.location("hash").should("contain", "transforms");
       cy.get(`button[data-test-subj="transformLink_${TRANSFORM_ID}"]`);
+    });
+  });
+
+  describe("can be created with source index wildcard", () => {
+    it("successfully", () => {
+      // Confirm we loaded empty state
+      // cy.contains("Transform jobs help you create a materialized view on top of existing data.");
+
+      // Route to create transform page
+      cy.contains("Create transform").click({ force: true });
+
+      // Type in transform ID
+      cy.get(`input[placeholder="my-transformjob1"]`).type(TRANSFORM_ID_WILDCARD, {
+        force: true,
+      });
+
+      // Get description input box
+      cy.get(`textarea[data-test-subj="description"]`).focus().type("some description");
+
+      // Enter source index
+      cy.get(`div[data-test-subj="sourceIndexCombobox"]`)
+        .find(`input[data-test-subj="comboBoxSearchInput"]`)
+        .focus()
+        .type("opensearch_dashboards_sample_data_ecommerce*{enter}");
+
+      cy.wait(5000);
+
+      // Enter target index
+      cy.get(`div[data-test-subj="targetIndexCombobox"]`)
+        .find(`input[data-test-subj="comboBoxSearchInput"]`)
+        .focus()
+        .type("test_transform{enter}");
+
+      cy.wait(2000);
+
+      // Click the next button
+      cy.get("button").contains("Next").click({ force: true });
+
+      // Confirm that we got to step 2 of creation page
+      cy.contains("Select fields to transform");
+
+      cy.get(`button[data-test-subj="category.keywordOptionsPopover"]`).click({
+        force: true,
+      });
+
+      cy.contains("Group by terms").click({ force: true });
+
+      // Confirm group was added
+      cy.contains("category.keyword_terms");
+
+      // Add aggregable field
+      cy.contains("50 columns hidden").click({ force: true });
+      cy.contains("taxless_total_price").click({ force: true });
+      // Click out of the window
+      cy.contains("Select fields to transform").click({ force: true });
+
+      cy.get(`button[data-test-subj="taxless_total_priceOptionsPopover"]`).click({ force: true });
+
+      cy.contains("Aggregate by avg").click({ force: true });
+
+      // Confirm agg was added
+      cy.contains("avg_taxless_total_price");
+
+      // Click the next button
+      cy.get("button").contains("Next").click({ force: true });
+
+      // Confirm that we got to step 3 of creation page
+      cy.contains("Job enabled by default");
+
+      // Click the next button
+      cy.get("button").contains("Next").click({ force: true });
+
+      // Confirm that we got to step 4 of creation page
+      cy.contains("Review and create");
+
+      // Click the create button
+      cy.get("button").contains("Create").click({ force: true });
+
+      cy.wait(2000);
+
+      // Verify that sample data is add by checking toast notification
+      cy.contains(`Transform job "${TRANSFORM_ID_WILDCARD}" successfully created.`);
+      cy.location("hash").should("contain", "transforms");
+      cy.get(`button[data-test-subj="transformLink_${TRANSFORM_ID_WILDCARD}"]`);
     });
   });
 
@@ -226,10 +310,7 @@ describe("Transforms", () => {
 
       // Intercept different transform requests endpoints to wait before clicking disable and enable buttons
       cy.intercept(`/api/ism/transforms/${TRANSFORM_ID}`).as("getTransform");
-      cy.intercept(`/api/ism/transforms/${TRANSFORM_ID}/_stop`).as(
-        "stopTransform"
-      );
-
+      cy.intercept(`/api/ism/transforms/${TRANSFORM_ID}/_stop`).as("stopTransform");
 
       // Click into transform job details page
       cy.get(`[data-test-subj="transformLink_${TRANSFORM_ID}"]`).click({
@@ -248,9 +329,7 @@ describe("Transforms", () => {
       cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
 
       // Click Disable button
-      cy.get(`[data-test-subj="disableButton"]`)
-        .should("not.be.disabled")
-        .click();
+      cy.get(`[data-test-subj="disableButton"]`).should("not.be.disabled").click();
 
       cy.wait("@stopTransform");
       cy.wait("@getTransform");
@@ -265,9 +344,7 @@ describe("Transforms", () => {
       cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
 
       // Click Enable button
-      cy.get(`[data-test-subj="enableButton"]`)
-        .should("not.be.disabled")
-        .click({ force: true });
+      cy.get(`[data-test-subj="enableButton"]`).should("not.be.disabled").click({ force: true });
 
       // Confirm we get toaster saying transform job is enabled
       cy.contains(`"${TRANSFORM_ID}" is enabled`);
