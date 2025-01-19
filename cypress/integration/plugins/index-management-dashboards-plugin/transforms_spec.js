@@ -311,10 +311,6 @@ describe("Transforms", () => {
       // Confirm we have our initial transform
       cy.contains(TRANSFORM_ID);
 
-      // Intercept different transform requests endpoints to wait before clicking disable and enable buttons
-      cy.intercept(`/api/ism/transforms/${TRANSFORM_ID}`).as("getTransform");
-      cy.intercept(`/api/ism/transforms/${TRANSFORM_ID}/_stop`).as("stopTransform");
-
       // Click into transform job details page
       cy.get(`[data-test-subj="transformLink_${TRANSFORM_ID}"]`).click({
         force: true,
