@@ -409,6 +409,22 @@ export interface GetSnapshotResponse {
   snapshots: GetSnapshot[];
 }
 
+export interface CatSnapshotsResponse {
+  snapshots: CatSnapshots[];
+}
+
+export interface CatSnapshots {
+  id: string;
+  status: string;
+  start_epoch: number;
+  end_epoch: number;
+  duration: number;
+  indices: number;
+  successful_shards: number;
+  failed_shards: number;
+  total_shards: number;
+}
+
 export interface CreateSnapshotResponse {
   snapshot: GetSnapshot;
 }
