@@ -98,7 +98,7 @@ Cypress.Commands.add("login", () => {
 
 Cypress.Commands.add("deleteAllIndices", () => {
   cy.log("Deleting all indexes");
-  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/index*,sample*,opensearch_dashboards*`);
+  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/test_index_*,index*,sample*,opensearch_dashboards*`);
   cy.task("readCertAndKey").then(({ cert, key }) => {
     cy.request({
       method: "DELETE",
