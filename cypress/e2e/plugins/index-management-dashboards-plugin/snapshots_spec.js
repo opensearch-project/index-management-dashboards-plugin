@@ -92,6 +92,7 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be restored", () => {
     it("Successfully restores indexes from snapshot", () => {
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/snapshots`);
       // Wait for snapshot to be created successfully with a 12sec timeout
       cy.get(`[data-test-subj="refreshButton"]`, { timeout: 12000 })
         .should("be.visible")
@@ -124,6 +125,7 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be deleted", () => {
     it("deletes snapshot successfully", () => {
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/snapshots`);
       // Select test snapshot
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 

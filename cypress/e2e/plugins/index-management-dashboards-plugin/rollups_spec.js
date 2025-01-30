@@ -256,9 +256,7 @@ describe("Rollups", () => {
       cy.wait("@getRollup").wait(2000);
 
       // Click Disable button
-      cy.get(`[data-test-subj="disableButton"]`)
-        .should("not.be.disabled")
-        .click({ force: true });
+      cy.get(`[data-test-subj="disableButton"]`).should("not.be.disabled").click({ force: true });
 
       cy.wait("@stopRollup");
       cy.wait("@getRollup");
@@ -270,9 +268,7 @@ describe("Rollups", () => {
       cy.wait(2000);
 
       // Click Enable button
-      cy.get(`[data-test-subj="enableButton"]`)
-        .should("not.be.disabled")
-        .click({ force: true });
+      cy.get(`[data-test-subj="enableButton"]`).should("not.be.disabled").click({ force: true });
 
       // Confirm we get toaster saying rollup job is enabled
       cy.contains(`${ROLLUP_ID} is enabled`);

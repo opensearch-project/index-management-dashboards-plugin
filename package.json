@@ -34,7 +34,8 @@
     "@cypress/request": "^3.0.0",
     "**/ansi-regex": "^5.0.1",
     "**/loader-utils": "^2.0.4",
-    "**/typescript": "4.0.2"
+    "**/typescript": "4.0.2",
+    "**/eslint/cross-spawn": "^7.0.5"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
@@ -47,7 +48,7 @@
     "@types/json-schema": "^7.0.11",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.3.2",
-    "cypress": "9.5.4",
+    "cypress": "12.17.4",
     "diff": "^4.0.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
