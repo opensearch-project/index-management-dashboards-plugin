@@ -17,30 +17,6 @@ module.exports = defineConfig({
       username: "admin",
       password: "admin",
     },
-    clientCertificates: [
-      {
-        url: "https://localhost:9200/.opendistro-ism*",
-        ca: ["cypress/resources/root-ca.pem"],
-        certs: [
-          {
-            cert: "cypress/resources/kirk.pem",
-            key: "cypress/resources/kirk-key.pem",
-            passphrase: "",
-          },
-        ],
-      },
-      {
-        url: "https://localhost:9200/.opendistro-ism-config/_update_by_query/",
-        ca: ["cypress/resources/root-ca.pem"],
-        certs: [
-          {
-            cert: "cypress/resources/kirk.pem",
-            key: "cypress/resources/kirk-key.pem",
-            passphrase: "",
-          },
-        ],
-      },
-    ],
     setupNodeEvents(on, config) {
       on("task", {
         readCertAndKey() {
