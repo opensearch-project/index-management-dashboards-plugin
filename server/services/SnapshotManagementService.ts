@@ -26,6 +26,7 @@ import {
   AcknowledgedResponse,
   CreateSnapshotResponse,
   RestoreSnapshotResponse,
+  CatSnapshots,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 import { MDSEnabledClientService } from "./MDSEnabledClientService";
@@ -539,12 +540,8 @@ export default class SnapshotManagementService extends MDSEnabledClientService {
       })) as CatRepository[];
 
       for (let i = 0; i < res.length; i++) {
-        const getSnapshotRes: GetSnapshotResponse = (await callWithRequest("snapshot.get", {
-          repository: res[i].id,
-          snapshot: "_all",
-          ignore_unavailable: true,
-        })) as GetSnapshotResponse;
-        res[i].snapshotCount = getSnapshotRes.snapshots.length;
+        let catSnapshotResponse = await this._safecatSnapshotForRepo(callWithRequest, res[i].id);
+        res[i].snapshotCount = catSnapshotResponse?.length;
       }
 
       return response.custom({
@@ -558,6 +555,24 @@ export default class SnapshotManagementService extends MDSEnabledClientService {
       return this.errorResponse(response, err, "catRepositoriesWithSnapshotCount");
     }
   };
+
+  private async _safecatSnapshotForRepo(
+    callWithRequest: (endpoint: string, clientParams: Record<string, any>, options?: LegacyCallAPIOptions | undefined) => Promise<unknown>,
+    repositoryName: string
+  ): Promise<CatSnapshots[] | undefined> {
+    try {
+      const catSnapshotRes: CatSnapshots[] = (await callWithRequest("cat.snapshots", {
+        format: "json",
+        repository: repositoryName,
+        ignore_unavailable: true,
+      })) as CatSnapshots[];
+
+      return catSnapshotRes;
+    } catch (err) {
+      console.error(`Index Management - SnapshotManagementService - _safeCatSnapshot:`, err);
+      return undefined;
+    }
+  }
 
   deleteRepository = async (
     context: RequestHandlerContext,
