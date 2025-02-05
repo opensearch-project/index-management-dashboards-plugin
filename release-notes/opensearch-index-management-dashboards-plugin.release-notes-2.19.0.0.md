@@ -15,7 +15,8 @@ Compatible with OpenSearch 2.19.0
 ### Maintenance
 
 * Increment version to 2.19.0.0 ([#1218](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1218))
-* Updating and reverting the maintainers and codeowners list ([#1223](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1223)) ([#1234](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1234)))
+* Updating the maintainers and codeowners list ([#1223](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1223)) 
+* Reverting the maintainers and codeowners list([#1234](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1234))
 * Sync Maintainers to 2.x from main branch ([#1238](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1238))
 * Backport 1258 to 2.19 ([#1260](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1260))
-
+  
