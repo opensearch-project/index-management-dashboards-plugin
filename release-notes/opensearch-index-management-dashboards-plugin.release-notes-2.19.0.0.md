@@ -6,8 +6,8 @@ Compatible with OpenSearch 2.19.0
 * Use cat snapshot to get the number of snapshot for a repo ([#1242](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1242))
 
 ### Bug Fixes
-* bug-fix: Restore snapshot shouldn't restore index alias always ([#1193](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1193)) ([#1206](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1206))
-* Bug fixes in Snapshot Policy: Schedule Editing and Index Expression Display ([#1207](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1207)) ([#1208](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1208))
+* bug-fix: Restore snapshot shouldn't restore index alias always ([#1206](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1206))
+* Bug fixes in Snapshot Policy: Schedule Editing and Index Expression Display ([#1208](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1208))
 * bug fix: Snapshot restore always restores index alias ([#1214](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1214))
 * Fixing bug in transform API validation to support index patterns ([#1241](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1241))
 * Updating cypress version and fixing CVE-2024-21538 ([#1252](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1252))
