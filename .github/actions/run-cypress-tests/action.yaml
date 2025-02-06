@@ -19,7 +19,7 @@ runs:
       with:
         path: index-management
         repository: opensearch-project/index-management
-        ref: '2.x'
+        ref: '2.19'
     - name: Run opensearch with plugin
       shell: bash
       if: ${{ inputs.with-security == 'false' }}
