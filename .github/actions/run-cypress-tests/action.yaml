@@ -139,13 +139,13 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
     # Screenshots are only captured on failure, will change this once we do visual regression tests
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: cypress-screenshots
         path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
     # Test run video was always captured, so this action uses "always()" condition
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: cypress-videos
