@@ -44,7 +44,7 @@ Cypress.Commands.add("updateManagedIndexConfigStartTime", (index) => {
         source: `ctx._source['managed_index']['schedule']['interval']['start_time'] = ${startTime}L`,
       },
     };
-    cy.request("POST", `${Cypress.env("openSearchUrl")}/${IM_CONFIG_INDEX.OPENDISTRO_ISM_CONFIG}/_update_by_query`, body);
+    cy.request("POST", `${Cypress.env("openSearchUrl")}/${IM_CONFIG_INDEX.OPENDISTRO_ISM_CONFIG}/_update_by_query/`, body);
   });
 });
 

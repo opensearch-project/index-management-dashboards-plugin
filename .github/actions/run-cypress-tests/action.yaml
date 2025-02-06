@@ -1,0 +1,152 @@
+name: 'Runs the cypress test suite'
+description: 'Re-usable workflow to run cypress tests against a cluster with or without security'
+
+inputs:
+  with-security:
+    description: 'Whether security should be installed on the cluster the tests are run with'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        # TODO: Parse this from index management plugin
+        java-version: 21
+    - name: Checkout index management
+      uses: actions/checkout@v2
+      with:
+        path: index-management
+        repository: opensearch-project/index-management
+        ref: '2.19'
+    - name: Run opensearch with plugin
+      shell: bash
+      if: ${{ inputs.with-security == 'false' }}
+      run: |
+        cd index-management
+        ./gradlew run &
+        sleep 300
+      # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
+    - name: Run opensearch with plugin
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      run: |
+        cd index-management
+        ./gradlew run -Dsecurity=true -Dhttps=true &
+        sleep 300
+      # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
+    - name: Checkout Index Management Dashboards plugin
+      uses: actions/checkout@v2
+      with:
+        path: index-management-dashboards-plugin
+    - name: Checkout Security Dashboards plugin
+      uses: actions/checkout@v2
+      with:
+        repository: opensearch-project/security-dashboards-plugin
+        path: security-dashboards-plugin
+        ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+    - name: Checkout OpenSearch-Dashboards
+      uses: actions/checkout@v2
+      with:
+        repository: opensearch-project/OpenSearch-Dashboards
+        path: OpenSearch-Dashboards
+        ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: './OpenSearch-Dashboards/.nvmrc'
+        registry-url: 'https://registry.npmjs.org'
+    - name: Install Yarn
+      # Need to use bash to avoid having a windows/linux specific step
+      shell: bash
+      run: |
+        YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
+        echo "Installing yarn@$YARN_VERSION"
+        npm i -g yarn@$YARN_VERSION
+    - run: node -v
+      shell: bash
+    - run: yarn -v
+      shell: bash
+    - name: Configure OpenSearch Dashboards for cypress
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      run: |
+        cat << 'EOT' > ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
+        server.host: "0.0.0.0"
+        opensearch.hosts: ["https://localhost:9200"]
+        opensearch.ssl.verificationMode: none
+        opensearch.username: "kibanaserver"
+        opensearch.password: "kibanaserver"
+        opensearch.requestHeadersWhitelist: [ authorization,securitytenant ]
+        opensearch_security.multitenancy.enabled: true
+        opensearch_security.multitenancy.tenants.preferred: ["Private", "Global"]
+        opensearch_security.readonly_mode.roles: ["kibana_read_only"]
+        opensearch_security.cookie.secure: false
+        EOT
+    - name: Print Dashboards Config
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      run: |
+        cat ./OpenSearch-Dashboards/config/opensearch_dashboards.yml
+    - name: Bootstrap plugin/OpenSearch-Dashboards
+      shell: bash
+      if: ${{ inputs.with-security == 'false' }}
+      run: |
+        mkdir -p OpenSearch-Dashboards/plugins
+        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+    - name: Bootstrap plugin/OpenSearch-Dashboards
+      shell: bash
+      if: ${{ inputs.with-security == 'true' }}
+      run: |
+        mkdir -p OpenSearch-Dashboards/plugins
+        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+        mv security-dashboards-plugin OpenSearch-Dashboards/plugins
+    - name: Bootstrap the OpenSearch Dashboard
+      uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 20
+        max_attempts: 2
+        command: yarn --cwd OpenSearch-Dashboards osd bootstrap --oss --single-version=loose
+    - name: Compile OpenSearch Dashboards
+      shell: bash
+      run: |
+        cd OpenSearch-Dashboards
+        node scripts/build_opensearch_dashboards_platform_plugins --no-examples --workers=10 --verbose
+    - name: Run OpenSearch-Dashboards server
+      shell: bash
+      run: |
+        cd OpenSearch-Dashboards
+        yarn start --no-base-path --no-watch --server.host="0.0.0.0" &
+        sleep 30
+      # in main branch, OSD server requires more time to bundle and bootstrap
+      # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
+    # for now just chrome, use matrix to do all browsers later
+    - name: Cypress tests
+      uses: cypress-io/github-action@v2
+      if: ${{ inputs.with-security == 'false' }}
+      with:
+        working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+        command: yarn run cypress run
+        wait-on: 'http://localhost:5601'
+        browser: chrome
+    - name: Cypress tests
+      uses: cypress-io/github-action@v2
+      if: ${{ inputs.with-security == 'true' }}
+      with:
+        working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+        command: yarn run cypress run --env SECURITY_ENABLED=true,openSearchUrl=https://localhost:9200,WAIT_FOR_LOADER_BUFFER_MS=500
+        wait-on: 'http://localhost:5601'
+        browser: chrome
+    # Screenshots are only captured on failure, will change this once we do visual regression tests
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
+    # Test run video was always captured, so this action uses "always()" condition
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: cypress-videos
+        path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/videos
