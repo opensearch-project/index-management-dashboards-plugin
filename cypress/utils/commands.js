@@ -98,8 +98,18 @@ Cypress.Commands.add("login", () => {
 
 Cypress.Commands.add("deleteAllIndices", () => {
   cy.log("Deleting all indexes");
-  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/index*,sample*,opensearch_dashboards*`);
-  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-ism*?expand_wildcards=all`);
+  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/test_index_*,index*,sample*,opensearch_dashboards*`);
+  cy.task("readCertAndKey").then(({ cert, key }) => {
+    cy.request({
+      method: "DELETE",
+      url: `${Cypress.env("openSearchUrl")}/.opendistro-ism*?expand_wildcards=all`,
+      headers: {},
+      agentOptions: {
+        cert,
+        key,
+      },
+    });
+  });
 });
 
 Cypress.Commands.add("deleteADSystemIndices", () => {

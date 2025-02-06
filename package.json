@@ -1,6 +1,6 @@
 {
   "name": "opensearch_index_management_dashboards",
-  "version": "2.18.0.0",
+  "version": "2.19.0.0",
   "description": "Opensearch Dashboards plugin for Index Management",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -59,7 +59,8 @@
     "**/nth-check": "^2.0.1",
     "**/typescript": "4.0.2",
     "**/terser": "^4.8.1",
-    "braces": "^3.0.3"
+    "braces": "^3.0.3",
+    "cross-spawn": "^7.0.5"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
@@ -72,7 +73,7 @@
     "@types/json-schema": "^7.0.11",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.3.2",
-    "cypress": "9.5.4",
+    "cypress": "12.17.4",
     "diff": "^4.0.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
