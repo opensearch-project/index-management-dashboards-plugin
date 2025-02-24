@@ -29,7 +29,6 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           >
             <div>
               Index templates let you initialize new indexes with predefined mappings and settings.
-               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/index-templates"
@@ -870,7 +869,6 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
                   >
                     <p>
                       Specify a comma-delimited list of settings.
-                       
                       <a
                         class="euiLink euiLink--primary"
                         href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
@@ -888,10 +886,10 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
                     </p>
                     <p>
                       All the settings will be handled in flat structure.
-                       
+
                       <a
                         class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -1052,7 +1050,6 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           >
             <div>
               Define how documents and their fields are stored and indexed.
-               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/undefined/opensearch/mappings/"
