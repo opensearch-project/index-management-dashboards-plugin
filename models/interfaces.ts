@@ -7,7 +7,6 @@
 
 import { long } from "@opensearch-project/opensearch/api/types";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
-import { IndicesUpdateMode } from "../public/utils/constants";
 
 export interface ManagedIndexMetaData {
   index: string;
@@ -490,6 +489,7 @@ export interface Rollup {
   schema_version: number;
   source_index: string;
   target_index: string;
+  target_index_settings: Map<string, any> | null;
   roles: string[];
 }
 
