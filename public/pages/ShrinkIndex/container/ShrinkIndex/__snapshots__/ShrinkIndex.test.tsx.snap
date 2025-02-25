@@ -387,7 +387,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiText euiText--small"
               >
                 <h3>
-                  Index alias
+                  Index alias 
                   <i>
                      – optional
                   </i>

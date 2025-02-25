@@ -39,7 +39,7 @@ Object {
               <h2
                 id="flyoutTitle"
               >
-                 Create Index
+                 Create Index 
               </h2>
             </div>
           </div>
@@ -146,7 +146,7 @@ Object {
                             class="euiText euiText--small"
                           >
                             <h3>
-                              Index alias
+                              Index alias 
                               <i>
                                  – optional
                               </i>
@@ -271,7 +271,7 @@ Object {
                           style="padding-top: 0px; padding-bottom: 4px;"
                         >
                           <div>
-                            Specify the number of primary shards for the index. Default is 1.
+                            Specify the number of primary shards for the index. Default is 1. 
                           </div>
                           <div>
                             The number of primary shards cannot be changed after the index is created.
@@ -468,6 +468,7 @@ Object {
                                 >
                                   <p>
                                     Specify a comma-delimited list of settings.
+                                     
                                     <a
                                       class="euiLink euiLink--primary"
                                       href="https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings"
@@ -485,6 +486,7 @@ Object {
                                   </p>
                                   <p>
                                     All the settings will be handled in flat structure.
+                                     
                                     <a
                                       class="euiLink euiLink--primary"
                                       href="https://opensearch.org/docs/undefined/api-reference/index-apis/get-index/#query-parameters"
@@ -659,6 +661,7 @@ Object {
                       >
                         <div>
                           Define how documents and their fields are stored and indexed.
+                           
                           <a
                             class="euiLink euiLink--primary"
                             href="https://opensearch.org/docs/undefined/opensearch/mappings/"

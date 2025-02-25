@@ -457,6 +457,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                     >
                       <p>
                         Specify a comma-delimited list of settings.
+                         
                         <a
                           class="euiLink euiLink--primary"
                           href="https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings"
@@ -474,6 +475,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                       </p>
                       <p>
                         All the settings will be handled in flat structure.
+                         
                         <a
                           class="euiLink euiLink--primary"
                           href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
@@ -640,6 +642,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
             >
               <div>
                 Define how documents and their fields are stored and indexed.
+                 
                 <a
                   class="euiLink euiLink--primary"
                   href="https://opensearch.org/docs/undefined/opensearch/mappings/"

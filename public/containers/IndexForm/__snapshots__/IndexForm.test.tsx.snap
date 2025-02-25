@@ -95,7 +95,7 @@ exports[`<IndexForm /> spec render page 1`] = `
               class="euiText euiText--small"
             >
               <h3>
-                Index alias
+                Index alias 
                 <i>
                    – optional
                 </i>
@@ -220,7 +220,7 @@ exports[`<IndexForm /> spec render page 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              Specify the number of primary shards for the index. Default is 1.
+              Specify the number of primary shards for the index. Default is 1. 
             </div>
             <div>
               The number of primary shards cannot be changed after the index is created.
@@ -417,6 +417,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                   >
                     <p>
                       Specify a comma-delimited list of settings.
+                       
                       <a
                         class="euiLink euiLink--primary"
                         href="https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings"
@@ -434,6 +435,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                     </p>
                     <p>
                       All the settings will be handled in flat structure.
+                       
                       <a
                         class="euiLink euiLink--primary"
                         href="https://opensearch.org/docs/undefined/api-reference/index-apis/get-index/#query-parameters"
@@ -604,6 +606,7 @@ exports[`<IndexForm /> spec render page 1`] = `
         >
           <div>
             Define how documents and their fields are stored and indexed.
+             
             <a
               class="euiLink euiLink--primary"
               href="https://opensearch.org/docs/undefined/opensearch/mappings/"
