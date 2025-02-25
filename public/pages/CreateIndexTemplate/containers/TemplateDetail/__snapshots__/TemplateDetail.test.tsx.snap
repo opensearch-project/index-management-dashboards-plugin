@@ -873,7 +873,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
                        
                       <a
                         class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        href="https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -891,7 +891,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
                        
                       <a
                         class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
                         rel="noopener noreferrer"
                         target="_blank"
                       >

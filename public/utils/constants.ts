@@ -16,7 +16,8 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
-export const INDEX_SETTINGS_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings";
+export const INDEX_SETTINGS_URL =
+  "https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings";
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
 export const RESTORE_SNAPSHOT_DOCUMENTATION_URL =
