@@ -534,7 +534,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                       Specify a comma-delimited list of settings. 
                       <a
                         class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        href="https://opensearch.org/docs/latest/install-and-configure/configuring-opensearch/index-settings/#index-level-index-settings"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
