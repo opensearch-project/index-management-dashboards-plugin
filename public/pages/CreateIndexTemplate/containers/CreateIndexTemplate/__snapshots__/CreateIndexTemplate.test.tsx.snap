@@ -478,7 +478,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                          
                         <a
                           class="euiLink euiLink--primary"
-                          href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
                           rel="noopener noreferrer"
                           target="_blank"
                         >
