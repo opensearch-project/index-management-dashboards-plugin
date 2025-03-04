@@ -179,7 +179,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   <p>
                     All the settings will be handled in flat structure.{" "}
                     <EuiLink
-                      href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                      href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
                       external
                       target="_blank"
                     >
