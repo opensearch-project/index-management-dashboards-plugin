@@ -5,15 +5,17 @@
 
 import React, { Component } from "react";
 import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
-import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
+import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { IndexItem } from "../../../../../models/interfaces";
+import { getOrderedJson } from "../../../../../utils/helper";
 
 interface JobNameAndIndicesProps {
   rollupId: string;
   description: string;
   sourceIndex: { label: string; value?: IndexItem }[];
   targetIndex: { label: string; value?: IndexItem }[];
+  targetIndexSettings: Pick<IndexItem, "settings"> | null;
   onChangeStep: (step: number) => void;
 }
 
@@ -23,7 +25,7 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
   }
 
   render() {
-    const { rollupId, description, onChangeStep, sourceIndex, targetIndex } = this.props;
+    const { rollupId, description, onChangeStep, sourceIndex, targetIndex, targetIndexSettings } = this.props;
 
     return (
       <EuiPanel>
@@ -72,6 +74,14 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
                 <dd>{targetIndex[0].label}</dd>
               </EuiText>
             </EuiFlexItem>
+            {targetIndexSettings && (
+              <EuiFlexItem>
+                <EuiText size="s">
+                  <dt>Target index Settings</dt>
+                  <dd>{JSON.stringify(getOrderedJson(targetIndexSettings || {}), null, 2)}</dd>
+                </EuiText>
+              </EuiFlexItem>
+            )}
             <EuiFlexItem>
               <EuiText size="s">
                 <dt>Description</dt>
