@@ -38,7 +38,8 @@
     "cross-spawn": "^7.0.5",
     "**/micromatch": "^4.0.8",
     "**/glob-parent": "^5.1.2",
-    "**/braces": "^3.0.3"
+    "**/braces": "^3.0.3",
+    "**/elliptic": "^6.5.4"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
