@@ -7,6 +7,7 @@ module.exports = {
   rootDir: "../",
   setupFiles: ["<rootDir>/test/polyfills.ts", "<rootDir>/test/setupTests.ts"],
   setupFilesAfterEnv: ["<rootDir>/test/setup.jest.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/setup.jest.ts", "<rootDir>../../src/dev/jest/setup/monaco_mock.js"],
   roots: ["<rootDir>"],
   coverageDirectory: "./coverage",
   moduleNameMapper: {
