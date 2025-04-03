@@ -6,8 +6,13 @@
 // babelrc doesn't respect NODE_PATH anymore but using require does.
 // Alternative to install them locally in node_modules
 module.exports = function (api) {
-  // ensure env is test so that this config won't impact build or dev server
-  if (api.env("test")) {
+  const isTest = api.env("test");
+
+  // Common plugins for all environments
+  const commonPlugins = [require("@babel/plugin-proposal-nullish-coalescing-operator")];
+
+  // Test-specific configuration
+  if (isTest) {
     return {
       presets: [require("@babel/preset-env"), require("@babel/preset-react"), require("@babel/preset-typescript")],
       plugins: [
@@ -15,9 +20,13 @@ module.exports = function (api) {
         require("@babel/plugin-transform-class-properties"),
         require("@babel/plugin-transform-object-rest-spread"),
         [require("@babel/plugin-transform-modules-commonjs"), { allowTopLevelThis: true }],
-        require("@babel/plugin-proposal-nullish-coalescing-operator"),
+        ...commonPlugins,
       ],
     };
   }
-  return {};
+
+  // Build/dev configuration
+  return {
+    plugins: commonPlugins,
+  };
 };
