@@ -8,5 +8,9 @@
   "server": true,
   "ui": true,
   "supportedOSDataSourceVersions": ">=2.0.0",
-  "requiredOSDataSourcePlugins": ["opensearch-index-management"]
+  "requiredOSDataSourcePlugins": ["opensearch-index-management"],
+  "babel": {
+    "presets": ["@babel/preset-env"],
+    "plugins": ["@babel/plugin-proposal-nullish-coalescing-operator"]
+  }
 }
