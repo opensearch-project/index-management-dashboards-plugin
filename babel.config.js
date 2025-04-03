@@ -15,6 +15,7 @@ module.exports = function (api) {
         require("@babel/plugin-transform-class-properties"),
         require("@babel/plugin-transform-object-rest-spread"),
         [require("@babel/plugin-transform-modules-commonjs"), { allowTopLevelThis: true }],
+        require("@babel/plugin-proposal-nullish-coalescing-operator"),
       ],
     };
   }
