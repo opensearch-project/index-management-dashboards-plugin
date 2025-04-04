@@ -17,7 +17,7 @@ monaco.editor.defineTheme("ismJSONTheme", {
 export function useDiagnosticsOptions(props: { monaco?: typeof monaco; diagnosticsOptions?: DiagnosticsOptions }) {
   const oldOptionsSettingsRef = useRef<DiagnosticsOptions | undefined>(props.monaco?.languages.json.jsonDefaults.diagnosticsOptions);
   useEffect(() => {
-    if (props.monaco) {
+    if (props.monaco && props.monaco.languages.json) {
       props.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
         ...oldOptionsSettingsRef.current,
         ...props.diagnosticsOptions,
@@ -35,7 +35,7 @@ export function useModel(props: { editor?: monaco.editor.IStandaloneCodeEditor; 
     if (props.path && props.editor) {
       const originalModel = props.editor.getModel() as monaco.editor.ITextModel;
       const originalValue = originalModel.getValue();
-      const originalLanguage = originalModel.getModeId();
+      const originalLanguage = originalModel.getLanguageId();
       const originalUri = originalModel.uri;
       originalModel.dispose();
       const newModel = monaco.editor.createModel(
