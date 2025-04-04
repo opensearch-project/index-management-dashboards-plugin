@@ -9,12 +9,24 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:5601",
     viewportWidth: 2000,
     viewportHeight: 1320,
+
+    // Performance optimizations
+    numTestsKeptInMemory: 0,
+    experimentalMemoryManagement: true,
+    video: false,
+    watchForFileChanges: false,
+    chromeWebSecurity: false,
+    modifyObstructiveCode: false,
+
+    // Environment variables
     env: {
       openSearchUrl: "http://localhost:9200",
       SECURITY_ENABLED: false,
       username: "admin",
       password: "admin",
     },
+
+    // Certificate configurations
     clientCertificates: [
       {
         url: "https://localhost:9200/.opendistro-ism*",
