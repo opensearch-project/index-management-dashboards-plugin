@@ -8,6 +8,7 @@ on:
       - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
+  CYPRESS_MEMORY_LIMIT: '20480'
 jobs:
   tests:
     name: Run Cypress E2E tests
