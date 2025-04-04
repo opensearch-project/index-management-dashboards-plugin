@@ -7,11 +7,11 @@ module.exports = defineConfig({
     requestTimeout: 60000,
     responseTimeout: 60000,
     baseUrl: "http://localhost:5601",
-    viewportWidth: 2000,
-    viewportHeight: 1320,
+    viewportWidth: 1280,
+    viewportHeight: 720,
 
     // Performance optimizations
-    numTestsKeptInMemory: 0,
+    numTestsKeptInMemory: 5,
     experimentalMemoryManagement: true,
     video: false,
     watchForFileChanges: false,
