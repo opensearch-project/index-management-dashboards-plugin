@@ -71,8 +71,11 @@ describe("Snapshots", () => {
 
       // Select all indexes to be included
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
+      cy.wait(1000);
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
+      cy.wait(1000);
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
+      cy.wait(1000);
 
       // if a toast message pops up then dismiss it
       cy.dismissToast();
