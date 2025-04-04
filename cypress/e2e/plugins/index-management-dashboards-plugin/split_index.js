@@ -34,7 +34,7 @@ describe("Split Index", () => {
       cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}`);
 
       // click create
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
+      cy.get('[data-test-subj="createIndexCreateButton"]').click();
 
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist");

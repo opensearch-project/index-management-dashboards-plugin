@@ -11,7 +11,7 @@ module.exports = defineConfig({
     viewportHeight: 720,
 
     // Performance optimizations
-    numTestsKeptInMemory: 5,
+    numTestsKeptInMemory: 0,
     experimentalMemoryManagement: true,
     video: false,
     watchForFileChanges: false,
