@@ -8,7 +8,8 @@ on:
       - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  CYPRESS_MEMORY_LIMIT: '20480'
+  CYPRESS_MEMORY_LIMIT: '10240'
+  NODE_OPTIONS: '--max-old-space-size=10240 --max-semi-space-size=64 --dns-result-order=ipv4first'
 jobs:
   tests:
     name: Run Cypress E2E tests

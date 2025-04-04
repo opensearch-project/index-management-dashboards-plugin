@@ -13,10 +13,6 @@ module.exports = defineConfig({
     // Performance optimizations
     numTestsKeptInMemory: 0,
     experimentalMemoryManagement: true,
-    video: false,
-    watchForFileChanges: false,
-    chromeWebSecurity: false,
-    modifyObstructiveCode: false,
 
     // Environment variables
     env: {
