@@ -7,8 +7,8 @@ module.exports = defineConfig({
     requestTimeout: 60000,
     responseTimeout: 60000,
     baseUrl: "http://localhost:5601",
-    viewportWidth: 1280,
-    viewportHeight: 720,
+    viewportWidth: 2000,
+    viewportHeight: 1320,
 
     // Performance optimizations
     numTestsKeptInMemory: 0,

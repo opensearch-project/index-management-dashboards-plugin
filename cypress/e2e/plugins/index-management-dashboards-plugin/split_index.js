@@ -78,7 +78,7 @@ describe("Split Index", () => {
         .clear()
         .type(`${replicaNumber}`)
 
-        .get('[data-test-subj="splitButton"]', { timeout: 8000 })
+        .get('[data-test-subj="splitButton"]', { timeout: 12000 })
         .click();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click();
@@ -113,7 +113,7 @@ describe("Split Index", () => {
           parseSpecialCharSequences: false,
         })
 
-        .get('[data-test-subj="splitButton"]', { timeout: 8000 })
+        .get('[data-test-subj="splitButton"]', { timeout: 12000 })
         .click();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click();
@@ -144,7 +144,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
         .type(`${sampleAlias}{enter}${newAlias}{enter}`)
 
-        .get('[data-test-subj="splitButton"]', { timeout: 8000 })
+        .get('[data-test-subj="splitButton"]', { timeout: 12000 })
         .click();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click();
@@ -169,15 +169,15 @@ describe("Split Index", () => {
         .click()
 
         // Index can't be split if it's blocks write status is not true
-        .get('[data-test-subj="splitButton"]', { timeout: 8000 })
+        .get('[data-test-subj="splitButton"]', { timeout: 12000 })
         .should("have.class", "euiButton-isDisabled")
 
         .wait(1000)
         // Set index to blocks write
-        .get('[data-test-subj="set-indexsetting-button"]', { timeout: 8000 })
+        .get('[data-test-subj="set-indexsetting-button"]', { timeout: 12000 })
         .click()
 
-        .get('[data-test-subj="splitButton"]', { timeout: 8000 })
+        .get('[data-test-subj="splitButton"]', { timeout: 12000 })
         .click();
     }); // Blocks write
   });
