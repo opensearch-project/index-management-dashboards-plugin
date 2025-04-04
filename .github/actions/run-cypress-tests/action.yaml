@@ -123,7 +123,7 @@ runs:
       # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
     # for now just chrome, use matrix to do all browsers later
     - name: Cypress tests
-      uses: cypress-io/github-action@v2
+      uses: cypress-io/github-action@v5
       if: ${{ inputs.with-security == 'false' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
@@ -131,7 +131,7 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
     - name: Cypress tests
-      uses: cypress-io/github-action@v2
+      uses: cypress-io/github-action@v5
       if: ${{ inputs.with-security == 'true' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
