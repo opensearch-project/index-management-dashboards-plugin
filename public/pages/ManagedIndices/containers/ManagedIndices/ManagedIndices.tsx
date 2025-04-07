@@ -80,6 +80,7 @@ interface ManagedIndicesState extends DataSourceMenuProperties {
 }
 
 export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, ManagedIndicesState> {
+  private _isMounted: boolean = false;
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<ManagedIndexItem>[];
 
@@ -196,6 +197,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
   };
 
   async componentDidMount() {
+    this._isMounted = true;
     const breadCrumbs = this.state.useUpdatedUX
       ? [BREADCRUMBS.MANAGED_INDICES]
       : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES];
@@ -206,6 +208,10 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         { text: BREADCRUMBS.MANAGED_INDICES.text.concat(` (${this.state.totalManagedIndices})`), href: BREADCRUMBS.MANAGED_INDICES.href },
       ]);
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async componentDidUpdate(prevProps: ManagedIndicesProps, prevState: ManagedIndicesState) {
@@ -268,6 +274,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
   };
 
   getManagedIndices = async (): Promise<void> => {
+    if (!this._isMounted) return;
     this.setState({ loadingManagedIndices: true });
     try {
       const { managedIndexService, history } = this.props;
@@ -281,17 +288,20 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         indices: this.getFieldClausesFromState("indices"),
         dataStreams: this.getFieldClausesFromState("data_streams"),
       });
-
-      if (getManagedIndicesResponse.ok) {
-        const {
-          response: { managedIndices, totalManagedIndices },
-        } = getManagedIndicesResponse;
-        this.setState({ managedIndices, totalManagedIndices });
-      } else {
-        this.context.notifications.toasts.addDanger(getManagedIndicesResponse.error);
+      if (this._isMounted) {
+        if (getManagedIndicesResponse.ok) {
+          const {
+            response: { managedIndices, totalManagedIndices },
+          } = getManagedIndicesResponse;
+          this.setState({ managedIndices, totalManagedIndices });
+        } else {
+          this.context.notifications.toasts.addDanger(getManagedIndicesResponse.error);
+        }
       }
     } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indexes"));
+      if (this._isMounted) {
+        this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indexes"));
+      }
     }
 
     // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.

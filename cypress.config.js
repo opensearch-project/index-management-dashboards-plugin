@@ -9,12 +9,20 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:5601",
     viewportWidth: 2000,
     viewportHeight: 1320,
+
+    // Performance optimizations
+    numTestsKeptInMemory: 0,
+    experimentalMemoryManagement: true,
+
+    // Environment variables
     env: {
       openSearchUrl: "http://localhost:9200",
       SECURITY_ENABLED: false,
       username: "admin",
       password: "admin",
     },
+
+    // Certificate configurations
     clientCertificates: [
       {
         url: "https://localhost:9200/.opendistro-ism*",
@@ -40,7 +48,7 @@ module.exports = defineConfig({
       },
     ],
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      config.env.NODE_OPTIONS = "—max-old-space-size=40960";
       return config;
     },
   },

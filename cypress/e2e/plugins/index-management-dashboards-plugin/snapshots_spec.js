@@ -25,7 +25,7 @@ describe("Snapshots", () => {
       cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/repositories`);
 
       // Route to create repository page
-      cy.contains("Create repository").click({ force: true });
+      cy.contains("Create repository").click();
 
       // Type in repository name
       cy.get(`input[data-test-subj="repoNameInput"]`).focus().type("test_repo");
@@ -37,7 +37,7 @@ describe("Snapshots", () => {
       cy.dismissToast();
 
       // Click Add button
-      cy.get("button").contains("Add").click({ force: true });
+      cy.get("button").contains("Add").click();
 
       // Confirm repository created
       cy.contains("test_repo");
@@ -61,7 +61,7 @@ describe("Snapshots", () => {
         .should("be.visible")
         .should("not.be.disabled")
         .contains("Take snapshot")
-        .click({ force: true });
+        .click();
 
       // Confirm test_repo exists and is in the Select repo field
       cy.contains("test_repo");
@@ -71,17 +71,20 @@ describe("Snapshots", () => {
 
       // Select all indexes to be included
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
+      cy.wait(1000);
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
+      cy.wait(1000);
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
+      cy.wait(1000);
 
       // if a toast message pops up then dismiss it
       cy.dismissToast();
 
       // Click 'Add' button to create snapshot
-      cy.get(`[data-test-subj="flyout-footer-action-button"]`).contains("Add", { timeout: 3000 }).click({ force: true });
+      cy.get(`[data-test-subj="flyout-footer-action-button"]`).contains("Add", { timeout: 3000 }).click();
 
       // check for success status and snapshot name
-      cy.get("button").contains("Refresh").click({ force: true });
+      cy.get("button").contains("Refresh").click();
 
       cy.contains("Success");
 
@@ -98,13 +101,13 @@ describe("Snapshots", () => {
         .should("be.visible")
         .should("not.be.disabled")
         .contains("Refresh")
-        .click({ force: true });
+        .click();
 
       // Select test snapshot with a 2sec timeout
-      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`, { timeout: 2000 }).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`, { timeout: 2000 }).check();
 
       // click "Restore" button
-      cy.get(`[data-test-subj="restoreButton"]`).should("be.visible").should("not.be.disabled").click({ force: true });
+      cy.get(`[data-test-subj="restoreButton"]`).should("be.visible").should("not.be.disabled").click();
 
       // if a toast message pops up then dismiss it
       cy.dismissToast();
@@ -116,7 +119,7 @@ describe("Snapshots", () => {
       cy.get(`input[data-test-subj="prefixInput"]`).type("restored_");
 
       // Click restore snapshot button
-      cy.get(`[data-test-subj="flyout-footer-action-button"]`).contains("Restore snapshot").click({ force: true });
+      cy.get(`[data-test-subj="flyout-footer-action-button"]`).contains("Restore snapshot").click();
 
       // Check for success toast
       cy.contains(`Restore from snapshot "test_snapshot" is in progress.`);
@@ -127,7 +130,7 @@ describe("Snapshots", () => {
     it("deletes snapshot successfully", () => {
       cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/snapshots`);
       // Select test snapshot
-      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check();
 
       // click "Delete" button
       cy.get(`[data-test-subj="deleteButton"]`)
@@ -135,10 +138,10 @@ describe("Snapshots", () => {
         .should("not.be.disabled")
         .get("button")
         .contains("Delete", { timeout: 3000 })
-        .click({ force: true });
+        .click();
 
       // click "Delete snapshot" button on modal with a 2sec timeout
-      cy.get("button", { timeout: 2000 }).contains("Delete snapshot").click({ force: true });
+      cy.get("button", { timeout: 2000 }).contains("Delete snapshot").click();
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
