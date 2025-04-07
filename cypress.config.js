@@ -48,7 +48,7 @@ module.exports = defineConfig({
       },
     ],
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      config.env.NODE_OPTIONS = "—max-old-space-size=40960";
       return config;
     },
   },
