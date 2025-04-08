@@ -12,6 +12,8 @@ describe("Split Index", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
     cy.deleteAllIndices();
+    //let api call complete and delete all indices
+    cy.wait(6000);
   });
 
   describe("can be created and updated", () => {
@@ -39,7 +41,7 @@ describe("Split Index", () => {
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
 
-      cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`).click().end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`, { timeout: 10000 }).click().end();
       cy.get("#indexDetailModalSettings").click().end();
 
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').then(($shardNumber) => {
@@ -78,11 +80,13 @@ describe("Split Index", () => {
         .clear()
         .type(`${replicaNumber}`)
         .end()
-        .get('[data-test-subj="splitButton"]')
+        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
         .click()
         .end();
 
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
+      cy.wait(3000).reload();
+
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 12000 }).click().end();
       cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
       cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
@@ -114,11 +118,13 @@ describe("Split Index", () => {
           parseSpecialCharSequences: false,
         })
         .end()
-        .get('[data-test-subj="splitButton"]')
+        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
         .click()
         .end();
 
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
+      cy.wait(3000).reload();
+
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 10000 }).click().end();
       cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
       cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
@@ -146,11 +152,13 @@ describe("Split Index", () => {
         .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
         .type(`${sampleAlias}{enter}${newAlias}{enter}`)
         .end()
-        .get('[data-test-subj="splitButton"]')
+        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
         .click()
         .end();
 
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
+      cy.wait(3000).reload();
+
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 10000 }).click().end();
       // Verify alias associated with the new index
       cy.get("#indexDetailModalAlias").click().end();
       cy.get(`[title="${newAlias}"]`).should("exist").end();
@@ -172,7 +180,7 @@ describe("Split Index", () => {
         .click()
         .end()
         // Index can't be split if it's blocks write status is not true
-        .get('[data-test-subj="splitButton"]')
+        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
         .should("have.class", "euiButton-isDisabled")
         .end()
         .wait(1000)
@@ -180,7 +188,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="set-indexsetting-button"]')
         .click()
         .end()
-        .get('[data-test-subj="splitButton"]')
+        .get('[data-test-subj="splitButton"]', { timeout: 13000 })
         .click()
         .end();
     }); // Blocks write

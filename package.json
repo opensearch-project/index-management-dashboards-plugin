@@ -1,6 +1,6 @@
 {
   "name": "opensearch_index_management_dashboards",
-  "version": "3.0.0.0-alpha1",
+  "version": "3.0.0.0-beta1",
   "description": "Opensearch Dashboards plugin for Index Management",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -34,7 +34,7 @@
     "@cypress/request": "^3.0.0",
     "**/ansi-regex": "^5.0.1",
     "**/loader-utils": "^2.0.4",
-    "**/typescript": "4.0.2",
+    "**/typescript": "4.6.4",
     "cross-spawn": "^7.0.5",
     "**/micromatch": "^4.0.8",
     "**/glob-parent": "^5.1.2",
@@ -42,6 +42,7 @@
     "**/elliptic": "^6.5.4"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@testing-library/dom": "^8.11.3",
@@ -52,7 +53,7 @@
     "@types/json-schema": "^7.0.11",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.3.2",
-    "cypress": "12.17.4",
+    "cypress": "^13.6.0",
     "diff": "^4.0.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
