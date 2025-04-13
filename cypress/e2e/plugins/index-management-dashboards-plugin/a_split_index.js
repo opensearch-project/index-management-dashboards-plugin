@@ -11,14 +11,13 @@ describe("Split Index", () => {
   before(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
-    cy.deleteAllIndices();
   });
 
   describe("can be created and updated", () => {
     beforeEach(() => {
       // Visit ISM OSD
       cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
-      cy.contains("Rows per page", { timeout: 60000 });
+      cy.contains("Rows per page", { timeout: 20000 });
     });
 
     let splitNumber = 2;
