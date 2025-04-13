@@ -6,22 +6,35 @@ import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const sampleIndex = "index-split";
 const sampleAlias = "alias-split";
+let splitNumber = 2;
+let replicaNumber = 1;
 
 describe("Split Index", () => {
   before(() => {
-    // Set welcome screen tracking to false
-    localStorage.setItem("home:welcome:show", "false");
+    cy.window().then((win) => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      win.localStorage.setItem("home:welcome:show", "false");
+    });
   });
 
   describe("can be created and updated", () => {
     beforeEach(() => {
-      // Visit ISM OSD
-      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
-      cy.contains("Rows per page", { timeout: 20000 });
+      // Clear session data between tests
+      Cypress.session.clearCurrentSessionData();
+
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`, {
+        timeout: 30000,
+        onBeforeLoad: (win) => {
+          win.sessionStorage.clear();
+          win.localStorage.clear();
+        },
+      });
+
+      // Wait for page load with proper assertion
+      cy.contains("Rows per page", { timeout: 20000 }).should("be.visible");
     });
 
-    let splitNumber = 2;
-    let replicaNumber = 1;
     it("Create an index successfully", () => {
       // enter create page
       cy.get('[data-test-subj="Create IndexButton"]').click();
@@ -37,21 +50,6 @@ describe("Split Index", () => {
 
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
-
-      // cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`, { timeout: 10000 }).click().end();
-      // cy.get("#indexDetailModalSettings").click().end();
-      //
-      // cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').then(($shardNumber) => {
-      //   splitNumber = $shardNumber.attr("title") * 2;
-      // });
-      //
-      // cy.get("#indexDetailModalAlias").click().end();
-      // cy.get(`[title="${sampleAlias}"]`).should("exist").end();
-      //
-      // // Update Index status to blocks write otherwise we can't apply split operation on it
-      // cy.updateIndexSettings(sampleIndex, {
-      //   "index.blocks.write": "true",
-      // }).end();
     }); // create index
 
     it("Split successfully", () => {
