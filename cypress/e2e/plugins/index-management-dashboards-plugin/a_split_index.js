@@ -12,7 +12,6 @@ describe("Split Index", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
     cy.deleteAllIndices();
-    cy.wait("@deleteIndices");
   });
 
   describe("can be created and updated", () => {
