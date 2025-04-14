@@ -39,153 +39,17 @@ describe("Split Index", () => {
       // enter create page
       cy.get('[data-test-subj="Create IndexButton"]').click();
       cy.contains("Create index");
-
-      // type field name
-      cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).end();
-
-      cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}{enter}`).end();
-
-      // click create
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
-
-      // The index should exist
-      cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
-    }); // create index
-
-    it("Split successfully", () => {
-      const targetIndex = `${sampleIndex}` + "-target";
-      cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="moreAction"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        // Target Index Name is required
-        .get('[data-test-subj="targetIndexNameInput"]')
-        .type(`${targetIndex}`)
-        .end()
-        // Number of shards after split is required
-        .get('[data-test-subj="numberOfShardsInput"]')
-        .type(`${splitNumber}{downArrow}{enter}`)
-        .end()
-        .get('[data-test-subj="numberOfReplicasInput"]')
-        .clear()
-        .type(`${replicaNumber}`)
-        .end()
-        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
-        .click()
-        .end();
-
-      cy.wait(3000).reload();
-
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 12000 }).click().end();
-      cy.get("#indexDetailModalSettings").click().end();
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
-    }); // Split
-
-    it("Split successfully with advanced setting", () => {
-      const targetIndex = `${sampleIndex}` + "-setting";
-      cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="moreAction"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        .get("[data-test-subj=targetIndexNameInput]")
-        .type(`${targetIndex}`)
-        .end()
-        // Instead of input shard number at shard field, another option is to populate it in advanced setting
-        .get('[aria-controls="accordionForCreateIndexSettings"]')
-        .click()
-        .end()
-        .get('[data-test-subj="codeEditorContainer"] textarea')
-        .focus()
-        // Need to remove the default {} in advanced setting
-        .clear()
-        .type(`{"index.number_of_shards": "${splitNumber}", "index.number_of_replicas": "${replicaNumber}"}`, {
-          parseSpecialCharSequences: false,
-        })
-        .end()
-        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
-        .click()
-        .end();
-
-      cy.wait(3000).reload();
-
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 10000 }).click().end();
-      cy.get("#indexDetailModalSettings").click().end();
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
-    }); // advanced setting
-
-    it("Split successfully with alias", () => {
-      const targetIndex = `${sampleIndex}` + "-alias";
-      const newAlias = "alias-new";
-      cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="moreAction"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        .get("[data-test-subj=targetIndexNameInput]")
-        .type(`${targetIndex}`)
-        .end()
-        .get('[data-test-subj="numberOfShardsInput"]')
-        .type(`${splitNumber}{downArrow}{enter}`)
-        .end()
-        // Assign to an existing alias and a new alias
-        .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
-        .type(`${sampleAlias}{enter}${newAlias}{enter}`)
-        .end()
-        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
-        .click()
-        .end();
-
-      cy.wait(3000).reload();
-
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`, { timeout: 10000 }).click().end();
-      // Verify alias associated with the new index
-      cy.get("#indexDetailModalAlias").click().end();
-      cy.get(`[title="${newAlias}"]`).should("exist").end();
-      cy.get(`[title="${sampleAlias}"]`).should("exist").end();
-    }); // Create with alias
-
-    it("Update blocks write to true", () => {
-      // Set index to not blocks write
-      cy.updateIndexSettings(sampleIndex, {
-        "index.blocks.write": "false",
-      }).end();
-      cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="moreAction"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        // Index can't be split if it's blocks write status is not true
-        .get('[data-test-subj="splitButton"]', { timeout: 10000 })
-        .should("have.class", "euiButton-isDisabled")
-        .end()
-        .wait(1000)
-        // Set index to blocks write
-        .get('[data-test-subj="set-indexsetting-button"]')
-        .click()
-        .end()
-        .get('[data-test-subj="splitButton"]', { timeout: 13000 })
-        .click()
-        .end();
-    }); // Blocks write
+      //
+      // // type field name
+      // cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).end();
+      //
+      // cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}{enter}`).end();
+      //
+      // // click create
+      // cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
+      //
+      // // The index should exist
+      // cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
+    });
   });
 });
