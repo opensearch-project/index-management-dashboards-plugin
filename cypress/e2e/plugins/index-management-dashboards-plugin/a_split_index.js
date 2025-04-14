@@ -41,12 +41,14 @@ describe("Split Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).end();
+      cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).blur();
+
+      cy.wait(1000);
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}{enter}`).end();
 
       // click create
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
+      cy.get('[data-test-subj="createIndexCreateButton"]').click().end();
 
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
