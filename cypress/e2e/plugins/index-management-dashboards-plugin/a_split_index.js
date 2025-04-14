@@ -52,6 +52,21 @@ describe("Split Index", () => {
 
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
+
+      cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`).click().end();
+      cy.get("#indexDetailModalSettings").click().end();
+
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').then(($shardNumber) => {
+        splitNumber = $shardNumber.attr("title") * 2;
+      });
+
+      cy.get("#indexDetailModalAlias").click().end();
+      cy.get(`[title="${sampleAlias}"]`).should("exist").end();
+
+      // Update Index status to blocks write otherwise we can't apply split operation on it
+      cy.updateIndexSettings(sampleIndex, {
+        "index.blocks.write": "true",
+      }).end();
     });
   });
 });
