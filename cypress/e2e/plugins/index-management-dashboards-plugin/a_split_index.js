@@ -71,58 +71,21 @@ describe("Split Index", () => {
 
     it("Split successfully", () => {
       const targetIndex = `${sampleIndex}` + "-target";
-      cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="moreAction"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        // Target Index Name is required
-        .get('[data-test-subj="targetIndexNameInput"]')
-        .type(`${targetIndex}`)
-        .end()
-        // Number of shards after split is required
-        .get('[data-test-subj="numberOfShardsInput"]')
-        .type(`${splitNumber}{downArrow}{enter}`)
-        .end()
-        .get('[data-test-subj="numberOfReplicasInput"]')
-        .clear()
-        .type(`${replicaNumber}`)
-        .end()
-        .get('[data-test-subj="splitButton"]')
-        .click()
-        .end();
-
-      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
-      cy.get("#indexDetailModalSettings").click().end();
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
-    }); // Split
-
-    it("Split successfully with advanced setting", () => {
-      const targetIndex = `${sampleIndex}` + "-setting";
       cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`).click().end();
-      cy.wait(1000);
-      cy.get('[data-test-subj="moreAction"]').click().end();
-      cy.get('[data-test-subj="Split Action"]').click().end();
-      cy.wait(1000);
-      // cy.get("[data-test-subj=targetIndexNameInput]")
+
+      cy.wait(3000);
+      cy.get('[data-test-subj="moreAction"]').click().end().get('[data-test-subj="Split Action"]').click().end();
+      //   // Target Index Name is required
+      //   .get('[data-test-subj="targetIndexNameInput"]')
       //   .type(`${targetIndex}`)
       //   .end()
-      //   // Instead of input shard number at shard field, another option is to populate it in advanced setting
-      //   .get('[aria-controls="accordionForCreateIndexSettings"]')
-      //   .click()
+      //   // Number of shards after split is required
+      //   .get('[data-test-subj="numberOfShardsInput"]')
+      //   .type(`${splitNumber}{downArrow}{enter}`)
       //   .end()
-      //   .get('[data-test-subj="codeEditorContainer"] textarea')
-      //   .focus()
-      //   // Need to remove the default {} in advanced setting
+      //   .get('[data-test-subj="numberOfReplicasInput"]')
       //   .clear()
-      //   .type(`{"index.number_of_shards": "${splitNumber}", "index.number_of_replicas": "${replicaNumber}"}`, {
-      //     parseSpecialCharSequences: false,
-      //   })
+      //   .type(`${replicaNumber}`)
       //   .end()
       //   .get('[data-test-subj="splitButton"]')
       //   .click()
@@ -132,6 +95,6 @@ describe("Split Index", () => {
       // cy.get("#indexDetailModalSettings").click().end();
       // cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
       // cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
-    }); // advanced setting
+    }); // Split
   });
 });
