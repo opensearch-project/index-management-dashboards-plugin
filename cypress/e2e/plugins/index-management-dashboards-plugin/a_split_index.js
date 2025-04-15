@@ -75,26 +75,19 @@ describe("Split Index", () => {
 
       cy.wait(3000);
       cy.get('[data-test-subj="moreAction"]').click().end().get('[data-test-subj="Split Action"]').click().end();
-      //   // Target Index Name is required
-      //   .get('[data-test-subj="targetIndexNameInput"]')
-      //   .type(`${targetIndex}`)
-      //   .end()
-      //   // Number of shards after split is required
-      //   .get('[data-test-subj="numberOfShardsInput"]')
-      //   .type(`${splitNumber}{downArrow}{enter}`)
-      //   .end()
-      //   .get('[data-test-subj="numberOfReplicasInput"]')
-      //   .clear()
-      //   .type(`${replicaNumber}`)
-      //   .end()
-      //   .get('[data-test-subj="splitButton"]')
-      //   .click()
-      //   .end();
-      //
-      // cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
-      // cy.get("#indexDetailModalSettings").click().end();
-      // cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      // cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
+      // Target Index Name is required
+      cy.get('[data-test-subj="targetIndexNameInput"]').type(`${targetIndex}`).end();
+      // Number of shards after split is required
+      cy.get('[data-test-subj="numberOfShardsInput"]').type(`${splitNumber}{downArrow}{enter}`).end();
+      cy.get('[data-test-subj="numberOfReplicasInput"]').clear().type(`${replicaNumber}`).end();
+      cy.get('[data-test-subj="splitButton"]').click().end();
+
+      cy.wait(3000);
+
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
+      cy.get("#indexDetailModalSettings").click().end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
     }); // Split
   });
 });
