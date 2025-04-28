@@ -2,7 +2,7 @@ name: 'Install Dashboards with Plugin via Binary'
 
 on: [push, pull_request]
 env:
-  OPENSEARCH_VERSION: '3.0.0'
+  OPENSEARCH_VERSION: 'main'
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
@@ -19,6 +19,12 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
       - name: Set env
         run: |
