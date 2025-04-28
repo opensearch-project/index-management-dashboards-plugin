@@ -20,12 +20,6 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v3
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
       - name: Set env
         run: |
           opensearch_version=$(node -p "require('./opensearch_dashboards.json').opensearchDashboardsVersion")
@@ -42,7 +36,7 @@ jobs:
 
       - name: Run Dashboard
         id: setup-dashboards
-        uses: derek-ho/setup-opensearch-dashboards@v1
+        uses: derek-ho/setup-opensearch-dashboards@v2
         with:
           plugin_name: index-management-dashboards-plugin
           built_plugin_name: index-management-dashboards
