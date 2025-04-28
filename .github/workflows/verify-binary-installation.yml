@@ -2,7 +2,7 @@ name: 'Install Dashboards with Plugin via Binary'
 
 on: [push, pull_request]
 env:
-  OPENSEARCH_VERSION: 'main'
+  OPENSEARCH_VERSION: '3.0'
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
@@ -36,7 +36,7 @@ jobs:
 
       - name: Run Dashboard
         id: setup-dashboards
-        uses: derek-ho/setup-opensearch-dashboards@v2
+        uses: derek-ho/setup-opensearch-dashboards@v1
         with:
           plugin_name: index-management-dashboards-plugin
           built_plugin_name: index-management-dashboards
