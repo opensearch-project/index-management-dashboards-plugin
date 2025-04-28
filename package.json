@@ -39,7 +39,9 @@
     "**/micromatch": "^4.0.8",
     "**/glob-parent": "^5.1.2",
     "**/braces": "^3.0.3",
-    "**/elliptic": "^6.5.4"
+    "**/elliptic": "^6.5.4",
+    "@babel/runtime": "^7.26.10",
+    "@babel/helpers": "^7.26.10"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
