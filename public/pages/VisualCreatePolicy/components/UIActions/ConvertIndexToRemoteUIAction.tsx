@@ -44,7 +44,7 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
               const repository = e.target.value;
               onChangeAction(
                 this.clone({
-                  snapshot: {
+                  convert_index_to_remote: {
                     ...action.action.convert_index_to_remote,
                     repository,
                   },
@@ -64,8 +64,8 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
               const snapshot = e.target.value;
               onChangeAction(
                 this.clone({
-                  snapshot: {
-                    ...action.convert_index_to_remote.snapshot,
+                  convert_index_to_remote: {
+                    ...action.action.convert_index_to_remote,
                     snapshot,
                   },
                 })
