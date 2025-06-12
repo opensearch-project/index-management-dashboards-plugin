@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import Notifications from "./Notifications";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -52,6 +52,8 @@ function renderNotificationsWithRouter(initialEntries = [ROUTES.NOTIFICATIONS] a
 }
 
 describe("<Notifications /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {

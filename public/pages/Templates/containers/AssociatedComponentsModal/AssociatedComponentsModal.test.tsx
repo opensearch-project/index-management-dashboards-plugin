@@ -10,7 +10,7 @@ import AssociatedComponentsModal, { AssociatedComponentsModalProps } from "./Ass
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 function renderWithServices(props: AssociatedComponentsModalProps) {
   return {
@@ -25,6 +25,8 @@ function renderWithServices(props: AssociatedComponentsModalProps) {
 }
 
 describe("<AssociatedComponentsModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders with empty", async () => {
     renderWithServices({
       template: {

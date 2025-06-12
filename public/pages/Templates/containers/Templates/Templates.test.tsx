@@ -13,7 +13,7 @@ import Templates from "./index";
 import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { ITemplate } from "../../interface";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
@@ -58,6 +58,8 @@ function renderWithRouter() {
 const testTemplateId = "test";
 
 describe("<Templates /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       if (payload.endpoint === "cat.templates") {

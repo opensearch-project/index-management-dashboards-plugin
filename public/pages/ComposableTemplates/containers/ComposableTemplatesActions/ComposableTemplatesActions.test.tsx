@@ -6,9 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import ComposableTemplatesActions, { ComposableTemplatesActionsProps, ComposableTemplatesDeleteAction } from "./index";
+import ComposableTemplatesActions, { ComposableTemplatesActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
@@ -32,6 +32,8 @@ function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history"
 }
 
 describe("<ComposableTemplatesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (): Promise<any> => {

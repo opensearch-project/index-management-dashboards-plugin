@@ -6,7 +6,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { DetailLink } from "./DetailLink";
 import { ErrorToastContentForJob } from "./ErrorToastContentForJob";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { FormatResourceWithClusterInfo, FormatResourcesWithClusterInfo } from "./FormatResourceWithClusterInfo";
 
 describe("<DetailLink /> spec", () => {
@@ -35,6 +35,8 @@ describe("<DetailLink /> spec", () => {
 });
 
 describe("<ErrorToastContentForJob /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("render with default props", async () => {
     const { container } = render(<ErrorToastContentForJob />);
     expect(container).toMatchSnapshot();

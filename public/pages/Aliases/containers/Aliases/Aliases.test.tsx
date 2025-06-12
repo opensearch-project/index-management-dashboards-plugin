@@ -13,7 +13,7 @@ import Aliases from "./Aliases";
 import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { IAlias } from "../../interface";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
@@ -59,6 +59,8 @@ const testAliasId = "test";
 const multiIndexAliasId = "test2";
 
 describe("<Aliases /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       if (payload.endpoint === "cat.aliases") {

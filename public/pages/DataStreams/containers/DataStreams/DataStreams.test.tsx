@@ -13,7 +13,7 @@ import DataStreams from "./index";
 import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { DataStreamStats, DataStreamWithStats } from "../../interface";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
@@ -59,6 +59,8 @@ function renderWithRouter() {
 const testTemplateId = "test";
 
 describe("<DataStreams /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       const path: string = payload?.data?.path || "";

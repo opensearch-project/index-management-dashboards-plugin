@@ -6,15 +6,14 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import SnapshotRenameOptions from "./SnapshotRenameOptions";
-
 
 const testProps = {
   onDoNotRenameToggle: jest.fn(),
   onAddPrefixToggle: jest.fn(),
   onRenameIndicesToggle: jest.fn(),
-  width: "200"
+  width: "200",
 };
 
 afterEach(() => {
@@ -22,14 +21,10 @@ afterEach(() => {
 });
 
 describe("SnapshotRenameOptions component", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders without error", () => {
-    const { container } = render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={true}
-        addPrefix={false}
-        renameIndices={false} />
-    );
+    const { container } = render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
     expect(screen.getByText("Do not rename")).toBeInTheDocument();
     expect(screen.getByText("Add prefix to restored index names")).toBeInTheDocument();
@@ -42,13 +37,7 @@ describe("SnapshotRenameOptions component", () => {
   });
 
   it("accepts user input", () => {
-    render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={true}
-        addPrefix={false}
-        renameIndices={false} />
-    );
+    render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
     userEvent.click(screen.getByLabelText("Add prefix to restored index names"));
 
@@ -60,17 +49,10 @@ describe("SnapshotRenameOptions component", () => {
 
     cleanup();
 
-    render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={false}
-        addPrefix={true}
-        renameIndices={false} />
-    )
+    render(<SnapshotRenameOptions {...testProps} doNotRename={false} addPrefix={true} renameIndices={false} />);
 
     userEvent.click(screen.getByLabelText("Do not rename"));
 
     expect(testProps.onDoNotRenameToggle).toBeCalled();
-
   });
 });

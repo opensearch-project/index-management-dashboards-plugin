@@ -11,6 +11,8 @@ import { fireEvent } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event/dist";
 
 describe("<DeleteModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     const { baseElement } = render(<DeleteModal policyId="some_id" closeDeleteModal={() => {}} onClickDelete={() => {}} />);
     expect(baseElement).toMatchSnapshot();

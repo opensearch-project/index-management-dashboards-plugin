@@ -7,7 +7,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { Route, Switch, HashRouter as Router, RouteComponentProps } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import IndicesActions, { IndicesActionsProps } from "./index";
@@ -56,6 +56,8 @@ function renderWithRouter(
 }
 
 describe("<IndicesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   /**
    * OuiPopover is using requestAnimationFrame
    * to do some async state change.

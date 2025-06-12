@@ -5,11 +5,9 @@
 
 import React, { useState } from "react";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import IndexForm, { IndexFormProps } from "./index";
 import { ServicesContext } from "../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../test/mocks";
-import { IndicesUpdateMode } from "../../utils/constants";
 import { CoreServicesContext } from "../../components/core_services";
 
 function IndexFormWrapper(props: Omit<IndexFormProps, "onChange">) {

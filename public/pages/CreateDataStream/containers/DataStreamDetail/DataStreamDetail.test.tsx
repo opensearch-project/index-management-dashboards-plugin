@@ -11,7 +11,7 @@ import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks
 import { CoreServicesContext } from "../../../../components/core_services";
 import { HashRouter, Route } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 jest.mock("../../../../services/Services", () => ({
@@ -46,6 +46,8 @@ function renderCreateDataStream(props: Omit<DataStreamDetailProps, "history">) {
 }
 
 describe("<DataStreamDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   // main unit test case is in CreateDataStream.test.tsx
   it("render component", async () => {
     const { container } = renderCreateDataStream({});

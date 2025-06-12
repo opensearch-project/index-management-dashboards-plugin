@@ -5,7 +5,7 @@
 
 import React, { useRef } from "react";
 import { act, render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { HashRouter, Route } from "react-router-dom";
 import { renderHook } from "@testing-library/react-hooks";
 import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
@@ -61,6 +61,8 @@ function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history" | 
 }
 
 describe("<TemplateDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   // main unit test case is in CreateIndexTemplate.test.tsx
   it("render component in non-edit-mode", async () => {
     let times = 0;

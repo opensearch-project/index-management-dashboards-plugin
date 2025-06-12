@@ -7,7 +7,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -93,6 +93,8 @@ const testPolicy = {
 };
 
 describe("<IndexPolicies /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
       ok: true,

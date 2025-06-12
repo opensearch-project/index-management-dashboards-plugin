@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor, findByText } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -178,6 +178,8 @@ const mockApi = (validateQueryFail?: boolean) => {
 };
 
 describe("<ForceMerge /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     mockApi();
   });

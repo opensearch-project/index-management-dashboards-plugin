@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import CreateDataStream from "./CreateDataStream";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
@@ -52,6 +52,8 @@ function renderCreateDataStreamWithRouter(initialEntries = [ROUTES.DATA_STREAMS]
 }
 
 describe("<CreateDataStream /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });

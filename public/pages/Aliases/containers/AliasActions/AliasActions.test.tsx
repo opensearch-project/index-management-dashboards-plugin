@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import AliasesActions, { AliasesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
@@ -68,6 +68,8 @@ const selectedItems: IAlias[] = [
 ];
 
 describe("<AliasesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],

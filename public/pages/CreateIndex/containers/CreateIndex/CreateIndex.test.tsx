@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import CreateIndex from "./CreateIndex";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
@@ -80,6 +80,8 @@ function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as s
 }
 
 describe("<CreateIndex /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });

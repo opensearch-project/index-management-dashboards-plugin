@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { act, render, waitFor } from "@testing-library/react";
 import FilterGroup, { IFilterGroupProps } from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const WrappedComponent = (props: IFilterGroupProps) => {
   const [value, onChange] = useState<string[] | undefined>();
@@ -14,6 +14,7 @@ const WrappedComponent = (props: IFilterGroupProps) => {
 };
 
 describe("<FilterGroup /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("render the component", async () => {
     const { findByPlaceholderText, getByTestId, findByText, getByText, queryByText } = render(
       <>

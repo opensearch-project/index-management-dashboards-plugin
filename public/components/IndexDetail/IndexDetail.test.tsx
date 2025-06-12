@@ -7,7 +7,7 @@ import React, { useRef, forwardRef, useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);
@@ -26,6 +26,8 @@ const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "on
 const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [{ alias: "test" }] });
 
 describe("<IndexDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { container } = render(<IndexDetail docVersion="latest" refreshOptions={refreshOptions} onChange={() => {}} />);
     await waitFor(() => {

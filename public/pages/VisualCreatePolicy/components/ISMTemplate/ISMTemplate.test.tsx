@@ -11,6 +11,8 @@ import { fireEvent } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event/dist";
 
 describe("<ISMTemplate /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     const { container } = render(
       <ISMTemplate

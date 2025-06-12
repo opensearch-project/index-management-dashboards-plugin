@@ -6,10 +6,12 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import DeleteIndexModal from "./DeleteIndexModal";
 
 describe("<DeleteIndexModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { getByText } = render(<DeleteIndexModal selectedItems={[".kibana", "test"]} visible onConfirm={() => {}} onClose={() => {}} />);
 

@@ -5,7 +5,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -68,6 +68,8 @@ function renderTransformDetailsWithRouter(initialEntries = ["/"]) {
 }
 
 describe("<TransformDetails /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,

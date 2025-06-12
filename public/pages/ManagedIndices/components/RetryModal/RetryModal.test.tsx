@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import RetryModal from "./RetryModal";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { ManagedIndexItem } from "../../../../../models/interfaces";
@@ -33,6 +33,8 @@ const retryItems: ManagedIndexItem[] = [
 ];
 
 describe("<RetryModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     render(<RetryModal services={browserServicesMock} retryItems={retryItems} onClose={() => {}} />);
     // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library

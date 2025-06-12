@@ -7,7 +7,7 @@ import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -164,6 +164,8 @@ function renderCreateRollupFormWithRouter() {
 }
 
 describe("<CreateRollupForm /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { container } = renderCreateRollupFormWithRouter();
 
@@ -207,6 +209,8 @@ describe("<CreateRollupForm /> spec", () => {
 });
 
 describe("<CreateRollupForm /> creation", () => {
+  const userEvent = userEventModule.setup();
+
   browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
     ok: true,
     response: {

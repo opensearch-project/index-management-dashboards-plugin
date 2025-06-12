@@ -6,9 +6,11 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import SimplePopover, { loopToGetPath } from "./SimplePopover";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 describe("<SimplePopover /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     render(<SimplePopover button={<div>123</div>} />);
     expect(document.body.children).toMatchSnapshot();

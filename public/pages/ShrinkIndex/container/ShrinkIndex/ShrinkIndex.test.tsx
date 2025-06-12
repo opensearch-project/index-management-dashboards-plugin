@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -265,6 +265,8 @@ const mockApi = () => {
 };
 
 describe("<Shrink index /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     mockApi();
     const { container, getByText } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test3`]);

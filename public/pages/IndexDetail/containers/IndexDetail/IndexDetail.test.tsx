@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
@@ -51,6 +51,8 @@ function renderWithRouter(props: Omit<IndexDetailModalProps, keyof RouteComponen
 }
 
 describe("container <IndexDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });

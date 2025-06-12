@@ -6,9 +6,10 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import AdvancedSettings from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 describe("<FormGenerator /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("render the component", () => {
     render(<AdvancedSettings value={{ a: "foo" }} accordionProps={{ id: "test", initialIsOpen: false }} />);
     expect(document.body.children).toMatchSnapshot();

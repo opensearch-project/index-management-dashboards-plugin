@@ -8,7 +8,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ManagedIndices from "./ManagedIndices";
@@ -68,6 +68,8 @@ function renderWithRouter(Component: React.ComponentType<any>) {
 }
 
 describe("<ManagedIndices /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.managedIndexService.getManagedIndices = jest
       .fn()

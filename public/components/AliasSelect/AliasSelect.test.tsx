@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import AliasSelect, { AliasSelectProps } from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const onChangeMock = jest.fn();
 
@@ -25,6 +25,7 @@ const AliasSelectWithOnchange = (props: AliasSelectProps) => {
 };
 
 describe("<AliasSelect /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("renders the component and remove duplicate aliases", async () => {
     const onOptionsChange = jest.fn();
     const { container } = render(

@@ -6,9 +6,8 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import RenameInput from "./RenameInput";
-
 
 const testProps = { getRenamePattern: jest.fn(), getRenameReplacement: jest.fn() };
 
@@ -21,6 +20,8 @@ afterEach(() => {
 });
 
 describe("RenameInput component", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders without error", () => {
     expect(screen.getByText("Rename Pattern")).toBeInTheDocument();
     expect(screen.getByText("Rename Replacement")).toBeInTheDocument();

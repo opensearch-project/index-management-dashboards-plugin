@@ -6,9 +6,8 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import AddPrefixInput from "./AddPrefixInput";
-
 
 const testProps = { getPrefix: jest.fn() };
 
@@ -21,6 +20,8 @@ afterEach(() => {
 });
 
 describe("AddPrefixInput component", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders without error", () => {
     expect(screen.getByText("Specify prefix for restored index names")).toBeInTheDocument();
     expect(screen.getByTestId("prefixInput")).toBeInTheDocument();

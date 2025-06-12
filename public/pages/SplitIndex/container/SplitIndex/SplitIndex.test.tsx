@@ -6,7 +6,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { SplitIndex } from "./SplitIndex";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
@@ -63,6 +63,8 @@ function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {
 const sourceIndexName = "source-index";
 
 describe("<SplitIndex /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {

@@ -5,7 +5,7 @@
 
 import React, { forwardRef, Ref, useRef, useState } from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import IndexMapping, { IIndexMappingsRef, IndexMappingProps, transformObjectToArray } from "./IndexMapping";
 import { MappingsProperties } from "../../../models/interfaces";
 import { renderHook } from "@testing-library/react-hooks";
@@ -26,6 +26,7 @@ const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps
 });
 
 describe("<IndexMapping /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("renders the component", () => {
     const { container } = render(<IndexMapping docVersion="latest" onChange={() => {}} />);
     expect(container.firstChild).toMatchSnapshot();

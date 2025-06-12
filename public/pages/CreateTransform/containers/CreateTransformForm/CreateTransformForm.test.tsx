@@ -7,7 +7,7 @@ import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -210,6 +210,8 @@ function renderCreateTransformFormWithRouter() {
 }
 
 describe("<CreateTransformForm /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
     response: sampleMapping,
@@ -274,6 +276,8 @@ describe("<CreateTransformForm /> spec", () => {
 });
 
 describe("<CreateTransformForm /> creation", () => {
+  const userEvent = userEventModule.setup();
+
   browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
     ok: true,
     response: { indices, totalIndices: 1 },

@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import TemplatesActions, { TemplatesActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
@@ -68,6 +68,8 @@ function renderWithRouter(props: Omit<TemplatesActionsProps, "history">) {
 }
 
 describe("<TemplatesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],

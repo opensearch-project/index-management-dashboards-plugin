@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import CreatePolicy from "./CreatePolicy";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
@@ -81,6 +81,8 @@ function renderCreatePolicyWithRouter(initialEntries = ["/"]) {
 }
 
 describe("<CreatePolicy /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the create component", () => {
     const { container } = renderCreatePolicyWithRouter();
 
