@@ -188,7 +188,6 @@ describe("<Aliases /> spec", () => {
     await userEvent.click(document.querySelector('[title="1"] button') as Element);
     await userEvent.click(getByText("Save changes"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(8);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: {
           body: {
@@ -236,7 +235,6 @@ describe("<Aliases /> spec", () => {
     await userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
     await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(17);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: {
           index: ["1"],

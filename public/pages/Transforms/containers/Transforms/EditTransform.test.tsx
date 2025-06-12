@@ -132,9 +132,9 @@ describe("<EditTransform /> spec", () => {
 
     await waitFor(() => {});
 
-    fireEvent.focus(getByTestId("description"));
-    await userEvent.type(getByTestId("description"), "{selectall}{backspace}some description");
-    fireEvent.blur(getByTestId("description"));
+    await userEvent.clear(getByTestId("description"));
+    await userEvent.type(getByTestId("description"), "some description");
+    await userEvent.click(document.body);
 
     await userEvent.click(getByTestId("editTransformSaveButton"));
 

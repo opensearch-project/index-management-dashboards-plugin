@@ -40,7 +40,8 @@ describe("RenameInput component", () => {
 
     expect(screen.getByTestId("renamePatternInput")).toHaveValue("(.+)");
 
-    await userEvent.type(screen.getByTestId("renameReplacementInput"), "{selectall}{del}test_$1");
+    await userEvent.clear(screen.getByTestId("renameReplacementInput"));
+    await userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
 
     expect(screen.getByTestId("renameReplacementInput")).toHaveValue("test_$1");
   });

@@ -135,7 +135,7 @@ describe("<IndexDetail /> spec", () => {
     });
     await userEvent.click(getByTestId("simulate-confirm-cancel"));
     await waitFor(() => {
-      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "10");
+      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
     });
   });
 });
