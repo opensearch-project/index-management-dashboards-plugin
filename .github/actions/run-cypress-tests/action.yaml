@@ -10,10 +10,11 @@ runs:
   using: "composite"
   steps:
     - name: Set up JDK
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v4
       with:
         # TODO: Parse this from index management plugin
         java-version: 21
+        distribution: 'temurin'
     - name: Checkout index management
       uses: actions/checkout@v2
       with:
