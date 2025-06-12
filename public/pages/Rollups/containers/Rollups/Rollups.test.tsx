@@ -26,15 +26,6 @@ jest.mock("../../../../services/Services", () => ({
   getNavigationUI: jest.fn(),
 }));
 
-beforeEach(() => {
-  (getUISettings as jest.Mock).mockReturnValue({
-    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
-  });
-  (getApplication as jest.Mock).mockReturnValue({});
-
-  (getNavigationUI as jest.Mock).mockReturnValue({});
-});
-
 function renderRollupsWithRouter() {
   return {
     ...render(
@@ -73,6 +64,14 @@ function renderRollupsWithRouter() {
 
 describe("<Rollups /> spec", () => {
   const userEvent = userEventModule.setup();
+  beforeEach(() => {
+    (getUISettings as jest.Mock).mockReturnValue({
+      get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+    });
+    (getApplication as jest.Mock).mockReturnValue({});
+
+    (getNavigationUI as jest.Mock).mockReturnValue({});
+  });
 
   it("renders the component", async () => {
     browserServicesMock.rollupService.getRollups = jest.fn().mockResolvedValue({
@@ -210,11 +209,16 @@ describe("<Rollups /> spec", () => {
 
     await userEvent.click(getByTestId("enableButton"));
 
-    await waitFor(() => {});
-
-    expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testRollup._id} is enabled`);
+    await waitFor(
+      () => {
+        expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
+        expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+        expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testRollup._id} is enabled`);
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 
   it("can disable a rollup job", async () => {
