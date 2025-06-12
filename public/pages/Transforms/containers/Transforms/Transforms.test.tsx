@@ -260,6 +260,8 @@ describe("<Transforms /> spec", () => {
     browserServicesMock.transformService.getTransforms.mockClear();
     await userEvent.click(getByTestId("refreshButton"));
 
-    expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);
+    });
   });
 });
