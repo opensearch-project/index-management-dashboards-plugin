@@ -257,7 +257,7 @@ describe("<Transforms /> spec", () => {
     browserServicesMock.transformService.getTransforms = jest.fn();
 
     const { getByTestId } = renderTransformsWithRouter();
-
+    browserServicesMock.transformService.getTransforms.mockClear();
     await userEvent.click(getByTestId("refreshButton"));
 
     expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);

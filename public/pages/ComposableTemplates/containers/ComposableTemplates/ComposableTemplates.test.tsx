@@ -151,7 +151,8 @@ describe("<ComposableTemplates /> spec", () => {
     /**
      * search
      */
-    await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
+    await userEvent.type(getByPlaceholderText("Search..."), testTemplateId);
+    await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(queryByTestId(`templateDetail-${testTemplateId}`)).toBeNull();
     });
