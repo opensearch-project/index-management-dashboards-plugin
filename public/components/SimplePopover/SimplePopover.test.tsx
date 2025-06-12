@@ -6,9 +6,11 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import SimplePopover, { loopToGetPath } from "./SimplePopover";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 describe("<SimplePopover /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     render(<SimplePopover button={<div>123</div>} />);
     expect(document.body.children).toMatchSnapshot();
@@ -27,11 +29,11 @@ describe("<SimplePopover /> spec", () => {
         <div data-test-subj="anotherElement">another element</div>
       </>
     );
-    userEvent.hover(getByTestId("test"));
+    await userEvent.hover(getByTestId("test"));
     await waitFor(() => {
       expect(queryByText("content in popover")).not.toBeNull();
     });
-    userEvent.hover(getByTestId("anotherElement"));
+    await userEvent.hover(getByTestId("anotherElement"));
     await waitFor(() => {
       expect(queryByText("content in popover")).toBeNull();
     });
@@ -41,11 +43,11 @@ describe("<SimplePopover /> spec", () => {
     const { getByTestId, queryByText } = render(
       <SimplePopover button={<div data-test-subj="test">button</div>}>content in popover</SimplePopover>
     );
-    userEvent.click(getByTestId("test"));
+    await userEvent.click(getByTestId("test"));
     await waitFor(() => {
       expect(queryByText("content in popover")).not.toBeNull();
     });
-    userEvent.click(document.body);
+    await userEvent.click(document.body);
     await waitFor(() => {
       expect(queryByText("content in popover")).toBeNull();
     });

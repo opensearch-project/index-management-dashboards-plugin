@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import CreateIndexTemplate from "./CreateIndexTemplate";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
@@ -56,6 +56,8 @@ function renderCreateIndexTemplateWithRouter(initialEntries = [ROUTES.CREATE_TEM
 }
 
 describe("<CreateIndexTemplate /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
@@ -72,39 +74,39 @@ describe("<CreateIndexTemplate /> spec", () => {
     const submitButton = getByTestId("CreateIndexTemplateCreateButton");
     const shardsInput = getByTestId("form-row-template.settings.index.number_of_shards").querySelector("input") as HTMLInputElement;
     const replicaInput = getByTestId("form-row-template.settings.index.number_of_replicas").querySelector("input") as HTMLInputElement;
-    userEvent.type(templateNameInput, `bad_template`);
+    await userEvent.type(templateNameInput, `bad_template`);
 
-    userEvent.click(submitButton);
+    await userEvent.click(submitButton);
     await waitFor(() => expect(getByText("Index patterns must be defined")).not.toBeNull(), {
       timeout: 3000,
     });
 
     const patternInput = getByTestId("form-row-index_patterns").querySelector('[data-test-subj="comboBoxSearchInput"]') as HTMLInputElement;
-    userEvent.type(patternInput, `test_patterns{enter}`);
+    await userEvent.type(patternInput, `test_patterns{enter}`);
 
-    userEvent.click(submitButton);
+    await userEvent.click(submitButton);
     await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("bad template"));
-    userEvent.clear(templateNameInput);
-    userEvent.type(templateNameInput, "good_template");
+    await userEvent.clear(templateNameInput);
+    await userEvent.type(templateNameInput, "good_template");
 
-    userEvent.clear(shardsInput);
-    userEvent.type(shardsInput, "1.5");
+    await userEvent.clear(shardsInput);
+    await userEvent.type(shardsInput, "1.5");
     await waitFor(() => expect(getByText("Number of primary shards must be an integer.")).toBeInTheDocument(), { timeout: 3000 });
-    userEvent.clear(shardsInput);
-    userEvent.type(shardsInput, "1");
+    await userEvent.clear(shardsInput);
+    await userEvent.type(shardsInput, "1");
 
-    userEvent.clear(replicaInput);
-    userEvent.type(replicaInput, "1.5");
+    await userEvent.clear(replicaInput);
+    await userEvent.type(replicaInput, "1.5");
     await waitFor(() => expect(getByText("Number of replicas must be an integer")).toBeInTheDocument(), { timeout: 3000 });
-    userEvent.clear(replicaInput);
-    userEvent.type(replicaInput, "1");
+    await userEvent.clear(replicaInput);
+    await userEvent.type(replicaInput, "1");
 
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
-    userEvent.click(submitButton);
+    await userEvent.click(getByTestId("createIndexAddFieldButton"));
+    await userEvent.click(submitButton);
     await waitFor(() => expect(getByText("Field name is required, please input")).not.toBeNull());
-    userEvent.click(getByTestId("mapping-visual-editor-0-delete-field"));
+    await userEvent.click(getByTestId("mapping-visual-editor-0-delete-field"));
 
-    userEvent.click(submitButton);
+    await userEvent.click(submitButton);
     await waitFor(
       () => {
         expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({

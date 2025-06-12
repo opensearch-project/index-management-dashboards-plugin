@@ -6,8 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-// @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import IndexControls from "./IndexControls";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
@@ -28,6 +27,8 @@ beforeEach(() => {
 });
 
 describe("<IndexControls /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { container } = render(<IndexControls value={{ search: "testing", status: "1" }} onSearchChange={() => {}} />);
 
@@ -40,13 +41,13 @@ describe("<IndexControls /> spec", () => {
       <IndexControls value={{ search: "", status: "" }} onSearchChange={onSearchChangeMock} />
     );
 
-    userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
+    await userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
     expect(onSearchChangeMock).toBeCalledTimes(1);
     expect(onSearchChangeMock).toBeCalledWith({
       search: "",
       status: "closed",
     });
-    userEvent.type(getByPlaceholderText("Search..."), "test");
+    await userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
       expect(onSearchChangeMock).toBeCalledTimes(5);
       expect(onSearchChangeMock).toBeCalledWith({

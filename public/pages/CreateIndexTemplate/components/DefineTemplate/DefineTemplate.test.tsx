@@ -14,7 +14,7 @@ import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom"
 import { ROUTES } from "../../../../utils/constants";
 import useField from "../../../../lib/field";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const WrappedDefineTemplate = (props: Omit<SubDetailProps, "field"> & { onSubmit?: (value: any) => void }) => {
   const field = useField();
@@ -55,6 +55,8 @@ function renderWithRouter(props: Omit<SubDetailProps, "history" | "field"> & { o
 }
 
 describe("<ComposableTemplatesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (): Promise<any> => {

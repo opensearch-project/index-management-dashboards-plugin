@@ -10,7 +10,7 @@ import ChannelSelect, { ChannelSelectProps } from "./ChannelSelect";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 function renderWithServiceAndCore(props: ChannelSelectProps) {
   return {
@@ -26,6 +26,8 @@ function renderWithServiceAndCore(props: ChannelSelectProps) {
 }
 
 describe("<ChannelNotification /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.notificationService.getChannels = jest.fn(
       async (): Promise<any> => {

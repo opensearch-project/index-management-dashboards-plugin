@@ -5,7 +5,7 @@
 
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import EditTransform from "./EditTransform";
@@ -67,6 +67,8 @@ function renderEditTransformWithRouter(initialEntries = ["/"]) {
 }
 
 describe("<EditTransform /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,
@@ -130,11 +132,11 @@ describe("<EditTransform /> spec", () => {
 
     await waitFor(() => {});
 
-    fireEvent.focus(getByTestId("description"));
-    userEvent.type(getByTestId("description"), "{selectall}{backspace}some description");
-    fireEvent.blur(getByTestId("description"));
+    await userEvent.clear(getByTestId("description"));
+    await userEvent.type(getByTestId("description"), "some description");
+    await userEvent.click(document.body);
 
-    userEvent.click(getByTestId("editTransformSaveButton"));
+    await userEvent.click(getByTestId("editTransformSaveButton"));
 
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledWith(

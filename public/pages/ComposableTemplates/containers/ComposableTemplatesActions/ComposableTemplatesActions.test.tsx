@@ -6,9 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import ComposableTemplatesActions, { ComposableTemplatesActionsProps, ComposableTemplatesDeleteAction } from "./index";
+import ComposableTemplatesActions, { ComposableTemplatesActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
@@ -32,6 +32,8 @@ function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history"
 }
 
 describe("<ComposableTemplatesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (): Promise<any> => {
@@ -81,7 +83,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
         return { ok: true, response: {} };
       }
     );
-    const { container, getByTestId, findByText } = renderWithRouter({
+    const { container, getByTestId, findAllByText } = renderWithRouter({
       selectedItems: ["test_template"],
       onDelete,
     });
@@ -90,9 +92,9 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("deleteAction"));
-    await findByText("Delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteAction"));
+    await findAllByText("Delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -108,7 +110,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
@@ -156,7 +158,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("UnlinkConfirmCheckBox")).not.toBeChecked();
     });
-    userEvent.click(getByTestId("UnlinkConfirmCheckBox"));
+    await userEvent.click(getByTestId("UnlinkConfirmCheckBox"));
     await waitFor(() => {
       expect(getByTestId("deleteConfirmUnlinkButton")).toBeEnabled();
     });

@@ -7,10 +7,12 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 // @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import PolicyControls from "./PolicyControls";
 
 describe("<PolicyControls /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { container } = render(
       <PolicyControls
@@ -39,7 +41,7 @@ describe("<PolicyControls /> spec", () => {
       />
     );
 
-    userEvent.type(getByPlaceholderText("Search"), "four");
+    await userEvent.type(getByPlaceholderText("Search"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });

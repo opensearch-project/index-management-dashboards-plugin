@@ -5,7 +5,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -68,6 +68,8 @@ function renderTransformDetailsWithRouter(initialEntries = ["/"]) {
 }
 
 describe("<TransformDetails /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,
@@ -107,13 +109,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -135,13 +137,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -164,13 +166,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
     await waitFor(() => {});
 
@@ -189,9 +191,9 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
-    userEvent.click(getByTestId("deleteButton"));
+    await userEvent.click(getByTestId("deleteButton"));
 
     await waitFor(() => {});
 
@@ -203,7 +205,7 @@ describe("<TransformDetails /> spec", () => {
 
     expect(getByTestId("confirmModalConfirmButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("confirmModalConfirmButton"));
+    await userEvent.click(getByTestId("confirmModalConfirmButton"));
 
     await waitFor(() => {});
 

@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import CreatePolicy from "./CreatePolicy";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
@@ -81,6 +81,8 @@ function renderCreatePolicyWithRouter(initialEntries = ["/"]) {
 }
 
 describe("<CreatePolicy /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the create component", () => {
     const { container } = renderCreatePolicyWithRouter();
 
@@ -140,12 +142,12 @@ describe("<CreatePolicy /> spec", () => {
 
     expect(queryByText("Required")).toBeNull();
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     expect(queryByText("Required")).not.toBeNull();
 
     fireEvent.focus(getByPlaceholderText("example_policy"));
-    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    await userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
     fireEvent.blur(getByPlaceholderText("example_policy"));
 
     expect(queryByText("Required")).toBeNull();
@@ -156,10 +158,10 @@ describe("<CreatePolicy /> spec", () => {
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
     fireEvent.focus(getByPlaceholderText("example_policy"));
-    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    await userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
     fireEvent.blur(getByPlaceholderText("example_policy"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Created policy: some_policy_id");
@@ -170,10 +172,10 @@ describe("<CreatePolicy /> spec", () => {
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
     fireEvent.focus(getByPlaceholderText("example_policy"));
-    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    await userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
     fireEvent.blur(getByPlaceholderText("example_policy"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("bad policy"));
   });
@@ -183,10 +185,10 @@ describe("<CreatePolicy /> spec", () => {
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
     fireEvent.focus(getByPlaceholderText("example_policy"));
-    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    await userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
     fireEvent.blur(getByPlaceholderText("example_policy"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("this is an error"));
   });
@@ -200,7 +202,7 @@ describe("<CreatePolicy /> spec", () => {
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Updated policy: some_policy_id");
@@ -215,7 +217,7 @@ describe("<CreatePolicy /> spec", () => {
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("bad policy"));
   });
@@ -229,7 +231,7 @@ describe("<CreatePolicy /> spec", () => {
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    await userEvent.click(getByTestId("createPolicyCreateButton"));
 
     await waitFor(() => getByText("this is an error"));
   });
@@ -237,7 +239,7 @@ describe("<CreatePolicy /> spec", () => {
   it("brings you back to policies when clicking cancel", async () => {
     const { getByTestId, getByText } = renderCreatePolicyWithRouter();
 
-    userEvent.click(getByTestId("createPolicyCancelButton"));
+    await userEvent.click(getByTestId("createPolicyCancelButton"));
 
     await waitFor(() => getByText("Testing Policies"));
   });

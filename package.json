@@ -49,7 +49,7 @@
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@testing-library/dom": "^8.11.3",
     "@testing-library/react-hooks": "^7.0.2",
-    "@testing-library/user-event": "^13.1.9",
+    "@testing-library/user-event": "^14.4.3",
     "@types/diff": "^5.0.2",
     "@types/flat": "^5.0.2",
     "@types/json-schema": "^7.0.11",

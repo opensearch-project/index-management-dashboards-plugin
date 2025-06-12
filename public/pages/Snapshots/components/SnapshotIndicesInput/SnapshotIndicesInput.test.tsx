@@ -6,15 +6,14 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import SnapshotIndicesInput from "./SnapshotIndicesInput";
-
 
 const testProps = {
   onIndicesSelectionChange: jest.fn(),
   getIndexOptions: jest.fn(),
   onCreateOption: jest.fn(),
-  isClearable: true
+  isClearable: true,
 };
 
 afterEach(() => {
@@ -22,20 +21,17 @@ afterEach(() => {
 });
 
 describe("SnapshotIndicesInput component", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders without error", () => {
     const { container } = render(
-      <SnapshotIndicesInput
-        {...testProps}
-        indexOptions={[]}
-        selectedIndexOptions={[]}
-        selectedRepoValue="test_repo"
-      />
-    )
+      <SnapshotIndicesInput {...testProps} indexOptions={[]} selectedIndexOptions={[]} selectedRepoValue="test_repo" />
+    );
     expect(screen.getByRole("textbox")).toBeInTheDocument();
     expect(container).toMatchSnapshot();
   });
 
-  it("accepts user input", () => {
+  it("accepts user input", async () => {
     render(
       <SnapshotIndicesInput
         {...testProps}
@@ -45,7 +41,7 @@ describe("SnapshotIndicesInput component", () => {
       />
     );
 
-    userEvent.type(screen.getByRole("textbox"), "test*{enter}");
+    await userEvent.type(screen.getByRole("textbox"), "test*{enter}");
 
     expect(testProps.onCreateOption).toBeCalledTimes(1);
   });
@@ -59,13 +55,13 @@ describe("SnapshotIndicesInput component", () => {
         selectedRepoValue="test_repo"
       />
     );
-    userEvent.click(screen.getByRole("textbox"));
+    await userEvent.click(screen.getByRole("textbox"));
 
     expect(screen.getByText("test_index_1")).toBeInTheDocument();
     expect(screen.getByText("test_index_2")).toBeInTheDocument();
 
-    userEvent.click(screen.getByText("test_index_1"));
-    userEvent.click(screen.getByText("test_index_2"));
+    await userEvent.click(screen.getByText("test_index_1"));
+    await userEvent.click(screen.getByText("test_index_2"));
 
     expect(testProps.onIndicesSelectionChange).toBeCalledTimes(2);
   });

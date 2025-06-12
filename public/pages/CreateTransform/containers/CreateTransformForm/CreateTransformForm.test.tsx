@@ -7,7 +7,7 @@ import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -210,6 +210,8 @@ function renderCreateTransformFormWithRouter() {
 }
 
 describe("<CreateTransformForm /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
     response: sampleMapping,
@@ -250,7 +252,7 @@ describe("<CreateTransformForm /> spec", () => {
 
     expect(getByTestId("createTransformCancelButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("createTransformCancelButton"));
+    await userEvent.click(getByTestId("createTransformCancelButton"));
 
     await waitFor(() => getByText("Testing transform landing page"));
   });
@@ -264,7 +266,7 @@ describe("<CreateTransformForm /> spec", () => {
 
     expect(getByTestId("createTransformNextButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("createTransformNextButton"));
+    await userEvent.click(getByTestId("createTransformNextButton"));
     await waitFor(() => {}, { timeout: 2000 });
 
     // Currently no pop up warnings?
@@ -274,6 +276,8 @@ describe("<CreateTransformForm /> spec", () => {
 });
 
 describe("<CreateTransformForm /> creation", () => {
+  const userEvent = userEventModule.setup();
+
   browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
     ok: true,
     response: { indices, totalIndices: 1 },
@@ -327,7 +331,7 @@ describe("<CreateTransformForm /> creation", () => {
     await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "some_target_index");
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("createTransformNextButton"));
+    await userEvent.click(getByTestId("createTransformNextButton"));
 
     await waitFor(() => {}, { timeout: 4000 });
 
@@ -391,7 +395,7 @@ describe("<CreateTransformForm /> creation", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
     await waitFor(() => {}, { timeout: 2000 });
-    userEvent.click(getByTestId("createTransformNextButton"));
+    await userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 2
     await waitFor(() => {}, { timeout: 2000 });
@@ -399,12 +403,12 @@ describe("<CreateTransformForm /> creation", () => {
 
     // Does not test adding groups and aggregations, this fucntionality is
     // covered by Cypress tests and component Jest tests
-    userEvent.click(getByTestId("createTransformNextButton"));
+    await userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 3
     await waitFor(() => {}, { timeout: 2000 });
     expect(queryByText("Job enabled by default")).not.toBeNull();
-    userEvent.click(getByTestId("createTransformNextButton"));
+    await userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 4
     await waitFor(() => {}, { timeout: 2000 });
@@ -413,7 +417,7 @@ describe("<CreateTransformForm /> creation", () => {
     ).not.toBeNull();
 
     //Test create
-    userEvent.click(getByTestId("createTransformSubmitButton"));
+    await userEvent.click(getByTestId("createTransformSubmitButton"));
     await waitFor(() => {});
 
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);

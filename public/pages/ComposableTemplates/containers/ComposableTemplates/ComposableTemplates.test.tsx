@@ -13,7 +13,7 @@ import ComposableTemplates from "./index";
 import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { ICatComposableTemplate } from "../../interface";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
@@ -59,6 +59,8 @@ function renderWithRouter() {
 const testTemplateId = "test";
 
 describe("<ComposableTemplates /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       if (payload.endpoint === "transport.request" && (payload?.data?.method === "GET" || "")) {
@@ -132,7 +134,7 @@ describe("<ComposableTemplates /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
     });
-    userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
+    await userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
     });
@@ -149,7 +151,8 @@ describe("<ComposableTemplates /> spec", () => {
     /**
      * search
      */
-    await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
+    await userEvent.type(getByPlaceholderText("Search..."), testTemplateId);
+    await userEvent.keyboard("{Enter}");
     await waitFor(() => {
       expect(queryByTestId(`templateDetail-${testTemplateId}`)).toBeNull();
     });

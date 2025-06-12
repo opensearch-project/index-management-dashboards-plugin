@@ -5,8 +5,7 @@
 
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
 import CreateComposableTemplate from "./CreateComposableTemplate";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";

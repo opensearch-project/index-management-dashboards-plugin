@@ -5,7 +5,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -75,6 +75,8 @@ function renderTransformsWithRouter() {
 }
 
 describe("<Transforms /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
@@ -150,7 +152,7 @@ describe("<Transforms /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("createTransformButton"));
+    await userEvent.click(getByTestId("createTransformButton"));
 
     await waitFor(() => getByText("Testing create transform"));
   });
@@ -165,13 +167,13 @@ describe("<Transforms /> spec", () => {
 
     await waitFor(() => getByText(testTransform2._id));
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     await waitFor(() => getByTestId("editButton"));
 
-    userEvent.click(getByTestId("editButton"));
+    await userEvent.click(getByTestId("editButton"));
 
     await waitFor(() => getByText(`Testing edit transform: ?id=${testTransform2._id}`));
   });
@@ -187,7 +189,7 @@ describe("<Transforms /> spec", () => {
     await waitFor(() => {});
     await waitFor(() => getByText(testTransform2._id));
 
-    userEvent.click(getByText(testTransform2._id));
+    await userEvent.click(getByText(testTransform2._id));
 
     await waitFor(() => getByText(`Testing transform details: ?id=${testTransform2._id}`));
   });
@@ -208,11 +210,11 @@ describe("<Transforms /> spec", () => {
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
     await waitFor(() => {});
 
@@ -238,11 +240,11 @@ describe("<Transforms /> spec", () => {
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -255,9 +257,11 @@ describe("<Transforms /> spec", () => {
     browserServicesMock.transformService.getTransforms = jest.fn();
 
     const { getByTestId } = renderTransformsWithRouter();
+    browserServicesMock.transformService.getTransforms.mockClear();
+    await userEvent.click(getByTestId("refreshButton"));
 
-    userEvent.click(getByTestId("refreshButton"));
-
-    expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);
+    });
   });
 });

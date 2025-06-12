@@ -6,7 +6,7 @@
 import React, { forwardRef, useRef } from "react";
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { EuiButton } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
 import { ValidateResults } from "../../lib/field";
@@ -75,6 +75,7 @@ const testFormFields: IFormGeneratorProps<{
 ];
 
 describe("<FormGenerator /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("render the component", async () => {
     render(<FormGenerator formFields={testFormFields} />);
     // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library
@@ -106,7 +107,7 @@ describe("<FormGenerator /> spec", () => {
     });
     const { ref } = result.current;
     const { getByTestId } = result.current.renderResult;
-    userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
+    await userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
     let validateResult: ValidateResults | undefined;
     await act(async () => {
       validateResult = await ref.current?.validatePromise();
@@ -168,7 +169,7 @@ describe("<FormGenerator /> spec", () => {
       }
     );
 
-    userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
+    await userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
     await waitFor(() => {
       expect(onChangeMock).toBeCalledWith(
         {

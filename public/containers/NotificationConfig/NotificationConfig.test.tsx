@@ -12,7 +12,7 @@ import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
 import { ActionType, OperationType, VALIDATE_ERROR_FOR_CHANNELS } from "../../pages/Notifications/constant";
 import { IAPICaller } from "../../../models/interfaces";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { EuiButton } from "@elastic/eui";
 
 const WrappedComponent = (
@@ -168,6 +168,8 @@ const rulesForBackup = () => ({ ok: true });
  * 000, 010, 100, 101, 110, 111
  */
 describe("<ChannelNotification /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     browserServicesMock.notificationService.getChannels = jest.fn(
       async (): Promise<any> => {

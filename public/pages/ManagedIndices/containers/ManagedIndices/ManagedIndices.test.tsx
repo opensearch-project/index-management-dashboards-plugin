@@ -8,7 +8,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ManagedIndices from "./ManagedIndices";
@@ -68,6 +68,8 @@ function renderWithRouter(Component: React.ComponentType<any>) {
 }
 
 describe("<ManagedIndices /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.managedIndexService.getManagedIndices = jest
       .fn()
@@ -163,13 +165,13 @@ describe("<ManagedIndices /> spec", () => {
 
     expect(getByTestId("Remove policyButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("checkboxSelectRow-index_1"));
+    await userEvent.click(getByTestId("checkboxSelectRow-index_1"));
 
     expect(getByTestId("Remove policyButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("Remove policyButton"));
+    await userEvent.click(getByTestId("Remove policyButton"));
     await waitFor(() => getByTestId("confirmationModalActionButton"));
-    userEvent.click(getByTestId("confirmationModalActionButton"));
+    await userEvent.click(getByTestId("confirmationModalActionButton"));
     await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -282,11 +284,11 @@ describe("<ManagedIndices /> spec", () => {
 
     expect(getByTestId("Retry policyButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("checkboxSelectRow-index_2"));
+    await userEvent.click(getByTestId("checkboxSelectRow-index_2"));
 
     expect(getByTestId("Retry policyButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("checkboxSelectRow-index_1"));
+    await userEvent.click(getByTestId("checkboxSelectRow-index_1"));
 
     expect(getByTestId("Retry policyButton")).toBeDisabled();
   });

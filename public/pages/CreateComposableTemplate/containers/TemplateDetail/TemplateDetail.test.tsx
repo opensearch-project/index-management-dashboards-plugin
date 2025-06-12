@@ -11,7 +11,7 @@ import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks
 import { CoreServicesContext } from "../../../../components/core_services";
 import { HashRouter, Route } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 jest.mock("../../../../services/Services", () => ({
@@ -46,6 +46,8 @@ function renderCreateComposableTemplate(props: Omit<TemplateDetailProps, "histor
 }
 
 describe("<TemplateDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   // main unit test case is in CreateComposableTemplate.test.tsx
   it("render component", async () => {
     const { container } = renderCreateComposableTemplate({});
@@ -73,7 +75,7 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("View JSON"));
+    await userEvent.click(getByText("View JSON"));
     await waitFor(() => expect(document.querySelector(".language-json")).toBeInTheDocument());
   });
 
@@ -98,13 +100,13 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete good_template");
-    userEvent.click(getByTestId("deletaCancelButton"));
+    await userEvent.click(getByTestId("deletaCancelButton"));
     await waitFor(() => expect(queryByText("Delete good_template")).toBeNull());
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete good_template");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });

@@ -5,7 +5,7 @@
 
 import React, { useRef } from "react";
 import { act, render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { HashRouter, Route } from "react-router-dom";
 import { renderHook } from "@testing-library/react-hooks";
 import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
@@ -61,6 +61,8 @@ function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history" | 
 }
 
 describe("<TemplateDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   // main unit test case is in CreateIndexTemplate.test.tsx
   it("render component in non-edit-mode", async () => {
     let times = 0;
@@ -78,7 +80,7 @@ describe("<TemplateDetail /> spec", () => {
         response: [],
       };
     }) as any;
-    const { container, getByTestId, ref, findByText, queryByTestId } = renderCreateIndexTemplate({});
+    const { container, getByTestId, ref, findByText, queryByTestId, findAllByText } = renderCreateIndexTemplate({});
     await waitFor(
       () => expect((document.querySelector("#accordionForCreateIndexTemplateSettings") as HTMLDivElement).style.height).toEqual("0px"),
       {
@@ -111,7 +113,7 @@ describe("<TemplateDetail /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error");
     });
     await userEvent.click(getByTestId("CreateIndexTemplatePreviewButton"));
-    await findByText("Preview template");
+    await findAllByText("Preview template");
     await act(async () => {
       await userEvent.click(getByTestId("Preview template-ok"));
     });
@@ -204,14 +206,14 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete Templates");
-    userEvent.click(getByTestId("deletaCancelButton"));
+    await userEvent.click(getByTestId("deletaCancelButton"));
     await waitFor(() => expect(queryByText("Delete Templates")).toBeNull());
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete Templates");
-    userEvent.type(getByTestId("deleteInput"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.type(getByTestId("deleteInput"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });

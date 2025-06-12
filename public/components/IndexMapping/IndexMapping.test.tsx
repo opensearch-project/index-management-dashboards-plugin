@@ -5,7 +5,7 @@
 
 import React, { forwardRef, Ref, useRef, useState } from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import IndexMapping, { IIndexMappingsRef, IndexMappingProps, transformObjectToArray } from "./IndexMapping";
 import { MappingsProperties } from "../../../models/interfaces";
 import { renderHook } from "@testing-library/react-hooks";
@@ -26,6 +26,7 @@ const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps
 });
 
 describe("<IndexMapping /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("renders the component", () => {
     const { container } = render(<IndexMapping docVersion="latest" onChange={() => {}} />);
     expect(container.firstChild).toMatchSnapshot();
@@ -76,24 +77,24 @@ describe("<IndexMapping /> spec", () => {
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0.properties.0-delete-field"]')).toBeNull();
 
     // add a new field
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
+    await userEvent.click(getByTestId("createIndexAddFieldButton"));
     // new field should be editable
     expect(getByTestId("mapping-visual-editor-1-field-name")).not.toHaveAttribute("disabled");
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-1-delete-field"]')).not.toBeNull();
 
     // empty and duplicate validation for field name
-    userEvent.click(document.querySelector('[data-test-subj="mapping-visual-editor-1-field-name"]') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="mapping-visual-editor-1-field-name"]') as Element);
     expect(getByTestId("mapping-visual-editor-1-field-name")).toHaveValue("");
     expect(queryByText("Field name is required, please input")).toBeNull();
-    userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "object");
+    await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "object");
     await waitFor(() => {
       expect(getByText("Duplicate field name [object], please change your field name")).not.toBeNull();
     });
     await act(async () => {
       expect(await ref.current?.validate()).toEqual("with error");
     });
-    userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
-    userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "new_object");
+    await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
+    await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "new_object");
     await act(async () => {
       expect(await ref.current?.validate()).toEqual("");
     });
@@ -114,26 +115,26 @@ describe("<IndexMapping /> spec", () => {
 
     // sub action for object
     expect(getByTestId("mapping-visual-editor-1-add-sub-field")).not.toBeNull();
-    userEvent.click(getByTestId("mapping-visual-editor-1-add-sub-field"));
+    await userEvent.click(getByTestId("mapping-visual-editor-1-add-sub-field"));
     // new sub field check
     expect((getByTestId("mapping-visual-editor-1.properties.0-field-type") as HTMLSelectElement).value).toBe("text");
-    await waitFor(() => {
-      userEvent.click(getByTestId("mapping-visual-editor-1.properties.0-delete-field"));
+    await waitFor(async () => {
+      await userEvent.click(getByTestId("mapping-visual-editor-1.properties.0-delete-field"));
     });
 
     // add a new field
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
+    await userEvent.click(getByTestId("createIndexAddFieldButton"));
     // delete the new field
     await waitFor(() => {});
-    userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));
+    await userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));
     expect(queryByTestId("mapping-visual-editor-2-delete-field")).toBeNull();
 
     await userEvent.click(getByTestId("editorTypeJsonEditor").querySelector("input") as Element);
     await waitFor(() => {});
-    userEvent.click(getByTestId("previousMappingsJsonButton"));
+    await userEvent.click(getByTestId("previousMappingsJsonButton"));
     await waitFor(() => {});
     expect(queryByTestId("previousMappingsJsonModal-ok")).not.toBeNull();
-    userEvent.click(getByTestId("previousMappingsJsonModal-ok"));
+    await userEvent.click(getByTestId("previousMappingsJsonModal-ok"));
     await waitFor(() => {
       expect(queryByTestId("previousMappingsJsonModal-ok")).toBeNull();
     });

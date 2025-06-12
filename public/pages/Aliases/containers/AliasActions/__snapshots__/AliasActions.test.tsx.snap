@@ -117,7 +117,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -308,7 +308,7 @@ exports[`<AliasesActions /> spec refresh multi alias even failed to get index st
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -470,7 +470,7 @@ HTMLCollection [
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div

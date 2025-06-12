@@ -6,9 +6,10 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import AdvancedSettings from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 describe("<FormGenerator /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("render the component", () => {
     render(<AdvancedSettings value={{ a: "foo" }} accordionProps={{ id: "test", initialIsOpen: false }} />);
     expect(document.body.children).toMatchSnapshot();
@@ -31,9 +32,9 @@ describe("<FormGenerator /> spec", () => {
       />
     );
     const textareaInput = document.querySelector("textarea") as HTMLTextAreaElement;
-    userEvent.clear(textareaInput);
-    userEvent.paste(textareaInput, '{ "test": "1" }');
-    userEvent.click(document.body);
+    await userEvent.clear(textareaInput);
+    await userEvent.paste('{ "test": "1" }');
+    await userEvent.click(document.body);
     expect(onChangeMock).toBeCalledTimes(1);
     expect(onChangeMock).toBeCalledWith({ test: "1" });
   });

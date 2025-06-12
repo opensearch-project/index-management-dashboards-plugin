@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
@@ -51,6 +51,8 @@ function renderWithRouter(props: Omit<IndexDetailModalProps, keyof RouteComponen
 }
 
 describe("container <IndexDetail /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
@@ -79,7 +81,7 @@ describe("container <IndexDetail /> spec", () => {
         },
       } as any;
     }) as typeof browserServicesMock.indexService.getIndices;
-    const { container, queryByText } = renderWithRouter({}, [`/test_index`]);
+    const { container, queryByText, queryAllByText } = renderWithRouter({}, [`/test_index`]);
 
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
@@ -92,9 +94,9 @@ describe("container <IndexDetail /> spec", () => {
       });
     });
 
-    userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
+    await userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
     await waitFor(() => {
-      expect(queryByText("Index alias")).not.toBeNull();
+      expect(queryAllByText("Index alias").length > 0).toBeTruthy();
     });
   });
 });

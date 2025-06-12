@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import RemoteSelect, { RemoteSelectProps } from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const onChangeMock = jest.fn();
 
@@ -25,6 +25,7 @@ const AliasSelectWithOnchange = (props: RemoteSelectProps) => {
 };
 
 describe("<AliasSelect /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("renders the component", async () => {
     const { container } = render(<RemoteSelect refreshOptions={() => Promise.resolve({ ok: true, response: [] })} onChange={() => {}} />);
     await waitFor(() => {

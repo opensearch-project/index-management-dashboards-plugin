@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import TemplatesActions, { TemplatesActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
@@ -68,6 +68,8 @@ function renderWithRouter(props: Omit<TemplatesActionsProps, "history">) {
 }
 
 describe("<TemplatesActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
@@ -78,7 +80,7 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("deleteAction")).toBeDisabled();
     });
@@ -122,10 +124,10 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("deleteAction"));
-    userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("deleteAction"));
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -141,7 +143,7 @@ describe("<TemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -150,8 +152,8 @@ describe("<TemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("editAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("editAction"));
     await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
       timeout: 3000,
     });

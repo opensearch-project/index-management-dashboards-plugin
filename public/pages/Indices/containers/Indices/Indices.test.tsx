@@ -7,7 +7,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 // @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -79,6 +79,8 @@ function renderWithRouter(
 }
 
 describe(`<Indices /> spec`, () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({ ok: true, response: { indices: [], totalIndices: 0 } });
     const { container } = renderWithRouter(Indices);
@@ -166,17 +168,17 @@ describe(`<Indices /> spec`, () => {
 
     await waitFor(() => getByText("index_1"));
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
 
     expect(getByTestId("Apply policyButton")).toBeDisabled();
 
     getByTestId("checkboxSelectRow-index_1").click();
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
 
     expect(getByTestId("Apply policyButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("Apply policyButton"));
+    await userEvent.click(getByTestId("Apply policyButton"));
 
     await waitFor(() => {});
 

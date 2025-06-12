@@ -7,7 +7,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 // @ts-ignore
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import IndexControls from "./IndexControls";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
@@ -28,6 +28,8 @@ beforeEach(() => {
 });
 
 describe("<IndexControls /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const { container } = render(
       <IndexControls
@@ -62,7 +64,7 @@ describe("<IndexControls /> spec", () => {
       />
     );
 
-    userEvent.type(getByPlaceholderText("Search"), "four");
+    await userEvent.type(getByPlaceholderText("Search"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });

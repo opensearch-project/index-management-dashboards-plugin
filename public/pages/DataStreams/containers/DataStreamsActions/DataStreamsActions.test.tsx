@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import DataStreamsActions, { DataStreamsActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
@@ -52,6 +52,8 @@ function renderWithRouter(props: Omit<DataStreamsActionsProps, "history">) {
 }
 
 describe("<DataStreamsActions /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
@@ -62,7 +64,7 @@ describe("<DataStreamsActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("deleteAction")).toBeDisabled();
     });
@@ -84,10 +86,10 @@ describe("<DataStreamsActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("deleteAction"));
-    userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("deleteAction"));
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -144,12 +146,12 @@ describe("<DataStreamsActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following data streams.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -236,8 +238,8 @@ describe("<DataStreamsActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -304,12 +306,12 @@ describe("<DataStreamsActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following data streams.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -364,8 +366,8 @@ describe("<DataStreamsActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Flush Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Flush Action"));
     await waitFor(() => {
       expect(queryByTestId("Flush Action")).toBeNull();
       expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
@@ -405,7 +407,7 @@ describe("<DataStreamsActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Flush Action")).toBeDisabled();
   });
 
@@ -466,8 +468,8 @@ describe("<DataStreamsActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following data stream will be refreshed.");
@@ -479,7 +481,7 @@ describe("<DataStreamsActions /> spec", () => {
       expect(document.body).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
@@ -598,8 +600,8 @@ describe("<DataStreamsActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
@@ -612,7 +614,7 @@ describe("<DataStreamsActions /> spec", () => {
       expect(getByTestId("BlockedItem-blocked_data_stream1")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
@@ -672,8 +674,8 @@ describe("<DataStreamsActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
@@ -716,14 +718,14 @@ describe("<DataStreamsActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       getByText("The following data stream will be refreshed.");
       expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
@@ -772,15 +774,15 @@ describe("<DataStreamsActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
       expect(getByTestId("UnblockedItem-blocked_data_stream1")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(

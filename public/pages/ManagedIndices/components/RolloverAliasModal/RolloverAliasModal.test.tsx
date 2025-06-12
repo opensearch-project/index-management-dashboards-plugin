@@ -6,12 +6,14 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import RolloverAliasModal from "./RolloverAliasModal";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 describe("<RolloverAliasModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>

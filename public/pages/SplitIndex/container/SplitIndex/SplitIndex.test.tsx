@@ -6,7 +6,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { SplitIndex } from "./SplitIndex";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
@@ -63,6 +63,8 @@ function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {
 const sourceIndexName = "source-index";
 
 describe("<SplitIndex /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
@@ -160,12 +162,12 @@ describe("<SplitIndex /> spec", () => {
 
     expect(getByText("The number must be 2x times of the primary shard count of the source index.")).not.toBeNull();
 
-    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(
+    await userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
+    await userEvent.type(
       getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "4{arrowdown}{enter}"
     );
-    userEvent.click(getByTestId("splitButton"));
+    await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -225,14 +227,14 @@ describe("<SplitIndex /> spec", () => {
     });
 
     expect(getByText("The number must be an integer greater than 1 but fewer or equal to 1024.")).not.toBeNull();
-    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(
+    await userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
+    await userEvent.type(
       getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "5{arrowdown}{enter}"
     );
-    userEvent.clear(getByTestId("numberOfReplicasInput"));
-    userEvent.type(getByTestId("numberOfReplicasInput"), "1");
-    userEvent.click(getByTestId("splitButton"));
+    await userEvent.clear(getByTestId("numberOfReplicasInput"));
+    await userEvent.type(getByTestId("numberOfReplicasInput"), "1");
+    await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -291,11 +293,11 @@ describe("<SplitIndex /> spec", () => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
 
-    userEvent.type(
+    await userEvent.type(
       getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "5{arrowdown}{enter}"
     );
-    userEvent.click(getByTestId("splitButton"));
+    await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(getByText("Number of shards is required")).not.toBeNull();
@@ -309,7 +311,7 @@ describe("<SplitIndex /> spec", () => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
 
-    userEvent.click(getByTestId("splitButton"));
+    await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(getByText("Target index name is required")).not.toBeNull();
@@ -324,8 +326,8 @@ describe("<SplitIndex /> spec", () => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
 
-    userEvent.type(getByTestId("targetIndexNameInput"), "s*lit");
-    userEvent.click(getByTestId("splitButton"));
+    await userEvent.type(getByTestId("targetIndexNameInput"), "s*lit");
+    await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(getByText("Target index name s*lit is invalid")).not.toBeNull();
@@ -407,7 +409,7 @@ describe("<SplitIndex /> spec", () => {
       expect(getByTestId("splitButton")).toBeDisabled();
       expect(queryByText("The source index must be open.")).not.toBeNull();
     });
-    userEvent.click(getByTestId("open-index-button"));
+    await userEvent.click(getByTestId("open-index-button"));
     await waitFor(() => {});
     expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
       endpoint: "transport.request",
@@ -465,7 +467,7 @@ describe("<SplitIndex /> spec", () => {
       expect(queryByText("The source index must block write operations before splitting.")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("set-indexsetting-button"));
+    await userEvent.click(getByTestId("set-indexsetting-button"));
     await waitFor(() =>
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         endpoint: "indices.putSettings",
@@ -528,7 +530,7 @@ describe("<SplitIndex /> spec", () => {
       expect(queryByText("The source index must block write operations before splitting.")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("set-indexsetting-button"));
+    await userEvent.click(getByTestId("set-indexsetting-button"));
     await waitFor(() =>
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         endpoint: "indices.putSettings",
@@ -549,7 +551,7 @@ describe("<SplitIndex /> spec", () => {
   it("Cancel works", async () => {
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=index-source`]);
     await waitFor(() => {});
-    userEvent.click(getByTestId("splitCancelButton"));
+    await userEvent.click(getByTestId("splitCancelButton"));
 
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });

@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor, findByText } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -178,6 +178,8 @@ const mockApi = (validateQueryFail?: boolean) => {
 };
 
 describe("<ForceMerge /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     mockApi();
   });
@@ -206,7 +208,7 @@ describe("<ForceMerge /> spec", () => {
   it("cancel back to indices page", async () => {
     const { getByText } = renderWithRouter();
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
 
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });
@@ -218,19 +220,19 @@ describe("<ForceMerge /> spec", () => {
       getByText("Configure source index");
     });
 
-    userEvent.click(getByTestId("forceMergeConfirmButton"));
+    await userEvent.click(getByTestId("forceMergeConfirmButton"));
     await findByText("Index or data stream is required.");
   });
 
   it("it goes to indices page when submit force merge successfully", async () => {
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("forceMergeConfirmButton"));
+    await userEvent.click(getByTestId("forceMergeConfirmButton"));
 
     await waitFor(() => {});
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();

@@ -8,9 +8,11 @@ import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import ISMTemplate from "./ISMTemplate";
 import { fireEvent } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event/dist";
+import userEventModule from "@testing-library/user-event";
 
 describe("<ISMTemplate /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", () => {
     const { container } = render(
       <ISMTemplate
@@ -44,7 +46,7 @@ describe("<ISMTemplate /> spec", () => {
       <ISMTemplate template={template} onUpdateTemplate={onUpdateTemplate} onRemoveTemplate={() => {}} isFirst={true} />
     );
     fireEvent.focus(getByTestId("ism-template-priority-input"));
-    userEvent.type(getByTestId("ism-template-priority-input"), "2");
+    await userEvent.type(getByTestId("ism-template-priority-input"), "2");
     fireEvent.blur(getByTestId("ism-template-priority-input"));
     expect(onUpdateTemplate).toHaveBeenCalled();
     expect(onUpdateTemplate).toHaveBeenCalledWith({ ...template, priority: 72 }); // already contains 7, just added 2

@@ -5,7 +5,7 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -25,15 +25,6 @@ jest.mock("../../../../services/Services", () => ({
   getApplication: jest.fn(),
   getNavigationUI: jest.fn(),
 }));
-
-beforeEach(() => {
-  (getUISettings as jest.Mock).mockReturnValue({
-    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
-  });
-  (getApplication as jest.Mock).mockReturnValue({});
-
-  (getNavigationUI as jest.Mock).mockReturnValue({});
-});
 
 function renderRollupsWithRouter() {
   return {
@@ -72,6 +63,16 @@ function renderRollupsWithRouter() {
 }
 
 describe("<Rollups /> spec", () => {
+  const userEvent = userEventModule.setup();
+  beforeEach(() => {
+    (getUISettings as jest.Mock).mockReturnValue({
+      get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+    });
+    (getApplication as jest.Mock).mockReturnValue({});
+
+    (getNavigationUI as jest.Mock).mockReturnValue({});
+  });
+
   it("renders the component", async () => {
     browserServicesMock.rollupService.getRollups = jest.fn().mockResolvedValue({
       ok: true,
@@ -144,7 +145,7 @@ describe("<Rollups /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("createRollupButton"));
+    await userEvent.click(getByTestId("createRollupButton"));
 
     await waitFor(() => getByText("Testing create rollup"));
   });
@@ -159,13 +160,13 @@ describe("<Rollups /> spec", () => {
 
     await waitFor(() => getByText(testRollup._id));
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     await waitFor(() => getByTestId("editButton"));
 
-    userEvent.click(getByTestId("editButton"));
+    await userEvent.click(getByTestId("editButton"));
 
     await waitFor(() => getByText(`Testing edit rollup: ?id=${testRollup._id}`));
   });
@@ -181,7 +182,7 @@ describe("<Rollups /> spec", () => {
     await waitFor(() => {});
     await waitFor(() => getByText(testRollup._id));
 
-    userEvent.click(getByText(testRollup._id));
+    await userEvent.click(getByText(testRollup._id));
 
     await waitFor(() => getByText(`Testing rollup details: ?id=${testRollup._id}`));
   });
@@ -202,17 +203,22 @@ describe("<Rollups /> spec", () => {
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
-    await waitFor(() => {});
-
-    expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testRollup._id} is enabled`);
+    await waitFor(
+      () => {
+        expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
+        expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+        expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testRollup._id} is enabled`);
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 
   it("can disable a rollup job", async () => {
@@ -232,11 +238,11 @@ describe("<Rollups /> spec", () => {
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -249,9 +255,14 @@ describe("<Rollups /> spec", () => {
     browserServicesMock.rollupService.getRollups = jest.fn();
 
     const { getByTestId } = renderRollupsWithRouter();
+    browserServicesMock.rollupService.getRollups.mockClear();
+    await userEvent.click(getByTestId("refreshButton"));
 
-    userEvent.click(getByTestId("refreshButton"));
-
-    expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
+    await waitFor(
+      () => {
+        expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 }
+    );
   });
 });

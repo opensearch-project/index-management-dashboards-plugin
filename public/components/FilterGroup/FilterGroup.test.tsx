@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { act, render, waitFor } from "@testing-library/react";
 import FilterGroup, { IFilterGroupProps } from "./index";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 
 const WrappedComponent = (props: IFilterGroupProps) => {
   const [value, onChange] = useState<string[] | undefined>();
@@ -14,6 +14,7 @@ const WrappedComponent = (props: IFilterGroupProps) => {
 };
 
 describe("<FilterGroup /> spec", () => {
+  const userEvent = userEventModule.setup();
   it("render the component", async () => {
     const { findByPlaceholderText, getByTestId, findByText, getByText, queryByText } = render(
       <>
@@ -43,8 +44,8 @@ describe("<FilterGroup /> spec", () => {
       expect(document.querySelector("[aria-label='1 available filters']")).toBeInTheDocument();
       expect(document.body.children).toMatchSnapshot();
     });
-    act(() => {
-      userEvent.click(getByText("hide"));
+    await act(async () => {
+      await userEvent.click(getByText("hide"));
     });
     await waitFor(() => {
       expect(queryByText("test option")).toBeNull();

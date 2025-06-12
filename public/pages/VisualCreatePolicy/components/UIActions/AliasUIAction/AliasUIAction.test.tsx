@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { DEFAULT_ALIAS } from "../../../utils/constants";
 import { AliasAction, AliasActions, UIAction } from "../../../../../../models/interfaces";
 import { actionRepoSingleton } from "../../../utils/helpers";
@@ -24,11 +24,13 @@ const mockOnChangeAction = (uiAction: UIAction<AliasAction> = TEST_PROPS) => {
 afterEach(() => cleanup());
 
 describe("AliasUIAction component", () => {
-  it("renders with blank action", () => {
+  const userEvent = userEventModule.setup();
+
+  it("renders with blank action", async () => {
     const { container } = render(actionRepoSingleton.getUIAction("alias").render(TEST_PROPS, mockOnChangeAction));
 
-    userEvent.click(screen.getByTestId("add-alias-toggle"));
-    userEvent.click(screen.getByTestId("remove-alias-toggle"));
+    await userEvent.click(screen.getByTestId("add-alias-toggle"));
+    await userEvent.click(screen.getByTestId("remove-alias-toggle"));
 
     const addAliasRow = screen.getByTestId("add-alias-row");
     const removeAliasRow = screen.getByTestId("remove-alias-row");

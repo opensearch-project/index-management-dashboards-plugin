@@ -7,12 +7,14 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 import AssociatedTemplatesModal from "./AssociatedTemplatesModal";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 describe("<AssociatedTemplatesModal /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   it("renders the component", async () => {
     const templateName = "test_template";
     const componentTemplateName = "test_component_template";

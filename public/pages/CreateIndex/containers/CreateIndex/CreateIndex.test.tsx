@@ -6,7 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import CreateIndex from "./CreateIndex";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
@@ -80,13 +80,15 @@ function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as s
 }
 
 describe("<CreateIndex /> spec", () => {
+  const userEvent = userEventModule.setup();
+
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
   it("it goes to indices page when click cancel", async () => {
     const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/good_index`]);
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();
     });
@@ -101,9 +103,9 @@ describe("<CreateIndex /> spec", () => {
 
     const indexNameInput = getByPlaceholderText("Specify a name for the new index.");
 
-    userEvent.type(indexNameInput, `good_index`);
-    userEvent.click(document.body);
-    userEvent.click(getByText("Create"));
+    await userEvent.type(indexNameInput, `good_index`);
+    await userEvent.click(document.body);
+    await userEvent.click(getByText("Create"));
 
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();
