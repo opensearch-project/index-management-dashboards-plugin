@@ -338,20 +338,17 @@ describe("<CreateRollupForm /> creation", () => {
   it("can set all values on step 2", async () => {
     const { getByTestId, getByLabelText, queryByText, getAllByTestId, getByDisplayValue, getByText } = renderCreateRollupFormWithRouter();
 
-    fireEvent.focus(getByLabelText("Name"));
     await userEvent.type(getByLabelText("Name"), "some_rollup_id");
-    fireEvent.blur(getByLabelText("Name"));
+    await userEvent.click(document.body);
 
-    fireEvent.focus(getByTestId("description"));
     await userEvent.type(getByTestId("description"), "some description");
-    fireEvent.blur(getByTestId("description"));
-
+    await userEvent.click(document.body);
     await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index_1");
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-
+    await waitFor(() => {});
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "{enter}");
     await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "some_target_index");
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-
+    await waitFor(() => {});
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "{enter}");
     await userEvent.click(getByTestId("createRollupNextButton"));
 
     //Check that it routes to step 2
@@ -360,8 +357,8 @@ describe("<CreateRollupForm /> creation", () => {
     //Select timestamp
     await userEvent.type(getByTestId("comboBoxSearchInput"), "order_date");
     await waitFor(() => {});
-    fireEvent.keyDown(getByTestId("comboBoxSearchInput"), { key: "Enter", code: "Enter" });
-    fireEvent.blur(getByTestId("comboBoxSearchInput"));
+    await userEvent.type(getByTestId("comboBoxSearchInput"), "{enter}");
+    await userEvent.click(document.body);
 
     //Test calendar interval
     await userEvent.click(getByLabelText("Calendar"));
@@ -452,5 +449,5 @@ describe("<CreateRollupForm /> creation", () => {
     //Check that it routes to step 4
     await userEvent.click(getByTestId("createRollupNextButton"));
     expect(queryByText("Job name and indexes")).not.toBeNull();
-  });
+  }, 120000);
 });

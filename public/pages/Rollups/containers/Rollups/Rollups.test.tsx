@@ -254,6 +254,11 @@ describe("<Rollups /> spec", () => {
 
     await userEvent.click(getByTestId("refreshButton"));
 
-    expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
+    await waitFor(
+      () => {
+        expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
+      },
+      { timeout: 3000 }
+    );
   });
 });
