@@ -255,7 +255,7 @@ describe("<Rollups /> spec", () => {
     browserServicesMock.rollupService.getRollups = jest.fn();
 
     const { getByTestId } = renderRollupsWithRouter();
-
+    browserServicesMock.rollupService.getRollups.mockClear();
     await userEvent.click(getByTestId("refreshButton"));
 
     await waitFor(
