@@ -8,7 +8,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import ISMTemplate from "./ISMTemplate";
 import { fireEvent } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event/dist";
+import userEventModule from "@testing-library/user-event";
 
 describe("<ISMTemplate /> spec", () => {
   const userEvent = userEventModule.setup();

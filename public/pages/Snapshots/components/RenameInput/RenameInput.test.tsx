@@ -33,9 +33,10 @@ describe("RenameInput component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("accepts user input", () => {
+  it("accepts user input", async () => {
     // User enters text
-    await userEvent.type(screen.getByTestId("renamePatternInput"), "{selectall}{del}(.+)");
+    await userEvent.clear(screen.getByTestId("renamePatternInput"));
+    await userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
 
     expect(screen.getByTestId("renamePatternInput")).toHaveValue("(.+)");
 
@@ -44,7 +45,7 @@ describe("RenameInput component", () => {
     expect(screen.getByTestId("renameReplacementInput")).toHaveValue("test_$1");
   });
 
-  it("sends user input to parent component via getRenamePattern", () => {
+  it("sends user input to parent component via getRenamePattern", async () => {
     // User enters text into renamePatternInput
     await userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
 
@@ -52,7 +53,7 @@ describe("RenameInput component", () => {
     expect(testProps.getRenamePattern).toBeCalledTimes(4);
   });
 
-  it("sends user input to parent component via getRenameReplacement", () => {
+  it("sends user input to parent component via getRenameReplacement", async () => {
     // User enters text into renamePatternInput
     await userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
 

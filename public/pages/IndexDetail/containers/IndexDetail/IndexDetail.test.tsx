@@ -81,7 +81,7 @@ describe("container <IndexDetail /> spec", () => {
         },
       } as any;
     }) as typeof browserServicesMock.indexService.getIndices;
-    const { container, queryByText } = renderWithRouter({}, [`/test_index`]);
+    const { container, queryByText, queryAllByText } = renderWithRouter({}, [`/test_index`]);
 
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
@@ -96,7 +96,7 @@ describe("container <IndexDetail /> spec", () => {
 
     await userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
     await waitFor(() => {
-      expect(queryByText("Index alias")).not.toBeNull();
+      expect(queryAllByText("Index alias").length > 0).toBeTruthy();
     });
   });
 });

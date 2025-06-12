@@ -36,7 +36,7 @@ describe("SnapshotRenameOptions component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("accepts user input", () => {
+  it("accepts user input", async () => {
     render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
     await userEvent.click(screen.getByLabelText("Add prefix to restored index names"));

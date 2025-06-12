@@ -26,7 +26,7 @@ afterEach(() => cleanup());
 describe("AliasUIAction component", () => {
   const userEvent = userEventModule.setup();
 
-  it("renders with blank action", () => {
+  it("renders with blank action", async () => {
     const { container } = render(actionRepoSingleton.getUIAction("alias").render(TEST_PROPS, mockOnChangeAction));
 
     await userEvent.click(screen.getByTestId("add-alias-toggle"));

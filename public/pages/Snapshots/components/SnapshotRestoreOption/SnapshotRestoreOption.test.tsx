@@ -31,7 +31,7 @@ describe("SnapshotRestoreOption component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("accepts user input", () => {
+  it("accepts user input", async () => {
     render(<SnapshotRestoreOption {...testProps} restoreAllIndices={true} restoreSpecificIndices={false} />);
 
     await userEvent.click(screen.getByLabelText("Restore specific indices"));

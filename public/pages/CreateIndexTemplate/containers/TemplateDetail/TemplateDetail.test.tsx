@@ -80,7 +80,7 @@ describe("<TemplateDetail /> spec", () => {
         response: [],
       };
     }) as any;
-    const { container, getByTestId, ref, findByText, queryByTestId } = renderCreateIndexTemplate({});
+    const { container, getByTestId, ref, findByText, queryByTestId, findAllByText } = renderCreateIndexTemplate({});
     await waitFor(
       () => expect((document.querySelector("#accordionForCreateIndexTemplateSettings") as HTMLDivElement).style.height).toEqual("0px"),
       {
@@ -113,7 +113,7 @@ describe("<TemplateDetail /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error");
     });
     await userEvent.click(getByTestId("CreateIndexTemplatePreviewButton"));
-    await findByText("Preview template");
+    await findAllByText("Preview template");
     await act(async () => {
       await userEvent.click(getByTestId("Preview template-ok"));
     });

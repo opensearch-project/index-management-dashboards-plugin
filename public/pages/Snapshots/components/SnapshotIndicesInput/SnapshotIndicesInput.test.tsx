@@ -31,7 +31,7 @@ describe("SnapshotIndicesInput component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("accepts user input", () => {
+  it("accepts user input", async () => {
     render(
       <SnapshotIndicesInput
         {...testProps}

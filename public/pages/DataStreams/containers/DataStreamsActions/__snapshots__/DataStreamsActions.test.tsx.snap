@@ -117,7 +117,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -306,7 +306,7 @@ HTMLCollection [
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div

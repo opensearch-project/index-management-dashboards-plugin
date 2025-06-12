@@ -8,7 +8,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { screen, render } from "@testing-library/react";
 import DeleteModal from "./DeleteModal";
 import { fireEvent } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event/dist";
+import userEventModule from "@testing-library/user-event";
 
 describe("<DeleteModal /> spec", () => {
   const userEvent = userEventModule.setup();
@@ -18,7 +18,7 @@ describe("<DeleteModal /> spec", () => {
     expect(baseElement).toMatchSnapshot();
   });
 
-  it("calls closeDeleteModal when cancel button is clicked", () => {
+  it("calls closeDeleteModal when cancel button is clicked", async () => {
     const closeDeleteModal = jest.fn();
     const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={closeDeleteModal} onClickDelete={() => {}} />);
 
@@ -26,7 +26,7 @@ describe("<DeleteModal /> spec", () => {
     expect(closeDeleteModal).toHaveBeenCalled();
   });
 
-  it("calls onClickDelete when delete button is clicked", () => {
+  it("calls onClickDelete when delete button is clicked", async () => {
     const onClickDelete = jest.fn();
     const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={() => {}} onClickDelete={onClickDelete} />);
 

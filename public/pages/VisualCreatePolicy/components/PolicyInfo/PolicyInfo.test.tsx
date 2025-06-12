@@ -8,7 +8,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import PolicyInfo from "./PolicyInfo";
 import { fireEvent } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event/dist";
+import userEventModule from "@testing-library/user-event";
 
 describe("<PolicyInfo /> spec", () => {
   const userEvent = userEventModule.setup();
@@ -27,7 +27,7 @@ describe("<PolicyInfo /> spec", () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it("calls on change policy id when typing in input", () => {
+  it("calls on change policy id when typing in input", async () => {
     const onChangePolicyId = jest.fn();
     const { getByTestId } = render(
       <PolicyInfo
@@ -45,7 +45,7 @@ describe("<PolicyInfo /> spec", () => {
     expect(onChangePolicyId).toHaveBeenCalled();
   });
 
-  it("calls on change description when typing in input", () => {
+  it("calls on change description when typing in input", async () => {
     const onChangeDescription = jest.fn();
     const { getByTestId } = render(
       <PolicyInfo

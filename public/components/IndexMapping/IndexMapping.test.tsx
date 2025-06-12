@@ -118,7 +118,7 @@ describe("<IndexMapping /> spec", () => {
     await userEvent.click(getByTestId("mapping-visual-editor-1-add-sub-field"));
     // new sub field check
     expect((getByTestId("mapping-visual-editor-1.properties.0-field-type") as HTMLSelectElement).value).toBe("text");
-    await waitFor(() => {
+    await waitFor(async () => {
       await userEvent.click(getByTestId("mapping-visual-editor-1.properties.0-delete-field"));
     });
 
