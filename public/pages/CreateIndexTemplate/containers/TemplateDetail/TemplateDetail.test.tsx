@@ -206,14 +206,14 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete Templates");
-    userEvent.click(getByTestId("deletaCancelButton"));
+    await userEvent.click(getByTestId("deletaCancelButton"));
     await waitFor(() => expect(queryByText("Delete Templates")).toBeNull());
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete Templates");
-    userEvent.type(getByTestId("deleteInput"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.type(getByTestId("deleteInput"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });

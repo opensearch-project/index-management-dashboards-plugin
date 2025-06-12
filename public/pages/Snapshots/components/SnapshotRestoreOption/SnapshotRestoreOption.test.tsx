@@ -34,7 +34,7 @@ describe("SnapshotRestoreOption component", () => {
   it("accepts user input", () => {
     render(<SnapshotRestoreOption {...testProps} restoreAllIndices={true} restoreSpecificIndices={false} />);
 
-    userEvent.click(screen.getByLabelText("Restore specific indices"));
+    await userEvent.click(screen.getByLabelText("Restore specific indices"));
 
     expect(testProps.onRestoreSpecificIndicesToggle).toBeCalled();
 
@@ -42,7 +42,7 @@ describe("SnapshotRestoreOption component", () => {
 
     render(<SnapshotRestoreOption {...testProps} restoreAllIndices={false} restoreSpecificIndices={true} />);
 
-    userEvent.click(screen.getByLabelText("Restore all indices in snapshot"));
+    await userEvent.click(screen.getByLabelText("Restore all indices in snapshot"));
 
     expect(testProps.onRestoreAllIndicesToggle).toBeCalled();
   });

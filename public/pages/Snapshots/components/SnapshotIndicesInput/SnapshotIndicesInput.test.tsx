@@ -41,7 +41,7 @@ describe("SnapshotIndicesInput component", () => {
       />
     );
 
-    userEvent.type(screen.getByRole("textbox"), "test*{enter}");
+    await userEvent.type(screen.getByRole("textbox"), "test*{enter}");
 
     expect(testProps.onCreateOption).toBeCalledTimes(1);
   });
@@ -55,13 +55,13 @@ describe("SnapshotIndicesInput component", () => {
         selectedRepoValue="test_repo"
       />
     );
-    userEvent.click(screen.getByRole("textbox"));
+    await userEvent.click(screen.getByRole("textbox"));
 
     expect(screen.getByText("test_index_1")).toBeInTheDocument();
     expect(screen.getByText("test_index_2")).toBeInTheDocument();
 
-    userEvent.click(screen.getByText("test_index_1"));
-    userEvent.click(screen.getByText("test_index_2"));
+    await userEvent.click(screen.getByText("test_index_1"));
+    await userEvent.click(screen.getByText("test_index_2"));
 
     expect(testProps.onIndicesSelectionChange).toBeCalledTimes(2);
   });

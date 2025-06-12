@@ -90,7 +90,7 @@ describe("<Templates /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
     });
-    userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
+    await userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -103,7 +103,7 @@ describe("<Templates /> spec", () => {
   it("with some actions", async () => {
     const { getByPlaceholderText } = renderWithRouter();
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
-    userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
+    await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({

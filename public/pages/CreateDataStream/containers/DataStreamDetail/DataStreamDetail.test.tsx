@@ -75,7 +75,7 @@ describe("<DataStreamDetail /> spec", () => {
       dataStream: "good_data_stream",
     });
     await findAllByText("good_data_stream");
-    userEvent.click(getByText("View JSON"));
+    await userEvent.click(getByText("View JSON"));
     await waitFor(() =>
       expect(
         JSON.parse(getByTestId("dataStreamJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")

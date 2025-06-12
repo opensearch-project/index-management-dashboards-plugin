@@ -181,7 +181,7 @@ describe("<RetryModal /> spec", () => {
     fireEvent.click(getByLabelText("Retry policy from selected state"));
     // @ts-ignore
     expect(getByText("two").selected).toBe(false);
-    userEvent.selectOptions(getByLabelText("Retry failed policy from"), ["two"]);
+    await userEvent.selectOptions(getByLabelText("Retry failed policy from"), ["two"]);
     // trigger change until this is merged in: https://github.com/testing-library/user-event/pull/131
     fireEvent.change(getByLabelText("Retry failed policy from"));
     // @ts-ignore

@@ -80,7 +80,7 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("deleteAction")).toBeDisabled();
     });
@@ -124,10 +124,10 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("deleteAction"));
-    userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("deleteAction"));
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -143,7 +143,7 @@ describe("<TemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -152,8 +152,8 @@ describe("<TemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("editAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("editAction"));
     await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
       timeout: 3000,
     });

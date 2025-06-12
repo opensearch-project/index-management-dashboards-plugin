@@ -146,7 +146,7 @@ describe("<Rollups /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("createRollupButton"));
+    await userEvent.click(getByTestId("createRollupButton"));
 
     await waitFor(() => getByText("Testing create rollup"));
   });
@@ -161,13 +161,13 @@ describe("<Rollups /> spec", () => {
 
     await waitFor(() => getByText(testRollup._id));
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     await waitFor(() => getByTestId("editButton"));
 
-    userEvent.click(getByTestId("editButton"));
+    await userEvent.click(getByTestId("editButton"));
 
     await waitFor(() => getByText(`Testing edit rollup: ?id=${testRollup._id}`));
   });
@@ -183,7 +183,7 @@ describe("<Rollups /> spec", () => {
     await waitFor(() => {});
     await waitFor(() => getByText(testRollup._id));
 
-    userEvent.click(getByText(testRollup._id));
+    await userEvent.click(getByText(testRollup._id));
 
     await waitFor(() => getByText(`Testing rollup details: ?id=${testRollup._id}`));
   });
@@ -204,11 +204,11 @@ describe("<Rollups /> spec", () => {
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
     await waitFor(() => {});
 
@@ -234,11 +234,11 @@ describe("<Rollups /> spec", () => {
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -252,7 +252,7 @@ describe("<Rollups /> spec", () => {
 
     const { getByTestId } = renderRollupsWithRouter();
 
-    userEvent.click(getByTestId("refreshButton"));
+    await userEvent.click(getByTestId("refreshButton"));
 
     expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
   });

@@ -134,7 +134,7 @@ describe("<ComposableTemplates /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
     });
-    userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
+    await userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
     });

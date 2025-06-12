@@ -41,13 +41,13 @@ describe("<IndexControls /> spec", () => {
       <IndexControls value={{ search: "", status: "" }} onSearchChange={onSearchChangeMock} />
     );
 
-    userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
+    await userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
     expect(onSearchChangeMock).toBeCalledTimes(1);
     expect(onSearchChangeMock).toBeCalledWith({
       search: "",
       status: "closed",
     });
-    userEvent.type(getByPlaceholderText("Search..."), "test");
+    await userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
       expect(onSearchChangeMock).toBeCalledTimes(5);
       expect(onSearchChangeMock).toBeCalledWith({

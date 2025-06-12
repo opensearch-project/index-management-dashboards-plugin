@@ -41,7 +41,7 @@ describe("<PolicyInfo /> spec", () => {
     );
 
     fireEvent.focus(getByTestId("create-policy-policy-id"));
-    userEvent.type(getByTestId("create-policy-policy-id"), `some_policy_id`);
+    await userEvent.type(getByTestId("create-policy-policy-id"), `some_policy_id`);
     expect(onChangePolicyId).toHaveBeenCalled();
   });
 
@@ -59,7 +59,7 @@ describe("<PolicyInfo /> spec", () => {
     );
 
     fireEvent.focus(getByTestId("create-policy-description"));
-    userEvent.type(getByTestId("create-policy-description"), `some description`);
+    await userEvent.type(getByTestId("create-policy-description"), `some description`);
     expect(onChangeDescription).toHaveBeenCalled();
   });
 });

@@ -109,13 +109,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -137,13 +137,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -166,13 +166,13 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
     await waitFor(() => {});
 
@@ -191,9 +191,9 @@ describe("<TransformDetails /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("actionButton"));
+    await userEvent.click(getByTestId("actionButton"));
 
-    userEvent.click(getByTestId("deleteButton"));
+    await userEvent.click(getByTestId("deleteButton"));
 
     await waitFor(() => {});
 
@@ -205,7 +205,7 @@ describe("<TransformDetails /> spec", () => {
 
     expect(getByTestId("confirmModalConfirmButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("confirmModalConfirmButton"));
+    await userEvent.click(getByTestId("confirmModalConfirmButton"));
 
     await waitFor(() => {});
 

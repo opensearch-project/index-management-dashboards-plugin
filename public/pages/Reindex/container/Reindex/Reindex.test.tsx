@@ -248,7 +248,7 @@ describe("<Reindex /> spec", () => {
   it("cancel back to indices page", async () => {
     const { getByText } = renderWithRouter();
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
 
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });
@@ -269,7 +269,7 @@ describe("<Reindex /> spec", () => {
       getByText("Configure source index");
     });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     expect(getByText("Source is required.")).toBeInTheDocument();
   });
@@ -304,7 +304,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
 
@@ -337,11 +337,11 @@ describe("<Reindex /> spec", () => {
       getByText("Configure source index");
     });
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source-red");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source-red");
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {}, { timeout: 4000 });
 
@@ -380,7 +380,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {}, { timeout: 4000 });
 
@@ -393,12 +393,12 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {
       getByText("Configure source index");
     });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
     await waitFor(() => {});
     expect(getByText("Destination is required.")).toBeInTheDocument();
   });
@@ -409,7 +409,7 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {
       getByText("Configure source index");
     });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
@@ -434,11 +434,11 @@ describe("<Reindex /> spec", () => {
       },
     });
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
 
@@ -451,7 +451,7 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {
       getByText("Configure source index");
     });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
@@ -481,7 +481,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
     expect(getByText("Index [index-dest] health status is red.")).toBeInTheDocument();
@@ -493,18 +493,18 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {
       getByText("Configure source index");
     });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
     // change to alias
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-2");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-2");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
     expect(getByText("Alias [alias-2] don't have writing index behind it.")).toBeInTheDocument();
@@ -516,7 +516,7 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {
       getByText("Configure source index");
     });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
@@ -527,11 +527,11 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
     // open advanced settings
-    userEvent.click(getByTestId("advanceOptionToggle"));
+    await userEvent.click(getByTestId("advanceOptionToggle"));
     // slices
-    userEvent.click(getByTestId("sliceEnabled"));
-    userEvent.click(getByText("Manually slice into subtasks"));
-    userEvent.type(getByTestId("slices"), "0");
+    await userEvent.click(getByTestId("sliceEnabled"));
+    await userEvent.click(getByText("Manually slice into subtasks"));
+    await userEvent.type(getByTestId("slices"), "0");
 
     await waitFor(() => {});
     expect(getByText("Must be an integer greater than or equal to 2.")).toBeInTheDocument();
@@ -540,17 +540,17 @@ describe("<Reindex /> spec", () => {
   it("it goes to indices page when submit reindex successfully", async () => {
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
@@ -567,7 +567,7 @@ describe("<Reindex /> spec", () => {
       getByText("Configure source index");
     });
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
 
@@ -582,7 +582,7 @@ describe("<Reindex /> spec", () => {
     });
 
     // click subset radio
-    userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
+    await userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
 
     expect(getByTestId("queryJsonEditor")).toBeVisible();
   });
@@ -595,7 +595,7 @@ describe("<Reindex /> spec", () => {
       getByText("Configure source index");
     });
 
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
@@ -606,10 +606,10 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
     // click subset radio
-    userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
+    await userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
     expect(getByTestId("queryJsonEditor")).toBeVisible();
 
-    userEvent.click(getByTestId("reindexConfirmButton"));
+    await userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText("Invalid query expression")).toBeInTheDocument();
@@ -624,7 +624,7 @@ describe("<Reindex /> spec", () => {
     });
 
     // click advances settings
-    userEvent.click(getByTestId("advanceOptionToggle"));
+    await userEvent.click(getByTestId("advanceOptionToggle"));
     await waitFor(() => {});
 
     expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({

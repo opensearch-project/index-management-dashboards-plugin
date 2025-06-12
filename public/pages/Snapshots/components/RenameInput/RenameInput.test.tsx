@@ -35,18 +35,18 @@ describe("RenameInput component", () => {
 
   it("accepts user input", () => {
     // User enters text
-    userEvent.type(screen.getByTestId("renamePatternInput"), "{selectall}{del}(.+)");
+    await userEvent.type(screen.getByTestId("renamePatternInput"), "{selectall}{del}(.+)");
 
     expect(screen.getByTestId("renamePatternInput")).toHaveValue("(.+)");
 
-    userEvent.type(screen.getByTestId("renameReplacementInput"), "{selectall}{del}test_$1");
+    await userEvent.type(screen.getByTestId("renameReplacementInput"), "{selectall}{del}test_$1");
 
     expect(screen.getByTestId("renameReplacementInput")).toHaveValue("test_$1");
   });
 
   it("sends user input to parent component via getRenamePattern", () => {
     // User enters text into renamePatternInput
-    userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
+    await userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
 
     // getRenamePattern is prop sent from parent component to retrieve user input
     expect(testProps.getRenamePattern).toBeCalledTimes(4);
@@ -54,7 +54,7 @@ describe("RenameInput component", () => {
 
   it("sends user input to parent component via getRenameReplacement", () => {
     // User enters text into renamePatternInput
-    userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
+    await userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
 
     // getRenamePattern is prop sent from parent component to retrieve user input
     expect(testProps.getRenameReplacement).toBeCalledTimes(7);

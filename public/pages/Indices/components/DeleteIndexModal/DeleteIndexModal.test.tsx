@@ -26,7 +26,7 @@ describe("<DeleteIndexModal /> spec", () => {
       <DeleteIndexModal selectedItems={[".kibana", "test"]} visible onConfirm={() => {}} onClose={() => {}} />
     );
     expect(document.querySelector(".euiButton--danger")).toHaveAttribute("disabled");
-    userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
     expect(document.querySelector(".euiButton--danger")).not.toHaveAttribute("disabled");
   });
 });

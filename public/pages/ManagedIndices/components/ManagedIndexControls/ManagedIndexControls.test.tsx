@@ -64,7 +64,7 @@ describe("<ManagedIndexControls /> spec", () => {
       />
     );
 
-    userEvent.type(getByPlaceholderText("Search index name"), "four");
+    await userEvent.type(getByPlaceholderText("Search index name"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });

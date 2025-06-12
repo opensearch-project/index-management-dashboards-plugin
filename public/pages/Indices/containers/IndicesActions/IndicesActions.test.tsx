@@ -87,7 +87,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Open Action")).toBeDisabled();
       expect(getByTestId("Close Action")).toBeDisabled();
@@ -149,12 +149,12 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following indexes.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -192,12 +192,12 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
       getByText("Cache will be cleared for all open indexes.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -245,12 +245,12 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
       getByText("Cache will be cleared for all open indexes.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -306,8 +306,8 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -376,13 +376,13 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following indexes.");
       getByText("Cache will not be cleared for the following indexes because they may be closed or blocked.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -440,12 +440,12 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Clear cache Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following indexes.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -503,9 +503,9 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Open Action"));
-    userEvent.click(getByTestId("Open Confirm button"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Open Action"));
+    await userEvent.click(getByTestId("Open Confirm button"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -557,10 +557,10 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Close Action"));
-    userEvent.type(getByPlaceholderText("close"), "close");
-    userEvent.click(getByTestId("Close Confirm button"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Close Action"));
+    await userEvent.type(getByPlaceholderText("close"), "close");
+    await userEvent.click(getByTestId("Close Confirm button"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -629,10 +629,10 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("deleteAction"));
-    userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("Delete Confirm button"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("deleteAction"));
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.click(getByTestId("Delete Confirm button"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -647,7 +647,7 @@ describe("<IndicesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("Delete Confirm button"));
+    await userEvent.click(getByTestId("Delete Confirm button"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -689,8 +689,8 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Shrink Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Shrink Action"));
 
     expect(history.length).toBe(2);
     expect(history.location.pathname).toBe(ROUTES.SHRINK_INDEX);
@@ -744,7 +744,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Shrink Action")).toBeDisabled();
     });
@@ -782,7 +782,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Shrink Action")).toBeDisabled();
     });
@@ -816,8 +816,8 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Reindex Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Reindex Action"));
 
     expect(history.length).toBe(2);
     expect(history.location.pathname).toBe(ROUTES.REINDEX);
@@ -836,8 +836,8 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Reindex Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Reindex Action"));
 
     expect(history.length).toBe(2);
     expect(history.location.pathname).toBe(ROUTES.REINDEX);
@@ -880,9 +880,9 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).not.toBeDisabled();
-    userEvent.click(getByTestId("Split Action"));
+    await userEvent.click(getByTestId("Split Action"));
   });
 
   it("split action is disabled if multiple indices are selected", async () => {
@@ -934,7 +934,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
   });
 
@@ -972,7 +972,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
   });
 
@@ -987,8 +987,8 @@ describe("<IndicesActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Flush Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Flush Action"));
     await waitFor(() => {
       expect(queryByTestId("Flush Action")).toBeNull();
       expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
@@ -1007,7 +1007,7 @@ describe("<IndicesActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Flush Action")).toBeEnabled();
   });
 
@@ -1052,8 +1052,8 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("The following index will be refreshed.");
@@ -1063,7 +1063,7 @@ describe("<IndicesActions /> spec", () => {
       expect(document.body).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "cluster.state",
@@ -1126,15 +1126,15 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
       expect(getByTestId("UnblockedItem-unblocked_index1")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
         "2 indexes [unblocked_index, unblocked_index1] have been successfully refreshed."
@@ -1189,8 +1189,8 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         text: "All selected indexes cannot be refreshed because they are either closed or in red status.",
@@ -1232,13 +1232,13 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       getByText("All open indexes will be refreshed.");
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("All open indexes have been successfully refreshed.");
@@ -1274,8 +1274,8 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
@@ -1313,14 +1313,14 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       getByText("The following index will be refreshed.");
       expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
@@ -1360,15 +1360,15 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Refresh Index Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
       getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
       expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "cluster.state",

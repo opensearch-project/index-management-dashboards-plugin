@@ -109,7 +109,7 @@ describe("<DataStreams /> spec", () => {
   it("with some actions", async () => {
     const { getByPlaceholderText } = renderWithRouter();
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
-    userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
+    await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({

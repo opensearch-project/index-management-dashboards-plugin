@@ -22,7 +22,7 @@ describe("<DeleteModal /> spec", () => {
     const closeDeleteModal = jest.fn();
     const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={closeDeleteModal} onClickDelete={() => {}} />);
 
-    userEvent.click(getByTestId("confirmModalCancelButton"));
+    await userEvent.click(getByTestId("confirmModalCancelButton"));
     expect(closeDeleteModal).toHaveBeenCalled();
   });
 
@@ -31,8 +31,8 @@ describe("<DeleteModal /> spec", () => {
     const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={() => {}} onClickDelete={onClickDelete} />);
 
     fireEvent.focus(getByTestId("deleteTextField"));
-    userEvent.type(getByTestId("deleteTextField"), `delete`);
-    userEvent.click(getByTestId("confirmModalConfirmButton"));
+    await userEvent.type(getByTestId("deleteTextField"), `delete`);
+    await userEvent.click(getByTestId("confirmModalConfirmButton"));
 
     expect(onClickDelete).toHaveBeenCalled();
   });

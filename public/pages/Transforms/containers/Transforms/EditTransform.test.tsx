@@ -133,10 +133,10 @@ describe("<EditTransform /> spec", () => {
     await waitFor(() => {});
 
     fireEvent.focus(getByTestId("description"));
-    userEvent.type(getByTestId("description"), "{selectall}{backspace}some description");
+    await userEvent.type(getByTestId("description"), "{selectall}{backspace}some description");
     fireEvent.blur(getByTestId("description"));
 
-    userEvent.click(getByTestId("editTransformSaveButton"));
+    await userEvent.click(getByTestId("editTransformSaveButton"));
 
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledWith(

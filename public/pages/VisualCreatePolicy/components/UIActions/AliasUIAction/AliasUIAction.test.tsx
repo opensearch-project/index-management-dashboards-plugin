@@ -29,8 +29,8 @@ describe("AliasUIAction component", () => {
   it("renders with blank action", () => {
     const { container } = render(actionRepoSingleton.getUIAction("alias").render(TEST_PROPS, mockOnChangeAction));
 
-    userEvent.click(screen.getByTestId("add-alias-toggle"));
-    userEvent.click(screen.getByTestId("remove-alias-toggle"));
+    await userEvent.click(screen.getByTestId("add-alias-toggle"));
+    await userEvent.click(screen.getByTestId("remove-alias-toggle"));
 
     const addAliasRow = screen.getByTestId("add-alias-row");
     const removeAliasRow = screen.getByTestId("remove-alias-row");

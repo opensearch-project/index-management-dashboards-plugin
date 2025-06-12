@@ -94,7 +94,7 @@ describe("container <IndexDetail /> spec", () => {
       });
     });
 
-    userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
+    await userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
     await waitFor(() => {
       expect(queryByText("Index alias")).not.toBeNull();
     });

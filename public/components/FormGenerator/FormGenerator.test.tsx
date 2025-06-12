@@ -107,7 +107,7 @@ describe("<FormGenerator /> spec", () => {
     });
     const { ref } = result.current;
     const { getByTestId } = result.current.renderResult;
-    userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
+    await userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
     let validateResult: ValidateResults | undefined;
     await act(async () => {
       validateResult = await ref.current?.validatePromise();
@@ -169,7 +169,7 @@ describe("<FormGenerator /> spec", () => {
       }
     );
 
-    userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
+    await userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
     await waitFor(() => {
       expect(onChangeMock).toBeCalledWith(
         {

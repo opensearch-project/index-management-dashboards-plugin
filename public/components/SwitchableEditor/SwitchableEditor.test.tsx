@@ -18,19 +18,19 @@ describe("<SwitchableEditor /> spec", () => {
       <SwitchableEditor onChange={onChangeMock} mode="diff" value={JSON.stringify({ name: "test" })} />
     );
     expect(document.body.children).toMatchSnapshot();
-    userEvent.click(document.querySelector(".euiSwitch__button") as HTMLElement);
+    await userEvent.click(document.querySelector(".euiSwitch__button") as HTMLElement);
     await findByText("The original value");
     expect(document.body.children).toMatchSnapshot();
     await findByText("The original value");
     const textarea = document.querySelector('[data-test-subj="jsonEditor-valueDisplay"]') as HTMLElement;
-    userEvent.type(textarea, "123");
-    userEvent.click(document.body);
+    await userEvent.type(textarea, "123");
+    await userEvent.click(document.body);
     await findByText(/Your input does not match the validation of json format/, undefined, {
       timeout: 3000,
     });
-    userEvent.clear(textarea);
-    userEvent.paste(textarea, `{ "name": "test" }`);
-    userEvent.click(document.body);
+    await userEvent.clear(textarea);
+    await userEvent.paste(`{ "name": "test" }`);
+    await userEvent.click(document.body);
     await waitFor(() => {});
     expect(onChangeMock).toBeCalledWith(`{ "name": "test" }`);
   });

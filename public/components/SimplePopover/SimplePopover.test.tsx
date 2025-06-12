@@ -29,11 +29,11 @@ describe("<SimplePopover /> spec", () => {
         <div data-test-subj="anotherElement">another element</div>
       </>
     );
-    userEvent.hover(getByTestId("test"));
+    await userEvent.hover(getByTestId("test"));
     await waitFor(() => {
       expect(queryByText("content in popover")).not.toBeNull();
     });
-    userEvent.hover(getByTestId("anotherElement"));
+    await userEvent.hover(getByTestId("anotherElement"));
     await waitFor(() => {
       expect(queryByText("content in popover")).toBeNull();
     });
@@ -43,11 +43,11 @@ describe("<SimplePopover /> spec", () => {
     const { getByTestId, queryByText } = render(
       <SimplePopover button={<div data-test-subj="test">button</div>}>content in popover</SimplePopover>
     );
-    userEvent.click(getByTestId("test"));
+    await userEvent.click(getByTestId("test"));
     await waitFor(() => {
       expect(queryByText("content in popover")).not.toBeNull();
     });
-    userEvent.click(document.body);
+    await userEvent.click(document.body);
     await waitFor(() => {
       expect(queryByText("content in popover")).toBeNull();
     });

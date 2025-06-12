@@ -53,7 +53,7 @@ describe("<IndexForm /> spec", () => {
 
     expect(queryByText("Invalid index name.")).toBeNull();
 
-    userEvent.click(getByText("Create"));
+    await userEvent.click(getByText("Create"));
     await waitFor(() => {
       expect(queryByText("Invalid index name.")).not.toBeNull();
     });
@@ -68,14 +68,14 @@ describe("<IndexForm /> spec", () => {
 
     const indexNameInput = getByPlaceholderText("Specify a name for the new index.");
 
-    userEvent.type(indexNameInput, `bad_index`);
-    userEvent.click(document.body);
+    await userEvent.type(indexNameInput, `bad_index`);
+    await userEvent.click(document.body);
     await waitFor(() => {});
-    userEvent.clear(indexNameInput);
-    userEvent.type(indexNameInput, `good_index`);
-    userEvent.click(document.body);
+    await userEvent.clear(indexNameInput);
+    await userEvent.type(indexNameInput, `good_index`);
+    await userEvent.click(document.body);
     await waitFor(() => expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10"));
-    userEvent.click(getByText("Create"));
+    await userEvent.click(getByText("Create"));
     await waitFor(() =>
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("good_index has been successfully created.")
     );
@@ -85,8 +85,8 @@ describe("<IndexForm /> spec", () => {
     const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter({});
 
     await waitFor(() => getByText("Define index"));
-    userEvent.type(getByPlaceholderText("Specify a name for the new index."), `bad_index`);
-    userEvent.click(getByText("Create"));
+    await userEvent.type(getByPlaceholderText("Specify a name for the new index."), `bad_index`);
+    await userEvent.click(getByText("Create"));
 
     await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index"));
   });
@@ -96,7 +96,7 @@ describe("<IndexForm /> spec", () => {
       index: "good_index",
     });
     await waitFor(() => getByText("Define index"));
-    userEvent.click(getByText("Update"));
+    await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
       // it shows detail and does not call any api when nothing modified
@@ -111,15 +111,15 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => getByText("Define index"));
 
-    userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
-    userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
+    await userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
+    await userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
+    await userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
+    await userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");
     await userEvent.click(document.body);
-    userEvent.click(getByText("Update"));
+    await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
@@ -183,10 +183,10 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
-    userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
+    await userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
+    await userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
     await waitFor(() => {});
-    userEvent.click(getByText("Update"));
+    await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
       // shows detail alias and update alias only
@@ -224,13 +224,13 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
+    await userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");
     await userEvent.click(document.body);
     await waitFor(() => {});
-    userEvent.click(getByText("Update"));
+    await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
@@ -260,8 +260,8 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
-    userEvent.click(getByText("Update"));
+    await userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
+    await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
@@ -287,7 +287,7 @@ describe("<IndexForm /> spec", () => {
       onCancel: onCancelMock,
     });
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
     await (() => {
       expect(onCancelMock).toBeCalledTimes(1);
       expect(onCancelMock).toBeCalledWith(undefined);

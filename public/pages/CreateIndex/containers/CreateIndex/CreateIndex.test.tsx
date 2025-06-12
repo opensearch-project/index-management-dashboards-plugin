@@ -88,7 +88,7 @@ describe("<CreateIndex /> spec", () => {
   it("it goes to indices page when click cancel", async () => {
     const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/good_index`]);
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();
     });
@@ -103,9 +103,9 @@ describe("<CreateIndex /> spec", () => {
 
     const indexNameInput = getByPlaceholderText("Specify a name for the new index.");
 
-    userEvent.type(indexNameInput, `good_index`);
-    userEvent.click(document.body);
-    userEvent.click(getByText("Create"));
+    await userEvent.type(indexNameInput, `good_index`);
+    await userEvent.click(document.body);
+    await userEvent.click(getByText("Create"));
 
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();

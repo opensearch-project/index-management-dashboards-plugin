@@ -46,7 +46,7 @@ describe("<ISMTemplate /> spec", () => {
       <ISMTemplate template={template} onUpdateTemplate={onUpdateTemplate} onRemoveTemplate={() => {}} isFirst={true} />
     );
     fireEvent.focus(getByTestId("ism-template-priority-input"));
-    userEvent.type(getByTestId("ism-template-priority-input"), "2");
+    await userEvent.type(getByTestId("ism-template-priority-input"), "2");
     fireEvent.blur(getByTestId("ism-template-priority-input"));
     expect(onUpdateTemplate).toHaveBeenCalled();
     expect(onUpdateTemplate).toHaveBeenCalledWith({ ...template, priority: 72 }); // already contains 7, just added 2

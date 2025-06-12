@@ -139,7 +139,7 @@ describe("<Aliases /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
     });
-    userEvent.click(getByTestId("tableHeaderCell_alias_0").querySelector("button") as Element);
+    await userEvent.click(getByTestId("tableHeaderCell_alias_0").querySelector("button") as Element);
     await waitFor(() => {
       expect(queryByText("1 more")).not.toBeNull();
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
@@ -161,7 +161,7 @@ describe("<Aliases /> spec", () => {
       getByText,
     } = renderWithRouter();
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
-    userEvent.type(getByPlaceholderText("Search..."), `${testAliasId}{enter}`);
+    await userEvent.type(getByPlaceholderText("Search..."), `${testAliasId}{enter}`);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -169,21 +169,24 @@ describe("<Aliases /> spec", () => {
         endpoint: "cat.aliases",
       });
     });
-    userEvent.click(document.getElementById(`_selection_column_${testAliasId}-checkbox`) as Element);
+    await userEvent.click(document.getElementById(`_selection_column_${testAliasId}-checkbox`) as Element);
     await waitFor(() => {});
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
-    userEvent.click(getByTestId("cancelCreateAliasButton"));
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
+    await userEvent.click(getByTestId("cancelCreateAliasButton"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
     await findByPlaceholderText("Specify alias name");
     expect(getByPlaceholderText("Specify alias name")).toBeDisabled();
     expect((getByPlaceholderText("Specify alias name") as HTMLInputElement).value).toEqual(testAliasId);
     expect(getByTitle("1")).toBeInTheDocument();
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(6);
-    userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
-    userEvent.click(document.querySelector('[title="1"] button') as Element);
-    userEvent.click(getByText("Save changes"));
+    await userEvent.type(
+      getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "2{enter}"
+    );
+    await userEvent.click(document.querySelector('[title="1"] button') as Element);
+    await userEvent.click(getByText("Save changes"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(8);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -209,26 +212,29 @@ describe("<Aliases /> spec", () => {
       });
     });
 
-    userEvent.click(getByTestId("Create aliasButton"));
+    await userEvent.click(getByTestId("Create aliasButton"));
     await findByTestId("createAliasButton");
-    userEvent.click(getByTestId("cancelCreateAliasButton"));
-    userEvent.click(getByTestId("Create aliasButton"));
+    await userEvent.click(getByTestId("cancelCreateAliasButton"));
+    await userEvent.click(getByTestId("Create aliasButton"));
     await findByTestId("createAliasButton");
-    userEvent.click(getByTestId("createAliasButton"));
+    await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
       expect(getByText("Invalid alias name.")).not.toBeNull();
     });
-    userEvent.type(getByPlaceholderText("Specify alias name"), multiIndexAliasId);
-    userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "1{enter}");
+    await userEvent.type(getByPlaceholderText("Specify alias name"), multiIndexAliasId);
+    await userEvent.type(
+      getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "1{enter}"
+    );
     await waitFor(() => {});
-    userEvent.click(getByTestId("createAliasButton"));
+    await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("alias exist");
     });
-    userEvent.clear(getByPlaceholderText("Specify alias name"));
-    userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
-    userEvent.click(getByTestId("createAliasButton"));
+    await userEvent.clear(getByPlaceholderText("Specify alias name"));
+    await userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
+    await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(17);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -240,17 +246,17 @@ describe("<Aliases /> spec", () => {
       });
     });
 
-    userEvent.click(getByText("1 more"));
+    await userEvent.click(getByText("1 more"));
     await findByTitle(`Indices in ${multiIndexAliasId} (4)`);
-    userEvent.click(getByText("Rows per page: 10"));
-    userEvent.click(getByTestId("tablePagination-25-rows"));
-    userEvent.click(getByTestId("euiFlyoutCloseButton"));
+    await userEvent.click(getByText("Rows per page: 10"));
+    await userEvent.click(getByTestId("tablePagination-25-rows"));
+    await userEvent.click(getByTestId("euiFlyoutCloseButton"));
   }, 70000);
 
   it("shows detail", async () => {
     const { getByTestId, findByTestId, getByText } = renderWithRouter();
     await findByTestId(`aliasDetail-${testAliasId}`);
-    userEvent.click(getByTestId(`aliasDetail-${testAliasId}`));
+    await userEvent.click(getByTestId(`aliasDetail-${testAliasId}`));
     await waitFor(() => expect(getByText("Save changes")).toBeInTheDocument(), {
       timeout: 3000,
     });

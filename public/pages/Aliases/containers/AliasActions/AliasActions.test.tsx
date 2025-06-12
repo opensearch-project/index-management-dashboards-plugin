@@ -81,7 +81,7 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("deleteAction")).toBeDisabled();
     });
@@ -129,10 +129,10 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("deleteAction"));
-    userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("deleteAction"));
+    await userEvent.type(getByPlaceholderText("delete"), "delete");
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -148,7 +148,7 @@ describe("<AliasesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -197,12 +197,12 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following aliases.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -281,8 +281,8 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -346,12 +346,12 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("ClearCacheAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
       getByText("Cache will be cleared for the following aliases.");
     });
-    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+    await userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -385,8 +385,8 @@ describe("<AliasesActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("Flush Action"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("Flush Action"));
     await waitFor(() => {
       expect(queryByTestId("Flush Action")).toBeNull();
       expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
@@ -405,7 +405,7 @@ describe("<AliasesActions /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Flush Action")).toBeDisabled();
   });
 
@@ -443,8 +443,8 @@ describe("<AliasesActions /> spec", () => {
       selectedItems,
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following alias will be refreshed.");
@@ -456,7 +456,7 @@ describe("<AliasesActions /> spec", () => {
       expect(document.body).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "cluster.state",
@@ -523,15 +523,15 @@ describe("<AliasesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
       getByText("The following aliases will be refreshed.");
       expect(getByTestId("UnblockedItem-1")).not.toBeNull();
       expect(getByTestId("UnblockedItem-2")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("2 aliases [1, 2] have been successfully refreshed.");
@@ -572,8 +572,8 @@ describe("<AliasesActions /> spec", () => {
       selectedItems,
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
@@ -613,15 +613,15 @@ describe("<AliasesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
       getByText("The following alias will be refreshed.");
       expect(getByTestId("UnblockedItem-1")).not.toBeNull();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The alias [1] has been successfully refreshed.");
@@ -651,8 +651,8 @@ describe("<AliasesActions /> spec", () => {
       selectedItems,
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("refreshAction"));
+    await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    await userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
       expect(queryByTestId("refreshAction")).toBeNull();
@@ -663,7 +663,7 @@ describe("<AliasesActions /> spec", () => {
       expect(document.body).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("refreshConfirmButton"));
+    await userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "cluster.state",

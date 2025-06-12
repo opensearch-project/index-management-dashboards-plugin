@@ -92,9 +92,9 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("deleteAction"));
+    await userEvent.click(getByTestId("deleteAction"));
     await findByText("Delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -110,7 +110,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
@@ -158,7 +158,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("UnlinkConfirmCheckBox")).not.toBeChecked();
     });
-    userEvent.click(getByTestId("UnlinkConfirmCheckBox"));
+    await userEvent.click(getByTestId("UnlinkConfirmCheckBox"));
     await waitFor(() => {
       expect(getByTestId("deleteConfirmUnlinkButton")).toBeEnabled();
     });

@@ -75,7 +75,7 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("View JSON"));
+    await userEvent.click(getByText("View JSON"));
     await waitFor(() => expect(document.querySelector(".language-json")).toBeInTheDocument());
   });
 
@@ -100,13 +100,13 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete good_template");
-    userEvent.click(getByTestId("deletaCancelButton"));
+    await userEvent.click(getByTestId("deletaCancelButton"));
     await waitFor(() => expect(queryByText("Delete good_template")).toBeNull());
-    userEvent.click(getByText("Delete"));
+    await userEvent.click(getByText("Delete"));
     await findByText("Delete good_template");
-    userEvent.click(getByTestId("deleteConfirmButton"));
+    await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });

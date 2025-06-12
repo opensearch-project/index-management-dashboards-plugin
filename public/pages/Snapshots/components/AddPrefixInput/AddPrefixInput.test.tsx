@@ -32,13 +32,13 @@ describe("AddPrefixInput component", () => {
   });
 
   it("accepts user input", () => {
-    userEvent.type(screen.getByTestId("prefixInput"), "test_prefix_");
+    await userEvent.type(screen.getByTestId("prefixInput"), "test_prefix_");
 
     expect(screen.getByTestId("prefixInput")).toHaveValue("restored_test_prefix_");
   });
 
   it("sends user input to parent component via getPrefix", () => {
-    userEvent.type(screen.getByTestId("prefixInput"), "four");
+    await userEvent.type(screen.getByTestId("prefixInput"), "four");
 
     // getPrefix is prop sent from parent component to retrieve user input
     expect(testProps.getPrefix).toBeCalledTimes(4);

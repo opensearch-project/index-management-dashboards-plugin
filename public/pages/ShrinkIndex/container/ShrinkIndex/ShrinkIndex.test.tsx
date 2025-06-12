@@ -296,7 +296,7 @@ describe("<Shrink index /> spec", () => {
     mockApi();
     const { getByText } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test1`]);
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    await userEvent.click(getByText("Cancel"));
 
     expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });
@@ -356,14 +356,14 @@ describe("<Shrink index /> spec", () => {
     });
 
     await act(async () => {
-      userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
+      await userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
     });
     await waitFor(async () => {
       expect(queryByText("Target index name required.")).toBeNull();
     });
 
     await act(async () => {
-      userEvent.clear(getByTestId("targetIndexNameInput"));
+      await userEvent.clear(getByTestId("targetIndexNameInput"));
     });
     await act(async () => {
       fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
@@ -382,7 +382,7 @@ describe("<Shrink index /> spec", () => {
     });
 
     await act(async () => {
-      userEvent.type(getByTestId("targetIndexNameInput"), "$44@&**^*^*");
+      await userEvent.type(getByTestId("targetIndexNameInput"), "$44@&**^*^*");
     });
     await waitFor(async () => {
       expect(queryByText("Invalid target index name.")).not.toBeNull();
@@ -404,14 +404,14 @@ describe("<Shrink index /> spec", () => {
     });
 
     await act(async () => {
-      userEvent.clear(getByTestId("numberOfReplicasInput"));
+      await userEvent.clear(getByTestId("numberOfReplicasInput"));
     });
 
     await waitFor(async () => {
       expect(queryByText("Number of replicas must be greater than or equal to 0.")).not.toBeNull();
     });
     await act(async () => {
-      userEvent.type(getByTestId("numberOfReplicasInput"), "-1");
+      await userEvent.type(getByTestId("numberOfReplicasInput"), "-1");
     });
 
     await waitFor(async () => {
@@ -451,7 +451,7 @@ describe("<Shrink index /> spec", () => {
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onSetIndexWriteBlockButton")).not.toBeNull();
 
-    userEvent.click(getByTestId("onSetIndexWriteBlockButton"));
+    await userEvent.click(getByTestId("onSetIndexWriteBlockButton"));
     expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "indices.putSettings",
       method: "PUT",
@@ -478,7 +478,7 @@ describe("<Shrink index /> spec", () => {
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onOpenIndexButton")).not.toBeNull();
 
-    userEvent.click(getByTestId("onOpenIndexButton"));
+    await userEvent.click(getByTestId("onOpenIndexButton"));
     expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "transport.request",
       data: {
@@ -522,7 +522,7 @@ describe("<Shrink index /> spec", () => {
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onOpenIndexButton")).not.toBeNull();
 
-    userEvent.click(getByTestId("onOpenIndexButton"));
+    await userEvent.click(getByTestId("onOpenIndexButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
@@ -551,7 +551,7 @@ describe("<Shrink index /> spec", () => {
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onSetIndexWriteBlockButton")).not.toBeNull();
 
-    userEvent.click(getByTestId("onSetIndexWriteBlockButton"));
+    await userEvent.click(getByTestId("onSetIndexWriteBlockButton"));
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putSettings",
@@ -587,7 +587,7 @@ describe("<Shrink index /> spec", () => {
     expect(queryByText("We recommend shrinking index with a green health status.")).toBeNull();
     expect(queryByText("Index setting [index.blocks.read_only] is [true].")).toBeNull();
 
-    userEvent.type(getByTestId("targetIndexNameInput"), "test3_shrunken");
+    await userEvent.type(getByTestId("targetIndexNameInput"), "test3_shrunken");
 
     await act(async () => {
       fireEvent.click(getByTestId("shrinkIndexConfirmButton"));

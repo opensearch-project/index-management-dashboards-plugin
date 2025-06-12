@@ -61,7 +61,7 @@ describe("<CreateDataStream /> spec", () => {
     const { getByTestId, getByText, container, findByText } = renderCreateDataStreamWithRouter([ROUTES.CREATE_DATA_STREAM]);
     await findByText("Define data stream");
     expect(container).toMatchSnapshot();
-    userEvent.click(getByTestId("CreateDataStreamCancelButton"));
+    await userEvent.click(getByTestId("CreateDataStreamCancelButton"));
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.DATA_STREAMS}`)).toBeInTheDocument();
     });

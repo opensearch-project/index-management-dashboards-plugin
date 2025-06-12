@@ -65,12 +65,12 @@ describe("<IndexDetail /> spec", () => {
     });
     const ref = result.current.ref;
     const { getByTestId, getByPlaceholderText } = result.current.container;
-    userEvent.type(getByPlaceholderText("Specify a name for the new index."), "good_index");
+    await userEvent.type(getByPlaceholderText("Specify a name for the new index."), "good_index");
     await waitFor(async () => {
       expect(await ref.current?.validate()).toBe(false);
     });
-    userEvent.type(getByTestId("form-name-index.number_of_shards").querySelector("input") as Element, "2");
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
+    await userEvent.type(getByTestId("form-name-index.number_of_shards").querySelector("input") as Element, "2");
+    await userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
     await waitFor(async () => {
       expect(await ref.current?.validate()).toBe(true);
     });
@@ -99,14 +99,14 @@ describe("<IndexDetail /> spec", () => {
       />
     );
     await findByDisplayValue("some_index");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
+    await userEvent.click(getByDisplayValue("some_index"));
+    await userEvent.click(document.body);
     await waitFor(() => {
       expect(document.querySelector('[data-test-subj="comboBoxInput"] [title="test"]')).not.toBeNull();
     });
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
+    await userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
+    await userEvent.click(getByDisplayValue("some_index"));
+    await userEvent.click(document.body);
     // The Dialog should show
     await waitFor(() => {
       expect(
@@ -115,16 +115,16 @@ describe("<IndexDetail /> spec", () => {
         )
       ).toBeInTheDocument();
     });
-    userEvent.click(getByTestId("simulate-confirm-confirm"));
+    await userEvent.click(getByTestId("simulate-confirm-confirm"));
     await waitFor(() => {
       expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
       expect(queryByText("The index name matches one or more index templates")).toBeInTheDocument();
     });
 
-    userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
+    await userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);
+    await userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
+    await userEvent.click(getByDisplayValue("some_index"));
+    await userEvent.click(document.body);
     // The Dialog should show
     await waitFor(() => {
       expect(
@@ -133,7 +133,7 @@ describe("<IndexDetail /> spec", () => {
         )
       ).toBeInTheDocument();
     });
-    userEvent.click(getByTestId("simulate-confirm-cancel"));
+    await userEvent.click(getByTestId("simulate-confirm-cancel"));
     await waitFor(() => {
       expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "10");
     });

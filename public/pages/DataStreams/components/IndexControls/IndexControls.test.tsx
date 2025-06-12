@@ -23,7 +23,7 @@ describe("<IndexControls /> spec", () => {
     const onSearchChangeMock = jest.fn();
     const { getByPlaceholderText } = render(<IndexControls value={{ search: "" }} onSearchChange={onSearchChangeMock} />);
 
-    userEvent.type(getByPlaceholderText("Search..."), "test");
+    await userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
       expect(onSearchChangeMock).toBeCalledTimes(4);
       expect(onSearchChangeMock).toBeCalledWith({

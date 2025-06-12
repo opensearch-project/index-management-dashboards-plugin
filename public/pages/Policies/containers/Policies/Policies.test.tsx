@@ -171,13 +171,13 @@ describe("<IndexPolicies /> spec", () => {
 
     expect(getByTestId("DeleteButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testPolicy.id}`));
+    await userEvent.click(getByTestId(`checkboxSelectRow-${testPolicy.id}`));
 
     expect(getByTestId("DeleteButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("DeleteButton"));
+    await userEvent.click(getByTestId("DeleteButton"));
     await waitFor(() => getByTestId("confirmationModalActionButton"));
-    userEvent.click(getByTestId("confirmationModalActionButton"));
+    await userEvent.click(getByTestId("confirmationModalActionButton"));
 
     await waitFor(() => {});
 
@@ -198,7 +198,7 @@ describe("<IndexPolicies /> spec", () => {
 
     await waitFor(() => getByText(testPolicy.id));
 
-    userEvent.click(getByText(testPolicy.id));
+    await userEvent.click(getByText(testPolicy.id));
 
     await waitFor(() => getByText(`Testing policy details: ?id=${testPolicy.id}`));
   });
@@ -231,14 +231,14 @@ describe("<IndexPolicies /> spec", () => {
     await waitFor(() => getByText("some_policy_id_0"));
     expect(queryByText("some_policy_id_39")).toBeNull();
 
-    userEvent.click(getAllByTestId("pagination-button-next")[0]);
+    await userEvent.click(getAllByTestId("pagination-button-next")[0]);
 
     // should load policies 20-39 after clicking next
     await waitFor(() => getByText("some_policy_id_39"));
     expect(queryByText("some_policy_id_0")).toBeNull();
 
     // @ts-ignore
-    userEvent.click(getByTestId("tableHeaderCell_policy.last_updated_time_2").firstChild);
+    await userEvent.click(getByTestId("tableHeaderCell_policy.last_updated_time_2").firstChild);
 
     // should load policies 0-19  after clicking sort (defaults to asc) on last_updated_time
     await waitFor(() => getByText("some_policy_id_0"));

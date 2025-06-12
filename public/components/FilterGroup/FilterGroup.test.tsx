@@ -44,8 +44,8 @@ describe("<FilterGroup /> spec", () => {
       expect(document.querySelector("[aria-label='1 available filters']")).toBeInTheDocument();
       expect(document.body.children).toMatchSnapshot();
     });
-    act(() => {
-      userEvent.click(getByText("hide"));
+    await act(async () => {
+      await userEvent.click(getByText("hide"));
     });
     await waitFor(() => {
       expect(queryByText("test option")).toBeNull();

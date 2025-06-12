@@ -39,11 +39,11 @@ describe("SnapshotRenameOptions component", () => {
   it("accepts user input", () => {
     render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
-    userEvent.click(screen.getByLabelText("Add prefix to restored index names"));
+    await userEvent.click(screen.getByLabelText("Add prefix to restored index names"));
 
     expect(testProps.onAddPrefixToggle).toBeCalled();
 
-    userEvent.click(screen.getByLabelText("Rename using regular expression (Advanced)"));
+    await userEvent.click(screen.getByLabelText("Rename using regular expression (Advanced)"));
 
     expect(testProps.onRenameIndicesToggle).toBeCalled();
 
@@ -51,7 +51,7 @@ describe("SnapshotRenameOptions component", () => {
 
     render(<SnapshotRenameOptions {...testProps} doNotRename={false} addPrefix={true} renameIndices={false} />);
 
-    userEvent.click(screen.getByLabelText("Do not rename"));
+    await userEvent.click(screen.getByLabelText("Do not rename"));
 
     expect(testProps.onDoNotRenameToggle).toBeCalled();
   });

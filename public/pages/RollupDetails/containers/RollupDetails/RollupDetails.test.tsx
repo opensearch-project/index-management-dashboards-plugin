@@ -111,7 +111,7 @@ describe("<RollupDetails /> spec", () => {
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -137,7 +137,7 @@ describe("<RollupDetails /> spec", () => {
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("disableButton"));
+    await userEvent.click(getByTestId("disableButton"));
 
     await waitFor(() => {});
 
@@ -164,7 +164,7 @@ describe("<RollupDetails /> spec", () => {
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("enableButton"));
+    await userEvent.click(getByTestId("enableButton"));
 
     await waitFor(() => {});
 
@@ -185,7 +185,7 @@ describe("<RollupDetails /> spec", () => {
       getByTestId("deleteButton");
     });
 
-    userEvent.click(getByTestId("deleteButton"));
+    await userEvent.click(getByTestId("deleteButton"));
 
     await waitFor(() => getByTestId("deleteTextField"));
 
@@ -195,7 +195,7 @@ describe("<RollupDetails /> spec", () => {
 
     expect(getByTestId("confirmModalConfirmButton")).toBeEnabled();
 
-    userEvent.click(getByTestId("confirmModalConfirmButton"));
+    await userEvent.click(getByTestId("confirmModalConfirmButton"));
 
     await waitFor(() => {});
 

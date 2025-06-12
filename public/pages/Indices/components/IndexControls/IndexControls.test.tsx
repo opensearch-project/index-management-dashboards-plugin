@@ -64,7 +64,7 @@ describe("<IndexControls /> spec", () => {
       />
     );
 
-    userEvent.type(getByPlaceholderText("Search"), "four");
+    await userEvent.type(getByPlaceholderText("Search"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });
