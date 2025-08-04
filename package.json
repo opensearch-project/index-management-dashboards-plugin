@@ -1,6 +1,6 @@
 {
   "name": "opensearch_index_management_dashboards",
-  "version": "3.1.0.0",
+  "version": "3.2.0.0",
   "description": "Opensearch Dashboards plugin for Index Management",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -63,7 +63,8 @@
     "lint-staged": "^10.2.0",
     "ts-loader": "^6.2.1",
     "@babel/runtime": "^7.26.10",
-    "@babel/helpers": "^7.26.10"
+    "@babel/helpers": "^7.26.10",
+    "cross-env": "^7.0.3"
   },
   "engines": {
     "yarn": "^1.21.1"
