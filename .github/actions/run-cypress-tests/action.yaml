@@ -131,6 +131,8 @@ runs:
         command: yarn run cypress run --config-file cypress.config.js
         wait-on: 'http://localhost:5601'
         browser: chrome
+      env:
+        NODE_OPTIONS: '--expose-gc'
     - name: Cypress tests
       uses: cypress-io/github-action@v5
       if: ${{ inputs.with-security == 'true' }}
@@ -139,6 +141,8 @@ runs:
         command: yarn run cypress run --config-file cypress.config.js --env SECURITY_ENABLED=true,openSearchUrl=https://localhost:9200,WAIT_FOR_LOADER_BUFFER_MS=500
         wait-on: 'http://localhost:5601'
         browser: chrome
+      env:
+        NODE_OPTIONS: '--expose-gc'
     # Screenshots are only captured on failure, will change this once we do visual regression tests
     - uses: actions/upload-artifact@v4
       if: failure()
