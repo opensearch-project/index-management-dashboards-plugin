@@ -3,14 +3,21 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   e2e: {
     specPattern: "cypress/e2e/plugins/index-management-dashboards-plugin/*.{js,jsx,ts,tsx}",
+    baseUrl: "http://localhost:5601",
+
+    // Timeouts
     defaultCommandTimeout: 60000,
     requestTimeout: 60000,
     responseTimeout: 60000,
-    baseUrl: "http://localhost:5601",
-    viewportWidth: 2000,
-    viewportHeight: 1320,
 
-    // Performance optimizations
+    // Lighter footprint in CI
+    viewportWidth: 1280,
+    viewportHeight: 900,
+    video: false,
+    screenshotOnRunFailure: true,
+    retries: 1,
+
+    // Performance knobs
     numTestsKeptInMemory: 0,
     experimentalMemoryManagement: true,
 
@@ -47,16 +54,25 @@ module.exports = defineConfig({
         ],
       },
     ],
+
     setupNodeEvents(on, config) {
-      // Increase browser process memory limit for Chromium-based browsers
+      // Harden Chrome for CI; avoid Electron/Chrome renderer OOMs.
       on("before:browser:launch", (browser = {}, launchOptions) => {
         if (browser.family === "chromium") {
+          // Increase V8 heap for test app JS
           launchOptions.args.push("--js-flags=--max-old-space-size=262144");
+          // CI stability flags
+          launchOptions.args.push("--disable-dev-shm-usage");
+          launchOptions.args.push("--no-sandbox");
+          launchOptions.args.push("--disable-gpu");
+          launchOptions.args.push("--disable-software-rasterizer");
+          launchOptions.args.push("--disable-features=VizDisplayCompositor");
+          // Modern headless is a bit leaner
+          launchOptions.args.push("--headless=new");
         }
         return launchOptions;
       });
 
-      // Return config (do not override NODE_OPTIONS here; set in environment)
       return config;
     },
   },

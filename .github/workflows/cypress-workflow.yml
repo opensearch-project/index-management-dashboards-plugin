@@ -7,9 +7,9 @@ on:
     branches:
       - "*"
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  CYPRESS_MEMORY_LIMIT: '262144'
-  NODE_OPTIONS: '--max-old-space-size=262144'
+  OPENSEARCH_DASHBOARDS_VERSION: "main"
+  CYPRESS_MEMORY_LIMIT: "262144"
+
 jobs:
   tests:
     name: Run Cypress E2E tests
