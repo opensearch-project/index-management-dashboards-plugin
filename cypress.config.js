@@ -48,7 +48,15 @@ module.exports = defineConfig({
       },
     ],
     setupNodeEvents(on, config) {
-      config.env.NODE_OPTIONS = "—max-old-space-size=131072";
+      // Increase browser process memory limit for Chromium-based browsers
+      on("before:browser:launch", (browser = {}, launchOptions) => {
+        if (browser.family === "chromium") {
+          launchOptions.args.push("--js-flags=--max-old-space-size=131072");
+        }
+        return launchOptions;
+      });
+
+      // Return config (do not override NODE_OPTIONS here; set in environment)
       return config;
     },
   },

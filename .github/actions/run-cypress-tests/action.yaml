@@ -132,7 +132,7 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
       env:
-        NODE_OPTIONS: '--expose-gc'
+        NODE_OPTIONS: '--max-old-space-size=131072'
     - name: Cypress tests
       uses: cypress-io/github-action@v5
       if: ${{ inputs.with-security == 'true' }}
@@ -142,7 +142,7 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
       env:
-        NODE_OPTIONS: '--expose-gc'
+        NODE_OPTIONS: '--max-old-space-size=131072'
     # Screenshots are only captured on failure, will change this once we do visual regression tests
     - uses: actions/upload-artifact@v4
       if: failure()
