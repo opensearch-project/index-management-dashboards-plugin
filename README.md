@@ -21,7 +21,7 @@ The Index Management Dashboards plugin lets you manage your [Index Management Da
 
 ## Documentation
 
-Please see our [documentation](https://opensearch.org/docs/im-plugin/index/).
+Please see our [documentation](https://docs.opensearch.org/latest/dashboards/im-dashboards/index/).
 
 ## Contributing
 
