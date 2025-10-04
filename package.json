@@ -64,7 +64,8 @@
     "**/micromatch": "^4.0.8",
     "**/elliptic": "^6.5.4",
     "@babel/runtime": "^7.26.10",
-    "@babel/helpers": "^7.26.10"
+    "@babel/helpers": "^7.26.10",
+    "form-data": "4.0.4"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
