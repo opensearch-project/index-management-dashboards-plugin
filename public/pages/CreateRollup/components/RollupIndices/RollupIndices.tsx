@@ -22,6 +22,9 @@ import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { wildcardOption } from "../../../../utils/helpers";
+import AdvancedSettings from "../../../../components/AdvancedSettings";
+import flat from "flat";
+import { INDEX_SETTINGS_URL } from "../../../../utils/constants";
 
 interface RollupIndicesProps {
   indexService: IndexService;
@@ -29,8 +32,11 @@ interface RollupIndicesProps {
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
+  targetIndexSettings: Pick<IndexItem, "settings"> | null;
+  targetIndexSettingsError: string;
   onChangeSourceIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
   onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeTargetIndexSettings: (settings: Pick<IndexItem, "settings"> | null) => void;
   hasAggregation: boolean;
 }
 
@@ -124,8 +130,11 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
       sourceIndexError,
       targetIndex,
       targetIndexError,
+      targetIndexSettings,
+      targetIndexSettingsError,
       onChangeSourceIndex,
       onChangeTargetIndex,
+      onChangeTargetIndexSettings,
       hasAggregation,
     } = this.props;
     const { isLoading, indexOptions, targetIndexOptions } = this.state;
@@ -207,6 +216,66 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
             isLoading={isLoading}
             isInvalid={targetIndexError != ""}
             data-test-subj="targetIndexCombobox"
+          />
+        </EuiCompressedFormRow>
+
+        <EuiCompressedFormRow
+          error={targetIndexSettingsError}
+          isInvalid={targetIndexSettingsError != ""}
+          helpText={
+            <EuiText size={"xs"}>
+              {"Optional. The target index settings will be apply only if target index will be created during the rollup."}
+              {
+                <EuiLink external href={ROLLUP_RESULTS_HELP_TEXT_LINK} target={"_blank"} rel="noopener noreferrer">
+                  Learn more
+                </EuiLink>
+              }
+            </EuiText>
+          }
+        >
+          <AdvancedSettings
+            value={targetIndexSettings || {}}
+            onChange={(val) => {
+              if (Object.keys(val).length === 0) {
+                onChangeTargetIndexSettings(null);
+              } else {
+                onChangeTargetIndexSettings(val);
+              }
+            }}
+            accordionProps={{
+              initialIsOpen: false,
+              id: "accordionForCreateRollupTargetIndexSettings",
+              buttonContent: <h3>Target index settings</h3>,
+            }}
+            editorProps={{
+              disabled: false,
+              width: "100%",
+              formatValue: flat,
+            }}
+            rowProps={{
+              fullWidth: true,
+              label: "Specify advanced index settings",
+              helpText: (
+                <>
+                  <p>
+                    Specify a comma-delimited list of settings.{" "}
+                    <EuiLink href={INDEX_SETTINGS_URL} target="_blank" external>
+                      View index settings
+                    </EuiLink>
+                  </p>
+                  <p>
+                    All the settings will be handled in flat structure.{" "}
+                    <EuiLink
+                      href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#query-parameters"
+                      external
+                      target="_blank"
+                    >
+                      Learn more
+                    </EuiLink>
+                  </p>
+                </>
+              ),
+            }}
           />
         </EuiCompressedFormRow>
       </EuiPanel>
