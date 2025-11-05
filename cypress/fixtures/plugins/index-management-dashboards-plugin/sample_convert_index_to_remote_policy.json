@@ -1,0 +1,42 @@
+{
+  "policy": {
+    "description": "Convert old indexes to searchable snapshots",
+    "default_state": "active",
+    "states": [
+      {
+        "name": "active",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "archive",
+            "conditions": {
+              "min_index_age": "30d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "archive",
+        "actions": [
+          {
+            "snapshot": {
+              "repository": "remote-repo",
+              "snapshot": "{{ctx.index}}"
+            }
+          },
+          {
+            "convert_index_to_remote": {
+              "repository": "remote-repo",
+              "snapshot": "{{ctx.index}}",
+              "include_aliases": true,
+              "ignore_index_settings": "index.refresh_interval,index.number_of_replicas",
+              "number_of_replicas": 0
+            }
+          }
+        ],
+        "transitions": []
+      }
+    ]
+  }
+}
+
