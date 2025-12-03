@@ -6,6 +6,7 @@
 import AliasUIAction from "./AliasUIAction/AliasUIAction";
 import AllocationUIAction from "./AllocationUIAction";
 import CloseUIAction from "./CloseUIAction";
+import ConvertIndexToRemoteUIAction from "./ConvertIndexToRemoteUIAction";
 import DeleteUIAction from "./DeleteUIAction";
 import ForceMergeUIAction from "./ForceMergeUIAction";
 import IndexPriorityUIAction from "./IndexPriorityUIAction";
@@ -23,6 +24,7 @@ export {
   AliasUIAction,
   AllocationUIAction,
   CloseUIAction,
+  ConvertIndexToRemoteUIAction,
   DeleteUIAction,
   ForceMergeUIAction,
   IndexPriorityUIAction,
