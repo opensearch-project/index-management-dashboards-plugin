@@ -234,14 +234,23 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.getPolicy(policyId);
 
-      if (response.ok) {
+      if (response.ok && response.response && response.response.policy) {
         // Populate policy into state
         const policy = response.response.policy;
         const indices = _.get(policy, "snapshot_config.indices", "");
-        const selectedIndexOptions = indices
-          .split(",")
-          .filter((index: string) => !!index)
-          .map((label: string) => ({ label }));
+        
+        // Handle both array and string format for indices
+        let selectedIndexOptions: { label: string }[] = [];
+        if (Array.isArray(indices)) {
+          selectedIndexOptions = indices
+            .filter((index: string) => !!index)
+            .map((label: string) => ({ label }));
+        } else if (typeof indices === 'string') {
+          selectedIndexOptions = indices
+            .split(",")
+            .filter((index: string) => !!index)
+            .map((label: string) => ({ label }));
+        }
         const selectedRepoValue = _.get(policy, "snapshot_config.repository", "");
 
         const { frequencyType: creationScheduleFrequencyType } = parseCronExpression(_.get(policy, "creation.schedule.cron.expression"));
