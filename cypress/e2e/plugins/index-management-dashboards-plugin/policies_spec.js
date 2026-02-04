@@ -73,6 +73,7 @@ describe("Policies", () => {
         add: ["alias1", "alias2"],
         remove: ["alias3", "alias5", "alias6"],
       };
+      const testIndexPattern = "test-index-pattern";
 
       // Route us to create policy page
       cy.contains("Create policy").click({ force: true });
@@ -88,6 +89,12 @@ describe("Policies", () => {
 
       // Type in the policy description
       cy.get(`[data-test-subj="create-policy-description"]`).type("{selectall}{backspace}" + sampleAliasPolicy.policy.description);
+
+      // Add an ISM template
+      cy.get("button").contains("Add template").click({ force: true });
+
+      // Enter an index pattern
+      cy.get(`[data-test-subj="comboBoxInput"]`).type(testIndexPattern);
 
       // Add a state
       cy.get("button").contains("Add state").click({ force: true });
