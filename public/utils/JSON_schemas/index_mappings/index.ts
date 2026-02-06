@@ -86,7 +86,6 @@ export const IndexMappingsJSONEditorSchema: JSONSchema4 = {
               },
               required: ["type", ...(item.options?.fields?.map((item) => item.name) || [])],
               additionalProperties: false,
-              errorMessage: "Property is not supported in the visual editor.",
             },
           };
 

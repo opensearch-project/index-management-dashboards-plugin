@@ -258,7 +258,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
         <input
           class="euiCheckbox__input"
           data-test-subj="sendAddtionalNotificationsCheckBox"
-          id="builtInCheckBoxId-16"
+          id="builtInCheckBoxId-14"
           type="checkbox"
         />
         <div
@@ -266,7 +266,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
         />
         <label
           class="euiCheckbox__label"
-          for="builtInCheckBoxId-16"
+          for="builtInCheckBoxId-14"
         >
           Send additional notifications
         </label>

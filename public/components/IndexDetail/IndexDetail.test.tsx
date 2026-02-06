@@ -4,8 +4,7 @@
  */
 
 import React, { useRef, forwardRef, useState } from "react";
-import { render, waitFor } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
+import { render, waitFor, renderHook } from "@testing-library/react";
 import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 import userEventModule from "@testing-library/user-event";
 

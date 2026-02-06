@@ -223,7 +223,6 @@ exports[`<JSONModal /> spec renders the component 1`] = `
                   <span
                     class="euiCodeBlock__line"
                   >
-                    
                     <span
                       class="token punctuation"
                     >

@@ -4,8 +4,7 @@
  */
 
 import React, { forwardRef, useRef } from "react";
-import { act, fireEvent, render, waitFor } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
+import { act, fireEvent, render, waitFor, renderHook } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { EuiButton } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";

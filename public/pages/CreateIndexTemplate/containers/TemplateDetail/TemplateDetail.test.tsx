@@ -4,10 +4,9 @@
  */
 
 import React, { useRef } from "react";
-import { act, render, waitFor } from "@testing-library/react";
+import { act, render, waitFor, renderHook } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { HashRouter, Route } from "react-router-dom";
-import { renderHook } from "@testing-library/react-hooks";
 import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";

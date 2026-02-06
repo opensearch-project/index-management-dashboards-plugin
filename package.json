@@ -29,7 +29,7 @@
     }
   },
   "resolutions": {
-    "@types/react": "^16.9.8",
+    "@types/react": "^18.2.0",
     "semver": "^7.5.3",
     "@cypress/request": "^3.0.0",
     "**/ansi-regex": "^5.0.1",
@@ -52,12 +52,11 @@
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@testing-library/dom": "^8.11.3",
-    "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^14.4.3",
     "@types/diff": "^5.0.2",
     "@types/flat": "^5.0.2",
     "@types/json-schema": "^7.0.11",
-    "@types/react-dom": "^16.9.8",
+    "@types/react-dom": "^18.2.0",
     "@types/react-router-dom": "^5.3.2",
     "cypress": "^13.6.0",
     "diff": "^4.0.1",
