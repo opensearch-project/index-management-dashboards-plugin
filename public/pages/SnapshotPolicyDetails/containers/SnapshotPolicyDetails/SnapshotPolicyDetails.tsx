@@ -299,16 +299,21 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
       // { term: "Time zone of timestamp", value: `${_.get(policy, "snapshot_config.date_format_timezone")}` },
     ];
 
-    const createCronExpression = policy.creation.schedule.cron.expression;
-    const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(createCronExpression);
-    const humanCron = humanCronExpression(
-      { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
-      createCronExpression,
-      policy.creation.schedule.cron.timezone
-    );
+    let frequencyType = "-";
+    let humanCron;
+    if (policy.creation != null) {
+      const createCronExpression = policy.creation.schedule.cron.expression;
+      const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(createCronExpression);
+      humanCron = humanCronExpression(
+        { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
+        createCronExpression,
+        policy.creation.schedule.cron.timezone
+      );
+    }
+
     const snapshotScheduleItems = [
       { term: "Frequency", value: _.capitalize(frequencyType) },
-      { term: "Cron schedule", value: humanCron },
+      { term: "Cron schedule", value: humanCron ?? "-" },
       { term: "Next snapshot time", value: renderTimestampMillis(metadata?.creation?.trigger.time) },
     ];
 
