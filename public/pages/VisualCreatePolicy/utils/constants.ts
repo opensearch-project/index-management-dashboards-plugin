@@ -87,6 +87,7 @@ export const DEFAULT_CONVERT_INDEX_TO_REMOTE = {
   convert_index_to_remote: {
     repository: "example-repository",
     snapshot: "example-snapshot",
+    rename_pattern: "$1_remote",
   },
 };
 export const DEFAULT_DELETE = {
