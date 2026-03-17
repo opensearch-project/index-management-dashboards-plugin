@@ -25,7 +25,11 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
   clone = (action: ConvertIndexToRemoteAction) => new ConvertIndexToRemoteUIAction(action, this.id);
 
   isValid = () => {
-    return !!this.action.convert_index_to_remote.snapshot && !!this.action.convert_index_to_remote.repository;
+    return (
+      !!this.action.convert_index_to_remote.snapshot &&
+      !!this.action.convert_index_to_remote.repository &&
+      !!this.action.convert_index_to_remote.rename_pattern
+    );
   };
 
   render = (action: UIAction<ConvertIndexToRemoteAction>, onChangeAction: (action: UIAction<ConvertIndexToRemoteAction>) => void) => {
@@ -72,6 +76,30 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
               );
             }}
             data-test-subj="action-render-convert-index-to-remote-snapshot"
+          />
+        </EuiCompressedFormRow>
+        <EuiSpacer size="s" />
+        <EuiFormCustomLabel
+          title="Rename Pattern"
+          helpText="Rename pattern for restored index ($1 is the name of managed index)."
+          isInvalid={!this.isValid()}
+        />
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+          <EuiCompressedFieldText
+            fullWidth
+            value={(action.action as ConvertIndexToRemoteAction).convert_index_to_remote.rename_pattern}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const rename_pattern = e.target.value;
+              onChangeAction(
+                this.clone({
+                  convert_index_to_remote: {
+                    ...action.action.convert_index_to_remote,
+                    rename_pattern,
+                  },
+                })
+              );
+            }}
+            data-test-subj="action-render-convert-index-to-remote-rename-pattern"
           />
         </EuiCompressedFormRow>
       </>
