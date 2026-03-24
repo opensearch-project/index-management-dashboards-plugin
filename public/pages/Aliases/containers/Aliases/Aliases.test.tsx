@@ -170,7 +170,7 @@ describe("<Aliases /> spec", () => {
       });
     });
     await userEvent.click(document.getElementById(`_selection_column_${testAliasId}-checkbox`) as Element);
-    await waitFor(() => {});
+    await waitFor(() => { });
     await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
     await userEvent.click(getByTestId("cancelCreateAliasButton"));
@@ -225,7 +225,7 @@ describe("<Aliases /> spec", () => {
       getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "1{enter}"
     );
-    await waitFor(() => {});
+    await waitFor(() => { });
     await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
