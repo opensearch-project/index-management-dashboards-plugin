@@ -46,7 +46,8 @@
     "form-data": "4.0.4",
     "cipher-base": "^1.0.7",
     "sha.js": "^2.4.12",
-    "qs": "^6.14.1"
+    "qs": "^6.14.1",
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
