@@ -5,7 +5,7 @@
 
 import React, { ChangeEvent, Component, useContext } from "react";
 import { EuiSmallButton, EuiSmallButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { RouteComponentProps, useHistory } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -24,7 +24,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import {
   DataSourceMenuContext,
   DataSourceMenuProperties,
-  DataSourceMenuReadOnlyContext,
   DataSourceMenuReadOnlyProperties,
 } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
@@ -53,6 +52,8 @@ interface CreateRollupFormState {
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
+  targetIndexSettings: Pick<IndexItem, "settings"> | null;
+  targetIndexSettingsError: string;
 
   mappings: any;
   allMappings: FieldItem[][];
@@ -115,6 +116,8 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
     sourceIndexError: "",
     targetIndex: [],
     targetIndexError: "",
+    targetIndexSettings: null,
+    targetIndexSettingsError: "",
 
     timestamp: [],
     timestampError: "",
@@ -331,6 +334,12 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
 
     newJSON.rollup.target_index = targetIndex[0];
     this.setState({ targetIndex: options, rollupJSON: newJSON, targetIndexError: targetIndexError });
+  };
+
+  onChangeTargetIndexSettings = (settings: Pick<IndexItem, "settings"> | null): void => {
+    let newJSON = this.state.rollupJSON;
+    newJSON.rollup.target_index_settings = settings;
+    this.setState({ targetIndexSettings: settings, rollupJSON: newJSON });
   };
 
   onChangeIntervalType = (intervalType: string): void => {
@@ -573,6 +582,8 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
       sourceIndexError,
       targetIndex,
       targetIndexError,
+      targetIndexSettings,
+      targetIndexSettingsError,
       currentStep,
 
       timestamp,
@@ -614,10 +625,13 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           sourceIndexError={sourceIndexError}
           targetIndex={targetIndex}
           targetIndexError={targetIndexError}
+          targetIndexSettings={targetIndexSettings}
+          targetIndexSettingsError={targetIndexSettingsError}
           onChangeName={this.onChangeName}
           onChangeDescription={this.onChangeDescription}
           onChangeSourceIndex={this.onChangeSourceIndex}
           onChangeTargetIndex={this.onChangeTargetIndex}
+          onChangeTargetIndexSettings={this.onChangeTargetIndexSettings}
           currentStep={this.state.currentStep}
           hasAggregation={selectedDimensionField.length != 0 || selectedMetrics.length != 0}
           useNewUX={useNewUX}
@@ -677,6 +691,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           description={description}
           sourceIndex={sourceIndex}
           targetIndex={targetIndex}
+          targetIndexSettings={targetIndexSettings}
           intervalType={intervalType}
           intervalValue={intervalValue}
           timestamp={timestamp}
