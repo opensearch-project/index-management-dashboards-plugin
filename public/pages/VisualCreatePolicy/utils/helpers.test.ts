@@ -75,11 +75,19 @@ class DummyUIAction implements UIAction<DummyAction> {
 }
 
 test("action repository usage", () => {
-  expect(actionRepoSingleton.getAllActionTypes().length).toBe(15);
-  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
   expect(actionRepoSingleton.getAllActionTypes().length).toBe(16);
+  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
+  expect(actionRepoSingleton.getAllActionTypes().length).toBe(17);
   expect(actionRepoSingleton.getUIAction("dummy") instanceof DummyUIAction).toBe(true);
   expect(actionRepoSingleton.getUIActionFromData(DEFAULT_DUMMY) instanceof DummyUIAction).toBe(true);
+});
+
+test("convert_index_to_remote action is registered in repository", () => {
+  expect(actionRepoSingleton.getAllActionTypes()).toContain("convert_index_to_remote");
+  const uiAction = actionRepoSingleton.getUIAction("convert_index_to_remote");
+  expect(uiAction).toBeDefined();
+  expect(uiAction.type).toBe("convert_index_to_remote");
+  expect(uiAction.isValid).toBeDefined();
 });
 
 test("changing the default state name correctly updates default_state", () => {
