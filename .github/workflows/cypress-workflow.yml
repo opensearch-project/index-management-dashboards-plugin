@@ -7,7 +7,7 @@ on:
     branches:
       - "*"
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: 'main'
+  OPENSEARCH_DASHBOARDS_VERSION: '3.5'
   CYPRESS_MEMORY_LIMIT: '40960'
   NODE_OPTIONS: '--max-old-space-size=40960'
 jobs:
