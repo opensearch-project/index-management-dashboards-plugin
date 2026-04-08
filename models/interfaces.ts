@@ -428,6 +428,14 @@ export interface SnapshotAction extends Action {
   };
 }
 
+export interface ConvertIndexToRemoteAction extends Action {
+  convert_index_to_remote: {
+    repository: string;
+    snapshot: string;
+    rename_pattern: string;
+  };
+}
+
 export interface IndexPriorityAction extends Action {
   index_priority: {
     priority?: number;

@@ -111,6 +111,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                   Close
                 </option>
                 <option
+                  value="convert_index_to_remote"
+                >
+                  Convert Index To Remote
+                </option>
+                <option
                   value="delete"
                 >
                   Delete
