@@ -12,7 +12,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Vikas Bansal          | [vikasvb90](https://github.com/vikasvb90)                    | Amazon      |
 | Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)                  | Amazon      |
 | Kshitij Tandon | [tandonks](https://github.com/tandonks) | Amazon |
-| Shivansh Arora | [shiv0408](https://github.com/shiv0408) | Amazon |
+| Shivansh Arora | [shiv0408](https://github.com/shiv0408) | Apple |
 | Sooraj Sinha | [soosinha](https://github.com/soosinha) | Amazon |
 
 ## Emeritus
