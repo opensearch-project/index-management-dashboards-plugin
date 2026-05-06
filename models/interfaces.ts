@@ -432,7 +432,7 @@ export interface ConvertIndexToRemoteAction extends Action {
   convert_index_to_remote: {
     repository: string;
     snapshot: string;
-    rename_pattern: string;
+    rename_pattern?: string;
   };
 }
 

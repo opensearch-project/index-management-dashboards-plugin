@@ -1,0 +1,329 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConvertIndexToRemoteUIAction component renders correctly when rename_pattern is provided 1`] = `
+<div>
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Repository
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          The repository name that you register through the native snapshot API operations.
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-repository"
+            id="some_html_id"
+            type="text"
+            value="test-repository"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Snapshot
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          The name of the snapshot.
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-snapshot"
+            id="some_html_id"
+            type="text"
+            value="test-snapshot"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Rename Pattern
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          Rename pattern for restored index ($1 is the name of managed index).
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-rename-pattern"
+            id="some_html_id"
+            type="text"
+            value="remote_$1"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ConvertIndexToRemoteUIAction component renders correctly with default action 1`] = `
+<div>
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Repository
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          The repository name that you register through the native snapshot API operations.
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-repository"
+            id="some_html_id"
+            type="text"
+            value="example-repository"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Snapshot
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          The name of the snapshot.
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-snapshot"
+            id="some_html_id"
+            type="text"
+            value="example-snapshot"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div>
+    <div
+      class="euiText euiText--small"
+      style="margin-bottom: 5px;"
+    >
+      <h3
+        class="euiFormLabel "
+        style="margin-bottom: 2px;"
+      >
+        Rename Pattern
+      </h3>
+    </div>
+    <div
+      class="euiText euiText--extraSmall"
+      style="margin-bottom: 5px;"
+    >
+      <p>
+         
+        <span
+          style="font-weight: 300; font-size: 14px;"
+        >
+          Rename pattern for restored index ($1 is the name of managed index).
+           
+        </span>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
+            data-test-subj="action-render-convert-index-to-remote-rename-pattern"
+            id="some_html_id"
+            type="text"
+            value="$1_remote"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

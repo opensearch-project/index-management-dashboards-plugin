@@ -4,11 +4,12 @@
  */
 
 import React, { ChangeEvent } from "react";
+import { DEFAULT_CONVERT_INDEX_TO_REMOTE } from "../../../utils/constants";
 import { EuiCompressedFormRow, EuiCompressedFieldText, EuiSpacer } from "@elastic/eui";
-import { ConvertIndexToRemoteAction, UIAction } from "../../../../../models/interfaces";
-import { makeId } from "../../../../utils/helpers";
-import { ActionType } from "../../utils/constants";
-import EuiFormCustomLabel from "../EuiFormCustomLabel";
+import { ConvertIndexToRemoteAction, UIAction } from "../../../../../../models/interfaces";
+import { makeId } from "../../../../../utils/helpers";
+import { ActionType } from "../../../utils/constants";
+import EuiFormCustomLabel from "../../EuiFormCustomLabel";
 
 export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertIndexToRemoteAction> {
   id: string;
@@ -25,11 +26,7 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
   clone = (action: ConvertIndexToRemoteAction) => new ConvertIndexToRemoteUIAction(action, this.id);
 
   isValid = () => {
-    return (
-      !!this.action.convert_index_to_remote.snapshot &&
-      !!this.action.convert_index_to_remote.repository &&
-      !!this.action.convert_index_to_remote.rename_pattern
-    );
+    return !!this.action.convert_index_to_remote.snapshot && !!this.action.convert_index_to_remote.repository;
   };
 
   render = (action: UIAction<ConvertIndexToRemoteAction>, onChangeAction: (action: UIAction<ConvertIndexToRemoteAction>) => void) => {
@@ -87,7 +84,7 @@ export default class ConvertIndexToRemoteUIAction implements UIAction<ConvertInd
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiCompressedFieldText
             fullWidth
-            value={(action.action as ConvertIndexToRemoteAction).convert_index_to_remote.rename_pattern}
+            value={(action.action as ConvertIndexToRemoteAction).convert_index_to_remote.rename_pattern ?? "$1_remote"}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const rename_pattern = e.target.value;
               onChangeAction(
