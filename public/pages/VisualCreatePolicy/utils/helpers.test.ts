@@ -6,7 +6,8 @@
 import { actionRepoSingleton, capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo, getUpdatedPolicy } from "./helpers";
 import { Action, ISMTemplate, UIAction } from "../../../../models/interfaces";
 import { makeId } from "../../../utils/helpers";
-import { DEFAULT_POLICY } from "./constants";
+import { DEFAULT_POLICY, DEFAULT_STOP_REPLICATION } from "./constants";
+import { StopReplicationUIAction } from "../components/UIActions";
 
 test("converts all ism template formats into a list of ism templates", () => {
   expect(convertTemplatesToArray(null)).toEqual([]);
@@ -75,11 +76,20 @@ class DummyUIAction implements UIAction<DummyAction> {
 }
 
 test("action repository usage", () => {
-  expect(actionRepoSingleton.getAllActionTypes().length).toBe(15);
-  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
   expect(actionRepoSingleton.getAllActionTypes().length).toBe(16);
+  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
+  expect(actionRepoSingleton.getAllActionTypes().length).toBe(17);
   expect(actionRepoSingleton.getUIAction("dummy") instanceof DummyUIAction).toBe(true);
   expect(actionRepoSingleton.getUIActionFromData(DEFAULT_DUMMY) instanceof DummyUIAction).toBe(true);
+});
+
+test("action repository supports stop replication action", () => {
+  expect(actionRepoSingleton.getAllActionTypes()).toContain("stop_replication");
+  expect(actionRepoSingleton.getUIAction("stop_replication") instanceof StopReplicationUIAction).toBe(true);
+  expect(actionRepoSingleton.getUIActionFromData(DEFAULT_STOP_REPLICATION) instanceof StopReplicationUIAction).toBe(true);
+  expect(actionRepoSingleton.getUIActionFromData({ stop_replication: {} }).toAction()).toEqual({
+    stop_replication: {},
+  });
 });
 
 test("changing the default state name correctly updates default_state", () => {

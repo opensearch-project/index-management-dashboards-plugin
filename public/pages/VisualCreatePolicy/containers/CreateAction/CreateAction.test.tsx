@@ -26,4 +26,21 @@ describe("<CreateAction /> spec", () => {
     );
     expect(container.firstChild).toMatchSnapshot();
   });
+
+  it("includes stop replication in the action type dropdown", () => {
+    const rolloverAction: UIAction<any> = new RolloverUIAction(DEFAULT_ROLLOVER, "some_id");
+    const { container } = render(
+      <CreateAction
+        stateName="some_state"
+        actions={[rolloverAction]}
+        editAction={rolloverAction}
+        onClickCancelAction={() => {}}
+        onClickSaveAction={() => {}}
+      />
+    );
+
+    const stopReplicationOption = container.querySelector('option[value="stop_replication"]');
+    expect(stopReplicationOption).toBeInTheDocument();
+    expect(stopReplicationOption).toHaveTextContent("Stop Replication");
+  });
 });
