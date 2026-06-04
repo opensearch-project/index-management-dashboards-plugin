@@ -30,7 +30,9 @@
               "snapshot": "{{ctx.index}}",
               "include_aliases": true,
               "ignore_index_settings": "index.refresh_interval,index.number_of_replicas",
-              "number_of_replicas": 0
+              "number_of_replicas": 0,
+              "delete_original_index": false,
+              "rename_pattern": "$1_remote"
             }
           }
         ],
@@ -39,4 +41,3 @@
     ]
   }
 }
-

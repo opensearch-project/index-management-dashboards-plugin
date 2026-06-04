@@ -435,6 +435,8 @@ export interface ConvertIndexToRemoteAction extends Action {
     include_aliases?: boolean;
     ignore_index_settings?: string;
     number_of_replicas?: number;
+    delete_original_index?: boolean;
+    rename_pattern?: string;
   };
 }
 
