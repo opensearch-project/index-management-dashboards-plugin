@@ -138,7 +138,7 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
         this.setState({
           sourceIndex: result.response[0],
         });
-        await this.isSourceIndexReady();
+        await this.isSourceIndexReady(result.response[0].index);
       } else {
         const errorMessage = result.ok ? `Index ${indexName} does not exist` : result.error;
         this.context.notifications.toasts.addDanger(`Could not shrink index: ${errorMessage}`);
@@ -310,9 +310,9 @@ class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
     });
   };
 
-  isSourceIndexReady = async () => {
-    const { sourceIndex } = this.state;
-    const indexSettings = await this.getIndexSettings(sourceIndex.index, true);
+  isSourceIndexReady = async (indexName?: string) => {
+    const sourceIndexName = indexName || this.state.sourceIndex.index;
+    const indexSettings = await this.getIndexSettings(sourceIndexName, true);
     if (!!indexSettings) {
       this.setState({
         sourceIndexSettings: indexSettings,

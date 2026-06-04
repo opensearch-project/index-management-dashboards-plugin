@@ -239,7 +239,6 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
   <div
     class="euiSpacer euiSpacer--l"
   />
-  
   <div
     class="euiSpacer euiSpacer--l"
   />
@@ -573,7 +572,6 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
   <div
     class="euiSpacer euiSpacer--l"
   />
-  
   <div
     class="euiSpacer euiSpacer--l"
   />

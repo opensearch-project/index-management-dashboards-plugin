@@ -5,7 +5,7 @@
 
 import { AppMountParameters, CoreStart } from "opensearch-dashboards/public";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { DarkModeContext } from "./components/DarkMode";
 import Main from "./pages/Main";
@@ -23,7 +23,8 @@ export function renderApp(
 ) {
   const isDarkMode = coreStart.uiSettings.get("theme:darkMode") || false;
 
-  ReactDOM.render(
+  const root = createRoot(params.element);
+  root.render(
     <Router>
       <Route
         render={(props) => (
@@ -40,8 +41,7 @@ export function renderApp(
           </DarkModeContext.Provider>
         )}
       />
-    </Router>,
-    params.element
+    </Router>
   );
-  return () => ReactDOM.unmountComponentAtNode(params.element);
+  return () => root.unmount();
 }

@@ -57,8 +57,8 @@ export class SplitIndex extends Component<SplitIndexProps> {
           { ...BREADCRUMBS.SPLIT_INDEX, href: `#${ROUTES.SPLIT_INDEX}${this.props.location.search}` },
         ];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
-    await this.isSourceIndexReady();
-    this.calculateShardsOption();
+    const sourceIndex = await this.isSourceIndexReady();
+    if (sourceIndex) this.calculateShardsOption(sourceIndex);
     this.setState({
       splitIndexFlyoutVisible: true,
     });
@@ -194,10 +194,10 @@ export class SplitIndex extends Component<SplitIndexProps> {
     this.setState({
       reasons,
     });
+    return sourceIndex;
   };
 
-  calculateShardsOption = () => {
-    const { sourceIndex } = this.state;
+  calculateShardsOption = (sourceIndex: CatIndex) => {
     const sourceShards = Number(sourceIndex.pri);
     const shardsSelectOptions = getSplitShardOptions(sourceShards);
     this.setState({

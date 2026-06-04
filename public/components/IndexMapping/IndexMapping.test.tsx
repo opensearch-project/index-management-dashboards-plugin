@@ -4,11 +4,10 @@
  */
 
 import React, { forwardRef, Ref, useRef, useState } from "react";
-import { render, fireEvent, waitFor, act } from "@testing-library/react";
+import { render, fireEvent, waitFor, act, renderHook } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import IndexMapping, { IIndexMappingsRef, IndexMappingProps, transformObjectToArray } from "./IndexMapping";
 import { MappingsProperties } from "../../../models/interfaces";
-import { renderHook } from "@testing-library/react-hooks";
 
 const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps>, ref: Ref<IIndexMappingsRef>) => {
   const [value, setValue] = useState(props.value as any);

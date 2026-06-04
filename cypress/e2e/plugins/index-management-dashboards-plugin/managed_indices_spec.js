@@ -29,7 +29,7 @@ describe("Managed indexes", () => {
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Edit rollover alias", { timeout: 60000 });
 
-    cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+    cy.dismissToast();
   });
 
   describe("can have policies removed", () => {
@@ -90,7 +90,7 @@ describe("Managed indexes", () => {
       // Wait up to 5 seconds for the managed index to execute
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
-      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+      cy.dismissToast();
 
       // Confirm managed index successfully initialized the policy
       cy.contains("Successfully initialized", { timeout: 20000 });
@@ -100,7 +100,7 @@ describe("Managed indexes", () => {
       // Wait up to 5 seconds for managed index to execute
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
-      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+      cy.dismissToast();
 
       // Confirm we have a Failed execution, wait up to 20 seconds as OSD takes a while to load
       cy.contains("Failed", { timeout: 20000 });
@@ -125,7 +125,7 @@ describe("Managed indexes", () => {
 
       // Reload the page
       cy.reload();
-      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+      cy.dismissToast();
 
       // Confirm we see managed index attempting to retry, give 20 seconds for OSD load
       cy.contains("Pending retry of failed managed index", { timeout: 20000 });
@@ -136,7 +136,7 @@ describe("Managed indexes", () => {
       // Wait up to 5 seconds for managed index to execute
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
-      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+      cy.dismissToast();
 
       // Confirm managed index successfully rolled over
       cy.contains("Successfully rolled over", { timeout: 20000 });

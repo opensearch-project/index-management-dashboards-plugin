@@ -5,9 +5,8 @@
 
 import React, { useRef } from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, renderHook } from "@testing-library/react";
 import JSONEditor, { IJSONEditorRef } from "./JSONEditor";
-import { renderHook } from "@testing-library/react-hooks";
 
 async function inputTextArea(props: { textareaInput: HTMLTextAreaElement; nowValue: string; newValue: string }) {
   const { textareaInput, nowValue, newValue } = props;
