@@ -10,7 +10,7 @@ env:
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
 jobs:
   Get-CI-Image-Tag:
-    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@58f2e5108a5164e37af78f5d8de5d825825023a9 # main
+    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@main
     with:
       product: opensearch-dashboards
 
