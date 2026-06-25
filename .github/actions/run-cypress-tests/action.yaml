@@ -10,13 +10,13 @@ runs:
   using: "composite"
   steps:
     - name: Set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4
       with:
         # TODO: Parse this from index management plugin
         java-version: 21
         distribution: 'temurin'
     - name: Checkout index management
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       with:
         path: index-management
         repository: opensearch-project/index-management
@@ -38,23 +38,23 @@ runs:
         sleep 300
       # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
     - name: Checkout Index Management Dashboards plugin
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       with:
         path: index-management-dashboards-plugin
     - name: Checkout Security Dashboards plugin
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       with:
         repository: opensearch-project/security-dashboards-plugin
         path: security-dashboards-plugin
         ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
     - name: Checkout OpenSearch-Dashboards
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
       with:
         repository: opensearch-project/OpenSearch-Dashboards
         path: OpenSearch-Dashboards
         ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
     - name: Setup Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
       with:
         node-version-file: './OpenSearch-Dashboards/.nvmrc'
         registry-url: 'https://registry.npmjs.org'
@@ -104,7 +104,7 @@ runs:
         mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
         mv security-dashboards-plugin OpenSearch-Dashboards/plugins
     - name: Bootstrap the OpenSearch Dashboard
-      uses: nick-fields/retry@v2
+      uses: nick-fields/retry@14672906e672a08bd6eeb15720e9ed3ce869cdd4 # v2
       with:
         timeout_minutes: 20
         max_attempts: 2
@@ -124,7 +124,7 @@ runs:
       # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
     # for now just chrome, use matrix to do all browsers later
     - name: Cypress tests
-      uses: cypress-io/github-action@v5
+      uses: cypress-io/github-action@248bde77443c376edc45906ede03a1aba9da0462 # v5
       if: ${{ inputs.with-security == 'false' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
@@ -132,7 +132,7 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
     - name: Cypress tests
-      uses: cypress-io/github-action@v5
+      uses: cypress-io/github-action@248bde77443c376edc45906ede03a1aba9da0462 # v5
       if: ${{ inputs.with-security == 'true' }}
       with:
         working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
@@ -140,13 +140,13 @@ runs:
         wait-on: 'http://localhost:5601'
         browser: chrome
     # Screenshots are only captured on failure, will change this once we do visual regression tests
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: failure()
       with:
         name: cypress-screenshots
         path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
     # Test run video was always captured, so this action uses "always()" condition
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()
       with:
         name: cypress-videos
