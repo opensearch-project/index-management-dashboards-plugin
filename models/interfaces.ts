@@ -210,7 +210,7 @@ export interface SMWorkflowMetadata {
 export interface SMPolicy {
   name: string;
   description: string;
-  creation: SMCreation;
+  creation?: SMCreation;
   deletion?: SMDeletion;
   snapshot_config: SMSnapshotConfig;
   enabled: boolean;

@@ -35,6 +35,7 @@ interface CronScheduleProps {
   onChangeTimezone?: (timezone: string) => void;
   timezoneError?: string;
   frequencyTitle?: string;
+  disabled?: boolean;
 }
 
 const CronSchedule = ({
@@ -47,6 +48,7 @@ const CronSchedule = ({
   onChangeTimezone,
   timezoneError,
   frequencyTitle = "Schedule frequency",
+  disabled = false,
 }: CronScheduleProps) => {
   const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
 
@@ -79,6 +81,9 @@ const CronSchedule = ({
   }, [minute, hour, dayOfWeek, dayOfMonth]);
 
   const changeCron = (input?: any) => {
+    if (disabled) {
+      return;
+    }
     let cronParts = { hour, minute, dayOfWeek, dayOfMonth, frequencyType };
     cronParts = { ...cronParts, ...input };
     const expression = buildCronExpression(cronParts, cronExpression);
@@ -113,7 +118,14 @@ const CronSchedule = ({
 
   const dayOfWeekCheckbox = (day: string, checkedDay: string) => (
     <EuiFlexItem key={day} grow={false} style={{ marginRight: "0px" }}>
-      <EuiCheckbox id={day} label={day} checked={checkedDay === day} onChange={(e) => onDayOfWeekChange(day)} compressed />
+      <EuiCheckbox
+        id={day}
+        label={day}
+        checked={checkedDay === day}
+        onChange={(e) => onDayOfWeekChange(day)}
+        compressed
+        disabled={disabled}
+      />
     </EuiFlexItem>
   );
 
@@ -127,6 +139,7 @@ const CronSchedule = ({
       onChange={onStartTimeChange}
       dateFormat="HH:mm"
       timeFormat="HH:mm"
+      disabled={disabled}
     />
   );
   if (frequencyType === "hourly") {
@@ -144,7 +157,7 @@ const CronSchedule = ({
         <CustomLabel title="On the" />
         <EuiFlexGroup gutterSize="m">
           <EuiFlexItem>
-            <EuiCompressedSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
+            <EuiCompressedSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" disabled={disabled} />
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiCompressedFieldNumber
@@ -154,6 +167,7 @@ const CronSchedule = ({
               }}
               min={1}
               max={31}
+              disabled={disabled}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -180,6 +194,7 @@ const CronSchedule = ({
         options={CRON_SCHEDULE_FREQUENCY_TYPE}
         value={frequencyType}
         onChange={onTypeChange}
+        disabled={disabled}
       />
 
       <EuiSpacer size="m" />
@@ -195,6 +210,7 @@ const CronSchedule = ({
                   onChange={(e) => {
                     onCronExpressionChange(e.target.value);
                   }}
+                  disabled={disabled}
                 />
               </EuiCompressedFormRow>
             </>
@@ -225,6 +241,7 @@ const CronSchedule = ({
                     onChangeTimezone(_.first(options)?.label ?? "");
                   }
                 }}
+                isDisabled={disabled}
               />
             </EuiCompressedFormRow>
           </EuiFlexItem>
