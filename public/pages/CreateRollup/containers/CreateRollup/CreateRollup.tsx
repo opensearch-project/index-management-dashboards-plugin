@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component, useContext } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption, EuiText } from "@elastic/eui";
+import React, { ChangeEvent, Component } from "react";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { RollupService } from "../../../../services";
 import ConfigureRollup from "../../components/ConfigureRollup";
@@ -12,7 +12,7 @@ import RollupIndices from "../../components/RollupIndices";
 import CreateRollupSteps from "../../components/CreateRollupSteps";
 import IndexService from "../../../../services/IndexService";
 import { IndexItem } from "../../../../../models/interfaces";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
 interface CreateRollupProps extends RouteComponentProps, DataSourceMenuProperties {
   rollupService: RollupService;
@@ -27,10 +27,13 @@ interface CreateRollupProps extends RouteComponentProps, DataSourceMenuPropertie
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
+  targetIndexSettings: Pick<IndexItem, "settings"> | null;
+  targetIndexSettingsError: string;
   onChangeName: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   onChangeSourceIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
   onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeTargetIndexSettings: (settings: Pick<IndexItem, "settings"> | null) => void;
   currentStep: number;
   hasAggregation: boolean;
   useNewUX: boolean;
