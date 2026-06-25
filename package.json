@@ -39,7 +39,7 @@
     "kind-of": "^6.0.3",
     "glob-parent": "^5.1.2",
     "ssri": "^6.0.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.18.0",
     "loader-utils": "^1.4.1",
     "hosted-git-info": "^2.8.9",
     "json-schema": "^0.4.0",
