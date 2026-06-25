@@ -154,6 +154,9 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
         dataType: "string",
         width: "180px",
         render: (name: string, item: SMPolicy) => {
+          if (!item.creation) {
+            return "-";
+          }
           const expression = name;
           const timezone = item.creation.schedule.cron.timezone;
           return `${humanCronExpression(parseCronExpression(expression), expression, timezone)}`;
