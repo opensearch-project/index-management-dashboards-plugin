@@ -62,6 +62,7 @@
     "braces": "^3.0.3",
     "cross-spawn": "^7.0.5",
     "**/micromatch": "^4.0.8",
+    "**/picomatch": "^2.3.2",
     "**/elliptic": "^6.5.4",
     "@babel/runtime": "^7.26.10",
     "@babel/helpers": "^7.26.10",
