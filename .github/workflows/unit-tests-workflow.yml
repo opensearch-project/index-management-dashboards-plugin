@@ -10,7 +10,7 @@ env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.19'
 jobs:
   Get-CI-Image-Tag:
-    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@main
+    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@58f2e5108a5164e37af78f5d8de5d825825023a9 # main
     with:
       product: opensearch-dashboards
 
@@ -28,13 +28,13 @@ jobs:
     steps:
       # Enable longer filenames for windows
       - name: Checkout OpenSearch-Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
       - name: Checkout Index Management Dashboards plugin
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
       - name: Bootstrap / Run tests
@@ -46,7 +46,7 @@ jobs:
                                whoami && yarn osd bootstrap && yarn run test:jest --coverage"
 
       - name: Uploads coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192 # v1
 
   tests-windows-macos:
     name: Run unit tests
@@ -60,13 +60,13 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: git config --system core.longpaths true
       - name: Checkout OpenSearch-Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
         with:
           node-version-file: './OpenSearch-Dashboards/.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -80,7 +80,7 @@ jobs:
       - run: node -v
       - run: yarn -v
       - name: Checkout Index Management Dashboards plugin
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
       - name: Bootstrap plugin/OpenSearch-Dashboards
