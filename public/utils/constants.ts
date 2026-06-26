@@ -245,10 +245,19 @@ export const INDEX_MAPPING_TYPES: {
     label: "binary",
   },
   {
+    label: "byte",
+  },
+  {
     label: "completion",
   },
   {
+    label: "constant_keyword",
+  },
+  {
     label: "date",
+  },
+  {
+    label: "date_nanos",
   },
   {
     label: "date_range",
@@ -260,7 +269,13 @@ export const INDEX_MAPPING_TYPES: {
     label: "double_range",
   },
   {
+    label: "flat_object",
+  },
+  {
     label: "float",
+  },
+  {
+    label: "float_range",
   },
   {
     label: "geo_point",
@@ -275,19 +290,35 @@ export const INDEX_MAPPING_TYPES: {
     label: "integer",
   },
   {
+    label: "integer_range",
+  },
+  {
     label: "ip",
   },
   {
     label: "ip_range",
   },
   {
+    label: "join",
+  },
+  {
     label: "keyword",
+  },
+  {
+    label: "knn_vector",
   },
   {
     label: "long",
   },
   {
     label: "long_range",
+  },
+  {
+    label: "match_only_text",
+  },
+  {
+    label: "nested",
+    hasChildren: true,
   },
   {
     label: "object",
@@ -303,7 +334,19 @@ export const INDEX_MAPPING_TYPES: {
     label: "rank_features",
   },
   {
+    label: "scaled_float",
+  },
+  {
     label: "search_as_you_type",
+  },
+  {
+    label: "semantic",
+  },
+  {
+    label: "short",
+  },
+  {
+    label: "star_tree",
   },
   {
     label: "text",
@@ -327,6 +370,18 @@ export const INDEX_MAPPING_TYPES: {
         },
       ],
     },
+  },
+  {
+    label: "unsigned_long",
+  },
+  {
+    label: "xy_point",
+  },
+  {
+    label: "xy_shape",
+  },
+  {
+    label: "wildcard",
   },
 ];
 
