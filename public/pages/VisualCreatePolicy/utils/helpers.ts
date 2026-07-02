@@ -9,6 +9,7 @@ import {
   DEFAULT_ALIAS,
   DEFAULT_ALLOCATION,
   DEFAULT_CLOSE,
+  DEFAULT_CONVERT_INDEX_TO_REMOTE,
   DEFAULT_DELETE,
   DEFAULT_FORCE_MERGE,
   DEFAULT_INDEX_PRIORITY,
@@ -26,6 +27,7 @@ import {
   AliasUIAction,
   AllocationUIAction,
   CloseUIAction,
+  ConvertIndexToRemoteUIAction,
   DeleteUIAction,
   ForceMergeUIAction,
   IndexPriorityUIAction,
@@ -75,6 +77,8 @@ export const getUIAction = (actionType: string): UIAction<any> => {
       return new AllocationUIAction(DEFAULT_ALLOCATION);
     case ActionType.Close:
       return new CloseUIAction(DEFAULT_CLOSE);
+    case ActionType.ConvertIndexToRemote:
+      return new ConvertIndexToRemoteUIAction(DEFAULT_CONVERT_INDEX_TO_REMOTE);
     case ActionType.Delete:
       return new DeleteUIAction(DEFAULT_DELETE);
     case ActionType.ForceMerge:
@@ -127,6 +131,7 @@ class ActionRepository {
     alias: [AliasUIAction, DEFAULT_ALIAS],
     allocation: [AllocationUIAction, DEFAULT_ALLOCATION],
     close: [CloseUIAction, DEFAULT_CLOSE],
+    convert_index_to_remote: [ConvertIndexToRemoteUIAction, DEFAULT_CONVERT_INDEX_TO_REMOTE],
     delete: [DeleteUIAction, DEFAULT_DELETE],
     force_merge: [ForceMergeUIAction, DEFAULT_FORCE_MERGE],
     index_priority: [IndexPriorityUIAction, DEFAULT_INDEX_PRIORITY],
