@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import AssociatedTemplatesModal from "./AssociatedTemplatesModal";
 import userEventModule from "@testing-library/user-event";
@@ -20,38 +20,36 @@ describe("<AssociatedTemplatesModal /> spec", () => {
     const componentTemplateName = "test_component_template";
     const unlinkHandlerMock = jest.fn();
     let time = 0;
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.data?.path?.startsWith("/_component_template/")) {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.data?.path?.startsWith("/_component_template/")) {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.data?.path?.startsWith("/_index_template")) {
+        if (payload.data?.method === "POST") {
+          time++;
           return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.data?.path?.startsWith("/_index_template")) {
-          if (payload.data?.method === "POST") {
-            time++;
-            return {
-              ok: time !== 1,
-              error: "error",
-            };
-          }
-          return {
-            ok: true,
-            response: {
-              index_templates: [
-                {
-                  name: templateName,
-                  index_template: {
-                    composed_of: [componentTemplateName],
-                  },
-                },
-              ],
-            },
+            ok: time !== 1,
+            error: "error",
           };
         }
-        return { ok: true, response: {} };
+        return {
+          ok: true,
+          response: {
+            index_templates: [
+              {
+                name: templateName,
+                index_template: {
+                  composed_of: [componentTemplateName],
+                },
+              },
+            ],
+          },
+        };
       }
-    );
+      return { ok: true, response: {} };
+    });
     const { findByText, getByTestId, queryByText } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
@@ -80,17 +78,17 @@ describe("<AssociatedTemplatesModal /> spec", () => {
     );
     await userEvent.click(getByTestId(`Unlink from ${templateName}?-confirm`));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error");
-      expect(unlinkHandlerMock).toBeCalledTimes(0);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("error");
+      expect(unlinkHandlerMock).toHaveBeenCalledTimes(0);
     });
     await userEvent.click(getByTestId(`Unlink from ${templateName}?-confirm`));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(6);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(6);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
         `${componentTemplateName} has been successfully unlinked from ${templateName}.`
       );
-      expect(unlinkHandlerMock).toBeCalledWith(templateName);
+      expect(unlinkHandlerMock).toHaveBeenCalledWith(templateName);
     });
     await userEvent.click(getByTestId("euiFlyoutCloseButton"));
     await waitFor(() => {

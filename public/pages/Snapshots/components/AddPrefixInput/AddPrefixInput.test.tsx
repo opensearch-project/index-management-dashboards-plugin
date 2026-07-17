@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import AddPrefixInput from "./AddPrefixInput";
@@ -41,6 +41,6 @@ describe("AddPrefixInput component", () => {
     await userEvent.type(screen.getByTestId("prefixInput"), "four");
 
     // getPrefix is prop sent from parent component to retrieve user input
-    expect(testProps.getPrefix).toBeCalledTimes(4);
+    expect(testProps.getPrefix).toHaveBeenCalledTimes(4);
   });
 });

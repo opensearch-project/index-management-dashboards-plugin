@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<AliasesActions /> spec cannot clear cache for aliases if some indexes are closed or blocked 1`] = `
 <div

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import SnapshotRenameOptions from "./SnapshotRenameOptions";
@@ -41,11 +41,11 @@ describe("SnapshotRenameOptions component", () => {
 
     await userEvent.click(screen.getByLabelText("Add prefix to restored index names"));
 
-    expect(testProps.onAddPrefixToggle).toBeCalled();
+    expect(testProps.onAddPrefixToggle).toHaveBeenCalled();
 
     await userEvent.click(screen.getByLabelText("Rename using regular expression (Advanced)"));
 
-    expect(testProps.onRenameIndicesToggle).toBeCalled();
+    expect(testProps.onRenameIndicesToggle).toHaveBeenCalled();
 
     cleanup();
 
@@ -53,6 +53,6 @@ describe("SnapshotRenameOptions component", () => {
 
     await userEvent.click(screen.getByLabelText("Do not rename"));
 
-    expect(testProps.onDoNotRenameToggle).toBeCalled();
+    expect(testProps.onDoNotRenameToggle).toHaveBeenCalled();
   });
 });

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { act, render, waitFor } from "@testing-library/react";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import DefineTemplate from "./DefineTemplate";
@@ -58,16 +58,14 @@ describe("<ComposableTemplatesActions /> spec", () => {
   const userEvent = userEventModule.setup();
 
   beforeEach(() => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {
-            index_templates: [],
-          },
-        };
-      }
-    );
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {
+          index_templates: [],
+        },
+      };
+    });
   });
   it("renders the component in non-edit mode", async () => {
     const onChangeMock = jest.fn();
@@ -84,7 +82,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     await userEvent.click(container.querySelector("#checkboxForIndexTemplateFlowSimple")?.parentNode as Element);
     await waitFor(() => {
       expect((container.querySelector("#checkboxForIndexTemplateFlowSimple") as HTMLInputElement).checked).toBeTruthy;
-      expect(onChangeMock).toBeCalledTimes(0);
+      expect(onChangeMock).toHaveBeenCalledTimes(0);
     });
     await act(async () => {
       await userEvent.type(getByTestId("form-row-name").querySelector("input") as Element, "1");
@@ -98,7 +96,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(document.querySelector(".euiFormLabel-isInvalid")).not.toBeInTheDocument();
     });
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledWith({
+      expect(onChangeMock).toHaveBeenCalledWith({
         name: "1",
         index_patterns: [".kibana*"],
         priority: "1",

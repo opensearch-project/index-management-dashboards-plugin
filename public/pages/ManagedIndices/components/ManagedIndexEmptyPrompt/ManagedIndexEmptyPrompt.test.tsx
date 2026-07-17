@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, fireEvent } from "@testing-library/react";
 import ManagedIndexEmptyPrompt, { TEXT } from "./ManagedIndexEmptyPrompt";
 import historyMock from "../../../../../test/mocks/historyMock";

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import RenameInput from "./RenameInput";
@@ -51,7 +51,7 @@ describe("RenameInput component", () => {
     await userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
 
     // getRenamePattern is prop sent from parent component to retrieve user input
-    expect(testProps.getRenamePattern).toBeCalledTimes(4);
+    expect(testProps.getRenamePattern).toHaveBeenCalledTimes(4);
   });
 
   it("sends user input to parent component via getRenameReplacement", async () => {
@@ -59,6 +59,6 @@ describe("RenameInput component", () => {
     await userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
 
     // getRenamePattern is prop sent from parent component to retrieve user input
-    expect(testProps.getRenameReplacement).toBeCalledTimes(7);
+    expect(testProps.getRenameReplacement).toHaveBeenCalledTimes(7);
   });
 });

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
@@ -85,8 +85,8 @@ describe("container <IndexDetail /> spec", () => {
 
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.get",
         data: {
           index: "test_index",

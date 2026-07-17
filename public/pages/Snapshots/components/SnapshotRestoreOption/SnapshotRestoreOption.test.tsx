@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import SnapshotRestoreOption from "./SnapshotRestoreOption";
@@ -36,7 +36,7 @@ describe("SnapshotRestoreOption component", () => {
 
     await userEvent.click(screen.getByLabelText("Restore specific indices"));
 
-    expect(testProps.onRestoreSpecificIndicesToggle).toBeCalled();
+    expect(testProps.onRestoreSpecificIndicesToggle).toHaveBeenCalled();
 
     cleanup();
 
@@ -44,6 +44,6 @@ describe("SnapshotRestoreOption component", () => {
 
     await userEvent.click(screen.getByLabelText("Restore all indices in snapshot"));
 
-    expect(testProps.onRestoreAllIndicesToggle).toBeCalled();
+    expect(testProps.onRestoreAllIndicesToggle).toHaveBeenCalled();
   });
 });

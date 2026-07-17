@@ -147,7 +147,7 @@ describe("<FormGenerator /> spec", () => {
           test: ["values.test_component !== values.test"],
         });
 
-        expect(onChangeMock).toBeCalledWith(
+        expect(onChangeMock).toHaveBeenCalledWith(
           {
             test: "3",
           },
@@ -155,7 +155,7 @@ describe("<FormGenerator /> spec", () => {
           "3"
         );
 
-        expect(onChangeMock).toBeCalledWith(
+        expect(onChangeMock).toHaveBeenCalledWith(
           {
             test: "3",
           },
@@ -170,7 +170,7 @@ describe("<FormGenerator /> spec", () => {
 
     await userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledWith(
+      expect(onChangeMock).toHaveBeenCalledWith(
         {
           test: "3",
           test_component: "1",
@@ -218,7 +218,7 @@ describe("<FormGenerator /> spec", () => {
       await userEvent.click(getByTestId("submit"));
     });
 
-    expect(onValidate).toBeCalledWith({
+    expect(onValidate).toHaveBeenCalledWith({
       errors: {
         test: ["values.test_component !== values.test"],
       },
@@ -233,7 +233,7 @@ describe("<FormGenerator /> spec", () => {
       await userEvent.click(getByTestId("submit"));
     });
 
-    expect(onValidate).toBeCalledWith({
+    expect(onValidate).toHaveBeenCalledWith({
       errors: null,
       values: {
         test: "",
@@ -278,7 +278,7 @@ describe("<FormGenerator /> spec", () => {
       await userEvent.click(getByTestId("submit"));
     });
 
-    expect(onValidate).toBeCalledWith({
+    expect(onValidate).toHaveBeenCalledWith({
       errors: {
         test: ["values.test_component !== values.test"],
       },
@@ -293,7 +293,7 @@ describe("<FormGenerator /> spec", () => {
       await userEvent.click(getByTestId("submit"));
     });
 
-    expect(onValidate).toBeCalledWith({
+    expect(onValidate).toHaveBeenCalledWith({
       errors: null,
       values: {
         test: "",

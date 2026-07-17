@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { act, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
@@ -132,21 +132,21 @@ describe("<ComposableTemplates /> spec", () => {
 
     expect(container.firstChild).toMatchSnapshot();
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
     });
     await userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
     });
   });
 
   it("with some actions", async () => {
     const { getByPlaceholderText, getByTestId, findByTestId, findByText, queryByTestId } = renderWithRouter();
 
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
     await userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector('[data-test-subj="tableHeaderSortButton"]') as Element);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
     });
     /**
      * search
@@ -157,8 +157,8 @@ describe("<ComposableTemplates /> spec", () => {
       expect(queryByTestId(`templateDetail-${testTemplateId}`)).toBeNull();
     });
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(5);
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(5);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     });
     await userEvent.clear(getByPlaceholderText("Search..."));
     await findByTestId(`templateDetail-${testTemplateId}`);
@@ -198,7 +198,7 @@ describe("<ComposableTemplates /> spec", () => {
       await userEvent.click(getByTestId("deleteConfirmButton"));
     });
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(`Delete [${testTemplateId}] successfully`);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`Delete [${testTemplateId}] successfully`);
     });
 
     /**

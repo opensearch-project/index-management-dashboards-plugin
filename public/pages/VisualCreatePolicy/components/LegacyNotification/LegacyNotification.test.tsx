@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import LegacyNotification from "./LegacyNotification";
 import { DEFAULT_LEGACY_ERROR_NOTIFICATION } from "../../utils/constants";

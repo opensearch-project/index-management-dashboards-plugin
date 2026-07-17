@@ -4,7 +4,7 @@
  */
 
 import React, { useRef } from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fireEvent, render, waitFor, renderHook } from "@testing-library/react";
 import JSONEditor, { IJSONEditorRef } from "./JSONEditor";
 
@@ -72,7 +72,7 @@ describe("<JSONEditor /> spec", () => {
     fireEvent.focus(textareaInput);
     fireEvent.blur(textareaInput);
 
-    expect(onChangeMock).toBeCalledTimes(0);
+    expect(onChangeMock).toHaveBeenCalledTimes(0);
   });
 
   it("it triggers onChange when json is input", async () => {
@@ -88,7 +88,7 @@ describe("<JSONEditor /> spec", () => {
     fireEvent.blur(textareaInput);
     await findByText("Your input does not match the validation of json format, please fix the error line with error aside.");
 
-    expect(onChangeMock).toBeCalledTimes(0);
+    expect(onChangeMock).toHaveBeenCalledTimes(0);
 
     fireEvent.focus(textareaInput);
     await inputTextArea({
@@ -98,8 +98,8 @@ describe("<JSONEditor /> spec", () => {
     });
     fireEvent.blur(textareaInput);
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledTimes(1);
-      expect(onChangeMock).toBeCalledWith('{ "test": "1" }');
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(onChangeMock).toHaveBeenCalledWith('{ "test": "1" }');
     });
   });
 });

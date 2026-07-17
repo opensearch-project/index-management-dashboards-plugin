@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import IndexControls from "./IndexControls";
@@ -24,8 +24,8 @@ describe("<IndexControls /> spec", () => {
 
     await userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
-      expect(onSearchChangeMock).toBeCalledTimes(4);
-      expect(onSearchChangeMock).toBeCalledWith({
+      expect(onSearchChangeMock).toHaveBeenCalledTimes(4);
+      expect(onSearchChangeMock).toHaveBeenCalledWith({
         search: "test",
       });
     });

@@ -108,6 +108,6 @@ describe("<TemplateDetail /> spec", () => {
     await findByText("Delete good_template");
     await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalled();
   });
 });

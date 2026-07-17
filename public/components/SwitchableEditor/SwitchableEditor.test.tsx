@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import SwitchableEditor from "./index";
 import userEventModule from "@testing-library/user-event";
@@ -32,6 +32,6 @@ describe("<SwitchableEditor /> spec", () => {
     await userEvent.paste(`{ "name": "test" }`);
     await userEvent.click(document.body);
     await waitFor(() => {});
-    expect(onChangeMock).toBeCalledWith(`{ "name": "test" }`);
+    expect(onChangeMock).toHaveBeenCalledWith(`{ "name": "test" }`);
   });
 });

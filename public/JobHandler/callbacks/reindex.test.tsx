@@ -27,10 +27,10 @@ const reindexMetaData = {
   type: ListenType.REINDEX,
 };
 
-const core = ({
+const core = {
   ...coreServicesMock,
   http: httpClientMock,
-} as unknown) as CoreSetup;
+} as unknown as CoreSetup;
 
 describe("callbackForOpen spec", () => {
   it("callback when error", async () => {
@@ -59,8 +59,8 @@ describe("callbackForOpen spec", () => {
       core,
     });
     expect(result).toBe(true);
-    expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addSuccess).toBeCalledTimes(1);
+    expect(core.notifications.toasts.remove).toHaveBeenCalledWith("toastId");
+    expect(core.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
   });
 
   it("callback when failed", async () => {
@@ -81,8 +81,8 @@ describe("callbackForOpen spec", () => {
       core,
     });
     expect(result).toBe(true);
-    expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addDanger).toBeCalledTimes(1);
+    expect(core.notifications.toasts.remove).toHaveBeenCalledWith("toastId");
+    expect(core.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
   });
 
   it("callback when timeout", async () => {
@@ -90,7 +90,7 @@ describe("callbackForOpen spec", () => {
       core,
     });
     expect(result).toBe(true);
-    expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addWarning).toBeCalledTimes(1);
+    expect(core.notifications.toasts.remove).toHaveBeenCalledWith("toastId");
+    expect(core.notifications.toasts.addWarning).toHaveBeenCalledTimes(1);
   });
 });
