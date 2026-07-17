@@ -96,6 +96,6 @@ describe("<ReindexAdvancedOptions /> spec", () => {
 
     // wait for one tick
     await waitFor(() => {});
-    expect(getPipeline).toBeCalledTimes(1);
+    expect(getPipeline).toHaveBeenCalledTimes(1);
   });
 });

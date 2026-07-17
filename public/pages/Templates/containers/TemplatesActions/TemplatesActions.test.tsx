@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -89,25 +89,23 @@ describe("<TemplatesActions /> spec", () => {
   it("delete templates by calling commonService", async () => {
     const onDelete = jest.fn();
     let times = 0;
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.data?.path?.startsWith("/_index_template/")) {
-          if (times >= 1) {
-            return {
-              ok: true,
-              response: {},
-            };
-          } else {
-            times++;
-            return {
-              ok: false,
-              error: "test error",
-            };
-          }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.data?.path?.startsWith("/_index_template/")) {
+        if (times >= 1) {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else {
+          times++;
+          return {
+            ok: false,
+            error: "test error",
+          };
         }
-        return { ok: true, response: {} };
       }
-    );
+      return { ok: true, response: {} };
+    });
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
       selectedItems: [
         {
@@ -154,7 +152,7 @@ describe("<TemplatesActions /> spec", () => {
 
     await userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await userEvent.click(getByTestId("editAction"));
-    await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
+    await waitFor(() => expect(historyPushMock).toHaveBeenCalledTimes(1), {
       timeout: 3000,
     });
   }, 30000);

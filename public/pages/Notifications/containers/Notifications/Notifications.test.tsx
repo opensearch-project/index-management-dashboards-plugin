@@ -55,53 +55,49 @@ describe("<Notifications /> spec", () => {
   const userEvent = userEventModule.setup();
 
   beforeEach(() => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "transport.request": {
-            if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
-              return {
-                ok: true,
-                response: {
-                  lron_configs: [],
-                  total_number: 0,
-                },
-              };
-            } else {
-              return {
-                ok: true,
-                response: {},
-              };
-            }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "transport.request": {
+          if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+            return {
+              ok: true,
+              response: {
+                lron_configs: [],
+                total_number: 0,
+              },
+            };
+          } else {
+            return {
+              ok: true,
+              response: {},
+            };
           }
         }
-        return {
-          ok: true,
-          response: {},
-        };
       }
-    );
-    browserServicesMock.notificationService.getChannels = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {
-            start_index: 0,
-            total_hits: 1,
-            total_hit_relation: "eq",
-            channel_list: [
-              {
-                config_id: "1",
-                name: "channel1",
-                description: "2",
-                config_type: "chime",
-                is_enabled: true,
-              },
-            ],
-          },
-        };
-      }
-    );
+      return {
+        ok: true,
+        response: {},
+      };
+    });
+    browserServicesMock.notificationService.getChannels = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {
+          start_index: 0,
+          total_hits: 1,
+          total_hit_relation: "eq",
+          channel_list: [
+            {
+              config_id: "1",
+              name: "channel1",
+              description: "2",
+              config_type: "chime",
+              is_enabled: true,
+            },
+          ],
+        },
+      };
+    });
   });
 
   it("renders", async () => {
@@ -138,43 +134,41 @@ describe("<Notifications /> spec", () => {
 
     await userEvent.click(getByText("Save"));
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
         "Notifications settings for index operations have been successfully updated."
       );
     });
   });
 
   it("View without permission", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "transport.request": {
-            if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
-              return {
-                ok: false,
-                body: {
-                  status: 403,
-                },
-              };
-            } else {
-              return {
-                ok: true,
-                response: {},
-              };
-            }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "transport.request": {
+          if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+            return {
+              ok: false,
+              body: {
+                status: 403,
+              },
+            };
+          } else {
+            return {
+              ok: true,
+              response: {},
+            };
           }
         }
-        return {
-          ok: true,
-          response: {},
-        };
       }
-    );
+      return {
+        ok: true,
+        response: {},
+      };
+    });
     const { findByText, container } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
     await findByText("Error loading Notification settings");
     await waitFor(() => {
       expect(container).toMatchSnapshot();
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith({
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         title: "You do not have permissions to view notification settings",
         text: "Contact your administrator to request permissions.",
       });
@@ -182,43 +176,41 @@ describe("<Notifications /> spec", () => {
   });
 
   it("Update without permission", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "transport.request": {
-            if (payload.data?.path?.includes("?dry_run=true")) {
-              return {
-                ok: false,
-              };
-            } else if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
-              return {
-                ok: true,
-                response: {
-                  lron_configs: [],
-                  total_number: 0,
-                },
-              };
-            } else {
-              return {
-                ok: true,
-                response: {},
-              };
-            }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "transport.request": {
+          if (payload.data?.path?.includes("?dry_run=true")) {
+            return {
+              ok: false,
+            };
+          } else if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+            return {
+              ok: true,
+              response: {
+                lron_configs: [],
+                total_number: 0,
+              },
+            };
+          } else {
+            return {
+              ok: true,
+              response: {},
+            };
           }
         }
-        return {
-          ok: true,
-          response: {},
-        };
       }
-    );
+      return {
+        ok: true,
+        response: {},
+      };
+    });
     const { findByText, getByTestId, getByText, queryByText } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
     await findByText("reindex");
     await userEvent.click(getByTestId("dataSource.0.failure"));
     await findByText("Save");
     await userEvent.click(getByText("Save"));
     await waitFor(() =>
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith({
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         title: "You do not have permissions to update notification settings",
         text: "Contact your administrator to request permissions.",
       })

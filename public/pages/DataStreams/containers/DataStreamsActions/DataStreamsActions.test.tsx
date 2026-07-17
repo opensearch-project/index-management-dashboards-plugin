@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -72,11 +72,9 @@ describe("<DataStreamsActions /> spec", () => {
 
   it("delete data streams by calling commonService", async () => {
     const onDelete = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return { ok: true, response: {} };
-      }
-    );
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return { ok: true, response: {} };
+    });
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
       selectedItems: [{ name: "test_data_stream" }],
       onDelete,
@@ -107,24 +105,22 @@ describe("<DataStreamsActions /> spec", () => {
   }, 30000);
 
   it("clear cache for data streams by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {},
-              },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "cluster.state":
+          return {
+            ok: true,
+            response: {
+              blocks: {},
+            },
+          };
+        default:
+          return {
+            ok: true,
+            response: {},
+          };
       }
-    );
+    });
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
         {
@@ -175,33 +171,31 @@ describe("<DataStreamsActions /> spec", () => {
   });
 
   it("cannot clear cache for data streams if they are closed or blocked", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {
-            blocks: {
-              indices: {
-                ".ds-test_data_stream_1-000001": {
-                  "4": {
-                    description: "index closed",
-                    retryable: false,
-                    levels: ["read", "write"],
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {
+          blocks: {
+            indices: {
+              ".ds-test_data_stream_1-000001": {
+                "4": {
+                  description: "index closed",
+                  retryable: false,
+                  levels: ["read", "write"],
                 },
-                ".ds-test_data_stream_2-000001": {
-                  "5": {
-                    description: "index read-only (api)",
-                    retryable: false,
-                    levels: ["write", "metadata_write"],
-                  },
+              },
+              ".ds-test_data_stream_2-000001": {
+                "5": {
+                  description: "index read-only (api)",
+                  retryable: false,
+                  levels: ["write", "metadata_write"],
                 },
               },
             },
           },
-        };
-      }
-    );
+        },
+      };
+    });
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
@@ -258,22 +252,20 @@ describe("<DataStreamsActions /> spec", () => {
   });
 
   it("filter data streams failed when clearing caches for multiple data streams", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              error: "test failure",
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "cluster.state":
+          return {
+            ok: true,
+            error: "test failure",
+          };
+        default:
+          return {
+            ok: true,
+            response: {},
+          };
       }
-    );
+    });
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
         {
@@ -412,34 +404,32 @@ describe("<DataStreamsActions /> spec", () => {
   });
 
   it("refresh data streams by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {
-                indices: {
-                  ".ds-blocked-000001": {
-                    "4": {},
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                ".ds-blocked-000001": {
+                  "4": {},
                 },
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index close\n",
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index close\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
@@ -511,37 +501,35 @@ describe("<DataStreamsActions /> spec", () => {
   }, 30000);
 
   it("refresh multiple data streams by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {
-                indices: {
-                  ".ds-blocked-000001": {
-                    "4": {},
-                  },
-                  ".ds-blocked1-000001": {
-                    "4": {},
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                ".ds-blocked-000001": {
+                  "4": {},
+                },
+                ".ds-blocked1-000001": {
+                  "4": {},
                 },
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: ".ds-red-000001 close\n",
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: ".ds-red-000001 close\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -624,34 +612,32 @@ describe("<DataStreamsActions /> spec", () => {
   }, 30000);
 
   it("refresh data streams disabled because all indexes are closed calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {
-                indices: {
-                  ".ds-blocked-000001": {
-                    "4": {},
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                ".ds-blocked-000001": {
+                  "4": {},
                 },
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: ".ds-red-000001 open\n",
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: ".ds-red-000001 open\n",
+        };
       }
-    );
+    });
 
     const { getByTestId } = renderWithRouter({
       selectedItems: [
@@ -679,31 +665,28 @@ describe("<DataStreamsActions /> spec", () => {
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
-        text:
-          "All selected data streams cannot be refreshed because each data stream has one or more indexes that are either closed or in red status.",
+        text: "All selected data streams cannot be refreshed because each data stream has one or more indexes that are either closed or in red status.",
         title: "Unable to refresh data streams.",
       });
     });
   }, 30000);
 
   it("refresh data streams even failed to get index status", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          throw "failed to call cluster.state";
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index close\n",
-          };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        throw "failed to call cluster.state";
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index close\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -735,23 +718,21 @@ describe("<DataStreamsActions /> spec", () => {
   }, 30000);
 
   it("refresh multi data streams even failed to get index status", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          throw "failed to call cluster.state";
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index close\n",
-          };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        throw "failed to call cluster.state";
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index close\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [

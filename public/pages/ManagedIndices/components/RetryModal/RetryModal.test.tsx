@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import RetryModal from "./RetryModal";

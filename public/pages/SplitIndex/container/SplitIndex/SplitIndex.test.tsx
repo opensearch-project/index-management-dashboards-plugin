@@ -66,38 +66,36 @@ describe("<SplitIndex /> spec", () => {
   const userEvent = userEventModule.setup();
 
   it("renders the component", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.aliases") {
-          return {
-            ok: true,
-            response: [
-              {
-                alias: "testAlias",
-                index: "1",
-              },
-            ] as IAlias[],
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "1",
-                rep: "0",
-              },
-            ],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.aliases") {
         return {
           ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
+            },
+          ],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=index-source`]);
 
@@ -121,38 +119,36 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("Successful split an index whose shards number is greater than 1", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.aliases") {
-          return {
-            ok: true,
-            response: [
-              {
-                alias: "testAlias",
-                index: "1",
-              },
-            ] as IAlias[],
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "2",
-                rep: "0",
-              },
-            ],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.aliases") {
         return {
           ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "2",
+              rep: "0",
+            },
+          ],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -170,7 +166,7 @@ describe("<SplitIndex /> spec", () => {
     await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
           path: `/source-index/_split/split_test_index-split?wait_for_completion=false`,
@@ -187,38 +183,36 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("Successful split an index whose shards number is 1", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.aliases") {
-          return {
-            ok: true,
-            response: [
-              {
-                alias: "testAlias",
-                index: "1",
-              },
-            ] as IAlias[],
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "1",
-                rep: "0",
-              },
-            ],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.aliases") {
         return {
           ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
+            },
+          ],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -237,7 +231,7 @@ describe("<SplitIndex /> spec", () => {
     await userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
           path: `/source-index/_split/split_test_index-split?wait_for_completion=false`,
@@ -254,38 +248,36 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("Error message if number of shards is invalid", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.aliases") {
-          return {
-            ok: true,
-            response: [
-              {
-                alias: "testAlias",
-                index: "1",
-              },
-            ] as IAlias[],
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "3",
-                rep: "0",
-              },
-            ],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.aliases") {
         return {
           ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "3",
+              rep: "0",
+            },
+          ],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -335,32 +327,30 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("Red Index is not ready for split", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "red",
-                status: "open",
-                index: sourceIndexName,
-                pri: "1",
-                rep: "0",
-                "docs.count": "1",
-                "docs.deleted": "0",
-                "store.size": "5.2kb",
-                "pri.store.size": "5.2kb",
-              },
-            ],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.indices") {
         return {
           ok: true,
+          response: [
+            {
+              health: "red",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
+              "docs.count": "1",
+              "docs.deleted": "0",
+              "store.size": "5.2kb",
+              "pri.store.size": "5.2kb",
+            },
+          ],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     const { getByTestId, queryByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -371,37 +361,35 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("Closed Index is not ready for split", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "close",
-                index: sourceIndexName,
-                pri: "2",
-                rep: "0",
-                "docs.count": "1",
-                "docs.deleted": "0",
-                "store.size": "5.2kb",
-                "pri.store.size": "5.2kb",
-              },
-            ],
-          };
-        } else if (payload.endpoint === "transport.request") {
-          return {
-            ok: true,
-            response: [{}],
-          };
-        }
-
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.indices") {
         return {
           ok: true,
+          response: [
+            {
+              health: "green",
+              status: "close",
+              index: sourceIndexName,
+              pri: "2",
+              rep: "0",
+              "docs.count": "1",
+              "docs.deleted": "0",
+              "store.size": "5.2kb",
+              "pri.store.size": "5.2kb",
+            },
+          ],
+        };
+      } else if (payload.endpoint === "transport.request") {
+        return {
+          ok: true,
+          response: [{}],
         };
       }
-    );
+
+      return {
+        ok: true,
+      };
+    });
 
     const { getByTestId, queryByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -411,7 +399,7 @@ describe("<SplitIndex /> spec", () => {
     });
     await userEvent.click(getByTestId("open-index-button"));
     await waitFor(() => {});
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "transport.request",
       data: {
         method: "POST",
@@ -421,44 +409,42 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("blocks.write is not set to true, Index is not ready for split", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "1",
-                rep: "0",
-                "docs.count": "1",
-                "docs.deleted": "0",
-                "store.size": "5.2kb",
-                "pri.store.size": "5.2kb",
-              },
-            ],
-          };
-        } else if (payload.endpoint === "indices.getSettings") {
-          return {
-            ok: true,
-            response: {
-              [sourceIndexName]: {
-                settings: {
-                  "index.blocks.write": "false",
-                },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
+              "docs.count": "1",
+              "docs.deleted": "0",
+              "store.size": "5.2kb",
+              "pri.store.size": "5.2kb",
+            },
+          ],
+        };
+      } else if (payload.endpoint === "indices.getSettings") {
+        return {
+          ok: true,
+          response: {
+            [sourceIndexName]: {
+              settings: {
+                "index.blocks.write": "false",
               },
             },
-          };
-        } else if (payload.endpoint === "indices.putSettings") {
-          return {
-            ok: true,
-            response: [{}],
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.putSettings") {
+        return {
+          ok: true,
+          response: [{}],
+        };
       }
-    );
+    });
 
     const { getByTestId, queryByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -469,7 +455,7 @@ describe("<SplitIndex /> spec", () => {
 
     await userEvent.click(getByTestId("set-indexsetting-button"));
     await waitFor(() =>
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putSettings",
         method: "PUT",
         data: {
@@ -486,42 +472,40 @@ describe("<SplitIndex /> spec", () => {
   });
 
   it("blocks.write is not set, Index is not ready for split", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: [
-              {
-                health: "green",
-                status: "open",
-                index: sourceIndexName,
-                pri: "1",
-                rep: "0",
-                "docs.count": "1",
-                "docs.deleted": "0",
-                "store.size": "5.2kb",
-                "pri.store.size": "5.2kb",
-              },
-            ],
-          };
-        } else if (payload.endpoint === "indices.getSettings") {
-          return {
-            ok: true,
-            response: {
-              [sourceIndexName]: {
-                settings: {},
-              },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
+              "docs.count": "1",
+              "docs.deleted": "0",
+              "store.size": "5.2kb",
+              "pri.store.size": "5.2kb",
             },
-          };
-        } else if (payload.endpoint === "indices.putSettings") {
-          return {
-            ok: true,
-            response: [{}],
-          };
-        }
+          ],
+        };
+      } else if (payload.endpoint === "indices.getSettings") {
+        return {
+          ok: true,
+          response: {
+            [sourceIndexName]: {
+              settings: {},
+            },
+          },
+        };
+      } else if (payload.endpoint === "indices.putSettings") {
+        return {
+          ok: true,
+          response: [{}],
+        };
       }
-    );
+    });
 
     const { getByTestId, queryByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -532,7 +516,7 @@ describe("<SplitIndex /> spec", () => {
 
     await userEvent.click(getByTestId("set-indexsetting-button"));
     await waitFor(() =>
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putSettings",
         method: "PUT",
         data: {

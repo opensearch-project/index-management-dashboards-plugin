@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import SnapshotIndicesInput from "./SnapshotIndicesInput";
@@ -43,7 +43,7 @@ describe("SnapshotIndicesInput component", () => {
 
     await userEvent.type(screen.getByRole("textbox"), "test*{enter}");
 
-    expect(testProps.onCreateOption).toBeCalledTimes(1);
+    expect(testProps.onCreateOption).toHaveBeenCalledTimes(1);
   });
 
   it("allows user to select indices to restore", async () => {
@@ -63,6 +63,6 @@ describe("SnapshotIndicesInput component", () => {
     await userEvent.click(screen.getByText("test_index_1"));
     await userEvent.click(screen.getByText("test_index_2"));
 
-    expect(testProps.onIndicesSelectionChange).toBeCalledTimes(2);
+    expect(testProps.onIndicesSelectionChange).toHaveBeenCalledTimes(2);
   });
 });

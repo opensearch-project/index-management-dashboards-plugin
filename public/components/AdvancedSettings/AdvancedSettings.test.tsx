@@ -35,7 +35,7 @@ describe("<FormGenerator /> spec", () => {
     await userEvent.clear(textareaInput);
     await userEvent.paste('{ "test": "1" }');
     await userEvent.click(document.body);
-    expect(onChangeMock).toBeCalledTimes(1);
-    expect(onChangeMock).toBeCalledWith({ test: "1" });
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+    expect(onChangeMock).toHaveBeenCalledWith({ test: "1" });
   });
 });

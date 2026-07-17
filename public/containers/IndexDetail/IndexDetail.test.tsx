@@ -28,37 +28,33 @@ beforeEach(() => {
   (getNavigationUI as jest.Mock).mockReturnValue({});
 });
 
-browserServicesMock.commonService.apiCaller = jest.fn(
-  async (payload): Promise<any> => {
-    if (payload.data?.index?.includes("error_index")) {
-      return {
-        ok: false,
-        error: "error index",
-      };
-    }
-
+browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+  if (payload.data?.index?.includes("error_index")) {
     return {
-      ok: true,
-      response: (payload.data.index || []).map(
-        (index: string): CatIndex => {
-          return {
-            index,
-            "docs.count": "0",
-            "docs.deleted": "1",
-            "pri.store.size": "1",
-            data_stream: "no",
-            "store.size": "1mb",
-            rep: "2",
-            uuid: "1",
-            health: "green",
-            pri: "4",
-            status: "open",
-          };
-        }
-      ),
+      ok: false,
+      error: "error index",
     };
   }
-);
+
+  return {
+    ok: true,
+    response: (payload.data.index || []).map((index: string): CatIndex => {
+      return {
+        index,
+        "docs.count": "0",
+        "docs.deleted": "1",
+        "pri.store.size": "1",
+        data_stream: "no",
+        "store.size": "1mb",
+        rep: "2",
+        uuid: "1",
+        health: "green",
+        pri: "4",
+        status: "open",
+      };
+    }),
+  };
+});
 
 function renderWithServiceAndCore(props: IIndexDetailProps) {
   return {
@@ -82,8 +78,8 @@ describe("<IndexDetail /> spec", () => {
     expect(queryByText("children content here")).toBeNull();
     await waitFor(() => {
       expect(container).toMatchSnapshot();
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "cat.indices",
         data: {
           index: ["test"],
@@ -103,10 +99,10 @@ describe("<IndexDetail /> spec", () => {
     });
 
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error index");
-      expect(onGetIndicesDetailMock).toBeCalledTimes(1);
-      expect(onGetIndicesDetailMock).toBeCalledWith([]);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("error index");
+      expect(onGetIndicesDetailMock).toHaveBeenCalledTimes(1);
+      expect(onGetIndicesDetailMock).toHaveBeenCalledWith([]);
     });
   });
 });

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";

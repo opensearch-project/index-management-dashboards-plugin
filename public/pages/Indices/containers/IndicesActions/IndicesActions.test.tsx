@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEventModule from "@testing-library/user-event";
@@ -103,34 +103,32 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("clear cache for mulitple indexes by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {
-                  indices: {
-                    test_index1: {
-                      "5": {
-                        description: "index read-only (api)",
-                        retryable: false,
-                        levels: ["write", "metadata_write"],
-                      },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "cluster.state":
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  test_index1: {
+                    "5": {
+                      description: "index read-only (api)",
+                      retryable: false,
+                      levels: ["write", "metadata_write"],
                     },
                   },
                 },
               },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+            },
+          };
+        default:
+          return {
+            ok: true,
+            response: {},
+          };
       }
-    );
+    });
 
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -176,14 +174,12 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("clear cache for all indexes successfully by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {},
-        };
-      }
-    );
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {},
+      };
+    });
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [],
     });
@@ -215,27 +211,25 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("clear cache for all indexes failed if some indexes are blocked", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: false,
-          error: "[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-          body: {
-            error: {
-              root_cause: [
-                {
-                  type: "cluster_block_exception",
-                  reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-                },
-              ],
-              type: "cluster_block_exception",
-              reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-            },
-            status: 403,
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return {
+        ok: false,
+        error: "[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
+        body: {
+          error: {
+            root_cause: [
+              {
+                type: "cluster_block_exception",
+                reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
+              },
+            ],
+            type: "cluster_block_exception",
+            reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
           },
-        };
-      }
-    );
+          status: 403,
+        },
+      };
+    });
     coreServicesMock.notifications.toasts.addError = jest.fn();
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [],
@@ -272,26 +266,24 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("unable to clear cache when clearing cache for a closed or blocked index", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {
-            blocks: {
-              indices: {
-                test_index1: {
-                  "5": {
-                    description: "index read-only (api)",
-                    retryable: false,
-                    levels: ["write", "metadata_write"],
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {
+          blocks: {
+            indices: {
+              test_index1: {
+                "5": {
+                  description: "index read-only (api)",
+                  retryable: false,
+                  levels: ["write", "metadata_write"],
                 },
               },
             },
           },
-        };
-      }
-    );
+        },
+      };
+    });
 
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [
@@ -326,34 +318,32 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("filter some closed or blocked indices when clearing caches for multiple indices", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {
-                  indices: {
-                    test_index1: {
-                      "5": {
-                        description: "index read-only (api)",
-                        retryable: false,
-                        levels: ["write", "metadata_write"],
-                      },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "cluster.state":
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  test_index1: {
+                    "5": {
+                      description: "index read-only (api)",
+                      retryable: false,
+                      levels: ["write", "metadata_write"],
                     },
                   },
                 },
               },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+            },
+          };
+        default:
+          return {
+            ok: true,
+            response: {},
+          };
       }
-    );
+    });
 
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -406,22 +396,20 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("filter indices failed when clearing caches for multiple indices", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: false,
-              error: "test failure",
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      switch (payload.endpoint) {
+        case "cluster.state":
+          return {
+            ok: false,
+            error: "test failure",
+          };
+        default:
+          return {
+            ok: true,
+            response: {},
+          };
       }
-    );
+    });
 
     const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -579,25 +567,23 @@ describe("<IndicesActions /> spec", () => {
   it("delete index by calling commonService", async () => {
     const onDelete = jest.fn();
     let times = 0;
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "indices.delete") {
-          if (times >= 1) {
-            return {
-              ok: true,
-              response: {},
-            };
-          } else {
-            times++;
-            return {
-              ok: false,
-              error: "test error",
-            };
-          }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "indices.delete") {
+        if (times >= 1) {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else {
+          times++;
+          return {
+            ok: false,
+            error: "test error",
+          };
         }
-        return { ok: true, response: {} };
       }
-    );
+      return { ok: true, response: {} };
+    });
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
       selectedItems: [
         {
@@ -1012,34 +998,32 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh selected indexes by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {
-                indices: {
-                  blocked_index: {
-                    "4": {},
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                blocked_index: {
+                  "4": {},
                 },
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
@@ -1092,28 +1076,26 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh multiple selected indexes by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {},
-            },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {},
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -1143,37 +1125,35 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh selected indexes disabled because all of them are closed or in red status", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {
-                indices: {
-                  blocked_index: {
-                    "4": {},
-                  },
-                  blocked_index1: {
-                    "4": {},
-                  },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                blocked_index: {
+                  "4": {},
+                },
+                blocked_index1: {
+                  "4": {},
                 },
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+    });
 
     const { getByTestId } = renderWithRouter({
       selectedItems: [
@@ -1200,33 +1180,31 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh all open index by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              indices: {
-                red_index: {
-                  "4": {},
-                },
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            indices: {
+              red_index: {
+                "4": {},
               },
             },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index close\n",
-          };
-        }
-        return { ok: false, error: "wrong endpoint" };
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index close\n",
+        };
       }
-    );
+      return { ok: false, error: "wrong endpoint" };
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [],
@@ -1246,29 +1224,27 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh all open index disabled due to red index", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          return {
-            ok: true,
-            response: {
-              blocks: {},
-            },
-          };
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
-        return { ok: false, error: "wrong endpoint" };
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        return {
+          ok: true,
+          response: {
+            blocks: {},
+          },
+        };
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+      return { ok: false, error: "wrong endpoint" };
+    });
 
     const { getByTestId } = renderWithRouter({
       selectedItems: [],
@@ -1286,24 +1262,22 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh selected indexes even failed to get index status", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          throw "failed to call cluster.state";
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
-        return { ok: false, error: "wrong endpoint" };
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        throw "failed to call cluster.state";
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+      return { ok: false, error: "wrong endpoint" };
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [
@@ -1330,24 +1304,22 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("refresh multi selected indexes even failed to get index status", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.endpoint === "cluster.state") {
-          throw "failed to call cluster.state";
-        } else if (payload.endpoint === "indices.refresh") {
-          return {
-            ok: true,
-            response: {},
-          };
-        } else if (payload.endpoint === "cat.indices") {
-          return {
-            ok: true,
-            response: "red_index open\n",
-          };
-        }
-        return { ok: false, error: "wrong endpoint" };
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+      if (payload.endpoint === "cluster.state") {
+        throw "failed to call cluster.state";
+      } else if (payload.endpoint === "indices.refresh") {
+        return {
+          ok: true,
+          response: {},
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: "red_index open\n",
+        };
       }
-    );
+      return { ok: false, error: "wrong endpoint" };
+    });
 
     const { getByTestId, getByText } = renderWithRouter({
       selectedItems: [

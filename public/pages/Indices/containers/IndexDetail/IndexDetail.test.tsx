@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import { Route, Switch, HashRouter as Router } from "react-router-dom";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";

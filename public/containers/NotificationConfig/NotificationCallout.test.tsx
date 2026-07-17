@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import NotificationCallout, { INotificationCalloutProps } from "./NotificationCallout";
 import { render, waitFor } from "@testing-library/react";
 import { browserServicesMock } from "../../../test/mocks";

@@ -50,7 +50,7 @@ describe("JobScheduler spec", () => {
         timeout: 10000,
       }
     );
-    expect(callback).toBeCalledTimes(3);
+    expect(callback).toHaveBeenCalledTimes(3);
 
     // setup a long timeout job
     const testJob = await jobScheduler.addJob({
@@ -112,8 +112,8 @@ describe("JobScheduler spec", () => {
     jobScheduler.init();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     expect(jobScheduler.getAllJobs()).resolves.toHaveLength(0);
-    expect(callback).toBeCalledTimes(1);
-    expect(timeoutCallback).toBeCalledTimes(1);
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(timeoutCallback).toHaveBeenCalledTimes(1);
     const result = await jobScheduler.changeJob("1", {});
     expect(result).toBe(false);
   });

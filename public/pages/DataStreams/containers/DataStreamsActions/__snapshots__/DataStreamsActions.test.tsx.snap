@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<DataStreamsActions /> spec cannot clear cache for data streams if they are closed or blocked 1`] = `
 <div

@@ -6,7 +6,7 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";

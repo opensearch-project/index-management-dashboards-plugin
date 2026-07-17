@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import IndexControls from "./IndexControls";
@@ -42,15 +42,15 @@ describe("<IndexControls /> spec", () => {
     );
 
     await userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
-    expect(onSearchChangeMock).toBeCalledTimes(1);
-    expect(onSearchChangeMock).toBeCalledWith({
+    expect(onSearchChangeMock).toHaveBeenCalledTimes(1);
+    expect(onSearchChangeMock).toHaveBeenCalledWith({
       search: "",
       status: "closed",
     });
     await userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
-      expect(onSearchChangeMock).toBeCalledTimes(5);
-      expect(onSearchChangeMock).toBeCalledWith({
+      expect(onSearchChangeMock).toHaveBeenCalledTimes(5);
+      expect(onSearchChangeMock).toHaveBeenCalledWith({
         search: "test",
         status: "closed",
       });

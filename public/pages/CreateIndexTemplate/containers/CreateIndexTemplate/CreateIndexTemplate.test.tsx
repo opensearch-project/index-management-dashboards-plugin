@@ -85,7 +85,7 @@ describe("<CreateIndexTemplate /> spec", () => {
     await userEvent.type(patternInput, `test_patterns{enter}`);
 
     await userEvent.click(submitButton);
-    await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("bad template"));
+    await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad template"));
     await userEvent.clear(templateNameInput);
     await userEvent.type(templateNameInput, "good_template");
 
@@ -109,7 +109,7 @@ describe("<CreateIndexTemplate /> spec", () => {
     await userEvent.click(submitButton);
     await waitFor(
       () => {
-        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+        expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
           endpoint: "transport.request",
           data: {
             method: "PUT",

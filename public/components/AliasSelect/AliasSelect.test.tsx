@@ -51,7 +51,7 @@ describe("<AliasSelect /> spec", () => {
     );
     await waitFor(
       () => {
-        expect(onOptionsChange).toBeCalledWith([
+        expect(onOptionsChange).toHaveBeenCalledWith([
           {
             label: "a",
           },
@@ -97,22 +97,22 @@ describe("<AliasSelect /> spec", () => {
     });
     await userEvent.click(document.querySelector('button[title="test"]') as Element);
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledTimes(1);
-      expect(onChangeMock).toBeCalledWith({
+      expect(onChangeMock).toHaveBeenCalledTimes(1);
+      expect(onChangeMock).toHaveBeenCalledWith({
         test: {},
       });
     });
     await userEvent.type(getByTestId("comboBoxInput"), "test2{enter}");
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledTimes(2);
-      expect(onChangeMock).toBeCalledWith({
+      expect(onChangeMock).toHaveBeenCalledTimes(2);
+      expect(onChangeMock).toHaveBeenCalledWith({
         test: {},
         test2: {},
       });
     });
     await userEvent.type(getByTestId("comboBoxInput"), "  {enter}");
     await waitFor(() => {
-      expect(onChangeMock).toBeCalledTimes(2);
+      expect(onChangeMock).toHaveBeenCalledTimes(2);
     });
   });
 });

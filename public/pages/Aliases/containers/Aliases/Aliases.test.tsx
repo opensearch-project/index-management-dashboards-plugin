@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
@@ -137,13 +137,13 @@ describe("<Aliases /> spec", () => {
 
     expect(container.firstChild).toMatchSnapshot();
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
     });
     await userEvent.click(getByTestId("tableHeaderCell_alias_0").querySelector("button") as Element);
     await waitFor(() => {
       expect(queryByText("1 more")).not.toBeNull();
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         data: { format: "json", name: `**`, s: "alias:asc" },
         endpoint: "cat.aliases",
       });
@@ -151,20 +151,13 @@ describe("<Aliases /> spec", () => {
   });
 
   it("with some actions", async () => {
-    const {
-      findByTitle,
-      findByTestId,
-      getByTestId,
-      getByPlaceholderText,
-      getByTitle,
-      findByPlaceholderText,
-      getByText,
-    } = renderWithRouter();
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
+    const { findByTitle, findByTestId, getByTestId, getByPlaceholderText, getByTitle, findByPlaceholderText, getByText } =
+      renderWithRouter();
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
     await userEvent.type(getByPlaceholderText("Search..."), `${testAliasId}{enter}`);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         data: { format: "json", name: `*${testAliasId}*`, s: "alias:desc" },
         endpoint: "cat.aliases",
       });
@@ -180,7 +173,7 @@ describe("<Aliases /> spec", () => {
     expect(getByPlaceholderText("Specify alias name")).toBeDisabled();
     expect((getByPlaceholderText("Specify alias name") as HTMLInputElement).value).toEqual(testAliasId);
     expect(getByTitle("1")).toBeInTheDocument();
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(6);
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(6);
     await userEvent.type(
       getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "2{enter}"
@@ -188,7 +181,7 @@ describe("<Aliases /> spec", () => {
     await userEvent.click(document.querySelector('[title="1"] button') as Element);
     await userEvent.click(getByText("Save changes"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         data: {
           body: {
             actions: [
@@ -228,14 +221,14 @@ describe("<Aliases /> spec", () => {
     await waitFor(() => {});
     await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("alias exist");
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("alias exist");
     });
     await userEvent.clear(getByPlaceholderText("Specify alias name"));
     await userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
     await userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         data: {
           index: ["1"],
           name: testAliasId,

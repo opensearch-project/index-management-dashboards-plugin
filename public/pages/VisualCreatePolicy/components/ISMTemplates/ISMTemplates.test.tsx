@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import ISMTemplates from "./ISMTemplates";
 import { DEFAULT_POLICY } from "../../utils/constants";

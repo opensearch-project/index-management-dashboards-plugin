@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -151,117 +151,115 @@ const mockApi = () => {
     response: { indices: args.search.length > 0 ? indices.filter((index) => index.index.startsWith(args.search)) : indices },
   }));
 
-  browserServicesMock.commonService.apiCaller = jest.fn(
-    async (payload): Promise<any> => {
-      switch (payload.endpoint) {
-        case "cat.indices":
+  browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> => {
+    switch (payload.endpoint) {
+      case "cat.indices":
+        return {
+          ok: true,
+          response: indices.filter((indexItem) => indexItem.index === payload.data.index[0]),
+        };
+      case "indices.getSettings":
+        if (payload.data.index === "test2") {
           return {
             ok: true,
-            response: indices.filter((indexItem) => indexItem.index === payload.data.index[0]),
+            response: {
+              test2: {
+                settings: {
+                  "index.blocks.write": false,
+                },
+              },
+            },
           };
-        case "indices.getSettings":
-          if (payload.data.index === "test2") {
-            return {
-              ok: true,
-              response: {
-                test2: {
-                  settings: {
-                    "index.blocks.write": false,
-                  },
-                },
-              },
-            };
-          } else if (payload.data.index === "test3") {
-            return {
-              ok: true,
-              response: {
-                test3: {
-                  settings: {
-                    "index.blocks.write": true,
-                    "index.routing.allocation.require._name": "node1",
-                  },
-                },
-              },
-            };
-          } else if (payload.data.index === "test6") {
-            return {
-              ok: true,
-              response: {
-                test6: {
-                  settings: {
-                    "index.blocks.write": true,
-                    "index.blocks.read_only": true,
-                  },
-                },
-              },
-            };
-          } else if (payload.data.index === "test7") {
-            return {
-              ok: true,
-              response: {
-                test6: {
-                  settings: {
-                    "index.blocks.read_only": true,
-                  },
-                },
-              },
-            };
-          } else {
-            return {
-              ok: true,
-              response: {},
-            };
-          }
-        case "indices.putSettings":
-          if (payload.data.index === "test7") {
-            return {
-              ok: false,
-              error: "[cluster_block_exception] index [test7] blocked by: [FORBIDDEN/5/index read-only (api)];",
-            };
-          } else {
-            return {
-              ok: true,
-              response: {},
-            };
-          }
-        case "transport.request":
-          if (payload.data.path.startsWith("/test7/_open")) {
-            return {
-              ok: false,
-              error: "[cluster_block_exception] index [test7] blocked by: [FORBIDDEN/5/index read-only (api)];",
-            };
-          } else {
-            return {
-              ok: true,
-              response: {},
-            };
-          }
-        case "cat.aliases":
+        } else if (payload.data.index === "test3") {
           return {
             ok: true,
-            response: [
-              {
-                alias: "a1",
-                index: "acvxcvxc",
-                filter: "-",
-                "routing.index": "-",
-                "routing.search": "-",
-                is_write_index: "-",
+            response: {
+              test3: {
+                settings: {
+                  "index.blocks.write": true,
+                  "index.routing.allocation.require._name": "node1",
+                },
               },
-            ],
+            },
           };
-        case "indices.shrink":
+        } else if (payload.data.index === "test6") {
+          return {
+            ok: true,
+            response: {
+              test6: {
+                settings: {
+                  "index.blocks.write": true,
+                  "index.blocks.read_only": true,
+                },
+              },
+            },
+          };
+        } else if (payload.data.index === "test7") {
+          return {
+            ok: true,
+            response: {
+              test6: {
+                settings: {
+                  "index.blocks.read_only": true,
+                },
+              },
+            },
+          };
+        } else {
           return {
             ok: true,
             response: {},
           };
-      }
-      return {
-        ok: true,
-        response: {},
-      };
+        }
+      case "indices.putSettings":
+        if (payload.data.index === "test7") {
+          return {
+            ok: false,
+            error: "[cluster_block_exception] index [test7] blocked by: [FORBIDDEN/5/index read-only (api)];",
+          };
+        } else {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      case "transport.request":
+        if (payload.data.path.startsWith("/test7/_open")) {
+          return {
+            ok: false,
+            error: "[cluster_block_exception] index [test7] blocked by: [FORBIDDEN/5/index read-only (api)];",
+          };
+        } else {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      case "cat.aliases":
+        return {
+          ok: true,
+          response: [
+            {
+              alias: "a1",
+              index: "acvxcvxc",
+              filter: "-",
+              "routing.index": "-",
+              "routing.search": "-",
+              is_write_index: "-",
+            },
+          ],
+        };
+      case "indices.shrink":
+        return {
+          ok: true,
+          response: {},
+        };
     }
-  );
+    return {
+      ok: true,
+      response: {},
+    };
+  });
 };
 
 describe("<Shrink index /> spec", () => {

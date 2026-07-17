@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";

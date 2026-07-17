@@ -4,7 +4,7 @@
  */
 
 import React, { useRef } from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import NotificationConfig, { NotificationConfigProps, NotificationConfigRef } from "./NotificationConfig";
 import { render, waitFor } from "@testing-library/react";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
@@ -171,35 +171,33 @@ describe("<ChannelNotification /> spec", () => {
   const userEvent = userEventModule.setup();
 
   beforeEach(() => {
-    browserServicesMock.notificationService.getChannels = jest.fn(
-      async (): Promise<any> => {
-        return {
-          ok: true,
-          response: {
-            start_index: 0,
-            total_hits: 1,
-            total_hit_relation: "eq",
-            channel_list: [
-              {
-                config_id: "1",
-                name: "1",
-                description: "2",
-                config_type: "chime",
-                is_enabled: true,
-              },
-            ],
-          },
-        };
-      }
-    );
+    browserServicesMock.notificationService.getChannels = jest.fn(async (): Promise<any> => {
+      return {
+        ok: true,
+        response: {
+          start_index: 0,
+          total_hits: 1,
+          total_hit_relation: "eq",
+          channel_list: [
+            {
+              config_id: "1",
+              name: "1",
+              description: "2",
+              config_type: "chime",
+              is_enabled: true,
+            },
+          ],
+        },
+      };
+    });
   });
 
   /**
    * 000
    */
   it("renders with no permission and no default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => chainRules([payload], rulesForNoUpdatePermission, rulesForNoViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForNoUpdatePermission, rulesForNoViewPermission, rulesForBackup)
     );
     const { container } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -212,8 +210,8 @@ describe("<ChannelNotification /> spec", () => {
    * 010
    */
   it("renders with create permission and no default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => chainRules([payload], rulesForHasUpdatePermission, rulesForNoViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForHasUpdatePermission, rulesForNoViewPermission, rulesForBackup)
     );
     const { container, queryByTestId, findByText } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -230,9 +228,8 @@ describe("<ChannelNotification /> spec", () => {
    * 100
    */
   it("renders with view permission and no default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> =>
-        chainRules([payload], rulesForNoUpdatePermission, rulesForNoDefaultNotificationHasViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForNoUpdatePermission, rulesForNoDefaultNotificationHasViewPermission, rulesForBackup)
     );
     const { container } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -245,9 +242,8 @@ describe("<ChannelNotification /> spec", () => {
    * 101
    */
   it("renders with view permission and default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> =>
-        chainRules([payload], rulesForNoUpdatePermission, rulesForHasDefaultNotificationAndViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForNoUpdatePermission, rulesForHasDefaultNotificationAndViewPermission, rulesForBackup)
     );
     const { container, queryByTestId, findByText } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -262,8 +258,8 @@ describe("<ChannelNotification /> spec", () => {
    * 110
    */
   it("renders with full permission and no default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => chainRules([payload], rulesForHasUpdatePermission, rulesForNoViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForHasUpdatePermission, rulesForNoViewPermission, rulesForBackup)
     );
     const { container, queryByTestId, queryByText, findByText, getByTestId, findByTestId } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -287,8 +283,8 @@ describe("<ChannelNotification /> spec", () => {
    * 111
    */
   it("renders with full permission and default notification", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => chainRules([payload], rulesForHasUpdatePermission, rulesForHasViewPermission, rulesForBackup)
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload): Promise<any> =>
+      chainRules([payload], rulesForHasUpdatePermission, rulesForHasViewPermission, rulesForBackup)
     );
     const { container, findByText, findByTestId, queryByText, getByTestId } = renderWithServiceAndCore({
       actionType: ActionType.RESIZE,
@@ -310,7 +306,7 @@ describe("<ChannelNotification /> spec", () => {
     );
     await userEvent.click(getByTestId("submit"));
     await waitFor(() =>
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
           body: {

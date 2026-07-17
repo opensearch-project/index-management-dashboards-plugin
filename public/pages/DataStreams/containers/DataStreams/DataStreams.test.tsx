@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
@@ -102,17 +102,17 @@ describe("<DataStreams /> spec", () => {
 
     expect(container.firstChild).toMatchSnapshot();
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
     });
   });
 
   it("with some actions", async () => {
     const { getByPlaceholderText } = renderWithRouter();
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
     await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(4);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         data: { method: "GET", path: "_data_stream/**" },
         endpoint: "transport.request",
       });

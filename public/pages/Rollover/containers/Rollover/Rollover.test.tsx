@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, waitFor } from "@testing-library/react";
 import { MemoryRouter as Router } from "react-router";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";

@@ -109,7 +109,7 @@ describe("<TemplateDetail /> spec", () => {
      */
     await userEvent.click(getByTestId("CreateIndexTemplatePreviewButton"));
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error");
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("error");
     });
     await userEvent.click(getByTestId("CreateIndexTemplatePreviewButton"));
     await findAllByText("Preview template");
@@ -174,14 +174,14 @@ describe("<TemplateDetail /> spec", () => {
       await userEvent.click(getByTestId("updateTemplateButton"));
     });
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith(`error`);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith(`error`);
     });
 
     await act(async () => {
       await userEvent.click(getByTestId("updateTemplateButton"));
     });
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(`good_template has been successfully updated.`);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`good_template has been successfully updated.`);
     });
   });
 
@@ -214,7 +214,7 @@ describe("<TemplateDetail /> spec", () => {
     await userEvent.type(getByTestId("deleteInput"), "delete");
     await userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.TEMPLATES}`);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalled();
   });
 
   it("simulate error", async () => {
@@ -244,7 +244,7 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("error");
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("error");
     });
   });
 

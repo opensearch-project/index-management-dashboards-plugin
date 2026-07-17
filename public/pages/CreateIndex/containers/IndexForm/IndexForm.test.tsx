@@ -100,7 +100,7 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {
       // it shows detail and does not call any api when nothing modified
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -122,8 +122,8 @@ describe("<IndexForm /> spec", () => {
     await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.updateAliases",
         method: "PUT",
         data: {
@@ -146,7 +146,7 @@ describe("<IndexForm /> spec", () => {
         },
       });
 
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putSettings",
         method: "PUT",
         data: {
@@ -158,7 +158,7 @@ describe("<IndexForm /> spec", () => {
         },
       });
 
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putMapping",
         method: "PUT",
         data: {
@@ -190,8 +190,8 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {
       // shows detail alias and update alias only
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.updateAliases",
         method: "PUT",
         data: {
@@ -233,9 +233,9 @@ describe("<IndexForm /> spec", () => {
     await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
 
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putMapping",
         method: "PUT",
         data: {
@@ -264,9 +264,9 @@ describe("<IndexForm /> spec", () => {
     await userEvent.click(getByText("Update"));
 
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
 
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.putSettings",
         method: "PUT",
         data: {
@@ -289,8 +289,8 @@ describe("<IndexForm /> spec", () => {
     await waitFor(() => {});
     await userEvent.click(getByText("Cancel"));
     await (() => {
-      expect(onCancelMock).toBeCalledTimes(1);
-      expect(onCancelMock).toBeCalledWith(undefined);
+      expect(onCancelMock).toHaveBeenCalledTimes(1);
+      expect(onCancelMock).toHaveBeenCalledWith(undefined);
     });
   });
 });

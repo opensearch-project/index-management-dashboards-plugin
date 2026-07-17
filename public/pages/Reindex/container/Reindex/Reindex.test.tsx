@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEventModule from "@testing-library/user-event";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -571,7 +571,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {});
 
-    expect(coreServicesMock.notifications.toasts.addDanger).toBeCalled();
+    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalled();
   });
 
   it("show subset query editor", async () => {
@@ -627,7 +627,7 @@ describe("<Reindex /> spec", () => {
     await userEvent.click(getByTestId("advanceOptionToggle"));
     await waitFor(() => {});
 
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+    expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "ingest.getPipeline",
     });
   });
