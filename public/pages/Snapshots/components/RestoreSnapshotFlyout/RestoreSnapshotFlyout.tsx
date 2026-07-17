@@ -332,9 +332,12 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
       let renamePattern = this.state.renamePattern;
       let renameReplacement = this.state.renameReplacement;
 
-      if (e.target.id !== "rename_indices") {
+      if (e.target.id === "add_prefix") {
         renamePattern = "(.+)";
         renameReplacement = "restored_$1";
+      } else if (e.target.id === "do_not_rename") {
+        renamePattern = "(.+)";
+        renameReplacement = "$1";
       }
 
       this.setState({
