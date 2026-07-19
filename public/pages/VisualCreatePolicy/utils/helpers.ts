@@ -21,6 +21,7 @@ import {
   DEFAULT_ROLLUP,
   DEFAULT_SHRINK,
   DEFAULT_SNAPSHOT,
+  DEFAULT_STOP_REPLICATION,
 } from "./constants";
 import {
   AliasUIAction,
@@ -38,6 +39,7 @@ import {
   RollupUIAction,
   ShrinkUIAction,
   SnapshotUIAction,
+  StopReplicationUIAction,
 } from "../components/UIActions";
 
 export const getConditionContent = (transition: Transition): string => {
@@ -99,6 +101,8 @@ export const getUIAction = (actionType: string): UIAction<any> => {
       return new ShrinkUIAction(DEFAULT_SHRINK);
     case ActionType.Snapshot:
       return new SnapshotUIAction(DEFAULT_SNAPSHOT);
+    case ActionType.StopReplication:
+      return new StopReplicationUIAction(DEFAULT_STOP_REPLICATION);
     default:
       throw new Error(`Action type [${actionType}] not supported`);
   }
@@ -139,6 +143,7 @@ class ActionRepository {
     rollup: [RollupUIAction, DEFAULT_ROLLUP],
     shrink: [ShrinkUIAction, DEFAULT_SHRINK],
     snapshot: [SnapshotUIAction, DEFAULT_SNAPSHOT],
+    stop_replication: [StopReplicationUIAction, DEFAULT_STOP_REPLICATION],
   };
 
   getAllActionTypes = () => {
