@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AliasAction, AllocationAction } from "../../../../models/interfaces";
+import { AliasAction, AllocationAction, StopReplicationAction } from "../../../../models/interfaces";
 
 export enum ActionType {
   Alias = "alias",
@@ -21,6 +21,7 @@ export enum ActionType {
   Rollup = "rollup",
   Shrink = "shrink",
   Snapshot = "snapshot",
+  StopReplication = "stop_replication",
 }
 
 export const DEFAULT_POLICY = {
@@ -194,6 +195,9 @@ export const DEFAULT_SNAPSHOT = {
     snapshot: "example-snapshot",
   },
 };
+export const DEFAULT_STOP_REPLICATION: StopReplicationAction = {
+  stop_replication: {},
+};
 
 export const actions = [
   DEFAULT_ALIAS,
@@ -211,6 +215,7 @@ export const actions = [
   DEFAULT_ROLLUP,
   DEFAULT_SHRINK,
   DEFAULT_SNAPSHOT,
+  DEFAULT_STOP_REPLICATION,
 ];
 
 export const ISM_TEMPLATE_INPUT_MAX_WIDTH = "400px";

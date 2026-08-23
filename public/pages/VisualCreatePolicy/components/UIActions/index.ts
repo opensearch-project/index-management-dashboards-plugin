@@ -18,6 +18,7 @@ import RolloverUIAction from "./RolloverUIAction";
 import RollupUIAction from "./RollupUIAction";
 import ShrinkUIAction from "./ShrinkUIAction";
 import SnapshotUIAction from "./SnapshotUIAction";
+import { StopReplicationUIAction } from "./StopReplicationUIAction";
 
 export {
   AliasUIAction,
@@ -35,4 +36,5 @@ export {
   RollupUIAction,
   ShrinkUIAction,
   SnapshotUIAction,
+  StopReplicationUIAction,
 };

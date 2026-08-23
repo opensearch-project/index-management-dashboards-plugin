@@ -170,6 +170,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                 >
                   Snapshot
                 </option>
+                <option
+                  value="stop_replication"
+                >
+                  Stop Replication
+                </option>
               </select>
               <div
                 class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"

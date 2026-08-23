@@ -360,6 +360,10 @@ export interface DeleteAction extends Action {
   delete: {};
 }
 
+export interface StopReplicationAction extends Action {
+  stop_replication: {};
+}
+
 export interface RolloverAction extends Action {
   rollover: {
     min_size?: string;
