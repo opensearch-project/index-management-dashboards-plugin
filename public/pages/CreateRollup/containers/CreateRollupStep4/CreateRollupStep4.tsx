@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption, EuiCallOut, EuiText } from "@elastic/eui";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiComboBoxOptionOption, EuiCallOut, EuiText } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -24,6 +24,7 @@ interface CreateRollupProps extends RouteComponentProps {
   description: string;
   sourceIndex: { label: string; value?: IndexItem }[];
   targetIndex: { label: string; value?: IndexItem }[];
+  targetIndexSettings: Pick<IndexItem, "settings"> | null;
 
   timestamp: EuiComboBoxOptionOption<String>[];
   intervalType: string;
