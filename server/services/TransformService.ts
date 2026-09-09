@@ -67,9 +67,19 @@ export default class TransformService extends MDSEnabledClientService {
         const callWithRequest = this.getClientBasedOnDataSource(context, request);
 
         const explainResponse = (await callWithRequest("ism.explainTransform", { transformId: ids })) as any;
-        if (!explainResponse.error) {
+
+        // Bug fix: Do NOT check for explainResponse.error property
+        // The Explain API returns an object where transform IDs are keys (e.g., { "my-transform": {...metadata...} })
+        // If a transform is named "error", the response will be { "error": {...metadata...} }
+        // This would incorrectly trigger error handling if we checked for explainResponse.error
+        // Actual API errors are caught by the try-catch block above, not returned as response properties
+        // Reference: https://github.com/opensearch-project/index-management-dashboards-plugin/issues/1376
+
+        // Validate that explainResponse is a valid object
+        if (explainResponse && typeof explainResponse === "object") {
+          // Map metadata to each transform, setting to null if not found in explainResponse
           transforms.map((transform: DocumentTransform) => {
-            transform.metadata = explainResponse[transform._id];
+            transform.metadata = explainResponse[transform._id] || null;
           });
 
           return response.custom({
@@ -80,11 +90,12 @@ export default class TransformService extends MDSEnabledClientService {
             },
           });
         } else {
+          // Unexpected response format - this should rarely happen
           return response.custom({
             statusCode: 200,
             body: {
               ok: false,
-              error: explainResponse ? explainResponse.error : "An error occurred when calling getExplain API.",
+              error: "Unexpected response format from Explain API",
             },
           });
         }
