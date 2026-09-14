@@ -79,14 +79,29 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     binary
                   </option>
                   <option
+                    value="byte"
+                  >
+                    byte
+                  </option>
+                  <option
                     value="completion"
                   >
                     completion
                   </option>
                   <option
+                    value="constant_keyword"
+                  >
+                    constant_keyword
+                  </option>
+                  <option
                     value="date"
                   >
                     date
+                  </option>
+                  <option
+                    value="date_nanos"
+                  >
+                    date_nanos
                   </option>
                   <option
                     value="date_range"
@@ -104,9 +119,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     double_range
                   </option>
                   <option
+                    value="flat_object"
+                  >
+                    flat_object
+                  </option>
+                  <option
                     value="float"
                   >
                     float
+                  </option>
+                  <option
+                    value="float_range"
+                  >
+                    float_range
                   </option>
                   <option
                     value="geo_point"
@@ -129,6 +154,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     integer
                   </option>
                   <option
+                    value="integer_range"
+                  >
+                    integer_range
+                  </option>
+                  <option
                     value="ip"
                   >
                     ip
@@ -139,9 +169,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     ip_range
                   </option>
                   <option
+                    value="join"
+                  >
+                    join
+                  </option>
+                  <option
                     value="keyword"
                   >
                     keyword
+                  </option>
+                  <option
+                    value="knn_vector"
+                  >
+                    knn_vector
                   </option>
                   <option
                     value="long"
@@ -152,6 +192,16 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     value="long_range"
                   >
                     long_range
+                  </option>
+                  <option
+                    value="match_only_text"
+                  >
+                    match_only_text
+                  </option>
+                  <option
+                    value="nested"
+                  >
+                    nested
                   </option>
                   <option
                     value="object"
@@ -174,9 +224,29 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     rank_features
                   </option>
                   <option
+                    value="scaled_float"
+                  >
+                    scaled_float
+                  </option>
+                  <option
                     value="search_as_you_type"
                   >
                     search_as_you_type
+                  </option>
+                  <option
+                    value="semantic"
+                  >
+                    semantic
+                  </option>
+                  <option
+                    value="short"
+                  >
+                    short
+                  </option>
+                  <option
+                    value="star_tree"
+                  >
+                    star_tree
                   </option>
                   <option
                     value="text"
@@ -187,6 +257,26 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     value="token_count"
                   >
                     token_count
+                  </option>
+                  <option
+                    value="unsigned_long"
+                  >
+                    unsigned_long
+                  </option>
+                  <option
+                    value="xy_point"
+                  >
+                    xy_point
+                  </option>
+                  <option
+                    value="xy_shape"
+                  >
+                    xy_shape
+                  </option>
+                  <option
+                    value="wildcard"
+                  >
+                    wildcard
                   </option>
                 </select>
                 <div
