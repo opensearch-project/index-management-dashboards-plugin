@@ -1,7 +1,7 @@
 {
   "id": "indexManagementDashboards",
-  "version": "2.19.6.0",
-  "opensearchDashboardsVersion": "2.19.6",
+  "version": "2.19.7.0",
+  "opensearchDashboardsVersion": "2.19.7",
   "configPath": [
     "opensearch_index_management"
   ],
