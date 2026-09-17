@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { EuiCallOut, EuiLink, EuiSpacer } from "@elastic/eui";
 import React from "react";
 import { ROUTES } from "../../utils/constants";

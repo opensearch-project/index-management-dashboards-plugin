@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 // FILE: UnsavedChangesButtons.tsx
 
 import React, { useCallback, useRef, useState } from "react";

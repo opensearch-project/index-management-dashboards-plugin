@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 
 export abstract class MDSEnabledClientService {

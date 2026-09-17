@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { BrowserServices } from "../../models/interfaces";
 import { ServerResponse } from "../../../server/models/types";
 import { ActionType, ActionTypeMapName } from "../../pages/Notifications/constant";
