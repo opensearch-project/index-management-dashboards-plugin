@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AliasAction, AllocationAction } from "../../../../models/interfaces";
+import { AliasAction, AllocationAction, ConvertIndexToRemoteAction } from "../../../../models/interfaces";
 
 export enum ActionType {
   Alias = "alias",
   Allocation = "allocation",
   Close = "close",
+  ConvertIndexToRemote = "convert_index_to_remote",
   Delete = "delete",
   ForceMerge = "force_merge",
   IndexPriority = "index_priority",
@@ -195,10 +196,22 @@ export const DEFAULT_SNAPSHOT = {
   },
 };
 
+export const DEFAULT_CONVERT_INDEX_TO_REMOTE: ConvertIndexToRemoteAction = {
+  convert_index_to_remote: {
+    repository: "example-repository",
+    snapshot: "example-snapshot",
+    include_aliases: false,
+    ignore_index_settings: "",
+    delete_original_index: false,
+    rename_pattern: "$1_remote",
+  },
+};
+
 export const actions = [
   DEFAULT_ALIAS,
   DEFAULT_ALLOCATION,
   DEFAULT_CLOSE,
+  DEFAULT_CONVERT_INDEX_TO_REMOTE,
   DEFAULT_DELETE,
   DEFAULT_FORCE_MERGE,
   DEFAULT_INDEX_PRIORITY,

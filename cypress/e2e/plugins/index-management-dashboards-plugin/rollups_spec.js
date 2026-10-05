@@ -9,36 +9,42 @@ import sampleRollup from "../../../fixtures/plugins/index-management-dashboards-
 const ROLLUP_ID = "test_rollup_id";
 
 describe("Rollups", () => {
+  before(() => {
+    cy.deleteAllIndices();
+    cy.deleteIMJobs();
+
+    // Load ecommerce data
+    cy.request({
+      method: "POST",
+      url: `${BASE_PATH}/api/sample_data/ecommerce`,
+      headers: {
+        "osd-xsrf": true,
+      },
+    }).then((response) => {
+      expect(response.status).equal(200);
+    });
+  });
+
   beforeEach(() => {
-    // Set welcome screen tracking to true
-    localStorage.setItem("home:welcome:show", "true");
-
-    // Go to sample data page
-    cy.visit(`${BASE_PATH}/app/home#/tutorial_directory/sampleData`);
-
-    // Click on "Sample data" tab
-    cy.contains("Sample data").click({ force: true });
-    // Load sample eCommerce data
-    cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({
-      force: true,
+    cy.request({
+      method: "POST",
+      url: `${Cypress.env("openSearchUrl")}/_plugins/_rollup/jobs/${ROLLUP_ID}/_stop`,
+      failOnStatusCode: false,
+    });
+    cy.request({
+      method: "DELETE",
+      url: `${Cypress.env("openSearchUrl")}/_plugins/_rollup/jobs/${ROLLUP_ID}`,
+      failOnStatusCode: false,
     });
 
-    // Verify that sample data is add by checking toast notification
-    cy.contains("Sample eCommerce orders installed", { timeout: 60000 });
+    localStorage.setItem("home:welcome:show", "false");
 
-    // Visit ISM OSD
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/rollups`);
 
-    // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Create rollup", { timeout: 60000 });
   });
 
   describe("can be created", () => {
-    before(() => {
-      cy.deleteAllIndices();
-      cy.deleteIMJobs();
-    });
-
     it("successfully", () => {
       // Confirm we loaded empty state
       cy.contains(
@@ -153,10 +159,9 @@ describe("Rollups", () => {
   });
 
   describe("can be edited", () => {
-    before(() => {
-      cy.deleteAllIndices();
-      cy.deleteIMJobs();
+    beforeEach(() => {
       cy.createRollup(ROLLUP_ID, sampleRollup);
+      cy.reload();
     });
 
     it("successfully", () => {
@@ -196,10 +201,9 @@ describe("Rollups", () => {
   });
 
   describe("can be deleted", () => {
-    before(() => {
-      cy.deleteAllIndices();
-      cy.deleteIMJobs();
+    beforeEach(() => {
       cy.createRollup(ROLLUP_ID, sampleRollup);
+      cy.reload();
     });
 
     it("successfully", () => {
@@ -232,10 +236,9 @@ describe("Rollups", () => {
   });
 
   describe("can be enabled and disabled", () => {
-    before(() => {
-      cy.deleteAllIndices();
-      cy.deleteIMJobs();
+    beforeEach(() => {
       cy.createRollup(ROLLUP_ID, sampleRollup);
+      cy.reload();
     });
 
     it("successfully", () => {
