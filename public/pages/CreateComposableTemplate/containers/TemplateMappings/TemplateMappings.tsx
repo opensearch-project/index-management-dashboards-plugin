@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useContext, useRef } from "react";
 import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";

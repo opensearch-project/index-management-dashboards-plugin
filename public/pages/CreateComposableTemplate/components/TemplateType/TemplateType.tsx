@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { EuiCompressedRadio } from "@elastic/eui";
 import { TEMPLATE_TYPE } from "../../../../utils/constants";
 import React from "react";

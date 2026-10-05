@@ -1,0 +1,35 @@
+{
+  "**/*.*": [
+    " Copyright OpenSearch Contributors",
+    " SPDX-License-Identifier: Apache-2.0"
+  ],
+  "ignore": [
+    ".md",
+    ".json",
+    ".yml",
+    ".yaml",
+    ".txt",
+    ".html",
+    ".config",
+    ".png",
+    ".svg",
+    ".ico",
+    ".pem",
+    ".lock",
+    ".snap",
+    ".git",
+    ".gitignore",
+    ".prettierrc",
+    ".prettierignore",
+    ".whitesource",
+    ".lintstagedrc",
+    "node_modules/",
+    "build/",
+    "dist/",
+    "target/",
+    "**/__snapshots__/",
+    "*.d.ts",
+    "LICENSE",
+    "NOTICE"
+  ]
+}
