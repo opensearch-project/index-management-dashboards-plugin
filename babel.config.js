@@ -11,9 +11,17 @@ module.exports = function (api) {
   // Common plugins for all environments
   const commonPlugins = [require("@babel/plugin-proposal-nullish-coalescing-operator")];
 
+  // Common configuration for all environments
+  const commonConfig = {
+    generatorOpts: {
+      maxSize: 1000000, // Increased size limit to handle larger files
+    },
+  };
+
   // Test-specific configuration
   if (isTest) {
     return {
+      ...commonConfig, // Spread the common configuration
       presets: [require("@babel/preset-env"), require("@babel/preset-react"), require("@babel/preset-typescript")],
       plugins: [
         [require("@babel/plugin-transform-runtime"), { regenerator: true }],
@@ -27,6 +35,7 @@ module.exports = function (api) {
 
   // Build/dev configuration
   return {
+    ...commonConfig, // Spread the common configuration
     plugins: commonPlugins,
   };
 };
