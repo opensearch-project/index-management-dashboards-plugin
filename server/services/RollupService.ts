@@ -302,22 +302,35 @@ export default class RollupService extends MDSEnabledClientService {
         // Concat rollup job ids
         const ids = rollups.map((rollup: DocumentRollup) => rollup._id).join(",");
         const explainResponse: any = await callWithRequest("ism.explainRollup", { rollupId: ids });
-        if (!explainResponse.error) {
+
+        // Bug fix: Do NOT check for explainResponse.error property
+        // The Explain API returns an object where rollup IDs are keys (e.g., { "my-rollup": {...metadata...} })
+        // If a rollup is named "error", the response will be { "error": {...metadata...} }
+        // This would incorrectly trigger error handling if we checked for explainResponse.error
+        // Actual API errors are caught by the try-catch block above, not returned as response properties
+        // Reference: https://github.com/opensearch-project/index-management-dashboards-plugin/issues/1376
+
+        // Validate that explainResponse is a valid object
+        if (explainResponse && typeof explainResponse === "object") {
+          // Map metadata to each rollup, setting to null if not found in explainResponse
           rollups.map((rollup: DocumentRollup) => {
-            rollup.metadata = explainResponse[rollup._id];
+            rollup.metadata = explainResponse[rollup._id] || null;
           });
+
           return response.custom({
             statusCode: 200,
             body: { ok: true, response: { rollups: rollups, totalRollups: totalRollups, metadata: explainResponse } },
           });
-        } else
+        } else {
+          // Unexpected response format - this should rarely happen
           return response.custom({
             statusCode: 200,
             body: {
               ok: false,
-              error: explainResponse ? explainResponse.error : "An error occurred when calling getExplain API.",
+              error: "Unexpected response format from Explain API",
             },
           });
+        }
       }
       return response.custom({
         statusCode: 200,
