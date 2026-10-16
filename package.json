@@ -29,7 +29,7 @@
     }
   },
   "resolutions": {
-    "tmp": "0.2.6",
+    "tmp": "0.2.7",
     "qs": "6.15.2",
     "js-yaml": "3.15.1",
     "brace-expansion": "1.1.18",
