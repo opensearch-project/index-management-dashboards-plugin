@@ -54,6 +54,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlButtonData } from "src/plugins/navigation/public";
+import { getManagedIndexJobStatus, JOB_STATUS_SORT_FIELD } from "../../../../../utils/managedIndex";
 
 interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -120,9 +121,10 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         field: "index",
         name: "Index",
         sortable: true,
-        truncateText: true,
+        truncateText: false,
         textOnly: true,
-        render: (index: string) => <span title={index}>{index}</span>,
+        // Index names rarely contain spaces, so allow wrapping anywhere to show the full name.
+        render: (index: string) => <span style={{ overflowWrap: "anywhere" }}>{index}</span>,
       },
       {
         field: "dataStream",
@@ -175,19 +177,13 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         ),
       },
       {
-        field: "index", // we don't care about the field as we're using the whole item in render
+        // Job status is computed from the metadata, this field is only used as the sort key sent to the server
+        // @ts-ignore
+        field: JOB_STATUS_SORT_FIELD,
         name: "Job Status",
-        sortable: false,
+        sortable: true,
         truncateText: false,
-        render: (index: string, item: ManagedIndexItem) => {
-          const { managedIndexMetaData } = item;
-          if (!managedIndexMetaData) return "Initializing";
-          const { policyCompleted, retryInfo, action } = managedIndexMetaData;
-          if (policyCompleted) return "Completed";
-          if (retryInfo && retryInfo.failed) return "Failed";
-          if (action && action.failed) return "Failed";
-          return "Running";
-        },
+        render: (jobStatus: undefined, item: ManagedIndexItem) => getManagedIndexJobStatus(item.managedIndexMetaData),
       },
     ];
   }

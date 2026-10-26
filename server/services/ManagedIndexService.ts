@@ -29,6 +29,21 @@ import { ManagedIndicesSort, ServerResponse } from "../models/types";
 import { ManagedIndexItem } from "../../models/interfaces";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
 import { MDSEnabledClientService } from "./MDSEnabledClientService";
+import { getManagedIndexJobStatus, JOB_STATUS_SORT_FIELD } from "../../utils/managedIndex";
+
+// Matches the default index.max_result_window, the most the explain API can return in one request.
+const MAX_SERVER_SORT_SIZE = 10000;
+
+interface ExplainedIndex {
+  metadata: ExplainAPIManagedIndexMetaData;
+  parentDataStream: string | null;
+}
+
+// Sort fields the explain API can't sort by, mapped to the value to sort on.
+const SERVER_SORTS: { [sortField: string]: ((explained: ExplainedIndex) => string) | undefined } = {
+  [JOB_STATUS_SORT_FIELD]: ({ metadata }) => getManagedIndexJobStatus(transformManagedIndexMetaData(metadata)),
+  dataStream: ({ parentDataStream }) => parentDataStream || "",
+};
 
 export default class ManagedIndexService extends MDSEnabledClientService {
   // TODO: Not finished, need UI page that uses this first
@@ -80,12 +95,15 @@ export default class ManagedIndexService extends MDSEnabledClientService {
       };
 
       const managedIndexSorts: ManagedIndicesSort = { index: "managed_index.index", policyId: "managed_index.policy_id" };
+      // Job status and data stream aren't fields on the managed index document, so the explain API can't sort by them.
+      // Instead fetch all matching managed indices (up to the max result window), sort them here, and return the requested page.
+      const getServerSortValue = SERVER_SORTS[sortField];
       const explainParams = {
-        sortField: sortField ? managedIndexSorts[sortField] : null,
-        sortOrder: sortDirection,
+        sortField: getServerSortValue ? managedIndexSorts.index : sortField ? managedIndexSorts[sortField] : null,
+        sortOrder: getServerSortValue ? "asc" : sortDirection,
         queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
-        from: from,
-        size: size,
+        from: getServerSortValue ? 0 : from,
+        size: getServerSortValue ? MAX_SERVER_SORT_SIZE : size,
       };
 
       const callWithRequest = this.getClientBasedOnDataSource(context, request);
@@ -93,7 +111,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
         callWithRequest("ism.explainAll", explainParams) as Promise<ExplainAllResponse>,
         getIndexToDataStreamMapping(callWithRequest),
       ]);
-      const managedIndices: ManagedIndexItem[] = [];
+      let explainedIndices: ExplainedIndex[] = [];
       for (const indexName in explainAllResponse) {
         if (indexName == "total_managed_indices") continue;
         const metadata = explainAllResponse[indexName] as ExplainAPIManagedIndexMetaData;
@@ -101,6 +119,21 @@ export default class ManagedIndexService extends MDSEnabledClientService {
         // If showDataStreams is not true, then skip the managed index if it belongs to a data stream.
         const parentDataStream = indexToDataStreamMapping[metadata.index] || null;
         if (!showDataStreams && parentDataStream !== null) continue;
+        explainedIndices.push({ metadata, parentDataStream });
+      }
+
+      if (getServerSortValue) {
+        const direction = sortDirection === "desc" ? -1 : 1;
+        const pageStart = Number(from);
+        explainedIndices = explainedIndices
+          .map((explained) => ({ ...explained, sortValue: getServerSortValue(explained) }))
+          // Array.prototype.sort is stable, so ties stay in index name order.
+          .sort((a, b) => direction * a.sortValue.localeCompare(b.sortValue))
+          .slice(pageStart, pageStart + Number(size));
+      }
+
+      const managedIndices: ManagedIndexItem[] = [];
+      for (const { metadata, parentDataStream } of explainedIndices) {
         let policy, seqNo, primaryTerm, getResponse;
         try {
           getResponse = await callWithRequest("ism.getPolicy", { policyId: metadata.policy_id });
