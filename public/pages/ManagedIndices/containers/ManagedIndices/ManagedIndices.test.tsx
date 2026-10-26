@@ -221,6 +221,25 @@ describe("<ManagedIndices /> spec", () => {
     expect(queryByText("index_39")).toBeNull();
   });
 
+  it("requests a server side sort when sorting by job status", async () => {
+    browserServicesMock.managedIndexService.getManagedIndices = jest
+      .fn()
+      .mockResolvedValue({ ok: true, response: { managedIndices: [], totalManagedIndices: 0 } });
+
+    const { getByTestId } = renderWithRouter(ManagedIndices);
+
+    await waitFor(() => expect(browserServicesMock.managedIndexService.getManagedIndices).toHaveBeenCalledTimes(1));
+
+    // @ts-ignore
+    fireEvent.click(getByTestId("tableHeaderCell_jobStatus_5").firstChild);
+
+    await waitFor(() =>
+      expect(browserServicesMock.managedIndexService.getManagedIndices).toHaveBeenLastCalledWith(
+        expect.objectContaining({ sortField: "jobStatus", sortDirection: "asc" })
+      )
+    );
+  });
+
   it("retry disables/enables itself when selecting a failed/non-failed managed indices", async () => {
     const managedIndices: ManagedIndexItem[] = [
       {

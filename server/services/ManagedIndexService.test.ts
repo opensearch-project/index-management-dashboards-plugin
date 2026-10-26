@@ -56,6 +56,37 @@ describe("ManagedIndexService getManagedIndices", () => {
     expect(body.response.managedIndices.map((item: { index: string }) => item.index)).toEqual(["index-c", "index-b", "index-a", "index-d"]);
   });
 
+  it("reports the number of fetched indices as the total when sorting on the server", async () => {
+    // Indices that belong to a data stream are dropped when data streams aren't shown, even though explain counts them.
+    (getIndexToDataStreamMapping as jest.Mock).mockResolvedValueOnce({ "index-a": "stream" });
+    const { body } = await getManagedIndices({ from: 0, size: 10, sortField: "jobStatus", sortDirection: "asc", showDataStreams: false });
+    expect(body.response.managedIndices.map((item: { index: string }) => item.index)).toEqual(["index-d", "index-b", "index-c"]);
+    expect(body.response.totalManagedIndices).toBe(3);
+  });
+
+  it("returns an empty page when from is past the end of a server side sort", async () => {
+    const { body } = await getManagedIndices({ from: 20, size: 10, sortField: "jobStatus", sortDirection: "asc" });
+    expect(body.response.managedIndices).toEqual([]);
+    expect(body.response.totalManagedIndices).toBe(4);
+  });
+
+  it("ignores sort fields inherited from Object.prototype", async () => {
+    const { callAsCurrentUser, body } = await getManagedIndices({ from: 0, size: 10, sortField: "constructor", sortDirection: "asc" });
+    expect(body.ok).toBe(true);
+    expect(callAsCurrentUser).toHaveBeenCalledWith("ism.explainAll", expect.objectContaining({ sortField: null, from: 0, size: 10 }));
+  });
+
+  it("doesn't sort by data stream on the server when data streams aren't shown", async () => {
+    const { callAsCurrentUser } = await getManagedIndices({
+      from: 0,
+      size: 10,
+      sortField: "dataStream",
+      sortDirection: "asc",
+      showDataStreams: false,
+    });
+    expect(callAsCurrentUser).toHaveBeenCalledWith("ism.explainAll", expect.objectContaining({ sortField: null, from: 0, size: 10 }));
+  });
+
   it("sorts by data stream when data streams are shown", async () => {
     (getIndexToDataStreamMapping as jest.Mock).mockResolvedValueOnce({ "index-a": "stream-z", "index-c": "stream-m" });
     const { body } = await getManagedIndices({ from: 0, size: 10, sortField: "dataStream", sortDirection: "desc", showDataStreams: true });

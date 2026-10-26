@@ -123,8 +123,8 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         sortable: true,
         truncateText: false,
         textOnly: true,
-        // Index names rarely contain spaces, so allow wrapping anywhere to show the full name.
-        render: (index: string) => <span style={{ overflowWrap: "anywhere" }}>{index}</span>,
+        // Index names rarely contain spaces, so allow breaking within words to show the full name.
+        render: (index: string) => <span className="eui-textBreakWord">{index}</span>,
       },
       {
         field: "dataStream",
@@ -183,7 +183,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         name: "Job Status",
         sortable: true,
         truncateText: false,
-        render: (jobStatus: undefined, item: ManagedIndexItem) => getManagedIndexJobStatus(item.managedIndexMetaData),
+        render: (_: unknown, item: ManagedIndexItem) => getManagedIndexJobStatus(item.managedIndexMetaData),
       },
     ];
   }
