@@ -29,6 +29,25 @@ import { ManagedIndicesSort, ServerResponse } from "../models/types";
 import { ManagedIndexItem } from "../../models/interfaces";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
 import { MDSEnabledClientService } from "./MDSEnabledClientService";
+import { getManagedIndexJobStatus, JOB_STATUS_SORT_FIELD } from "../../utils/managedIndex";
+
+// Matches the default index.max_result_window, the most the explain API can return in one request.
+const MAX_SERVER_SORT_SIZE = 10000;
+
+interface ExplainedIndex {
+  metadata: ExplainAPIManagedIndexMetaData;
+  parentDataStream: string | null;
+}
+
+// Sort fields the explain API can't sort by, mapped to the value to sort on.
+const SERVER_SORTS: { [sortField: string]: (explained: ExplainedIndex) => string } = {
+  [JOB_STATUS_SORT_FIELD]: ({ metadata }) => getManagedIndexJobStatus(transformManagedIndexMetaData(metadata)),
+  dataStream: ({ parentDataStream }) => parentDataStream || "",
+};
+
+// sortField comes from the URL, so only look up keys the map defines itself (not Object.prototype keys like "constructor").
+const getOwn = <T>(map: { [key: string]: T }, key: string): T | undefined =>
+  Object.prototype.hasOwnProperty.call(map, key) ? map[key] : undefined;
 
 export default class ManagedIndexService extends MDSEnabledClientService {
   // TODO: Not finished, need UI page that uses this first
@@ -68,8 +87,8 @@ export default class ManagedIndexService extends MDSEnabledClientService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetManagedIndicesResponse>>> => {
     try {
       const { from, size, sortDirection, sortField, terms, indices, dataStreams, showDataStreams } = request.query as {
-        from: string;
-        size: string;
+        from: number;
+        size: number;
         search: string;
         sortDirection: string;
         sortField: string;
@@ -80,12 +99,16 @@ export default class ManagedIndexService extends MDSEnabledClientService {
       };
 
       const managedIndexSorts: ManagedIndicesSort = { index: "managed_index.index", policyId: "managed_index.policy_id" };
+      // Job status and data stream aren't fields on the managed index document, so the explain API can't sort by them.
+      // Instead fetch all matching managed indices (up to the max result window), sort them here, and return the requested page.
+      // Data stream indices are filtered out when they aren't shown, so every data stream sort value would be empty.
+      const getServerSortValue = sortField === "dataStream" && !showDataStreams ? undefined : getOwn(SERVER_SORTS, sortField);
       const explainParams = {
-        sortField: sortField ? managedIndexSorts[sortField] : null,
-        sortOrder: sortDirection,
+        sortField: getServerSortValue ? managedIndexSorts.index : getOwn(managedIndexSorts, sortField) || null,
+        sortOrder: getServerSortValue ? "asc" : sortDirection,
         queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
-        from: from,
-        size: size,
+        from: getServerSortValue ? 0 : from,
+        size: getServerSortValue ? MAX_SERVER_SORT_SIZE : size,
       };
 
       const callWithRequest = this.getClientBasedOnDataSource(context, request);
@@ -93,7 +116,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
         callWithRequest("ism.explainAll", explainParams) as Promise<ExplainAllResponse>,
         getIndexToDataStreamMapping(callWithRequest),
       ]);
-      const managedIndices: ManagedIndexItem[] = [];
+      let explainedIndices: ExplainedIndex[] = [];
       for (const indexName in explainAllResponse) {
         if (indexName == "total_managed_indices") continue;
         const metadata = explainAllResponse[indexName] as ExplainAPIManagedIndexMetaData;
@@ -101,6 +124,24 @@ export default class ManagedIndexService extends MDSEnabledClientService {
         // If showDataStreams is not true, then skip the managed index if it belongs to a data stream.
         const parentDataStream = indexToDataStreamMapping[metadata.index] || null;
         if (!showDataStreams && parentDataStream !== null) continue;
+        explainedIndices.push({ metadata, parentDataStream });
+      }
+
+      let totalManagedIndices = explainAllResponse.total_managed_indices;
+      if (getServerSortValue) {
+        // Only the fetched indices (at most MAX_SERVER_SORT_SIZE) can be sorted and paged through,
+        // so report that count rather than the explain total to avoid empty trailing pages.
+        totalManagedIndices = explainedIndices.length;
+        const direction = sortDirection === "desc" ? -1 : 1;
+        explainedIndices = explainedIndices
+          .map((explained) => ({ ...explained, sortValue: getServerSortValue(explained) }))
+          // Array.prototype.sort is stable, so ties keep the explain API's ascending index name order in both directions.
+          .sort((a, b) => direction * a.sortValue.localeCompare(b.sortValue))
+          .slice(from, from + size);
+      }
+
+      const managedIndices: ManagedIndexItem[] = [];
+      for (const { metadata, parentDataStream } of explainedIndices) {
         let policy, seqNo, primaryTerm, getResponse;
         try {
           getResponse = await callWithRequest("ism.getPolicy", { policyId: metadata.policy_id });
@@ -127,7 +168,6 @@ export default class ManagedIndexService extends MDSEnabledClientService {
         });
       }
 
-      let totalManagedIndices = explainAllResponse.total_managed_indices;
       return response.custom({
         statusCode: 200,
         body: {
