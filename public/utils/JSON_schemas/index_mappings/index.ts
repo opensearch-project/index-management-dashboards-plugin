@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { JSONSchema4 } from "@types/json-schema";
 import { INDEX_MAPPING_TYPES } from "../../constants";
 import { propertiesSchema, typeSchema, schemaId } from "./property_item";
