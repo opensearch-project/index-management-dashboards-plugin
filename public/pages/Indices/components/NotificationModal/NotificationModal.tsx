@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 // FILE: NotificationsModal.tsx
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import {
