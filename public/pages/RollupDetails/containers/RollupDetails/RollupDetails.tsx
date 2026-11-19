@@ -29,15 +29,16 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import GeneralInformation from "../../components/GeneralInformation/GeneralInformation";
 import RollupStatus from "../../components/RollupStatus/RollupStatus";
 import AggregationAndMetricsSettings from "../../components/AggregationAndMetricsSettings/AggregationAndMetricsSettings";
-import { parseTimeunit, buildIntervalScheduleText, buildCronScheduleText } from "../../../CreateRollup/utils/helpers";
+import { buildIntervalScheduleText, buildCronScheduleText } from "../../../CreateRollup/utils/helpers";
 import { DimensionItem, MetricItem, RollupDimensionItem, RollupMetadata, RollupMetricItem } from "../../../../../models/interfaces";
 import { renderTime } from "../../../Rollups/utils/helpers";
 import DeleteModal from "../../../Rollups/components/DeleteModal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData, TopNavControlTextData, TopNavControlIconData } from "../../../../../../../src/plugins/navigation/public";
+import { TopNavControlButtonData, TopNavControlIconData } from "../../../../../../../src/plugins/navigation/public";
 import _ from "lodash";
+import { getOrderedJson } from "../../../../../utils/helper";
 
 interface RollupDetailsProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -48,6 +49,7 @@ interface RollupDetailsState {
   description: string;
   sourceIndex: string;
   targetIndex: string;
+  targetIndexSettings: Map<string, any> | null;
   rollupJSON: any;
   continuousJob: string;
   continuousDefinition: string;
@@ -88,6 +90,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
       description: "",
       sourceIndex: "",
       targetIndex: "",
+      targetIndexSettings: null,
 
       continuousJob: "no",
       continuousDefinition: "fixed",
@@ -147,6 +150,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           description: response.response.rollup.description,
           sourceIndex: response.response.rollup.source_index,
           targetIndex: response.response.rollup.target_index,
+          targetIndexSettings: response.response.rollup.target_index_settings,
           delayTime: response.response.rollup.delay as number,
           pageSize: response.response.rollup.page_size,
           rollupJSON: newJSON,
@@ -317,11 +321,9 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
       description,
       sourceIndex,
       targetIndex,
-      continuousJob,
-      continuousDefinition,
+      targetIndexSettings,
       interval,
       intervalTimeunit,
-      cronExpression,
       pageSize,
       lastUpdated,
       metadata,
@@ -457,6 +459,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           description={description}
           sourceIndex={sourceIndex}
           targetIndex={targetIndex}
+          targetIndexSettings={targetIndexSettings ? JSON.stringify(getOrderedJson(targetIndexSettings || {}), null, 2) : null}
           scheduleText={scheduleText}
           pageSize={pageSize}
           lastUpdated={lastUpdated}

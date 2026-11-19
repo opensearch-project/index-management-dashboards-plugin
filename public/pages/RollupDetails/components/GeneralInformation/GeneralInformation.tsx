@@ -5,7 +5,7 @@
 
 import React, { Component } from "react";
 import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiFlexGroup, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
-import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
+import { ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 
 interface GeneralInformationProps {
@@ -13,6 +13,7 @@ interface GeneralInformationProps {
   description: string;
   sourceIndex: string;
   targetIndex: string;
+  targetIndexSettings: string | null;
   scheduleText: string;
   pageSize: number;
   lastUpdated: string;
@@ -26,11 +27,23 @@ export default class GeneralInformation extends Component<GeneralInformationProp
   }
 
   render() {
-    const { rollupId, description, onEdit, sourceIndex, targetIndex, scheduleText, pageSize, lastUpdated, useNewUX } = this.props;
+    const {
+      rollupId,
+      description,
+      onEdit,
+      sourceIndex,
+      targetIndex,
+      targetIndexSettings,
+      scheduleText,
+      pageSize,
+      lastUpdated,
+      useNewUX,
+    } = this.props;
     const infoItems = [
       { term: "Name", value: rollupId },
       { term: "Source index", value: sourceIndex },
       { term: "Target index", value: targetIndex },
+      { term: "Target index settings", value: targetIndexSettings },
       { term: "Schedule", value: scheduleText },
       { term: "Description", value: description || "-" },
       { term: "Last updated", value: lastUpdated },
@@ -61,14 +74,16 @@ export default class GeneralInformation extends Component<GeneralInformationProp
         <EuiHorizontalRule margin={"xs"} />
         <div>
           <EuiFlexGrid columns={4}>
-            {infoItems.map((item) => (
-              <EuiFlexItem key={`${item.term}#${item.value}`}>
-                <EuiText size="s">
-                  <dt>{item.term}</dt>
-                  <dd>{item.value}</dd>
-                </EuiText>
-              </EuiFlexItem>
-            ))}
+            {infoItems
+              .filter((v) => v.value != null)
+              .map((item) => (
+                <EuiFlexItem key={`${item.term}#${item.value}`}>
+                  <EuiText size="s">
+                    <dt>{item.term}</dt>
+                    <dd>{item.value}</dd>
+                  </EuiText>
+                </EuiFlexItem>
+              ))}
           </EuiFlexGrid>
           <EuiSpacer size="s" />
         </div>
